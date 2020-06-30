@@ -1,0 +1,131 @@
+/* Muli & Unna Fonts*/
+@import url('https://fonts.googleapis.com/css2?family=Muli&family=Unna:ital@1&display=swap" rel="stylesheet');
+
+
+.nav{
+    max-height: 15% !important;
+    background-color: #3BA4A0;
+    max-width: 100% !important;
+    font-family: 'Unna', serif;
+    box-sizing: unset !important;
+}
+
+.titulo{
+    margin-left: 19%;
+    text-align: left;
+    width: 53%;
+}
+
+.inicio{
+    position: absolute;
+    right: 13rem;
+}
+
+.logo{
+    width: 17%;
+    height: 10%;
+}
+
+.mgl-1{
+    margin-left: 1.5rem;
+}
+.mgl-3{
+    margin-top: 1rem;
+}
+
+.mgr-5{
+    margin-top: 1rem;
+    margin-right: -5rem;
+}
+
+.titulo h1,.titulo h2{
+    color: white;
+    font-size: 370% !important ;
+}
+
+#imagen1 , #imagen2{
+    margin-top: 2rem;
+    margin-bottom: 2rem;
+    width: 40%;
+    max-height: 40%;
+}
+
+#imagen3{
+    padding-bottom: 2rem;
+    width: 50%;
+    max-height: 40%;
+}
+
+.centrar{
+   margin-left: 20% !important;
+   margin-bottom: 8rem; 
+}
+
+.stage{
+    padding-left: 20%;
+    padding-right: 15%;
+}
+
+.cuadrado{
+    box-shadow: 5px 5px 5px grey;
+    margin-left: 2rem;
+    width: 80%;
+    height: 300px;
+    align-self: center;
+    background-color: grey;
+}
+
+.gris{
+    background-color: #f0f0f0;
+    max-width: 100%;
+}
+
+.amarillo{
+    background-color: #EEAC2C;
+}
+
+.rojo{
+    background-color: #E94545;
+}
+
+.verde{
+    background-color: #5CAB27;
+}
+
+.cuadrado .texto{
+    padding-top: 1rem;
+    text-align: center;
+    color: #E5E5E5;
+    font-family: 'Muli','sans-serif';
+}
+
+.texto h1{
+    font-size: 3rem;
+}
+.texto li{
+    padding-top: 0.8rem;
+    text-align: justify;
+    padding-left: 1.5rem;
+    font-size: 2rem;
+} 
+
+#imagen1:hover{
+    background-color:#E94545;
+}
+#imagen1:hover .texto{
+    color: white;   
+}
+
+#imagen2:hover{
+    background-color: #EEAC2C;
+}
+#imagen2:hover .texto{
+    color: white;   
+}
+
+#imagen3:hover{
+    background-color: #5CAB27;   
+}
+#imagen3:hover .texto{
+    color: white;   
+}
