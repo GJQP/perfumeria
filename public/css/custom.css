@@ -26,16 +26,36 @@
     height: 10%;
 }
 
+.pdb-2{
+   padding-bottom: 1.5rem;
+}
 .mgl-1{
     margin-left: 1.5rem;
 }
+
 .mgl-3{
+    margin-left: 12.5%;
+}
+
+.mgln-4{
+    margin-left: -9rem;
+}
+
+.mgr-1{
+    margin-right: 0.5rem;
+}
+
+.mgrn-5{
+    margin-top: 1rem;
+    margin-right: -5rem;
+}
+
+.mgt-1{
     margin-top: 1rem;
 }
 
-.mgr-5{
-    margin-top: 1rem;
-    margin-right: -5rem;
+.mgt-2{
+    margin-top: 2rem;
 }
 
 .titulo h1,.titulo h2{
@@ -44,7 +64,6 @@
 }
 
 #imagen1 , #imagen2{
-    margin-top: 2rem;
     margin-bottom: 2rem;
     width: 40%;
     max-height: 40%;
@@ -61,7 +80,7 @@
    margin-bottom: 8rem; 
 }
 
-.stage{
+.centradoimg{
     padding-left: 20%;
     padding-right: 15%;
 }
@@ -77,7 +96,6 @@
 
 .gris{
     background-color: #f0f0f0;
-    max-width: 100%;
 }
 
 .amarillo{
@@ -92,7 +110,7 @@
     background-color: #5CAB27;
 }
 
-.cuadrado .texto{
+.cuadrado .texto, a{
     padding-top: 1rem;
     text-align: center;
     color: #E5E5E5;
@@ -112,20 +130,106 @@
 #imagen1:hover{
     background-color:#E94545;
 }
-#imagen1:hover .texto{
+
+#imagen1:hover .texto,#imagen2:hover .texto,#imagen3:hover .texto,a, a:hover{
     color: white;   
 }
 
 #imagen2:hover{
     background-color: #EEAC2C;
 }
-#imagen2:hover .texto{
-    color: white;   
-}
 
 #imagen3:hover{
     background-color: #5CAB27;   
 }
-#imagen3:hover .texto{
-    color: white;   
+
+.tarjeta{
+    box-shadow: 5px 5px 5px grey;
+    background-color: white;
+    border: 5px;
 }
+
+.muli{
+    font-family: 'Muli','sans-serif';
+}
+
+div p{
+    font-size: 135%;
+}
+
+.dropdown-item{
+    font-size: 130%;
+}
+
+.dropdown-menu {         
+    max-height: 200px;
+    max-width: 300px;
+    overflow-y: auto;
+  }
+
+.btn-secondary{
+    background-color:#b8b6b6 ;
+}
+
+.blocktext {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+table, th, td {
+    border: 1px solid black;
+    border-collapse: collapse;
+    background-color: rgb(243, 238, 230);
+  }
+  th, td {
+    padding: 5px;
+    text-align: center;
+  }
+
+  table{
+      width: 50%;
+  }
+
+.vacio{
+    border-left: hidden;
+    border-bottom: hidden;
+    background-color: white;
+ 
+}
+
+td div p{
+    font-size: 15px;
+}
+.escala{
+    max-height: 25px;
+    max-width: 120px;
+    background-color: rgb(184, 182, 182);
+    border: 1px solid black;
+    color:#E5E5E5
+}
+
+.porcentaje{
+    max-height: 25px;
+    max-width: 130px;
+    background-color: rgb(184, 182, 182);
+    border: 1px solid black;
+    color:#E5E5E5
+}
+
+#criterio{
+    width: 200px;
+}
+
+#escala{
+    width: 130px;
+}
+
+#porcentaje{
+    width:140px
+}
+
+p.mgr-1{
+    text-align: right;
+}
+

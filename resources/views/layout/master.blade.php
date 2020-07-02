@@ -10,18 +10,18 @@
         <link href="{{ asset('css/app.css') }}" rel="stylesheet">
         <link href="{{ asset('css/custom.css') }}" rel="stylesheet">
         
-        <title>@yield('titulo','IFRA Administracion')</title>
-    <body>
+        <title>@yield('titulo')</title>
+    <body class="gris">
         
         <nav class="navbar-nav">
             <div class="container row nav">
                     <img src="{{ asset('img/IFRA Stripped.png') }}" alt="Ifra logo" class="logo navbar-brand mgl-1">
                     <div class="row titulo">
-                        <div class="mgl-3">
-                             <h1> Administracion </h1> 
+                        <div class="blocktext">
+                             <h1> @yield('titulo')</h1> 
                         </div>
                         <!-- Agregar Validacion de Pagina, Si esta en la inicial, no muestra esto
-                            <div class="inicio mgr-5">
+                            <div class="inicio mgrn-5">
                                 <h2> Inicio </h2>
                             </div>
                         -->
