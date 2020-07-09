@@ -11,7 +11,7 @@ DROP TABLE IF EXISTS rig_esencias;
 DROP TABLE IF EXISTS rig_monoliticos;
 DROP TABLE IF EXISTS rig_notas;
 DROP TABLE IF EXISTS rig_esencias_perfumes;
-DROP TABLE IF EXISTS rig_perfumes_familias;
+DROP TABLE IF EXISTS rig_familias_perfumes;
 DROP TABLE IF EXISTS rig_palabras_familias;
 DROP TABLE IF EXISTS rig_familias_olfativas;
 DROP TABLE IF EXISTS rig_palabras_claves;
@@ -378,17 +378,17 @@ CREATE TABLE rig_palabras_familias (
 	PRIMARY KEY (id_pal, id_fao)
 );
 
-ALTER TABLE rig_perfumes_familias ADD CONSTRAINT rig_palabras_familias_id_pal_fk FOREIGN KEY (id_pal) REFERENCES rig_palabras_claves,
+ALTER TABLE rig_palabras_familias ADD CONSTRAINT rig_palabras_familias_id_pal_fk FOREIGN KEY (id_pal) REFERENCES rig_palabras_claves,
 	ADD CONSTRAINT  rig_palabras_familias_id_fao_fk FOREIGN KEY (id_fao) REFERENCES rig_familias_olfativas;
 
 CREATE TABLE rig_familias_perfumes (
 	id_fao SMALLINT,
 	id_perf INTEGER,
-	PRIMARY KEY (id_pal, id_fao)
+	PRIMARY KEY (id_fao, id_perf)
 );
 
-ALTER TABLE rig_perfumes_familias ADD CONSTRAINT rig_perfumes_familias_id_perf_fk FOREIGN KEY (id_perf) REFERENCES rig_perfumes_familias,
-	ADD CONSTRAINT rig_perfumes_familias_id_fao_fk FOREIGN KEY (id_fao) REFERENCES rig_familias_olfativas;
+ALTER TABLE rig_familias_perfumes ADD CONSTRAINT rig_familias_perfumes_id_perf_fk FOREIGN KEY (id_perf) REFERENCES rig_perfumes,
+	ADD CONSTRAINT rig_familias_perfumes_id_fao_fk FOREIGN KEY (id_fao) REFERENCES rig_familias_olfativas;
 
 CREATE TABLE rig_esencias_perfumes (
 	id INTEGER PRIMARY KEY,
