@@ -12,6 +12,7 @@ DROP TABLE IF EXISTS rig_monoliticos;
 DROP TABLE IF EXISTS rig_notas;
 DROP TABLE IF EXISTS rig_esencias_perfumes;
 DROP TABLE IF EXISTS rig_perfumes_familias;
+DROP TABLE IF EXISTS rig_palabras_familias;
 DROP TABLE IF EXISTS rig_familias_olfativas;
 DROP TABLE IF EXISTS rig_palabras_claves;
 DROP TABLE IF EXISTS rig_presentaciones_perfumes;
@@ -164,8 +165,8 @@ ALTER TABLE rig_condiciones_de_envio ADD CONSTRAINT rig_condiciones_de_envio_ck 
 CREATE TABLE rig_escalas (
 	id_prod SMALLINT,
 	fcha_reg DATE,
-	rgo_ini INTEGER NOT NULL,
-	rgo_fin INTEGER NOT NULL,
+	rgo_ini SMALLINT NOT NULL,
+	rgo_fin SMALLINT NOT NULL,
 	fcha_fin DATE,
 	PRIMARY KEY (id_prod, fcha_reg)
 );
@@ -191,7 +192,7 @@ CREATE TABLE rig_variables (
 	des VARCHAR (50) NOT NULL
 );
 
-CREATE SEQUENCE rig_variables_id_seq MAXVALUE 10 OWNED BY rig_variables.id;
+CREATE SEQUENCE rig_variables_id_seq AS SMALLINT MAXVALUE 10 OWNED BY rig_variables.id;
 ALTER TABLE rig_variables ALTER COLUMN id SET DEFAULT nextval('rig_variables_id_seq');
 
 CREATE TABLE rig_evaluaciones_criterios (
@@ -210,7 +211,7 @@ ALTER TABLE rig_evaluaciones_criterios ADD CONSTRAINT rig_evaluaciones_criterios
 
 CREATE TABLE rig_ingredientes_esencias (
 	id_prov SMALLINT,
-	id SMALLINT,
+	id INTEGER,
 	cas VARCHAR (30) NOT NULL,
 	nombre VARCHAR (15) NOT NULL,
 	tipo CHAR (15) NOT NULL,
@@ -223,7 +224,7 @@ CREATE TABLE rig_ingredientes_esencias (
 	PRIMARY KEY (id_prov, id)
 );
 
-CREATE SEQUENCE rig_ingredientes_esencias_id_seq AS SMALLINT OWNED BY rig_ingredientes_esencias.id;
+CREATE SEQUENCE rig_ingredientes_esencias_id_seq AS INTEGER OWNED BY rig_ingredientes_esencias.id;
 
 ALTER TABLE rig_ingredientes_esencias ADD CONSTRAINT rig_ingrediente_esencia_ck CHECK (
 	(tipo IN ('NATURAL', 'ARTIFICIAL'))	AND (peligrosidad IN ('ALTA', 'MEDIA', 'BAJA', 'NINGUNA')) AND (ctrl IN ('SI', 'NO'))),
@@ -241,7 +242,7 @@ ALTER TABLE rig_prohibidas ALTER COLUMN id SET DEFAULT nextval('rig_prohibidas_i
 
 CREATE TABLE rig_presentaciones_ingredientes (
 	id_prov SMALLINT,
-	id_ing SMALLINT,
+	id_ing INTEGER,
 	cod_present INTEGER,
 	nombre VARCHAR (15) NOT NULL,
 	cant_u SMALLINT NOT NULL,
@@ -251,27 +252,26 @@ CREATE TABLE rig_presentaciones_ingredientes (
 	PRIMARY KEY (id_prov, id_ing, cod_present)
 );
 
-CREATE SEQUENCE rig_presentaciones_ingredientes_id_seq AS INTEGER OWNED BY rig_presentaciones_ingredientes.id_prov;
+CREATE SEQUENCE rig_presentaciones_ingredientes_id_seq AS INTEGER OWNED BY rig_presentaciones_ingredientes.cod_present;
 ALTER TABLE rig_presentaciones_ingredientes ADD CONSTRAINT rig_presentaciones_ingredientes_ing_fk FOREIGN KEY (id_prov, id_ing) REFERENCES rig_ingredientes_esencias (id_prov, id),
 	ALTER COLUMN cod_present SET DEFAULT nextval('rig_presentaciones_ingredientes_id_seq');
 
-
 CREATE TABLE rig_otros_ingredientes (
 	id_prov SMALLINT,
-	id SMALLINT,
+	id INTEGER,
 	cod_inter VARCHAR (30) NOT NULL,
 	nombre VARCHAR (20) NOT NULL,
 	des VARCHAR (50) NOT NULL,
 	PRIMARY KEY (id_prov, id)
 );
 
-CREATE SEQUENCE rig_otros_ingredientes_id_seq AS SMALLINT OWNED BY rig_otros_ingredientes.id_prov;
+CREATE SEQUENCE rig_otros_ingredientes_id_seq AS INTEGER OWNED BY rig_otros_ingredientes.id;
 ALTER TABLE rig_otros_ingredientes ADD CONSTRAINT rig_otros_ingredientes_id_prov_fk FOREIGN KEY (id_prov) REFERENCES rig_proveedores,
 	ALTER COLUMN id SET DEFAULT nextval('rig_otros_ingredientes_id_seq');
 
 CREATE TABLE rig_presentaciones_otros_ingredientes (
 	id_prov SMALLINT,
-	id_otro_ing SMALLINT,
+	id_otro_ing INTEGER,
 	cod_present INTEGER,
 	precio NUMERIC (10,2) NOT NULL,
 	volumen NUMERIC (10, 2),
@@ -287,9 +287,9 @@ ALTER TABLE rig_presentaciones_otros_ingredientes ADD CONSTRAINT rig_presentacio
 
 CREATE TABLE rig_ingredientes_extras (
 	id_prov_ing SMALLINT,
-	id_ing SMALLINT,
+	id_ing INTEGER,
 	id_prov_otr SMALLINT,
-	id_otro_ing SMALLINT,
+	id_otro_ing INTEGER,
 	PRIMARY KEY (id_prov_ing, id_ing, id_prov_otr, id_otro_ing)
 );
 
@@ -306,7 +306,7 @@ CREATE TABLE rig_perfumes (
 	des TEXT
 );
 
-CREATE SEQUENCE rig_perfumes_id_seq OWNED BY rig_perfumes.id;
+CREATE SEQUENCE rig_perfumes_id_seq AS INTEGER OWNED BY rig_perfumes.id;
 ALTER TABLE rig_perfumes ADD CONSTRAINT rig_perfumes_ck CHECK ((genero IN ('F', 'M')) AND (tipo IN ('MONO', 'FASES'))),
 	ALTER COLUMN id SET DEFAULT nextval('rig_perfumes_id_seq');
 
@@ -317,7 +317,7 @@ CREATE TABLE rig_perfumistas (
 	fcha_nac DATE
 );
 
-CREATE SEQUENCE rig_perfumistas_id_seq OWNED BY rig_perfumistas.id;
+CREATE SEQUENCE rig_perfumistas_id_seq AS INTEGER OWNED BY rig_perfumistas.id;
 ALTER TABLE rig_perfumistas ADD CONSTRAINT rig_perfumistas_ck CHECK (genero IN ('F', 'M')),
 	ALTER COLUMN id SET DEFAULT nextval('rig_perfumistas_id_seq');
 
@@ -332,27 +332,27 @@ ALTER TABLE	rig_perfumes_perfumistas ADD CONSTRAINT rig_perfumes_perfumistas_id_
 
 CREATE TABLE rig_intensidades (
 	id_perf INTEGER,
-	id BIGINT,
+	id INTEGER,
 	tipo CHAR (3) NOT NULL,
 	porcen NUMERIC (5,2),
 	des VARCHAR (50),
 	PRIMARY KEY (id_perf, id)
 );
 
-CREATE SEQUENCE rig_intensidades_id_seq OWNED BY rig_intensidades.id_perf;
+CREATE SEQUENCE rig_intensidades_id_seq AS INTEGER OWNED BY rig_intensidades.id;
 ALTER TABLE rig_intensidades ADD CONSTRAINT rig_intensidad_id_perf_fk FOREIGN KEY (id_perf) REFERENCES rig_perfumes,
 	ADD CONSTRAINT rig_intensidades_ck CHECK (tipo IN ('P', 'EdP', 'EdT', 'EdC', 'EdS')),
 	ALTER COLUMN id SET DEFAULT nextval('rig_intensidades_id_seq');
 
 CREATE TABLE rig_presentaciones_perfumes (
 	id_perf INTEGER,
-	id_int BIGINT,
-	id BIGINT,
+	id_int INTEGER,
+	id INTEGER,
 	vol NUMERIC(10, 2),
 	PRIMARY KEY (id_perf, id_int, id)
 );
 
-CREATE SEQUENCE rig_presentaciones_perfumes_id_seq OWNED BY rig_presentaciones_perfumes.id;
+CREATE SEQUENCE rig_presentaciones_perfumes_id_seq AS INTEGER OWNED BY rig_presentaciones_perfumes.id;
 ALTER TABLE rig_presentaciones_perfumes ADD CONSTRAINT rig_presentaciones_perfumes_id_perf_fk FOREIGN KEY (id_perf, id_int) REFERENCES rig_intensidades (id_perf, id),
 	ALTER COLUMN id SET DEFAULT nextval('rig_presentaciones_perfumes_id_seq');
 
@@ -369,18 +369,26 @@ CREATE TABLE rig_familias_olfativas (
 	nombre VARCHAR (20) UNIQUE
 );
 
-CREATE SEQUENCE rig_familias_olfativas_id AS SMALLINT MAXVALUE 15 OWNED BY rig_familias_olfativas.id;
-ALTER TABLE rig_familias_olfativas ALTER COLUMN id SET DEFAULT nextval('rig_palabras_claves_id_seq');
+CREATE SEQUENCE rig_familias_olfativas_id_seq AS SMALLINT MAXVALUE 15 OWNED BY rig_familias_olfativas.id;
+ALTER TABLE rig_familias_olfativas ALTER COLUMN id SET DEFAULT nextval('rig_familias_olfativas_id_seq');
 
-CREATE TABLE rig_perfumes_familias (
+CREATE TABLE rig_palabras_familias (
 	id_pal SMALLINT,
 	id_fao SMALLINT,
 	PRIMARY KEY (id_pal, id_fao)
 );
 
-ALTER TABLE rig_perfumes_familias ADD CONSTRAINT rig_perfumes_familias_id_pal_fk FOREIGN KEY (id_pal) REFERENCES rig_palabras_claves,
-	ADD CONSTRAINT rig_perfumes_familias_id_fao_fk FOREIGN KEY (id_fao) REFERENCES rig_familias_olfativas;
+ALTER TABLE rig_perfumes_familias ADD CONSTRAINT rig_palabras_familias_id_pal_fk FOREIGN KEY (id_pal) REFERENCES rig_palabras_claves,
+	ADD CONSTRAINT  rig_palabras_familias_id_fao_fk FOREIGN KEY (id_fao) REFERENCES rig_familias_olfativas;
 
+CREATE TABLE rig_familias_perfumes (
+	id_fao SMALLINT,
+	id_perf INTEGER,
+	PRIMARY KEY (id_pal, id_fao)
+);
+
+ALTER TABLE rig_perfumes_familias ADD CONSTRAINT rig_perfumes_familias_id_perf_fk FOREIGN KEY (id_perf) REFERENCES rig_perfumes_familias,
+	ADD CONSTRAINT rig_perfumes_familias_id_fao_fk FOREIGN KEY (id_fao) REFERENCES rig_familias_olfativas;
 
 CREATE TABLE rig_esencias_perfumes (
 	id INTEGER PRIMARY KEY,
@@ -504,7 +512,7 @@ CREATE TABLE rig_pedidos (
 	id INTEGER PRIMARY KEY,
 	fcha_reg DATE NOT NULL,
 	estatus CHAR (10) NOT NULL DEFAULT 'NO ENVIADO',
-	factura BIGINT UNIQUE,
+	factura INTEGER UNIQUE,
 	total NUMERIC(20,2),
 	id_ctra_conp BIGINT,
 	id_conp BIGINT,
