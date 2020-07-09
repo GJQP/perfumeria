@@ -10,7 +10,12 @@
                     <div class="texto">
                         <h1>Empresa</h1> 
                         <li><a href="/gestion-formula">Gestion de Formula</a></li>
-                        <li><a>Recomendador de Perfume</a></li>
+                        <li>
+                            <a class="recomendador">Recomendador<br/>
+                                <!--El &nbsp es para crear un espacio en blanco para que quede bien justificado-->
+                                &nbsp &nbsp &nbsp 
+                                de Perfume</a>  
+                        </li>
                     </div>
                 </div>
                 <div id="imagen2" class="cuadrado ">

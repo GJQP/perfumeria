@@ -1,5 +1,9 @@
 @extends('layout.master')
 
+@section('scripts')
+<script type="text/javascript" src="{{ asset('js/custom.js') }}"></script>
+@endsection
+
 @section('titulo','Gestion de Formula')
 
 @section('contenido')  
@@ -36,7 +40,7 @@
             </div>
             <!--Tabla de Formula Inicial-->
             <div class="blocktext mgln-4">
-            <table class="mgl-3">
+            <table class="mgl-3 consulta">
                 <tr>
                     <th id="">Criterio de Evaluacion</th>
                     <th id="escala">Escala</th>
@@ -76,9 +80,31 @@
               </div>
               <!--Botones-->
               <div class="blocktext mgt-2 pdb-2 row">
-                <button type="button" class="btn btn-secondary" disabled>Eliminar</button>
-                <button type="button" class="btn btn-secondary mgl-1" disabled>Crear Formula</button>
+                <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#eliminar">Eliminar</button>
+                <button type="button" class="btn btn-secondary mgl-1"><a href="/gestion-formula/crear">Crear Formula</a></button>
               </div>
         </div>
     </div>
+    <!-- Popup para la eliminacion de una formula-->
+<div class="modal fade" id="eliminar" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+        <div class="modal-header">
+            <h3 class="modal-title">Eliminar Formula</h3>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body" id="contenido-modal">
+           <p>
+               ¿Esta seguro que desea eliminar la Formula de Inicio de la Empresa piiiiii?
+           </p>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-primary" data-dismiss="modal">Cancelar</button>
+            <button type="button" class="btn btn-danger" onclick="eliminar()">Eliminar</button>
+        </div>
+        </div>
+    </div>
+</div>
 @endsection

@@ -81,4 +81,9 @@ class GestionFormula extends Controller
     {
         //
     }
+
+    public function crearinicio()
+    {
+        return view('formula.crearformulainicio');
+    }
 }

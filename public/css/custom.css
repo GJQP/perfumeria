@@ -10,6 +10,10 @@
     box-sizing: unset !important;
 }
 
+.container{
+    max-width: 100% !important;
+}
+
 .titulo{
     margin-left: 19%;
     text-align: left;
@@ -81,14 +85,13 @@
 }
 
 .centradoimg{
-    padding-left: 20%;
+    padding-left: 15%;
     padding-right: 15%;
 }
 
 .cuadrado{
     box-shadow: 5px 5px 5px grey;
     margin-left: 2rem;
-    width: 80%;
     height: 300px;
     align-self: center;
     background-color: grey;
@@ -123,9 +126,13 @@
 .texto li{
     padding-top: 0.8rem;
     text-align: justify;
-    padding-left: 1.5rem;
+    padding-left: 1rem;
     font-size: 2rem;
 } 
+
+.recomendador{
+    font-size: 1.8rem;
+}
 
 #imagen1:hover{
     background-color:#E94545;
@@ -198,23 +205,27 @@ table, th, td {
  
 }
 
+.vacioac{
+    border-bottom: hidden;
+    border-right: hidden;
+    background-color: white;
+}
+
 td div p{
     font-size: 15px;
 }
 .escala{
     max-height: 25px;
     max-width: 120px;
-    background-color: rgb(184, 182, 182);
     border: 1px solid black;
-    color:#E5E5E5
+    background-color: white;
 }
 
 .porcentaje{
     max-height: 25px;
     max-width: 130px;
-    background-color: rgb(184, 182, 182);
     border: 1px solid black;
-    color:#E5E5E5
+    background-color: white;
 }
 
 #criterio{
@@ -233,3 +244,25 @@ p.mgr-1{
     text-align: right;
 }
 
+.consulta td .escala, .consulta td .porcentaje{
+    background-color: rgb(184, 182, 182);
+    color:#E5E5E5;
+}
+
+td .row {
+    margin-left: 0px;
+}
+td div input{
+    text-align: center;
+    font-size: 90% !important;
+}
+
+.input-group-addon {
+    margin-top: 2px;
+    margin-left: -20px;
+    color: #666;
+}
+
+div select{
+    max-width: 18%;
+}

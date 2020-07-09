@@ -18,3 +18,5 @@ Route::get('/', function () {
 });
 
 Route::get ('/gestion-formula','GestionFormula@index');
+
+Route::get ('/gestion-formula/crear','GestionFormula@crearinicio');
