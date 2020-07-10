@@ -64,7 +64,7 @@ DROP SEQUENCE IF EXISTS rig_paises_id_seq;
 
 CREATE TABLE rig_paises (
 	id SMALLINT PRIMARY KEY,
-	nombre VARCHAR(20) not null unique
+	nombre VARCHAR(30) not null unique
 );
 
 CREATE SEQUENCE IF NOT EXISTS rig_paises_id AS SMALLINT MAXVALUE 300 OWNED BY rig_paises.id;
@@ -72,22 +72,22 @@ ALTER TABLE rig_paises ALTER COLUMN id SET DEFAULT nextval('rig_paises_id');
 
 CREATE TABLE rig_asociaciones_nacionales (
 	id SMALLINT PRIMARY KEY ,
-	nombre VARCHAR (15) NOT NULL UNIQUE,
-	region CHAR (15) NOT NULL,
+	nombre VARCHAR (100) NOT NULL UNIQUE,
+	region VARCHAR (20) NOT NULL,
 	id_ubic BIGINT NOT NULL
 );
 
 CREATE SEQUENCE rig_asociaciones_nacionales_id_seq AS SMALLINT MAXVALUE 300 OWNED BY rig_asociaciones_nacionales.id;
 ALTER TABLE rig_asociaciones_nacionales ADD	CONSTRAINT rig_asociacion_nacional_ck CHECK (
-	region IN ('ASIA', 'EUROPA', 'AMERICA DEL NORTE', 'LATINOAMERICA')),
+	region IN ('ASIA-PACÍFICO', 'EUROPA', 'AMÉRICA DEL NORTE', 'LATINOAMERICA')),
 	ADD CONSTRAINT rig_asociacion_nacional_id_ubic_fk FOREIGN KEY (id_ubic) REFERENCES rig_paises,
 	ALTER COLUMN id SET DEFAULT nextval('rig_asociaciones_nacionales_id_seq');
 
 CREATE TABLE rig_productores (
 	id SMALLINT PRIMARY KEY ,
-	nombre VARCHAR(20) NOT NULL UNIQUE,
+	nombre VARCHAR(50) NOT NULL UNIQUE,
 	pag VARCHAR(50) NOT NULL UNIQUE,
-	info_cto VARCHAR(50) NOT NULL,
+	info_cto VARCHAR(150) NOT NULL,
 	email VARCHAR(30) NOT NULL UNIQUE,
 	telf VARCHAR(20) NOT NULL UNIQUE,
 	id_aso_nac SMALLINT
@@ -101,9 +101,9 @@ ALTER TABLE rig_productores ADD CONSTRAINT rig_productores_id_asoc_nac_fk FOREIG
 
 CREATE TABLE rig_proveedores (
 	id SMALLINT PRIMARY KEY ,
-	nombre VARCHAR(20) NOT NULL UNIQUE,
+	nombre VARCHAR(50) NOT NULL UNIQUE,
 	pag VARCHAR(50) NOT NULL UNIQUE,
-	info_cto VARCHAR(50) NOT NULL,
+	info_cto VARCHAR(150) NOT NULL UNIQUE,
 	email VARCHAR(30) NOT NULL UNIQUE,
 	telf VARCHAR(20) NOT NULL UNIQUE,
 	id_ubic SMALLINT NOT NULL,
@@ -116,14 +116,14 @@ ALTER TABLE rig_proveedores ADD CONSTRAINT rig_proveedores_id_ubic_fk FOREIGN KE
 	ALTER COLUMN id SET DEFAULT nextval('rig_proveedores_id_seq');
 
 CREATE TABLE rig_membresias (
-	fcha_reg DATE PRIMARY KEY,
-	tipo_m CHAR (15) NOT NULL,
+	fcha_reg DATE PRIMARY KEY DEFAULT CURRENT_DATE,
+	tipo_m VARCHAR (15) NOT NULL,
 	fcha_fin DATE,
 	id_prod SMALLINT,
 	id_prov SMALLINT
 );
 
-ALTER TABLE rig_membresias ADD CONSTRAINT rig_proveedores_ck CHECK ((tipo_m IN ('PRINCIPAL, SECUNDARIO', 'REGIONAL')) AND ((id_prod IS NULL) != (id_prov IS NULL)));
+ALTER TABLE rig_membresias ADD CONSTRAINT rig_proveedores_ck CHECK ((tipo_m IN ('PRINCIPAL', 'SECUNDARIO', 'REGIONAL')) AND ((id_prod IS NULL) != (id_prov IS NULL)));
 
 CREATE TABLE rig_sucursales (
 	id_ubic SMALLINT,
@@ -137,7 +137,7 @@ ALTER TABLE rig_sucursales ADD CONSTRAINT rig_sucursales_id_ubic_fk FOREIGN KEY 
 CREATE TABLE rig_condiciones_de_pago (
 	id_prov SMALLINT,
 	id INTEGER,
-	tipo CHAR (15) NOT NULL,
+	tipo VARCHAR (15) NOT NULL,
 	coutas SMALLINT,
 	porcen_cuo NUMERIC (5,2),
 	cant_meses SMALLINT,
@@ -154,7 +154,7 @@ CREATE TABLE rig_condiciones_de_envio (
 	id_ubic SMALLINT,
 	nombre VARCHAR (20) NOT NULL,
 	porce_serv NUMERIC (5,2) NOT NULL,
-	medio CHAR (15) NOT NULL,
+	medio VARCHAR (15) NOT NULL,
 	PRIMARY KEY(id_prov, id_ubic)
 );
 
@@ -177,7 +177,7 @@ CREATE TABLE rig_resultados (
 	id_prod SMALLINT,
 	id_prov SMALLINT,
 	fcha_reg DATE,
-	tipo_eval CHAR (15) NOT NULL,
+	tipo_eval VARCHAR (15) NOT NULL,
 	res NUMERIC (5,2) NOT NULL,
 	PRIMARY KEY (id_prod, id_prov, fcha_reg)
 );
@@ -199,7 +199,7 @@ CREATE TABLE rig_evaluaciones_criterios (
 	id_prod SMALLINT,
 	id_var SMALLINT,
 	fcha_reg DATE,
-	tipo_eval CHAR (15) NOT NULL,
+	tipo_eval VARCHAR (15) NOT NULL,
 	peso NUMERIC (5,2) NOT NULL,
 	fcha_fin DATE,
 	PRIMARY KEY (id_prod, id_var, fcha_reg)
@@ -214,13 +214,13 @@ CREATE TABLE rig_ingredientes_esencias (
 	id INTEGER,
 	cas VARCHAR (30) NOT NULL,
 	nombre VARCHAR (15) NOT NULL,
-	tipo CHAR (15) NOT NULL,
+	tipo VARCHAR (15) NOT NULL,
 	des VARCHAR (100) NOT NULL,
 	id_ubic SMALLINT NOT NULL,
 	solubilidad VARCHAR (50),
-	peligrosidad CHAR (15),
+	peligrosidad VARCHAR (15),
 	vida_alm SMALLINT,
-	ctrl CHAR (15),
+	ctrl VARCHAR (15),
 	PRIMARY KEY (id_prov, id)
 );
 
@@ -275,7 +275,7 @@ CREATE TABLE rig_presentaciones_otros_ingredientes (
 	cod_present INTEGER,
 	precio NUMERIC (10,2) NOT NULL,
 	volumen NUMERIC (10, 2),
-	otra_pre CHAR (15),
+	otra_pre VARCHAR (15),
 	des VARCHAR (50),
 	PRIMARY KEY (id_prov, id_otro_ing, cod_present)
 );
@@ -299,8 +299,8 @@ ALTER TABLE rig_ingredientes_extras ADD CONSTRAINT rig_ingredientes_extras_ing_e
 CREATE TABLE rig_perfumes (
 	id INTEGER PRIMARY KEY,
 	nombre VARCHAR (30) NOT NULL,
-	genero CHAR NOT NULL,
-	tipo CHAR (5) NOT NULL,
+	genero VARCHAR NOT NULL,
+	tipo VARCHAR (5) NOT NULL,
 	edad INTEGER ,--Revisar,
 	fcha_crea DATE,
 	des TEXT
@@ -313,7 +313,7 @@ ALTER TABLE rig_perfumes ADD CONSTRAINT rig_perfumes_ck CHECK ((genero IN ('F', 
 CREATE TABLE rig_perfumistas (
 	id INTEGER PRIMARY KEY,
 	nombre VARCHAR (50) NOT NULL UNIQUE,
-	genero CHAR NOT NULL,
+	genero VARCHAR NOT NULL,
 	fcha_nac DATE
 );
 
@@ -333,7 +333,7 @@ ALTER TABLE	rig_perfumes_perfumistas ADD CONSTRAINT rig_perfumes_perfumistas_id_
 CREATE TABLE rig_intensidades (
 	id_perf INTEGER,
 	id INTEGER,
-	tipo CHAR (3) NOT NULL,
+	tipo VARCHAR (3) NOT NULL,
 	porcen NUMERIC (5,2),
 	des VARCHAR (50),
 	PRIMARY KEY (id_perf, id)
@@ -394,7 +394,7 @@ CREATE TABLE rig_esencias_perfumes (
 	id INTEGER PRIMARY KEY,
 	cas VARCHAR (30) NOT NULL UNIQUE,
 	nombre VARCHAR(20) NOT NULL UNIQUE,
-	tipo CHAR(10)
+	tipo VARCHAR(10)
 );
 
 CREATE SEQUENCE rig_esencias_perfumes_id_seq AS INTEGER OWNED BY rig_esencias_perfumes.id;
@@ -404,7 +404,7 @@ ALTER TABLE rig_esencias_perfumes ADD CONSTRAINT rig_esencias_perfumes_ck CHECK 
 CREATE TABLE rig_notas (
 	id_perf INTEGER,
 	id_esenp INTEGER,
-	tipo CHAR(10),
+	tipo VARCHAR(10),
 	PRIMARY KEY (id_perf, id_esenp)
 );
 
@@ -452,7 +452,7 @@ ALTER TABLE rig_origenes ADD CONSTRAINT rig_origenes_id_fao_fk FOREIGN KEY (id_f
 CREATE TABLE rig_contrato (
 	id INTEGER PRIMARY KEY,
 	fcha_reg DATE NOT NULL,
-	exc CHAR (2) NOT NULL,
+	exc VARCHAR (2) NOT NULL,
 	cancelante VARCHAR (20),
 	fcha_fin DATE,
 	mot_fin VARCHAR (50),
@@ -511,7 +511,7 @@ ALTER TABLE rig_productos_contratados ADD CONSTRAINT rig_productos_contratados_i
 CREATE TABLE rig_pedidos (
 	id INTEGER PRIMARY KEY,
 	fcha_reg DATE NOT NULL,
-	estatus CHAR (10) NOT NULL DEFAULT 'NO ENVIADO',
+	estatus VARCHAR (10) NOT NULL DEFAULT 'NO ENVIADO',
 	factura INTEGER UNIQUE,
 	total NUMERIC(20,2),
 	id_ctra_conp BIGINT,
@@ -554,3 +554,283 @@ CREATE TABle rig_pagos (
 );
 
 ALTER TABLE rig_pagos ADD CONSTRAINT rig_pagos_id_ped FOREIGN KEY (id_ped) REFERENCES rig_pedidos;
+--COMMIT;
+--################################################################################################################################
+
+-- rig_paises
+INSERT INTO rig_paises VALUES
+	(DEFAULT, 'Australia'),
+	(DEFAULT, 'Austria'),
+	(DEFAULT, 'Azerbaiyán'),
+	(DEFAULT, 'Anguilla'),
+	(DEFAULT, 'Argentina'),
+	(DEFAULT, 'Armenia'),
+	(DEFAULT, 'Bielorrusia'),
+	(DEFAULT, 'Belice'),
+	(DEFAULT, 'Bélgica'),
+	(DEFAULT, 'Bermudas'),
+	(DEFAULT, 'Bulgaria'),
+	(DEFAULT, 'Brasil'),
+	(DEFAULT, 'Reino Unido'),
+	(DEFAULT, 'Hungría'),
+	(DEFAULT, 'Vietnam'),
+	(DEFAULT, 'Haiti'),
+	(DEFAULT, 'Guadalupe'),
+	(DEFAULT, 'Alemania'),
+	(DEFAULT, 'Países Bajos - Holanda'), 
+	(DEFAULT, 'Grecia'),
+	(DEFAULT, 'Georgia'),
+	(DEFAULT, 'Dinamarca'),
+	(DEFAULT, 'Egipto'),
+	(DEFAULT, 'Israel'),
+	(DEFAULT, 'India'),
+	(DEFAULT, 'Irán'),
+	(DEFAULT, 'Irlanda'),
+	(DEFAULT, 'España'),
+	(DEFAULT, 'Italia'),
+	(DEFAULT, 'Kazajstán'),
+	(DEFAULT, 'Camerún'),
+	(DEFAULT, 'Canadá'),
+	(DEFAULT, 'Chipre'),
+	(DEFAULT, 'Kirguistán'),
+	(DEFAULT, 'China'),
+	(DEFAULT, 'Costa Rica'),
+	(DEFAULT, 'Kuwait'),
+	(DEFAULT, 'Letonia'),
+	(DEFAULT, 'Libia'),
+	(DEFAULT, 'Lituania'),
+	(DEFAULT, 'Luxemburgo'),
+	(DEFAULT, 'México'),
+	(DEFAULT, 'Moldavia'),
+	(DEFAULT, 'Mónaco'),
+	(DEFAULT, 'Nueva Zelanda'),
+	(DEFAULT, 'Noruega'),
+	(DEFAULT, 'Polonia'),
+	(DEFAULT, 'Portugal'),
+	(DEFAULT, 'Reunión'),
+	(DEFAULT, 'Rusia'),
+	(DEFAULT, 'El Salvador'),
+	(DEFAULT, 'Eslovaquia'),
+	(DEFAULT, 'Eslovenia'),
+	(DEFAULT, 'Surinam'),
+	(DEFAULT, 'Estados Unidos'),
+	(DEFAULT, 'Tadjikistan'),
+	(DEFAULT, 'Turkmenistan'),
+	(DEFAULT, 'Islas Turcas y Caicos'),
+	(DEFAULT, 'Turquía'),
+	(DEFAULT, 'Uganda'),
+	(DEFAULT, 'Uzbekistán'),
+	(DEFAULT, 'Ucrania'),
+	(DEFAULT, 'Finlandia'),
+	(DEFAULT, 'Francia'),
+	(DEFAULT, 'República Checa'),
+	(DEFAULT, 'Suiza'),
+	(DEFAULT, 'Suecia'),
+	(DEFAULT, 'Estonia'),
+	(DEFAULT, 'Corea del Sur'),
+	(DEFAULT, 'Japón'),
+	(DEFAULT, 'Croacia'),
+	(DEFAULT, 'Rumanía'),
+	(DEFAULT, 'Hong Kong'),
+	(DEFAULT, 'Indonesia'),
+	(DEFAULT, 'Jordania'),
+	(DEFAULT, 'Malasia'),
+	(DEFAULT, 'Singapur'),
+	(DEFAULT, 'Taiwan'),
+	(DEFAULT, 'Bosnia y Herzegovina'),
+	(DEFAULT, 'Bahamas'),
+	(DEFAULT, 'Chile'),
+	(DEFAULT, 'Colombia'),
+	(DEFAULT, 'Islandia'),
+	(DEFAULT, 'Corea del Norte'),
+	(DEFAULT, 'Macedonia'),
+	(DEFAULT, 'Malta'),
+	(DEFAULT, 'Pakistán'),
+	(DEFAULT, 'Papúa-Nueva Guinea'),
+	(DEFAULT, 'Perú'),
+	(DEFAULT, 'Filipinas'),
+	(DEFAULT, 'Arabia Saudita'),
+	(DEFAULT, 'Tailandia'),
+	(DEFAULT, 'Emiratos árabes Unidos'),
+	(DEFAULT, 'Groenlandia'),
+	(DEFAULT, 'Venezuela'),
+	(DEFAULT, 'Zimbabwe'),
+	(DEFAULT, 'Kenia'),
+	(DEFAULT, 'Algeria'),
+	(DEFAULT, 'Líbano'),
+	(DEFAULT, 'Botsuana'),
+	(DEFAULT, 'Tanzania'),
+	(DEFAULT, 'Namibia'),
+	(DEFAULT, 'Ecuador'),
+	(DEFAULT, 'Marruecos'),
+	(DEFAULT, 'Ghana'),
+	(DEFAULT, 'Siria'),
+	(DEFAULT, 'Nepal'),
+	(DEFAULT, 'Mauritania'),
+	(DEFAULT, 'Seychelles'),
+	(DEFAULT, 'Paraguay'),
+	(DEFAULT, 'Uruguay'),
+	(DEFAULT, 'Congo (Brazzaville)'),
+	(DEFAULT, 'Cuba'),
+	(DEFAULT, 'Albania'),
+	(DEFAULT, 'Nigeria'),
+	(DEFAULT, 'Zambia'),
+	(DEFAULT, 'Mozambique'),
+	(DEFAULT, 'Angola'),
+	(DEFAULT, 'Sri Lanka'),
+	(DEFAULT, 'Etiopía'),
+	(DEFAULT, 'Túnez'),
+	(DEFAULT, 'Bolivia'),
+	(DEFAULT, 'Panamá'),
+	(DEFAULT, 'Malawi'),
+	(DEFAULT, 'Liechtenstein'),
+	(DEFAULT, 'Bahrein'),
+	(DEFAULT, 'Barbados'),
+	(DEFAULT, 'Chad'),
+	(DEFAULT, 'Man, Isla de'),
+	(DEFAULT, 'Jamaica'),
+	(DEFAULT, 'Malí'),
+	(DEFAULT, 'Madagascar'),
+	(DEFAULT, 'Senegal'),
+	(DEFAULT, 'Togo'),
+	(DEFAULT, 'Honduras'),
+	(DEFAULT, 'República Dominicana'),
+	(DEFAULT, 'Mongolia'),
+	(DEFAULT, 'Irak'),
+	(DEFAULT, 'Sudáfrica'),
+	(DEFAULT, 'Aruba'),
+	(DEFAULT, 'Gibraltar'),
+	(DEFAULT, 'Afganistán'),
+	(DEFAULT, 'Andorra'),
+	(DEFAULT, 'Antigua y Barbuda'),
+	(DEFAULT, 'Bangladesh'),
+	(DEFAULT, 'Benín'),
+	(DEFAULT, 'Bután'),
+	(DEFAULT, 'Islas Virgenes Británicas'),
+	(DEFAULT, 'Brunéi'),
+	(DEFAULT, 'Burkina Faso'),
+	(DEFAULT, 'Burundi'),
+	(DEFAULT, 'Camboya'),
+	(DEFAULT, 'Cabo Verde'),
+	(DEFAULT, 'Comores'),
+	(DEFAULT, 'Congo (Kinshasa)'),
+	(DEFAULT, 'Cook, Islas'),
+	(DEFAULT, 'Costa de Marfil'),
+	(DEFAULT, 'Djibouti, Yibuti'),
+	(DEFAULT, 'Timor Oriental'),
+	(DEFAULT, 'Guinea Ecuatorial'),
+	(DEFAULT, 'Eritrea'),
+	(DEFAULT, 'Feroe, Islas'),
+	(DEFAULT, 'Fiyi'),
+	(DEFAULT, 'Polinesia Francesa'),
+	(DEFAULT, 'Gabón'),
+	(DEFAULT, 'Gambia'),
+	(DEFAULT, 'Granada'),
+	(DEFAULT, 'Guatemala'),
+	(DEFAULT, 'Guernsey'),
+	(DEFAULT, 'Guinea'),
+	(DEFAULT, 'Guinea-Bissau'),
+	(DEFAULT, 'Guyana'),
+	(DEFAULT, 'Jersey'),
+	(DEFAULT, 'Kiribati'),
+	(DEFAULT, 'Laos'),
+	(DEFAULT, 'Lesotho'),
+	(DEFAULT, 'Liberia'),
+	(DEFAULT, 'Maldivas'),
+	(DEFAULT, 'Martinica'),
+	(DEFAULT, 'Mauricio'),
+	(DEFAULT, 'Myanmar'),
+	(DEFAULT, 'Nauru'),
+	(DEFAULT, 'Antillas Holandesas'),
+	(DEFAULT, 'Nueva Caledonia'),
+	(DEFAULT, 'Nicaragua'),
+	(DEFAULT, 'Níger'),
+	(DEFAULT, 'Norfolk Island'),
+	(DEFAULT, 'Omán'),
+	(DEFAULT, 'Isla Pitcairn'),
+	(DEFAULT, 'Qatar'),
+	(DEFAULT, 'Ruanda'),
+	(DEFAULT, 'Santa Elena'),
+	(DEFAULT, 'San Cristobal y Nevis'),
+	(DEFAULT, 'Santa Lucía'),
+	(DEFAULT, 'San Pedro y Miquelón'),
+	(DEFAULT, 'San Vincente y Granadinas'),
+	(DEFAULT, 'Samoa'),
+	(DEFAULT, 'San Marino'),
+	(DEFAULT, 'San Tomé y Príncipe'),
+	(DEFAULT, 'Serbia y Montenegro'),
+	(DEFAULT, 'Sierra Leona'),
+	(DEFAULT, 'Islas Salomón'),
+	(DEFAULT, 'Somalia'),
+	(DEFAULT, 'Sudán'),
+	(DEFAULT, 'Swazilandia'),
+	(DEFAULT, 'Tokelau'),
+	(DEFAULT, 'Tonga'),
+	(DEFAULT, 'Trinidad y Tobago'),
+	(DEFAULT, 'Tuvalu'),
+	(DEFAULT, 'Vanuatu'),
+	(DEFAULT, 'Wallis y Futuna'),
+	(DEFAULT, 'Sáhara Occidental'),
+	(DEFAULT, 'Yemen'),
+	(DEFAULT, 'Puerto Rico');
+--COMMIT;
+
+--rig_asociaciones_nacionales
+
+INSERT INTO rig_asociaciones_nacionales VALUES (DEFAULT, 'FFAANZ - Flavour & Fragrance Association of Australia & New Zealand', 'ASIA-PACÍFICO', 45),
+	(DEFAULT, 'CAFFCI - China Association of Flavor, Fragrance & Cosmetic Industries', 'ASIA-PACÍFICO', 35),
+	(DEFAULT, 'AFFI - Asosiasi Flavor dan Fragran Indonesia', 'ASIA-PACÍFICO', 74),
+	(DEFAULT, 'JFFMA - Japan Flavor & Fragrance Materials Association ', 'ASIA-PACÍFICO', 70),
+	(DEFAULT, 'KFFA - Korea Flavor & Fragrance Association', 'ASIA-PACÍFICO', 84),
+	(DEFAULT, 'FFAS - Flavor & Fragrance Association Singapore ', 'ASIA-PACÍFICO', 77),
+	(DEFAULT, 'Prodarom', 'EUROPA', 64),
+	(DEFAULT, 'DVRH - Deustcher Verband der Riechstoff-Hersteller E.V.', 'EUROPA', 18),
+	(DEFAULT, 'AISPEC - Federchimica Assospecifici', 'EUROPA', 29),
+	(DEFAULT, 'NEA', 'EUROPA', 19),
+	(DEFAULT, 'SAAFFI - South African Association of the Flavour & Fragrance Industry', 'EUROPA', 139),
+	(DEFAULT, 'AEFAA - Asociación Española de Fragancias y Aromas Alimentarios', 'EUROPA', 28),
+	(DEFAULT, 'SFFIA - Swiss Flavour and Fragrance Industry Association', 'EUROPA', 66),
+	(DEFAULT, 'AREP', 'EUROPA', 59),
+	(DEFAULT, 'IFRA UK', 'EUROPA', 13),
+	(DEFAULT, 'CAFEPA - Cámara Argentina de Fabricantes de Productos Aromaticos', 'LATINOAMERICA', 5),
+	(DEFAULT, 'ABIFRA - Associaçao Brasileira das Industrias de Oleos Essenciais, Fragrancias, Aromas', 'LATINOAMERICA', 12),
+	(DEFAULT, 'ACHISAF - Asociación Chilena de Sabores y Fragancias Asociación',  'LATINOAMERICA', 81),
+	(DEFAULT, 'CISF - Cámara de la Industria de Sabores y Fragrancias', 'LATINOAMERICA', 82),
+	(DEFAULT, 'ANFPA - Asociación Nacional de Fabricantes de Productos Aromáticos ', 'LATINOAMERICA', 42),
+	(DEFAULT, 'Fragrance Creators Association', 'AMÉRICA DEL NORTE', 55);
+
+--rig_productores
+
+INSERT INTO rig_productores VALUES (DEFAULT, 'Firmenich', 'www.firmenich.com', 'Rue de la Bergère 7 P.O. Box 148 Switzerland', 'firmenich@ifra.com','+41 22 780 22 11');
+INSERT INTO rig_productores VALUES 	(DEFAULT, 'Tru Fragace', 'www.trufragrance.com', '350 Fifth Ave. Ste 6100 New York, NY 10118', 'customercare@trufragrance.com','+1 800 443 3000',21),
+	(DEFAULT, 'MANE', 'www.mane.com', 'Avenue Jean Monnet', 'info@mane.com','+33 2 43 62 11 00',7);
+
+--rig_proveedores
+
+INSERT INTO rig_proveedores VALUES (DEFAULT, 'Privi Organics India Limited', 'www.privi.com', 'Privi House, A-71,TTC Industrial Area, Thane Belapur Road,Kopar Khairane, Navi Mumbai - 400 709, India', 'info@privi.co.in','+91 22 33043500', 25),
+	(DEFAULT, 'Ethernis Fine Chemicals', 'www.eternis.com', '1004 Peninsula Tower Peninsula Corporate Park G.K. Marg, Lower Parel Mumbai 400 013 India', 'info@eternis.com','+91 22 66513400', 25),
+	(DEFAULT, 'BASF', 'www.basf.com', 'Bahnsteigstraße, 67063 Ludwigshafen am Rhein, Alemania', 'info@basf.com','+49 0621 60-0', 18);
+
+INSERT INTO rig_proveedores VALUES (DEFAULT, 'Destilerías Muñoz Gálvez S.A.', 'www.dmg.es', 'Av. Ciudad de Almería, 162, 30010, Murcia', 'info@dmg.es','+34 968 25 3500', 28, 12),
+	(DEFAULT, 'Lluch Essence', 'www.lluche.com', 'Lo Gaiter, 160 08820 Prat de Llobregat Barcelona', 'web@lluche.com','+34 93 3793849', 28, 12),
+	(DEFAULT, 'Perfumers Apprentice', 'www.shop.perfumersapprentice.com', '200 Technology Circle Scotts Valley, California, 95066', 'admin@perfumersapprentice.com','+1 831 316 7138', 55, 21);
+
+--rig_sucursales
+
+INSERT INTO rig_sucursales VALUES (66, 1), (2,1), (9,1), (22,1), (64,1), (18,1), (29,1), (115,1), (46,1), (47,1), (50,1),
+	(139,1), (28,1), (13, 1), (1,1), (35,1), (25,1), (74, 1), (70,1), (69,1), (77,1), (78,1), (92,1), (15,1), (5,1), (12,1), 
+	(82,1),	(42,1), (55,1), (55,2), (64,3), (18,3), (13,3), (66,3), (28,3), (104,3), (105,3), (157,3), (115,3), (139,3), 
+	(97,3), (50,3), (188,3), (59,3);
+
+--rig_membresias
+
+INSERT INTO rig_membresias (fcha_reg, tipo_m, id_prod) VALUES (CURRENT_DATE - integer '10', 'PRINCIPAL', 1),
+	(CURRENT_DATE - integer '9', 'REGIONAL', 2),
+	(CURRENT_DATE - integer '8', 'REGIONAL', 3);
+
+INSERT INTO rig_membresias (fcha_reg, tipo_m, id_prov) VALUES (CURRENT_DATE - integer '7', 'SECUNDARIO', 1),
+	(CURRENT_DATE - integer '6', 'SECUNDARIO', 2),
+	(CURRENT_DATE - integer '5', 'PRINCIPAL', 3),
+	(CURRENT_DATE - integer '4', 'REGIONAL', 4),
+	(CURRENT_DATE - integer '3', 'REGIONAL', 5),
+	(CURRENT_DATE - integer '2', 'REGIONAL', 6);
