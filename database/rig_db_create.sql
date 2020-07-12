@@ -116,7 +116,7 @@ ALTER TABLE rig_proveedores ADD CONSTRAINT rig_proveedores_id_ubic_fk FOREIGN KE
 	ALTER COLUMN id SET DEFAULT nextval('rig_proveedores_id_seq');
 
 CREATE TABLE rig_membresias (
-	fcha_reg DATE PRIMARY KEY DEFAULT CURRENT_DATE,
+	fcha_reg TIMESTAMP  PRIMARY KEY DEFAULT CURRENT_DATE,
 	tipo_m VARCHAR (15) NOT NULL,
 	fcha_fin DATE,
 	id_prod SMALLINT,
@@ -152,8 +152,8 @@ ALTER TABLE rig_condiciones_de_pago ADD CONSTRAINT rig_condiciones_de_pago_ck CH
 CREATE TABLE rig_condiciones_de_envio (
 	id_prov SMALLINT,
 	id_ubic SMALLINT,
-	nombre VARCHAR (20) NOT NULL,
-	porce_serv NUMERIC (5,2) NOT NULL,
+	nombre VARCHAR (30) NOT NULL,
+	porce_serv NUMERIC (3,2) NOT NULL,
 	medio VARCHAR (15) NOT NULL,
 	PRIMARY KEY(id_prov, id_ubic)
 );
@@ -164,7 +164,7 @@ ALTER TABLE rig_condiciones_de_envio ADD CONSTRAINT rig_condiciones_de_envio_ck 
 
 CREATE TABLE rig_escalas (
 	id_prod SMALLINT,
-	fcha_reg DATE,
+	fcha_reg TIMESTAMP,
 	rgo_ini SMALLINT NOT NULL,
 	rgo_fin SMALLINT NOT NULL,
 	fcha_fin DATE,
@@ -176,7 +176,7 @@ ALTER TABLE rig_escalas ADD CONSTRAINT rig_escalas_id_prod FOREIGN KEY (id_prod)
 CREATE TABLE rig_resultados (
 	id_prod SMALLINT,
 	id_prov SMALLINT,
-	fcha_reg DATE,
+	fcha_reg TIMESTAMP,
 	tipo_eval VARCHAR (15) NOT NULL,
 	res NUMERIC (5,2) NOT NULL,
 	PRIMARY KEY (id_prod, id_prov, fcha_reg)
@@ -188,8 +188,8 @@ ALTER TABLE rig_resultados ADD CONSTRAINT rig_resultados_ck CHECK (tipo_eval IN 
 
 CREATE TABLE rig_variables (
 	id SMALLINT PRIMARY KEY,
-	nombre VARCHAR (15) NOT NULL UNIQUE,
-	des VARCHAR (50) NOT NULL
+	nombre VARCHAR (25) NOT NULL UNIQUE,
+	des VARCHAR (80) NOT NULL
 );
 
 CREATE SEQUENCE rig_variables_id_seq AS SMALLINT MAXVALUE 10 OWNED BY rig_variables.id;
@@ -198,7 +198,7 @@ ALTER TABLE rig_variables ALTER COLUMN id SET DEFAULT nextval('rig_variables_id_
 CREATE TABLE rig_evaluaciones_criterios (
 	id_prod SMALLINT,
 	id_var SMALLINT,
-	fcha_reg DATE,
+	fcha_reg TIMESTAMP,
 	tipo_eval VARCHAR (15) NOT NULL,
 	peso NUMERIC (5,2) NOT NULL,
 	fcha_fin DATE,
@@ -213,11 +213,11 @@ CREATE TABLE rig_ingredientes_esencias (
 	id_prov SMALLINT,
 	id INTEGER,
 	cas VARCHAR (30) NOT NULL,
-	nombre VARCHAR (15) NOT NULL,
+	nombre VARCHAR (50) NOT NULL,
 	tipo VARCHAR (15) NOT NULL,
-	des VARCHAR (100) NOT NULL,
+	des VARCHAR (500) NOT NULL,
 	id_ubic SMALLINT NOT NULL,
-	solubilidad VARCHAR (50),
+	solubilidad VARCHAR (100),
 	peligrosidad VARCHAR (15),
 	vida_alm SMALLINT,
 	ctrl VARCHAR (15),
@@ -227,7 +227,7 @@ CREATE TABLE rig_ingredientes_esencias (
 CREATE SEQUENCE rig_ingredientes_esencias_id_seq AS INTEGER OWNED BY rig_ingredientes_esencias.id;
 
 ALTER TABLE rig_ingredientes_esencias ADD CONSTRAINT rig_ingrediente_esencia_ck CHECK (
-	(tipo IN ('NATURAL', 'ARTIFICIAL'))	AND (peligrosidad IN ('ALTA', 'MEDIA', 'BAJA', 'NINGUNA')) AND (ctrl IN ('SI', 'NO'))),
+	(tipo IN ('NATURAL', 'SINTETICO'))	AND (peligrosidad IN ('ALTA', 'MEDIA', 'BAJA', 'NINGUNA')) AND (ctrl IN ('SI', 'NO'))),
 	ADD CONSTRAINT rig_ingrediente_esencia_id_prod_fk FOREIGN KEY (id_prov) REFERENCES rig_proveedores,
 	ALTER COLUMN id SET DEFAULT nextval('rig_ingredientes_esencias_id_seq');
 
@@ -244,11 +244,9 @@ CREATE TABLE rig_presentaciones_ingredientes (
 	id_prov SMALLINT,
 	id_ing INTEGER,
 	cod_present INTEGER,
-	nombre VARCHAR (15) NOT NULL,
-	cant_u SMALLINT NOT NULL,
-	vol_u NUMERIC (10,2) NOT NULL,
+	medida NUMERIC (10,2) NOT NULL,
+	unidad VARCHAR (3) NOT NULL,
 	precio NUMERIC (10,2) NOT NULL,
-	des VARCHAR (50) NOT NULL,
 	PRIMARY KEY (id_prov, id_ing, cod_present)
 );
 
@@ -398,7 +396,7 @@ CREATE TABLE rig_esencias_perfumes (
 );
 
 CREATE SEQUENCE rig_esencias_perfumes_id_seq AS INTEGER OWNED BY rig_esencias_perfumes.id;
-ALTER TABLE rig_esencias_perfumes ADD CONSTRAINT rig_esencias_perfumes_ck CHECK (tipo IN ('NATURAL', 'ARTIFICIAL')),
+ALTER TABLE rig_esencias_perfumes ADD CONSTRAINT rig_esencias_perfumes_ck CHECK (tipo IN ('NATURAL', 'SINTETICO')),
 	ALTER COLUMN id SET DEFAULT nextval('rig_esencias_perfumes_id_seq');
 
 CREATE TABLE rig_notas (
@@ -497,16 +495,14 @@ CREATE TABLE rig_productos_contratados (
 	id SMALLINT, --No amerita una secuencia ya que nunca cambia
 	id_prov_ing SMALLINT,
 	id_ing INTEGER,
-	id_pre_ing INTEGER,
 	id_prov_otr SMALLINT,
 	id_otr_ing INTEGER,
-	id_pre_otr INTEGER,
 	PRIMARY KEY (id_ctra, id) --AK
 );
 
 ALTER TABLE rig_productos_contratados ADD CONSTRAINT rig_productos_contratados_id_ctra_fk FOREIGN KEY (id_ctra) REFERENCES rig_contrato,
-	ADD CONSTRAINT rig_productos_contratados_ing_fk FOREIGN KEY (id_prov_ing, id_ing, id_pre_ing) REFERENCES rig_presentaciones_ingredientes (id_prov, id_ing, cod_present),
-	ADD CONSTRAINT rig_productos_contratados_otr_ing_fk FOREIGN KEY (id_prov_otr, id_otr_ing, id_pre_otr) REFERENCES rig_presentaciones_otros_ingredientes (id_prov, id_otro_ing, cod_present);
+	ADD CONSTRAINT rig_productos_contratados_ing_fk FOREIGN KEY (id_prov_ing, id_ing) REFERENCES rig_ingredientes_esencias (id_prov, id),
+	ADD CONSTRAINT rig_productos_contratados_otr_ing_fk FOREIGN KEY (id_prov_otr, id_otr_ing) REFERENCES rig_otros_ingredientes (id_prov, id);
 
 CREATE TABLE rig_pedidos (
 	id INTEGER PRIMARY KEY,
@@ -558,6 +554,7 @@ ALTER TABLE rig_pagos ADD CONSTRAINT rig_pagos_id_ped FOREIGN KEY (id_ped) REFER
 --################################################################################################################################
 
 -- rig_paises
+
 INSERT INTO rig_paises VALUES
 	(DEFAULT, 'Australia'),
 	(DEFAULT, 'Austria'),
@@ -824,13 +821,267 @@ INSERT INTO rig_sucursales VALUES (66, 1), (2,1), (9,1), (22,1), (64,1), (18,1),
 
 --rig_membresias
 
-INSERT INTO rig_membresias (fcha_reg, tipo_m, id_prod) VALUES (CURRENT_DATE - integer '10', 'PRINCIPAL', 1),
-	(CURRENT_DATE - integer '9', 'REGIONAL', 2),
-	(CURRENT_DATE - integer '8', 'REGIONAL', 3);
+INSERT INTO rig_membresias (fcha_reg, tipo_m, id_prod) VALUES (NOW() + '1 second', 'PRINCIPAL', 1),
+	(NOW() + '2 second', 'REGIONAL', 2),
+	(NOW() + '3 second', 'REGIONAL', 3);
 
-INSERT INTO rig_membresias (fcha_reg, tipo_m, id_prov) VALUES (CURRENT_DATE - integer '7', 'SECUNDARIO', 1),
-	(CURRENT_DATE - integer '6', 'SECUNDARIO', 2),
-	(CURRENT_DATE - integer '5', 'PRINCIPAL', 3),
-	(CURRENT_DATE - integer '4', 'REGIONAL', 4),
-	(CURRENT_DATE - integer '3', 'REGIONAL', 5),
-	(CURRENT_DATE - integer '2', 'REGIONAL', 6);
+INSERT INTO rig_membresias (fcha_reg, tipo_m, id_prov) VALUES (NOW(), 'SECUNDARIO', 1),
+	(NOW() + '4 second', 'SECUNDARIO', 2),
+	(NOW() + '5 second', 'PRINCIPAL', 3),
+	(NOW() + '6 second', 'REGIONAL', 4),
+	(NOW() + '7 second', 'REGIONAL', 5),
+	(NOW() + '8 second', 'REGIONAL', 6);
+
+
+--rig_condiciones_de_pago
+
+INSERT INTO rig_condiciones_de_pago VALUES (1, DEFAULT, 'CONTADO', 1, 100, 6),
+	(1, DEFAULT, 'PARCIAL', 4, 25, 6),
+	(1, DEFAULT, 'PARCIAL', 10, 10, 8),
+	(2, DEFAULT, 'PARCIAL', 5, 20, 4),
+	(3, DEFAULT, 'PARCIAL', 2, 50, 10),
+	(3, DEFAULT, 'CONTADO', 1, 100, 3),
+	(4, DEFAULT, 'CONTADO', 1, 100, 4),
+	(4, DEFAULT, 'PARCIAL', 4, 25, 4),
+	(5, DEFAULT, 'CONTADO', 1, 100, 5),
+	(5, DEFAULT, 'PARCIAL', 3, 33, 5),
+	(5, DEFAULT, 'PARCIAL', 2, 50, 6);
+
+--rig_condiciones_de_envio
+
+INSERT INTO rig_condiciones_de_envio VALUES (1, 66, 'Envio simple', 0.5, 'MARITIMO'),
+	(1, 2, 'Envio simple', 0.5, 'MARITIMO'),
+	(1, 9, 'Envio simple', 0.54, 'MARITIMO'),
+	(1, 22, 'Envio simple', 0.56, 'MARITIMO'),
+	(1, 64, 'Envio express', 0.1, 'TERRESTRE'),
+	(1, 18, 'Envio simple', 0.55, 'MARITIMO'),
+	(1, 29, 'Envio simple', 0.31, 'MARITIMO'),
+	(1, 15, 'Envio simple', 0.51, 'MARITIMO'),
+	(1, 115, 'Envio simple', 0.7, 'MARITIMO'),
+	(1, 46, 'Envio simple', 0.5, 'MARITIMO'),
+	(1, 47, 'Envio simple', 0.3, 'MARITIMO'),
+	(1, 50, 'Envio simple', 0.52, 'MARITIMO'),
+	(1, 139, 'Envio simple con refrigeracion', 0.6, 'AEREO'),
+	(1, 28, 'Envio simple', 0.5, 'MARITIMO'),
+	(1, 136, 'Envio simple', 0.5, 'MARITIMO'),
+	(1, 1, 'Envio con proteciones', 0.8, 'TERRESTRE'),
+	(1, 25, 'Envios de gran volumen', 0.5, 'MARITIMO'),
+	(1, 74, 'Envio simple', 0.5, 'MARITIMO'),
+	(1, 69, 'Envio simple', 0.5, 'MARITIMO'),
+	(1, 77, 'Envido con proteciones', 0.7, 'MARITIMO'),
+	(1, 78, 'Envio simple', 0.51, 'MARITIMO'),
+	(1, 92, 'Envio simple', 0.9, 'MARITIMO'),
+	(1, 55, 'Envio simple', 0.5, 'MARITIMO'),
+	(1, 5, 'Envio express', 0.84, 'TERRESTRE'),
+	(1, 82, 'Envio simple', 0.53, 'MARITIMO'),
+	(1, 42, 'Envio simple', 0.54, 'MARITIMO'),
+	(1, 13, 'Envio simple', 0.5, 'MARITIMO'),
+	(1, 104, 'Envio simple', 0.7, 'AEREO'),
+	(1, 188, 'Envio simple', 0.7, 'AEREO'),
+	(1, 59, 'Envio simple', 0.7, 'AEREO'),
+	(1, 97, 'Envio simple', 0.7, 'TERRESTRE'),	
+	(2, 2, 'Envio simple', 0.6, 'MARITIMO'),
+	(2, 9, 'Envio simple', 0.5, 'MARITIMO'),
+	(2, 22, 'Envio simple', 0.22, 'TERRESTRE'),
+	(2, 62, 'Envio express', 0.1, 'TERRESTRE'),
+	(2, 18, 'Envio simple', 0.5, 'MARITIMO'),
+	(2, 21, 'Envio simple', 0.3, 'MARITIMO'),
+	(2, 15, 'Envio simple', 0.5, 'MARITIMO'),
+	(2, 114, 'Envio simple', 0.6, 'TERRESTRE'),
+	(2, 46, 'Envio simple', 0.5, 'MARITIMO'),
+	(2, 47, 'Envio sin embalaje', 0.3, 'MARITIMO'),
+	(2, 50, 'Envio simple', 0.5, 'MARITIMO'),
+	(2, 139, 'Envio simple con refrigeracion', 0.6, 'AEREO'),
+	(2, 28, 'Envio simple', 0.5, 'MARITIMO'),
+	(2, 13, 'Envio simple', 0.5, 'MARITIMO'),
+	(2, 1, 'Envio sin proteciones', 0.2, 'TERRESTRE'),
+	(2, 25, 'Envios de gran volumen', 0.5, 'MARITIMO'),
+	(2, 74, 'Envio simple', 0.5, 'MARITIMO'),
+	(2, 69, 'Envio express', 0.4, 'TERRESTRE'),
+	(2, 71, 'Envido con proteciones', 0.7, 'MARITIMO'),
+	(2, 78, 'Envio simple', 0.5, 'MARITIMO'),
+	(2, 92, 'Envio simple', 0.9, 'MARITIMO'),
+	(2, 5, 'Envio simple', 0.5, 'MARITIMO'),
+	(2, 54, 'Envio express', 0.8, 'TERRESTRE'),
+	(2, 82, 'Envio simple', 0.4, 'MARITIMO'),
+	(2, 42, 'Envio en container común', 0.3, 'MARITIMO'),
+	(2, 77, 'Envio simple', 0.41, 'MARITIMO'),
+	(2, 104, 'Envio simple', 0.7, 'AEREO'),
+	(2, 140, 'Envio simple', 0.7, 'AEREO'),
+	(2, 59, 'Envio simple', 0.7, 'AEREO'),
+	(2, 97, 'Envio simple', 0.7, 'TERRESTRE'),
+	(3, 2, 'Envio simple', 0.3, 'MARITIMO'),
+	(3, 9, 'Envio simple', 0.4, 'MARITIMO'),
+	(3, 22, 'Envio simple', 0.5, 'MARITIMO'),
+	(3, 64, 'Envio express', 0.1, 'TERRESTRE'),
+	(3, 18, 'Envio simple', 0.5, 'MARITIMO'),
+	(3, 29, 'Envio simple', 0.3, 'MARITIMO'),
+	(3, 15, 'Envio express con proteccion', 0.9, 'MARITIMO'),
+	(3, 115, 'Envio simple', 0.7, 'MARITIMO'),
+	(3, 46, 'Envio simple', 0.5, 'MARITIMO'),
+	(3, 47, 'Envio express', 0.4, 'MARITIMO'),
+	(3, 50, 'Envio simple', 0.5, 'MARITIMO'),
+	(3, 139, 'Envio simple con refrigeracion', 0.6, 'AEREO'),
+	(3, 28, 'Envio express', 0.9, 'AEREO'),
+	(3, 68, 'Envio simple', 0.5, 'MARITIMO'),
+	(3, 1, 'Envio con proteciones', 0.8, 'TERRESTRE'),
+	(3, 25, 'Envios de gran volumen', 0.5, 'MARITIMO'),
+	(3, 74, 'Envio simple', 0.5, 'MARITIMO'),
+	(3, 69, 'Envio simple', 0.5, 'MARITIMO'),
+	(3, 77, 'Envido con proteciones', 0.7, 'MARITIMO'),
+	(3, 78, 'Envio simple', 0.5, 'MARITIMO'),
+	(3, 92, 'Envio simple', 0.9, 'MARITIMO'),
+	(3, 55, 'Envio express', 0.7, 'AEREO'),
+	(3, 42, 'Envio simple', 0.55, 'MARITIMO'),
+	(3, 13, 'Envio simple', 0.5, 'MARITIMO'),
+	(3, 104, 'Envio simple', 0.7, 'AEREO'),
+	(3, 188, 'Envio express', 0.5, 'TERRESTRE'),
+	(3, 59, 'Envio simple', 0.7, 'AEREO'),
+	(3, 97, 'Envio simple', 0.7, 'TERRESTRE'),
+	(4, 2, 'Envio simple', 0.5, 'MARITIMO'),
+	(4, 9, 'Envio simple', 0.53, 'MARITIMO'),
+	(4, 22, 'Envio simple', 0.5, 'MARITIMO'),
+	(4, 64, 'Envio express', 0.1, 'TERRESTRE'),
+	(4, 18, 'Envio simple', 0.5, 'MARITIMO'),
+	(4, 29, 'Envio simple', 0.3, 'MARITIMO'),
+	(4, 15, 'Envio simple', 0.5, 'MARITIMO'),
+	(4, 115, 'Envio simple', 0.71, 'MARITIMO'),
+	(4, 46, 'Envio simple', 0.25, 'MARITIMO'),
+	(4, 47, 'Envio simple', 0.34, 'MARITIMO'),
+	(4, 50, 'Envio simple', 0.5, 'MARITIMO'),
+	(4, 139, 'Envio simple con refrigeracion', 0.6, 'AEREO'),
+	(4, 28, 'Envio simple', 0.5, 'MARITIMO'),
+	(4, 13, 'Envio simple', 0.5, 'MARITIMO'),
+	(4, 1, 'Envio con proteciones', 0.81, 'TERRESTRE'),
+	(4, 25, 'Envios de gran volumen', 0.5, 'MARITIMO'),
+	(4, 92, 'Envio simple', 0.9, 'MARITIMO'),
+	(4, 55, 'Envio simple', 0.45, 'MARITIMO'),
+	(4, 5, 'Envio express', 0.8, 'TERRESTRE'),
+	(4, 82, 'Envio simple', 0.5, 'MARITIMO'),
+	(4, 42, 'Envio simple', 0.5, 'MARITIMO'),
+	(4, 74, 'Envio simple', 0.54, 'MARITIMO'),
+	(4, 104, 'Envio simple', 0.7, 'AEREO'),
+	(4, 188, 'Envio simple', 0.22, 'AEREO'),
+	(4, 59, 'Envio simple', 0.84, 'AEREO'),
+	(4, 97, 'Envio simple', 0.69, 'TERRESTRE'),
+	(5, 2, 'Envio simple', 0.51, 'MARITIMO'),
+	(5, 9, 'Envio simple', 0.5, 'MARITIMO'),
+	(5, 22, 'Envio simple', 0.25, 'MARITIMO'),
+	(5, 64, 'Envio express', 0.1, 'TERRESTRE'),
+	(5, 18, 'Envio simple', 0.54, 'MARITIMO'),
+	(5, 29, 'Envio simple', 0.3, 'TERRESTRE'),
+	(5, 15, 'Envio simple', 0.35, 'MARITIMO'),
+	(5, 46, 'Envio simple', 0.85, 'AEREO'),
+	(5, 47, 'Envio simple', 0.3, 'MARITIMO'),
+	(5, 50, 'Envio simple', 0.25, 'MARITIMO'),
+	(5, 28, 'Envio simple', 0.15, 'MARITIMO'),
+	(5, 121, 'Envio simple', 0.53, 'MARITIMO'),
+	(5, 1, 'Envio con proteciones', 0.8, 'TERRESTRE'),
+	(5, 25, 'Envios de gran volumen', 0.5, 'MARITIMO'),
+	(5, 74, 'Envio simple', 0.53, 'MARITIMO'),
+	(5, 69, 'Envio simple', 0.5, 'MARITIMO'),
+	(5, 77, 'Envido con proteciones', 0.7, 'MARITIMO'),
+	(5, 78, 'Envio simple', 0.5, 'MARITIMO'),
+	(5, 55, 'Envio simple', 0.5, 'MARITIMO'),
+	(5, 5, 'Envio express', 1, 'AEREO'),
+	(5, 82, 'Envio simple', 0.5, 'MARITIMO'),
+	(5, 42, 'Envio simple', 0.5, 'MARITIMO'),
+	(5, 13, 'Envio simple', 0.5, 'MARITIMO'),
+	(5, 104, 'Envio simple', 0.7, 'AEREO'),
+	(5, 188, 'Envio simple', 0.7, 'AEREO'),
+	(6, 2, 'Envio con refrigeracion', 0.5, 'MARITIMO'),
+	(6, 9, 'Envio simple', 0.5, 'MARITIMO'),
+	(6, 22, 'Envio simple', 0.5, 'MARITIMO'),
+	(6, 64, 'Envio express', 0.1, 'TERRESTRE'),
+	(6, 18, 'Envio simple', 0.53, 'MARITIMO'),
+	(6, 29, 'Envio simple', 0.32, 'MARITIMO'),
+	(6, 15, 'Envio simple', 0.5, 'MARITIMO'),
+	(6, 115, 'Envio simple', 0.7, 'MARITIMO'),
+	(6, 46, 'Envio con refrigeracion', 0.5, 'MARITIMO'),
+	(6, 47, 'Envio simple', 0.3, 'MARITIMO'),
+	(6, 50, 'Envio con refrigeracion', 0.5, 'MARITIMO'),
+	(6, 139, 'Envio simple con refrigeracion', 0.6, 'AEREO'),
+	(6, 28, 'Envio simple', 0.52, 'MARITIMO'),
+	(6, 73, 'Envio simple', 0.1, 'MARITIMO'),
+	(6, 1, 'Envio con proteciones', 0.8, 'TERRESTRE'),
+	(6, 25, 'Envios de gran volumen', 0.5, 'MARITIMO'),
+	(6, 74, 'Envio simple', 0.5, 'MARITIMO'),
+	(6, 69, 'Envio simple', 0.5, 'MARITIMO'),
+	(6, 77, 'Envido con proteciones', 0.7, 'MARITIMO'),
+	(6, 78, 'Envio simple', 0.5, 'MARITIMO'),
+	(6, 92, 'Envio con proteciones', 0.9, 'MARITIMO'),
+	(6, 55, 'Envio simple', 0.55, 'MARITIMO'),
+	(6, 5, 'Envio express', 0.8, 'TERRESTRE'),
+	(6, 82, 'Envio simple', 0.55, 'MARITIMO'),
+	(6, 42, 'Envio simple', 0.55, 'MARITIMO'),
+	(6, 13, 'Envio simple', 0.5, 'MARITIMO'),
+	(6, 104, 'Envio simple', 0.7, 'AEREO'),
+	(6, 188, 'Envio simple', 0.7, 'AEREO'),
+	(6, 59, 'Envio simple', 0.7, 'AEREO'),
+	(6, 97, 'Envio simple', 0.7, 'TERRESTRE');
+	
+--rig_variables
+
+INSERT INTO rig_variables VALUES (DEFAULT, 'Ubicación', 'Ubicación geográfica del proveedor'),
+	(DEFAULT, 'Costos', 'Precio de los productos y servicios ofrecidos por el productor'),
+	(DEFAULT,  'Alternativas de envio', 'Cantidad de métodos que ofrece el proveedor'),
+	(DEFAULT, 'Cumplimiento de envios', 'Rendimiento del proveedor a lo largo del período'),
+	(DEFAULT, 'Condiciones de pago', 'Alternativas de pago ofrecidas por el proveedor');
+
+--rig_ingredientes_esencias
+
+INSERT INTO rig_ingredientes_esencias (id_prov, id, cas, nombre, tipo, des, id_ubic, solubilidad, peligrosidad, vida_alm) VALUES (3, DEFAULT,'5392-40-5', 'Citral', 'NATURAL', 'Citral tiene un fuerte olor a limón (cítrico). El olor a limón de Neral es menos intenso, pero más dulce. Por lo tanto, Citral es un compuesto aromático utilizado en perfumería por su efecto cítrico. Citral también se usa como sabor y para fortificar el aceite de limón. También tiene fuertes cualidades antimicrobianas y efectos feromonales en ácaros e insectos. Citral se usa en la síntesis de vitamina A, licopeno, ionona y metilionona, para enmascarar el olor a humo.', 18,'Soluble en alcohol, aceite de parafina y agua de 1340 mg/L a 25°C', 'BAJA', 24*30),
+	(3, DEFAULT,'106-24-1', 'Geraniol', 'NATURAL', 'El geraniol es un monoterpenoide y un alcohol. Es el componente principal del aceite de rosa, el aceite de palmarosa y el aceite de citronela. Es un aceite incoloro, aunque las muestras comerciales pueden aparecer amarillas. El grupo funcional derivado del geraniol (en esencia, geraniol que carece del terminal -OH) se llama geranilo.', 18,'Soluble en alcohol, aceite de parafina, kerosene y agua de 25.16 mg/L a 25°C', 'BAJA', 24*30),
+	(3, DEFAULT,'79-77-6', 'Beta-ionone', 'NATURAL', 'La beta-ionona es un líquido incoloro a amarillo claro con olor a madera de cedro. En una solución alcohólica muy diluida, el olor se asemeja al olor a violetas. La beta-ionona se encuentra en la zanahoria y en muchos aceites esenciales, incluido el aceite de boronia megastigma (boronia marrón) y la ionona comercial. También es un agente saborizante.', 18,'Soluble en alcohol y agua de 1340 mg/L a 25°C', 'MEDIA', 24*30),
+	(1, DEFAULT,'70788-30-6', 'Propanol de madera', 'SINTETICO', 'Es un isómero muy común en la industria del perfume. Se caracteriza por su olor fuerte a madera y almizcle. Su fórmula química es 1-(2,2,6-trimethylcyclohexyl)hexan-3-ol', 18,'Soluble en alcohol y agua de 1.149 mg/L a 25°C', 'BAJA', 24*30),
+	(1, DEFAULT,'98-55-5', 'Terpineol alpha', 'NATURAL', 'Terpineol con fórmula química C10H18O, es una forma natural de monoterpeno de alcohol que se ha aislado a partir de una variedad de fuentes tales como el aceite de cajeput, aceite de pino, y aceite petitgrain. Hay cuatro isómeros , alfa -, beta -, gamma -terpineol, y terpinen-4-ol. beta - y gamma -terpineol difieren sólo por la ubicación del doble enlace. Terpineol es por lo general una mezcla de estos isómeros con alfa -terpineol como componente principal.',25, 'Soluble en alcohol, aceite de parafina, kerosene y agua de 710 mg/L a 25°C' ,'BAJA', 24*30),
+	(1, DEFAULT,'88-41-5', 'Otcbha', 'NATURAL', 'Compuesto de incoloro o amarillo pálido que tiene un fuerte y duradero olor a manzana. Este compuesto es usado generalmente como solvente o como componente de fragancias', 25, 'Solubilidad en alcohol, aceite de parafina y agua de 7.462 mg/L a 25','MEDIA', 24*30),
+	(2, DEFAULT,'93-92-5', 'Aceite de styrallyl', 'NATURAL', 'Compuesto de color amarillo pálido con un dulce olor frutal y herbaceo. Este compuesto es usado generalmente para otorgar un olor a gardenia', 25, 'Solubilidad en alcohol, aceite de parafina y agua de 481.1 mg/L a 25','MEDIA', 24*30),
+	(2, DEFAULT,'60-12-8', 'Alcohol fenetílico', 'NATURAL', 'El alcohol fenetílico, o 2-feniletanol, es el compuesto orgánico que consiste en un grupo de grupo fenetilo (C6H5CH2CH2) unido a OH. Es un líquido incoloro se encuentra presente ampliamente en la naturaleza, se encuentra en una variedad de aceites esenciales. Tiene un agradable olor floral.', 25, 'Soluble en alcohol, aceite de parafina, kerosene y agua de 2.199e+004 mg/L a 25°C','BAJA', 24*30),
+	(2, DEFAULT,'103-95-7', 'Aldehído de ciclamen', 'SINTETICO', 'El aldehído de ciclamen es una molécula de fragancia que se ha utilizado en jabones, detergentes, lociones y perfumes desde la década de 1920. Adicionalmete es empleado en aditivos para alimentos de forma directa', 25, 'Soluble en alcohol, aceite de parafina y agua de 22.59 mg/L a 25°C','BAJA', 24*30),
+	(4, DEFAULT,'125-12-2', 'Acetato de bornilo', 'SINTETICO', 'Acetato de Bornilo es una molécula sintética altamente utilizada en la industria del perfume y en la elaboración de fragancias', 25, 'Soluble en alcohol, aceite de parafina, kerosene y agua de 9.721 mg/L a 25°C','BAJA', 24*30),
+	(4, DEFAULT,'141-12-8', 'Acetato de nerilo', 'SINTETICO', 'Acetato de nerilo es un compuesto químico que se encuentra en los aceites de cítricos. Químicamente, es el acetato de éster de nerol. Se utiliza en sabores y en perfumería para impartir aromas florales y frutales.', 25, 'Soluble en alcohol, aceite de parafina y agua de 18.24 mg/L a 25°C','BAJA', 24*30),
+	(4, DEFAULT,'7785-33-3', 'Acetato de nerilo', 'NATURAL', 'Es un compuesto orgánico de la clase terpeno, uno de los dos isómeros del pineno que está presente en algunos aceites, tales como el aceite de eucalipto y aceite de cáscara de naranja', 28, 'Soluble en alcohol y agua de 0.3194 mg/L a 25°C','BAJA', 24*30),
+	(5, DEFAULT,'100-06-1', 'Acetanisola', 'SINTETICO', 'El acetanisol es un compuesto químico aromático con un aroma descrito como dulce, afrutado, a nuez y similar a la vainilla. Además, el acetanisol a veces puede oler a mantequilla o caramelo. El acetanisol se encuentra naturalmente en el castoreum, la secreción glandular del castor.', 25, 'Soluble en alcohol y agua de 2474 mg/L a 25°C','BAJA', 24*30),
+	(5, DEFAULT,'52474-60-9', 'Aldemone', 'SINTETICO', 'Es un compuesto químico de olor marino/ozono muy difuso. Su fórmula es 1-(4-methoxyphenyl)ethanone y usualmente se encuentra como cristales bláncos o amarillos muy pálidos', 28, 'Soluble en alcohol y agua de 1.512 mg/L a 25°C','BAJA', 24*30),
+	(5, DEFAULT,'2051-78-7', 'Octanoato de allil', 'SINTETICO', 'Es un compuesto químico incoloro y cristalino, de olor a piña/frutal de duración media. También es conocido bajo el nombre de prop-2-enyl butanoate', 28, 'Soluble en alcohol y agua de 1233 mg/L a 25°C','MEDIA', 24*30),
+	(6, DEFAULT,'8015-73-4', 'Aceite de albahaca dulce', 'NATURAL', 'La albahaca es una hierba aromática original de Irán, India, Pakistán y otras regiones tropicales de Asia. El aceite esencial de albahaca es rico en estragol', 64, 'Soluble en alcohol, aceite de parafina y agua de 332.1 mg/L a 25°C','BAJA', 24*30),
+	(6, DEFAULT,'8006-82-4', 'Aceite de pimienta negra', 'NATURAL', 'Proviene de un fruto de aproximadamente 5 mm que se puede usar entero o en polvo para la elaboración de fragancias picantes o como aditivo alimenticio', 25, 'Soluble en alcohol','BAJA', 6*30),
+	(6, DEFAULT,'8015-88-1', 'Aceite de semillas de zanahoria', 'NATURAL', 'El aceite esencial de zanahoria se extrae de las semillas secas de zanahoria mediante la destilación por vapor, la cual preserva perfectamente los nutrientes valiosos. Las semillas de zanahoria producen el aceite esencial pero también pueden utilizarse otras partes de la planta', 25, 'Soluble en alcohol, aceite de parafina y agua de 8.507 mg/L a 25°C','BAJA', 24*30);
+
+--CREATE TABLE rig_presentaciones_ingredientes (
+--	id_prov SMALLINT,
+--	id_ing INTEGER,
+--	cod_present INTEGER,
+--	medida NUMERIC (10,2) NOT NULL,
+-- 	unidad VARCHAR (5) NOT NULL,
+--	precio NUMERIC (10,2) NOT NULL,
+--	PRIMARY KEY (id_prov, id_ing, cod_present)
+--);
+
+INSERT INTO rig_presentaciones_ingredientes VALUES (3, 1, DEFAULT, 4, 'ml', 3.25), (3, 1, DEFAULT, 15, 'ml', 5.00), (3, 1, DEFAULT, 30, 'ml', 6.25), (3, 1, DEFAULT, 80, 'ml', 14.31), (3, 1, DEFAULT, 250, 'g', 41.00), (3, 1, DEFAULT, 500, 'g', 69.00), (3, 1, DEFAULT, 1, 'kg', 118.00),
+	(3, 2, DEFAULT, 4, 'ml', 3.00), (3, 2, DEFAULT, 15, 'ml', 6.00), (3, 2, DEFAULT, 30, 'ml', 6.30), (3, 2, DEFAULT, 80, 'ml', 14.43), (3, 2, DEFAULT, 250, 'g', 28.00),
+	(3, 3, DEFAULT, 4, 'ml', 3.00), (3, 3, DEFAULT, 15, 'ml', 6.00), (3, 3, DEFAULT, 30, 'ml', 10.00), (3, 3, DEFAULT, 80, 'ml', 15.00), (3, 3, DEFAULT, 250, 'g', 25.00), (3, 3, DEFAULT, 500, 'g', 35.00),
+	(1, 4, DEFAULT, 4, 'ml', 4.50), (1, 4, DEFAULT, 15, 'ml', 10.50), (1, 4, DEFAULT, 30, 'ml', 18.50), (1, 4, DEFAULT, 80, 'ml', 40.50), (1, 4, DEFAULT, 250, 'g', 122.00), (1, 4, DEFAULT, 500, 'g', 232.00),
+	(1, 5, DEFAULT, 4, 'ml', 3.00), (1, 5, DEFAULT, 15, 'ml', 6.00), (1, 5, DEFAULT, 30, 'ml', 10.0), (1, 5, DEFAULT, 80, 'ml', 20.00), (1, 5, DEFAULT, 250, 'g', 50.00), (1, 5, DEFAULT, 500, 'g', 75.00), (1, 5, DEFAULT, 1, 'kg', 150.00),
+	(1, 6, DEFAULT, 4, 'ml', 3.00),(1, 6, DEFAULT, 15, 'ml', 6.00), (1, 6, DEFAULT, 30, 'ml', 9.00), (1, 6, DEFAULT, 80, 'ml', 15.00), (1, 6, DEFAULT, 250, 'g', 23.00),
+	(2, 7, DEFAULT, 4, 'ml', 3.00),(2, 7, DEFAULT, 15, 'ml', 6.00), (2, 7, DEFAULT, 30, 'ml', 9.00), (2, 7, DEFAULT, 80, 'ml', 15.00),
+	(2, 8, DEFAULT, 4, 'ml', 3.00),(2, 8, DEFAULT, 15, 'ml', 6.00), (2, 8, DEFAULT, 30, 'ml', 8.00), (2, 8, DEFAULT, 80, 'ml', 11.00), (2, 8, DEFAULT, 250, 'g', 26.50), (2, 8, DEFAULT, 500, 'g', 48.00), (2, 8, DEFAULT, 1, 'kg', 62.00),
+	(2, 9, DEFAULT, 4, 'ml', 3.00),(2, 9, DEFAULT, 15, 'ml', 6.00), (2, 9, DEFAULT, 30, 'ml', 9.00), (2, 9, DEFAULT, 80, 'ml', 12.00),
+	(4, 10, DEFAULT, 4, 'ml', 3.00),(4, 10, DEFAULT, 15, 'ml', 6.00), (4, 10, DEFAULT, 30, 'ml', 9.00), (4, 10, DEFAULT, 80, 'ml', 15.00),
+	(4, 11, DEFAULT, 4, 'ml', 3.00),(4, 11, DEFAULT, 15, 'ml', 6.00), (4, 11, DEFAULT, 30, 'ml', 9.00), (4, 11, DEFAULT, 80, 'ml', 15.00),
+	(4, 12, DEFAULT, 4, 'ml', 3.00),(4, 12, DEFAULT, 15, 'ml', 6.00), (4, 12, DEFAULT, 30, 'ml', 9.00), (4, 12, DEFAULT, 80, 'ml', 15.00),
+	(5, 13, DEFAULT, 8, 'g', 3.00),(5, 13, DEFAULT, 30, 'g', 9.00), (4, 11, DEFAULT, 80, 'g', 15.00),
+	(5, 14, DEFAULT, 4, 'ml', 5.00),(5, 14, DEFAULT, 15, 'ml', 8.00), (5, 14, DEFAULT, 30, 'ml', 10.00), (5, 14, DEFAULT, 80, 'ml', 15.00),
+	(5, 15, DEFAULT, 4, 'ml', 5.00),(5, 15, DEFAULT, 15, 'ml', 8.00), (5, 15, DEFAULT, 30, 'ml', 10.00), (5, 15, DEFAULT, 80, 'ml', 15.00),
+	(6, 16, DEFAULT, 4, 'ml', 3.00),
+	(6, 17, DEFAULT, 4, 'ml', 3.00),(6, 17, DEFAULT, 15, 'ml', 7.50), (6, 17, DEFAULT, 30, 'ml', 12.00), (6, 17, DEFAULT, 80, 'ml', 28.00),
+	(6, 17, DEFAULT, 4, 'ml', 4.50),(6, 17, DEFAULT, 15, 'ml', 9.00), (6, 17, DEFAULT, 30, 'ml', 15.00);
+	
+	
+
+
+	
+
+	
+
