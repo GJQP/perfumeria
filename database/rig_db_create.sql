@@ -260,7 +260,7 @@ CREATE TABLE rig_otros_ingredientes (
 	cod_inter VARCHAR (30) NOT NULL,
 	nombre VARCHAR (20) NOT NULL,
 	des VARCHAR (50) NOT NULL,
-	PRIMARY KEY (id_prov, id)
+	PRIMARY KEY (id)
 );
 
 CREATE SEQUENCE rig_otros_ingredientes_id_seq AS INTEGER OWNED BY rig_otros_ingredientes.id;
@@ -268,19 +268,18 @@ ALTER TABLE rig_otros_ingredientes ADD CONSTRAINT rig_otros_ingredientes_id_prov
 	ALTER COLUMN id SET DEFAULT nextval('rig_otros_ingredientes_id_seq');
 
 CREATE TABLE rig_presentaciones_otros_ingredientes (
-	id_prov SMALLINT,
 	id_otro_ing INTEGER,
 	cod_present INTEGER,
 	precio NUMERIC (10,2) NOT NULL,
 	volumen NUMERIC (10, 2),
 	otra_pre VARCHAR (15),
 	des VARCHAR (50),
-	PRIMARY KEY (id_prov, id_otro_ing, cod_present)
+	PRIMARY KEY (id_otro_ing, cod_present)
 );
 
 CREATE SEQUENCE rig_presentaciones_otros_ingredientes_id_seq AS INTEGER OWNED BY rig_presentaciones_otros_ingredientes.cod_present;
 ALTER TABLE rig_presentaciones_otros_ingredientes ADD CONSTRAINT rig_presentaciones_ingredientes_ck CHECK (otra_pre IN ('RESTRINGIDO', 'PROHIBIDO')),
-	ADD CONSTRAINT rig_presentaciones_otros_ingredientes_fk FOREIGN KEY (id_prov, id_otro_ing) REFERENCES rig_otros_ingredientes (id_prov, id),
+	ADD CONSTRAINT rig_presentaciones_otros_ingredientes_fk FOREIGN KEY (id_otro_ing) REFERENCES rig_otros_ingredientes (id),
 	ALTER COLUMN cod_present SET DEFAULT nextval('rig_presentaciones_otros_ingredientes_id_seq');
 
 CREATE TABLE rig_ingredientes_extras (
@@ -292,32 +291,36 @@ CREATE TABLE rig_ingredientes_extras (
 );
 
 ALTER TABLE rig_ingredientes_extras ADD CONSTRAINT rig_ingredientes_extras_ing_ese_fk FOREIGN KEY (id_prov_ing, id_ing) REFERENCES rig_ingredientes_esencias (id_prov, id),
-	ADD CONSTRAINT rig_ingredientes_extras_otr_ing_gk FOREIGN KEY (id_prov_otr, id_otro_ing) REFERENCES rig_otros_ingredientes (id_prov, id);
+	ADD CONSTRAINT rig_ingredientes_extras_otr_ing_gk FOREIGN KEY (id_otro_ing) REFERENCES rig_otros_ingredientes (id);
 
 CREATE TABLE rig_perfumes (
 	id INTEGER PRIMARY KEY,
-	nombre VARCHAR (30) NOT NULL,
+	id_prod SMALLINT,
+	nombre VARCHAR (100) NOT NULL,
 	genero VARCHAR NOT NULL,
 	tipo VARCHAR (5) NOT NULL,
-	edad INTEGER ,--Revisar,
-	fcha_crea DATE,
+	edad VARCHAR (15) NOT NULL,--Revisar,
+	fcha_crea SMALLINT,
 	des TEXT
 );
 
 CREATE SEQUENCE rig_perfumes_id_seq AS INTEGER OWNED BY rig_perfumes.id;
-ALTER TABLE rig_perfumes ADD CONSTRAINT rig_perfumes_ck CHECK ((genero IN ('F', 'M')) AND (tipo IN ('MONO', 'FASES'))),
-	ALTER COLUMN id SET DEFAULT nextval('rig_perfumes_id_seq');
+ALTER TABLE rig_perfumes ADD CONSTRAINT rig_perfumes_ck CHECK ((genero IN ('F', 'M', 'U')) AND (tipo IN ('MONO', 'FASES')) AND edad IN ('JOVEN', 'ADULTO', 'MAYOR', 'ATEMPORAL')),
+	ALTER COLUMN id SET DEFAULT nextval('rig_perfumes_id_seq'),
+	ADD CONSTRAINT rig_perfumes_id_prov_fk FOREIGN KEY (id_prod) REFERENCES rig_productores (id);
 
 CREATE TABLE rig_perfumistas (
 	id INTEGER PRIMARY KEY,
 	nombre VARCHAR (50) NOT NULL UNIQUE,
 	genero VARCHAR NOT NULL,
-	fcha_nac DATE
+	fcha_nac DATE,
+	id_ubic SMALLINT
 );
 
 CREATE SEQUENCE rig_perfumistas_id_seq AS INTEGER OWNED BY rig_perfumistas.id;
 ALTER TABLE rig_perfumistas ADD CONSTRAINT rig_perfumistas_ck CHECK (genero IN ('F', 'M')),
-	ALTER COLUMN id SET DEFAULT nextval('rig_perfumistas_id_seq');
+	ALTER COLUMN id SET DEFAULT nextval('rig_perfumistas_id_seq'),	
+	ADD CONSTRAINT rig_perfumistas_id_ubic_fk FOREIGN KEY (id_ubic) REFERENCES rig_paises;
 
 CREATE TABLE rig_perfumes_perfumistas (
 	id_perf INTEGER,
@@ -429,13 +432,12 @@ ALTER TABLE rig_esencias ADD CONSTRAINT rig_esencias_id_fao FOREIGN KEY (id_fao)
 	ADD CONSTRAINT rig_esencias_id_esenp FOREIGN KEY (id_esenp) REFERENCES rig_esencias_perfumes;
 
 CREATE TABLE rig_componentes_funcionales (
-	id_prov SMALLINT,
 	id_otro_ing INTEGER,
 	id_perf INTEGER,
-	PRIMARY KEY (id_prov, id_otro_ing, id_perf)
+	PRIMARY KEY (id_otro_ing, id_perf)
 );
 
-ALTER TABLE rig_componentes_funcionales ADD CONSTRAINT rig_componentes_funcionales_otro_ing_fk FOREIGN KEY (id_prov, id_otro_ing) REFERENCES rig_otros_ingredientes (id_prov, id),
+ALTER TABLE rig_componentes_funcionales ADD CONSTRAINT rig_componentes_funcionales_otro_ing_fk FOREIGN KEY (id_otro_ing) REFERENCES rig_otros_ingredientes (id),
 	ADD CONSTRAINT rig_componentes_funcionales_id_perf_fk FOREIGN KEY (id_perf) REFERENCES rig_perfumes;
 
 CREATE TABLE rig_origenes (
@@ -495,14 +497,13 @@ CREATE TABLE rig_productos_contratados (
 	id SMALLINT, --No amerita una secuencia ya que nunca cambia
 	id_prov_ing SMALLINT,
 	id_ing INTEGER,
-	id_prov_otr SMALLINT,
 	id_otr_ing INTEGER,
 	PRIMARY KEY (id_ctra, id) --AK
 );
 
 ALTER TABLE rig_productos_contratados ADD CONSTRAINT rig_productos_contratados_id_ctra_fk FOREIGN KEY (id_ctra) REFERENCES rig_contrato,
 	ADD CONSTRAINT rig_productos_contratados_ing_fk FOREIGN KEY (id_prov_ing, id_ing) REFERENCES rig_ingredientes_esencias (id_prov, id),
-	ADD CONSTRAINT rig_productos_contratados_otr_ing_fk FOREIGN KEY (id_prov_otr, id_otr_ing) REFERENCES rig_otros_ingredientes (id_prov, id);
+	ADD CONSTRAINT rig_productos_contratados_otr_ing_fk FOREIGN KEY (id_otr_ing) REFERENCES rig_otros_ingredientes (id);
 
 CREATE TABLE rig_pedidos (
 	id INTEGER PRIMARY KEY,
@@ -531,7 +532,6 @@ CREATE TABLE rig_detalles_pedidos (
 	id_prov_ing BIGINT,
 	id_ing BIGINT,
 	id_pre_ing BIGINT,
-	id_prov_otr BIGINT,
 	id_otro_ing BIGINT,
 	id_pre_otr BIGINT,
 	PRIMARY KEY (id_ped, renglon)
@@ -539,7 +539,7 @@ CREATE TABLE rig_detalles_pedidos (
 
 ALTER TABLE rig_detalles_pedidos ADD CONSTRAINT rig_detalles_pedidos_ck CHECK (cantidad > 0), --AK
 	ADD CONSTRAINT rig_detalles_pedidos_ing_fk FOREIGN KEY (id_prov_ing, id_ing, id_pre_ing) REFERENCES rig_presentaciones_ingredientes (id_prov, id_ing, cod_present),
-	ADD CONSTRAINT rig_detalles_pedidos_otr_fk FOREIGN KEY (id_prov_otr, id_otro_ing, id_pre_otr) REFERENCES rig_presentaciones_otros_ingredientes (id_prov, id_otro_ing, cod_present);
+	ADD CONSTRAINT rig_detalles_pedidos_otr_fk FOREIGN KEY (id_otro_ing, id_pre_otr) REFERENCES rig_presentaciones_otros_ingredientes (id_otro_ing, cod_present);
 
 CREATE TABle rig_pagos (
 	id_ped INTEGER,
@@ -799,7 +799,7 @@ INSERT INTO rig_asociaciones_nacionales VALUES (DEFAULT, 'FFAANZ - Flavour & Fra
 --rig_productores
 
 INSERT INTO rig_productores VALUES (DEFAULT, 'Firmenich', 'www.firmenich.com', 'Rue de la Bergère 7 P.O. Box 148 Switzerland', 'firmenich@ifra.com','+41 22 780 22 11');
-INSERT INTO rig_productores VALUES 	(DEFAULT, 'Tru Fragace', 'www.trufragrance.com', '350 Fifth Ave. Ste 6100 New York, NY 10118', 'customercare@trufragrance.com','+1 800 443 3000',21),
+INSERT INTO rig_productores VALUES 	(DEFAULT, 'Tru Fragance', 'www.trufragrance.com', '350 Fifth Ave. Ste 6100 New York, NY 10118', 'customercare@trufragrance.com','+1 800 443 3000',21),
 	(DEFAULT, 'MANE', 'www.mane.com', 'Avenue Jean Monnet', 'info@mane.com','+33 2 43 62 11 00',7);
 
 --rig_proveedores
@@ -1049,39 +1049,91 @@ INSERT INTO rig_ingredientes_esencias (id_prov, id, cas, nombre, tipo, des, id_u
 	(6, DEFAULT,'8006-82-4', 'Aceite de pimienta negra', 'NATURAL', 'Proviene de un fruto de aproximadamente 5 mm que se puede usar entero o en polvo para la elaboración de fragancias picantes o como aditivo alimenticio', 25, 'Soluble en alcohol','BAJA', 6*30),
 	(6, DEFAULT,'8015-88-1', 'Aceite de semillas de zanahoria', 'NATURAL', 'El aceite esencial de zanahoria se extrae de las semillas secas de zanahoria mediante la destilación por vapor, la cual preserva perfectamente los nutrientes valiosos. Las semillas de zanahoria producen el aceite esencial pero también pueden utilizarse otras partes de la planta', 25, 'Soluble en alcohol, aceite de parafina y agua de 8.507 mg/L a 25°C','BAJA', 24*30);
 
---CREATE TABLE rig_presentaciones_ingredientes (
---	id_prov SMALLINT,
---	id_ing INTEGER,
---	cod_present INTEGER,
---	medida NUMERIC (10,2) NOT NULL,
--- 	unidad VARCHAR (5) NOT NULL,
---	precio NUMERIC (10,2) NOT NULL,
---	PRIMARY KEY (id_prov, id_ing, cod_present)
---);
+--rig_presentaciones_ingredientes
 
 INSERT INTO rig_presentaciones_ingredientes VALUES (3, 1, DEFAULT, 4, 'ml', 3.25), (3, 1, DEFAULT, 15, 'ml', 5.00), (3, 1, DEFAULT, 30, 'ml', 6.25), (3, 1, DEFAULT, 80, 'ml', 14.31), (3, 1, DEFAULT, 250, 'g', 41.00), (3, 1, DEFAULT, 500, 'g', 69.00), (3, 1, DEFAULT, 1, 'kg', 118.00),
 	(3, 2, DEFAULT, 4, 'ml', 3.00), (3, 2, DEFAULT, 15, 'ml', 6.00), (3, 2, DEFAULT, 30, 'ml', 6.30), (3, 2, DEFAULT, 80, 'ml', 14.43), (3, 2, DEFAULT, 250, 'g', 28.00),
 	(3, 3, DEFAULT, 4, 'ml', 3.00), (3, 3, DEFAULT, 15, 'ml', 6.00), (3, 3, DEFAULT, 30, 'ml', 10.00), (3, 3, DEFAULT, 80, 'ml', 15.00), (3, 3, DEFAULT, 250, 'g', 25.00), (3, 3, DEFAULT, 500, 'g', 35.00),
 	(1, 4, DEFAULT, 4, 'ml', 4.50), (1, 4, DEFAULT, 15, 'ml', 10.50), (1, 4, DEFAULT, 30, 'ml', 18.50), (1, 4, DEFAULT, 80, 'ml', 40.50), (1, 4, DEFAULT, 250, 'g', 122.00), (1, 4, DEFAULT, 500, 'g', 232.00),
 	(1, 5, DEFAULT, 4, 'ml', 3.00), (1, 5, DEFAULT, 15, 'ml', 6.00), (1, 5, DEFAULT, 30, 'ml', 10.0), (1, 5, DEFAULT, 80, 'ml', 20.00), (1, 5, DEFAULT, 250, 'g', 50.00), (1, 5, DEFAULT, 500, 'g', 75.00), (1, 5, DEFAULT, 1, 'kg', 150.00),
-	(1, 6, DEFAULT, 4, 'ml', 3.00),(1, 6, DEFAULT, 15, 'ml', 6.00), (1, 6, DEFAULT, 30, 'ml', 9.00), (1, 6, DEFAULT, 80, 'ml', 15.00), (1, 6, DEFAULT, 250, 'g', 23.00),
-	(2, 7, DEFAULT, 4, 'ml', 3.00),(2, 7, DEFAULT, 15, 'ml', 6.00), (2, 7, DEFAULT, 30, 'ml', 9.00), (2, 7, DEFAULT, 80, 'ml', 15.00),
-	(2, 8, DEFAULT, 4, 'ml', 3.00),(2, 8, DEFAULT, 15, 'ml', 6.00), (2, 8, DEFAULT, 30, 'ml', 8.00), (2, 8, DEFAULT, 80, 'ml', 11.00), (2, 8, DEFAULT, 250, 'g', 26.50), (2, 8, DEFAULT, 500, 'g', 48.00), (2, 8, DEFAULT, 1, 'kg', 62.00),
-	(2, 9, DEFAULT, 4, 'ml', 3.00),(2, 9, DEFAULT, 15, 'ml', 6.00), (2, 9, DEFAULT, 30, 'ml', 9.00), (2, 9, DEFAULT, 80, 'ml', 12.00),
-	(4, 10, DEFAULT, 4, 'ml', 3.00),(4, 10, DEFAULT, 15, 'ml', 6.00), (4, 10, DEFAULT, 30, 'ml', 9.00), (4, 10, DEFAULT, 80, 'ml', 15.00),
-	(4, 11, DEFAULT, 4, 'ml', 3.00),(4, 11, DEFAULT, 15, 'ml', 6.00), (4, 11, DEFAULT, 30, 'ml', 9.00), (4, 11, DEFAULT, 80, 'ml', 15.00),
-	(4, 12, DEFAULT, 4, 'ml', 3.00),(4, 12, DEFAULT, 15, 'ml', 6.00), (4, 12, DEFAULT, 30, 'ml', 9.00), (4, 12, DEFAULT, 80, 'ml', 15.00),
-	(5, 13, DEFAULT, 8, 'g', 3.00),(5, 13, DEFAULT, 30, 'g', 9.00), (4, 11, DEFAULT, 80, 'g', 15.00),
-	(5, 14, DEFAULT, 4, 'ml', 5.00),(5, 14, DEFAULT, 15, 'ml', 8.00), (5, 14, DEFAULT, 30, 'ml', 10.00), (5, 14, DEFAULT, 80, 'ml', 15.00),
-	(5, 15, DEFAULT, 4, 'ml', 5.00),(5, 15, DEFAULT, 15, 'ml', 8.00), (5, 15, DEFAULT, 30, 'ml', 10.00), (5, 15, DEFAULT, 80, 'ml', 15.00),
+	(1, 6, DEFAULT, 4, 'ml', 3.00), (1, 6, DEFAULT, 15, 'ml', 6.00), (1, 6, DEFAULT, 30, 'ml', 9.00), (1, 6, DEFAULT, 80, 'ml', 15.00), (1, 6, DEFAULT, 250, 'g', 23.00),
+	(2, 7, DEFAULT, 4, 'ml', 3.00), (2, 7, DEFAULT, 15, 'ml', 6.00), (2, 7, DEFAULT, 30, 'ml', 9.00), (2, 7, DEFAULT, 80, 'ml', 15.00),
+	(2, 8, DEFAULT, 4, 'ml', 3.00), (2, 8, DEFAULT, 15, 'ml', 6.00), (2, 8, DEFAULT, 30, 'ml', 8.00), (2, 8, DEFAULT, 80, 'ml', 11.00), (2, 8, DEFAULT, 250, 'g', 26.50), (2, 8, DEFAULT, 500, 'g', 48.00), (2, 8, DEFAULT, 1, 'kg', 62.00),
+	(2, 9, DEFAULT, 4, 'ml', 3.00), (2, 9, DEFAULT, 15, 'ml', 6.00), (2, 9, DEFAULT, 30, 'ml', 9.00), (2, 9, DEFAULT, 80, 'ml', 12.00),
+	(4, 10, DEFAULT, 4, 'ml', 3.00), (4, 10, DEFAULT, 15, 'ml', 6.00), (4, 10, DEFAULT, 30, 'ml', 9.00), (4, 10, DEFAULT, 80, 'ml', 15.00),
+	(4, 11, DEFAULT, 4, 'ml', 3.00), (4, 11, DEFAULT, 15, 'ml', 6.00), (4, 11, DEFAULT, 30, 'ml', 9.00), (4, 11, DEFAULT, 80, 'ml', 15.00),
+	(4, 12, DEFAULT, 4, 'ml', 3.00), (4, 12, DEFAULT, 15, 'ml', 6.00), (4, 12, DEFAULT, 30, 'ml', 9.00), (4, 12, DEFAULT, 80, 'ml', 15.00),
+	(5, 13, DEFAULT, 8, 'g', 3.00), (5, 13, DEFAULT, 30, 'g', 9.00), (4, 11, DEFAULT, 80, 'g', 15.00),
+	(5, 14, DEFAULT, 4, 'ml', 5.00), (5, 14, DEFAULT, 15, 'ml', 8.00), (5, 14, DEFAULT, 30, 'ml', 10.00), (5, 14, DEFAULT, 80, 'ml', 15.00),
+	(5, 15, DEFAULT, 4, 'ml', 5.00), (5, 15, DEFAULT, 15, 'ml', 8.00), (5, 15, DEFAULT, 30, 'ml', 10.00), (5, 15, DEFAULT, 80, 'ml', 15.00),
 	(6, 16, DEFAULT, 4, 'ml', 3.00),
-	(6, 17, DEFAULT, 4, 'ml', 3.00),(6, 17, DEFAULT, 15, 'ml', 7.50), (6, 17, DEFAULT, 30, 'ml', 12.00), (6, 17, DEFAULT, 80, 'ml', 28.00),
-	(6, 17, DEFAULT, 4, 'ml', 4.50),(6, 17, DEFAULT, 15, 'ml', 9.00), (6, 17, DEFAULT, 30, 'ml', 15.00);
-	
+	(6, 17, DEFAULT, 4, 'ml', 3.00), (6, 17, DEFAULT, 15, 'ml', 7.50), (6, 17, DEFAULT, 30, 'ml', 12.00), (6, 17, DEFAULT, 80, 'ml', 28.00),
+	(6, 17, DEFAULT, 4, 'ml', 4.50), (6, 17, DEFAULT, 15, 'ml', 9.00), (6, 17, DEFAULT, 30, 'ml', 15.00);
+
+--rig_perfumes
+
+--CREATE TABLE rig_perfumes (
+--	id INTEGER PRIMARY KEY,
+--  id_prod SMALLINT,
+--	nombre VARCHAR (30) NOT NULL,
+--	genero VARCHAR NOT NULL,
+--	tipo VARCHAR (5) NOT NULL,
+--	edad VARCHAR (20) NOT NULL,--Revisar,
+--	fcha_crea SMALLINT,
+--	des TEXT
+--);
+
+--CREATE SEQUENCE rig_perfumes_id_seq AS INTEGER OWNED BY rig_perfumes.id;
+--ALTER TABLE rig_perfumes ADD CONSTRAINT rig_perfumes_ck CHECK ((genero IN ('F', 'M')) AND (tipo IN ('MONO', 'FASES')) AND edad IN ('JOVEN', 'ADULTO', 'MAYOR', 'ATEMPORAL')),
+--	ALTER COLUMN id SET DEFAULT nextval('rig_perfumes_id_seq');
+
+INSERT INTO rig_perfumes VALUES (DEFAULT, 1,'Acqua di Giò', 'M', 'FASES', 'ADULTO', 1996, 'Acqua di Giò no es solo agua. Es una fragancia de la vida, una oda voluptuosa a la naturaleza y su perfección, a un hombre que ama la libertad y seguro de sí mismo, que se convierte en uno con el mar.'),
+	(DEFAULT, 1,'Boss Bottled', 'M', 'FASES', 'ADULTO', 2008, 'Boss Bottled Intense reveals the Man of Today and his strength of character. The fragrance is laden with more woods, spices and a powerful concentration of precious oils. Bright apple is tempered by a calmer and more composed green orange blossom. The effect is a fragrance that is less sweet, yet more luxurious, and emphatically, unapologetically masculine.'),
+	(DEFAULT, 1,'Romance', 'F', 'FASES', 'ADULTO', 1999, 'Es un aroma de amor romántico y momentos íntimos llenos de alegría y felicidad, con un aura infinitamente positiva. Al comienzo de la composición, las notas de rosa se mezclan con aceites cítricos y reciben una melodía inusual y única.'),
+	(DEFAULT, 2,'Joseph Abboud de Joseph Abboud', 'M', 'FASES', 'ADULTO', 2016, 'Un aroma masculino refrescante, el índigo descolorido de Joseph Abboud se basa en aromas amaderados aromáticos con notas medias marinas refrescantes. Las notas altas de limón picante completan este fino aroma, ideal para el uso diario y en ocasiones especiales.'),
+	(DEFAULT, 2,'Pistachio Brûlée de Urban Outfitters', 'F', 'MONO', 'ADULTO', 2014, 'Pistachio Brulee Eau De Parfum para mujer. Pistachio Brulee: mousse de vainilla con leche, pistacho y vainilla. Las fragancias sin crueldad le permiten optar por algo fresco, femenino o dulce, todo dependiendo de su estado de ánimo. días de verano con elegantes flores frescas o la fresca brisa del mar, estos son elementos imprescindibles sin los que no podemos vivir'),
+	(DEFAULT, 2,'Paris, She Met Him In Secret de Fictions Perfume', 'F', 'MONO', 'ADULTO', 2019, 'Paris: She Met Him in Secret is an exploration of unauthorized love. This Fictions perfume is classified as a floral chypre fragrance, characterized by a contrast between fresh floral notes and a deep, sensual dry down. '),
+	(DEFAULT, 3,'Exotic Musk', 'F', 'MONO', 'ADULTO', 2019, 'Mostrando el preciado ingrediente aromático que evoca vívidamente un destino exótico, cada fragancia de Bentley Beyond - The Collection traduce un viaje en aroma. Compuesto por tres nuevos perfumistas jóvenes, el primer trío de la colección nos lleva a tres países diferentes, cada uno asociado con una nota olfativa y un tema de color inspirado en'),
+	(DEFAULT, 3,'Let you Love Me de Blumarine', 'F', 'MONO', 'ADULTO', 2020, 'La nueva fragancia femenina Let You Love Me huele a audacia y sensualidad, determinación y feminidad, y la fuerza invencible de una mujer apasionada que besa al hombre de sus sueños y le dice: "Te dejo amarme". La fragancia pertenece al Familia olfativa de aromáticos orientales.'),
+	(DEFAULT, 3,'Gris Charnel de BDK Parfums', 'U', 'FASES', 'ADULTO', 2019, 'Gris Charnel es un aroma de piel, creado con la idea de la sensualidad, la intimidad. Evoca mañanas parisinas grises, donde uno se despierta con un deseo de capullo, todavía consolado por el calor del otro. Es una fragancia que actúa como una segunda piel, sacando su dulzura de un cremoso acuerdo de sándalo indio.');
 	
 
+--rig_perfumistas
 
-	
+--CREATE TABLE rig_perfumistas (
+--	id INTEGER PRIMARY KEY,
+--	nombre VARCHAR (50) NOT NULL UNIQUE,
+--	genero VARCHAR NOT NULL,
+--	fcha_nac DATE,
+--	id_ubic SMALLINT
+--);
 
+--CREATE SEQUENCE rig_perfumistas_id_seq AS INTEGER OWNED BY rig_perfumistas.id;
+--ALTER TABLE rig_perfumistas ADD CONSTRAINT rig_perfumistas_ck CHECK (genero IN ('F', 'M')),
+--	ALTER COLUMN id SET DEFAULT nextval('rig_perfumistas_id_seq');
+
+INSERT INTO rig_perfumistas VALUES (DEFAULT, 'Giorgio Armani', 'M', '11-07-1934', 29),
+	(DEFAULT, 'Annick Meardo', 'F', '13-09-1985', 29),
+	(DEFAULT, 'Ralph Lauren', 'M', '04-10-1939', 55),
+	(DEFAULT, 'Joseph Abboud', 'M', '05-5-1950', 55),
+	(DEFAULT, 'Olivier Polge', 'M', '07-01-1978', 29),	
+	(DEFAULT, 'Alexandra Monet', 'F', '08-06-1970', 29),
+	(DEFAULT, 'Mathilde Bijaoui', 'F', '03-08-1975', 64),
+	(DEFAULT, 'Veronique Nyberg', 'F', '15-07-1964', 18);		
+
+
+
+--rig_perfumes_perfumistas
+
+--CREATE TABLE rig_perfumes_perfumistas (
+--	id_perf INTEGER,
+--	id_prefta INTEGER,
+--	PRIMARY KEY (id_perf, id_prefta)
+--);
+
+INSERT INTO rig_perfumes_perfumistas VALUES (1, 1),	(2,2), (3,3), (4,4), (5,5), (6,6), (7,7), (8,8), (9,7);
+
+--ALTER TABLE	rig_perfumes_perfumistas ADD CONSTRAINT rig_perfumes_perfumistas_id_perf_fk FOREIGN KEY --(id_perf) REFERENCES rig_perfumes,
+--	ADD CONSTRAINT rig_perfumes_perfumistas_id_prefta_fk FOREIGN KEY (id_prefta) REFERENCES rig_perfumistas;
 	
 
