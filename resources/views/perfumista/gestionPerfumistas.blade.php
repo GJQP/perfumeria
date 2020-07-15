@@ -19,18 +19,7 @@
                     <th class="">Fecha de Nacimiento</th>
                     <th class="accion">Acción</th>
                 </tr>
-                
-                <!--
-                @foreach($perfumistas as $perfumista)
-                    <td>{{ $perfumista->nombre}}</td>
-                    <td>{{ $perfumista->genero }}</td>
-                    <td>{{ $perfumista->fecha_nacimiento}}</td>
-                    <td>
-                        <div><a href="/gestion-perfumista/{{$perfumista->id}}" >Modificar</a></div>
-                        <div><a href="#" data-toggle="modal"  data-target="#eliminar" id="1" onclick="cambio(event)">Eliminar</a></div>
-                    </td>
-                @endforeach
-                -->
+
 
                 <tr>
                     <td>Andres Garcia</td>

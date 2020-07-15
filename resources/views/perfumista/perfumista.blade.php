@@ -28,7 +28,7 @@
                     <input class="form-control" type="date" value="aaaa-mm-dd" id="fecha-nacimiento"></label>
                 </div>
                 <button class="btn btn-danger"><a href="/gestion-perfumista">Cancelar</a></button>
-                <button type="submit" class="btn btn-primary">Crear</button>
+                <button type="submit" class="btn btn-primary"><a href="/gestion-perfumistas/creado">Crear</a></button>
             </div>
         </form>
     </div>

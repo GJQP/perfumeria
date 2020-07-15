@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use DB;
 
 class Perfumistas extends Controller
 {
@@ -13,7 +14,8 @@ class Perfumistas extends Controller
      */
     public function index()
     {
-        return view('perfumista.gestionPerfumistas');
+        $perfumistas = DB::select('select * from rig_perfumista');
+        return view('perfumista.gestionPerfumistas')->with($perfumistas);
     }    
     
 
@@ -39,8 +41,9 @@ class Perfumistas extends Controller
             'nombre' =>'required',
             'genero' =>'required',
         ]);
-        DB::insert('insert into rig_perfumistas (id, name, genero, fecha_nacimiento) values (default,?,?,?)',[$request->input('nombre'), $request->input('genero'), $request->input('fecha-nacimiento')]);
-        return view('perfumista.gestionPerfumistas')
+        DB::insert('insert into rig_perfumista (id, name, genero, fecha_nacimiento) values (default,?,?,?)',[$request->input('nombre'), $request->input('genero'), $request->input('fecha-nacimiento')]);
+        $perfumistas = DB::select('select * from rig_perfumista');
+        return view('perfumista.gestionPerfumistas')->with($perfumistas);
     }
 
     /**
