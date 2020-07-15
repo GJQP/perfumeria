@@ -24,9 +24,9 @@ Route::get('/inicio','Contratos@inicio');
 Route::get('/gestion-perfumista','Perfumistas@index');
 Route::get('/gestion-perfumista/crear','Perfumistas@create');
 Route::post('/gestion-perfumista/crear','Perfumistas@store');
-Route::get('/gestion-perfumista/creado','Perfumistas@index');
-Route::get('/gestion-perfumista/editar-{id}','Perfumistas@edit');
-Route::get('/gestion-perfumista/#','Perfumistas@destroy');
+Route::get('/gestion-perfumista/{id}','Perfumistas@edit');
+Route::put('/gestion-perfumista/{id}','Perfumistas@update');
+Route::delete('/gestion-perfumista/{id}','Perfumistas@destroy');
 
 //Gestion de Formulas
 Route::get ('/gestion-formula','GestionFormula@index');

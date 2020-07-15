@@ -1,6 +1,16 @@
-const { holdReady } = require("jquery");
-
 //Funcion para eliminar
+var idEliminar;
+
+function cambiar(id){
+    idEliminar = id;
+}
+
+function eliminar() { 
+    if (idEliminar){
+        axios.delete('/gestion-perfumista/' + idEliminar).then(() => window.location.reload());
+        
+    }
+}  
 function cambio(e){
     let elemento = e.srcElement.id;
     console.log(elemento);

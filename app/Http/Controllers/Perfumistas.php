@@ -14,8 +14,8 @@ class Perfumistas extends Controller
      */
     public function index()
     {
-        $perfumistas = DB::select('select * from rig_perfumista');
-        return view('perfumista.gestionPerfumistas')->with($perfumistas);
+        $perfumistas = DB::select('SELECT * from rig_perfumistas ORDER BY id');
+        return view('perfumista.gestionPerfumistas')->with('perfumistas',$perfumistas);
     }    
     
 
@@ -41,9 +41,15 @@ class Perfumistas extends Controller
             'nombre' =>'required',
             'genero' =>'required',
         ]);
-        DB::insert('insert into rig_perfumista (id, name, genero, fecha_nacimiento) values (default,?,?,?)',[$request->input('nombre'), $request->input('genero'), $request->input('fecha-nacimiento')]);
-        $perfumistas = DB::select('select * from rig_perfumista');
-        return view('perfumista.gestionPerfumistas')->with($perfumistas);
+
+        DB::insert('INSERT into rig_perfumistas (id, nombre, genero, fcha_nac) values (default,?,?,?)',
+            [
+                $request->input('nombre'),
+                $request->input('genero'),
+                $request->input('fecha-nacimiento')
+            ]);
+        
+        return redirect()->action('Perfumistas@index');
     }
 
     /**
@@ -66,7 +72,8 @@ class Perfumistas extends Controller
     public function edit($id)
     {
         //Falta pasar la info
-        return view('perfumista.perfumista')->with();
+        $perfumista = DB::select('SELECT * from rig_perfumistas WHERE id = ?',[$id]);
+        return view('perfumista.perfumista')->with('perfumista',last($perfumista));
     }
 
     /**
@@ -78,7 +85,15 @@ class Perfumistas extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        DB::update('UPDATE rig_perfumistas set nombre = ?, genero = ?, fcha_nac = ? where id = ?',
+            [
+                $request->input('nombre'),
+                $request->input('genero'),
+                $request->input('fecha-nacimiento'),
+                $id
+            ]
+        );
+        return redirect()->action('Perfumistas@index');
     }
 
     /**
@@ -89,6 +104,7 @@ class Perfumistas extends Controller
      */
     public function destroy($id)
     {
-        //
+        DB::delete('DELETE FROM rig_perfumistas WHERE id = ?',[$id]);
+        return response()->json(['STATUS'=> 'OK']);
     }
 }
