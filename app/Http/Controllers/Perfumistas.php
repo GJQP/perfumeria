@@ -14,7 +14,7 @@ class Perfumistas extends Controller
      */
     public function index()
     {
-        $perfumistas = DB::select('SELECT * from rig_perfumistas ORDER BY id');
+        $perfumistas = DB::select("SELECT id, nombre, genero, TO_CHAR(fcha_nac,'DD/MM/YYYY') fcha_nac from rig_perfumistas ORDER BY id");
         return view('perfumista.gestionPerfumistas')->with('perfumistas',$perfumistas);
     }    
     
@@ -72,7 +72,7 @@ class Perfumistas extends Controller
     public function edit($id)
     {
         //Falta pasar la info
-        $perfumista = DB::select('SELECT * from rig_perfumistas WHERE id = ?',[$id]);
+        $perfumista = DB::select("SELECT id, nombre, genero, fcha_nac from rig_perfumistas WHERE id = ?",[$id]);
         return view('perfumista.perfumista')->with('perfumista',last($perfumista));
     }
 

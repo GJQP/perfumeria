@@ -30,7 +30,7 @@
                 </div>
                 <div>
                     <label for="fecha-nacimiento" class="col-form-label">Introduzca el año de Nacimiento(Opcional):
-                    <input class="form-control" type="date" value="aaaa-mm-dd" name="fecha-nacimiento" id="fecha-nacimiento"></label>
+                    <input class="form-control" type="date" name="fecha-nacimiento" value="{{$perfumista->fcha_nac ?? ''}}" id="fecha-nacimiento"></label>
                 </div>
                 <button class="btn btn-danger"><a href="/gestion-perfumista">Cancelar</a></button>
                 @if(empty($perfumista))
