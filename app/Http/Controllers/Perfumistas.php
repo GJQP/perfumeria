@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
-class GestionFormula extends Controller
+class Perfumistas extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -13,8 +13,9 @@ class GestionFormula extends Controller
      */
     public function index()
     {
-        return view('formula.gestionformula');
-    }
+        return view('perfumista.gestionPerfumistas');
+    }    
+    
 
     /**
      * Show the form for creating a new resource.
@@ -23,7 +24,7 @@ class GestionFormula extends Controller
      */
     public function create()
     {
-        //
+        return view('perfumista.perfumista'); 
     }
 
     /**
@@ -34,7 +35,12 @@ class GestionFormula extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'nombre' =>'required',
+            'genero' =>'required',
+        ]);
+        DB::insert('insert into rig_perfumistas (id, name, genero, fecha_nacimiento) values (default,?,?,?)',[$request->input('nombre'), $request->input('genero'), $request->input('fecha-nacimiento')]);
+        return view('perfumista.gestionPerfumistas')
     }
 
     /**
@@ -56,7 +62,8 @@ class GestionFormula extends Controller
      */
     public function edit($id)
     {
-        //
+        //Falta pasar la info
+        return view('perfumista.perfumista')->with();
     }
 
     /**
@@ -80,10 +87,5 @@ class GestionFormula extends Controller
     public function destroy($id)
     {
         //
-    }
-
-    public function crearinicio()
-    {
-        return view('formula.crearformula');
     }
 }

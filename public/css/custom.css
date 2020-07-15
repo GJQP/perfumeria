@@ -10,19 +10,26 @@
     box-sizing: unset !important;
 }
 
+.unna{
+    font-family: 'Unna', serif;
+    font-size: 2rem;
+}
+
 .container{
     max-width: 100% !important;
 }
 
 .titulo{
-    margin-left: 19%;
-    text-align: left;
-    width: 53%;
+    width: 65%;
 }
 
 .inicio{
     position: absolute;
     right: 13rem;
+}
+
+#inicio{
+    font-family:  'Unna', serif;
 }
 
 .logo{
@@ -33,6 +40,11 @@
 .pdb-2{
    padding-bottom: 1.5rem;
 }
+
+.pdb-3{
+    padding-bottom: 3rem;
+}
+
 .mgl-1{
     margin-left: 1.5rem;
 }
@@ -54,6 +66,10 @@
     margin-right: -5rem;
 }
 
+.mgt-5r{
+    margin-top: 3%;
+}
+
 .mgt-1{
     margin-top: 1rem;
 }
@@ -61,6 +77,11 @@
 .mgt-2{
     margin-top: 2rem;
 }
+
+.mgrb-1{
+    padding-bottom: 1.5rem;
+}
+
 
 .titulo h1,.titulo h2{
     color: white;
@@ -88,11 +109,11 @@
     padding-left: 15%;
     padding-right: 15%;
 }
-
+/*cambiar height a 300px */
 .cuadrado{
     box-shadow: 5px 5px 5px grey;
     margin-left: 2rem;
-    height: 300px;
+    height: 350px;
     align-self: center;
     background-color: grey;
 }
@@ -113,13 +134,19 @@
     background-color: #5CAB27;
 }
 
-.cuadrado .texto, a{
+.cuadrado .texto{
     padding-top: 1rem;
     text-align: center;
     color: #E5E5E5;
     font-family: 'Muli','sans-serif';
 }
 
+li a{
+    padding-top: 1rem;
+    text-align: center;
+    color: #E5E5E5;
+    font-family: 'Muli','sans-serif';
+}
 .texto h1{
     font-size: 3rem;
 }
@@ -229,15 +256,15 @@ td div p{
 }
 
 #criterio{
-    width: 200px;
+    width: 50%;
 }
 
 #escala{
-    width: 130px;
+    width: 20%;
 }
 
 #porcentaje{
-    width:140px
+    width:20%;
 }
 
 p.mgr-1{
@@ -263,6 +290,47 @@ td div input{
     color: #666;
 }
 
-div select{
+.min-aprob{
+    max-width: 13%;
+    text-align: center;
+}
+
+td div a, td a{
+    color: black !important;
+    text-align: center;
+}
+
+#criterios, option{
+    font-size: 100%;
+    font-family: 'Muli','sans-serif';
+    max-width: 22%;
+}
+
+div .criterios{
     max-width: 18%;
+}
+
+#nombres, .empresas{
+    width: 40%;
+}
+
+#accion,.accion,.expiracion{
+    width: 30%;
+}
+
+#listaProductos{
+    width: 90%;
+    font-size: 85%;
+}
+
+.default{
+    height: 16rem;
+}
+
+#datosProvedor{
+    width: 40%;
+}
+
+#perfumistaInfo{
+    text-align: center;
 }

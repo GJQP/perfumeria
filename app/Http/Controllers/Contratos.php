@@ -4,8 +4,14 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
-class GestionFormula extends Controller
+class Contratos extends Controller
 {
+        //redireccionar a la pagina de inicio
+        public function inicio()
+        {
+            return view('welcome');
+        }
+
     /**
      * Display a listing of the resource.
      *
@@ -13,7 +19,11 @@ class GestionFormula extends Controller
      */
     public function index()
     {
-        return view('formula.gestionformula');
+      return view('contrato.gestionContratos1');
+    }
+
+    public function contratos(){
+        return view('contrato.gestionContratos');
     }
 
     /**
@@ -23,7 +33,11 @@ class GestionFormula extends Controller
      */
     public function create()
     {
-        //
+        return view('contrato.crearContrato');
+    }
+
+    public function evaluacion(){
+        return view('contrato.evaluacion');
     }
 
     /**
@@ -80,10 +94,5 @@ class GestionFormula extends Controller
     public function destroy($id)
     {
         //
-    }
-
-    public function crearinicio()
-    {
-        return view('formula.crearformula');
     }
 }

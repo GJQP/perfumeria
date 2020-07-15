@@ -17,15 +17,14 @@
         <nav class="navbar-nav">
             <div class="container row nav">
                     <img src="{{ asset('img/IFRA Stripped.png') }}" alt="Ifra logo" class="logo navbar-brand mgl-1">
-                    <div class="row titulo">
-                        <div class="blocktext">
-                             <h1> @yield('titulo')</h1> 
+                    <div class="row titulo justify-content-center">
+                        <div>
+                             <h1>@yield('titulo')</h1> 
                         </div>
-                        <!-- Agregar Validacion de Pagina, Si esta en la inicial, no muestra esto
-                            <div class="inicio mgrn-5">
-                                <h2> Inicio </h2>
+                        <!-- Agregar Validacion de Pagina, Si esta en la inicial, no muestra esto-->
+                            <div class="inicio mgrn-5 mgrb-1">
+                                <h2> <a id="inicio" href="/inicio">Inicio</a></h2>
                             </div>
-                        -->
                 </div>
             </div>
         </nav>
