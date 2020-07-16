@@ -6,7 +6,7 @@
 @section('contenido')  
 <div class="container mgt-2 mgrb-1">
     <div class="stage tarjeta muli pdb-2">
-        <div class="blocktext unna"> Creacion de Perfumista</div>
+        <div class="blocktext unna"> Editar de Perfumista</div>
         <form method="POST" autocomplete="off">
             @csrf
             <div id="perfumistaInfo" >

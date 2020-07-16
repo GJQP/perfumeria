@@ -11,8 +11,14 @@
 @section('contenido')
 <div class="container mgt-2 mgrb-1">
     <div class="stage tarjeta muli">
-        <div class=" blocktext mgt-2 tablaDatos">
+        <div class=" blocktext pdt-1 tablaDatos">
             <table>
+                <tr>
+                    <th id="nombres">Nombre del Perfumista</th>
+                    <th>Genero</th>
+                    <th>Fecha de Nacimiento</th>
+                    <th class="accion"> Acción</th>
+                </tr>
                 @forelse ($perfumistas as $perfumista)
                 <tr>
                     <td>{{$perfumista->nombre}}</td>
