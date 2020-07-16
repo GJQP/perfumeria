@@ -5,7 +5,7 @@ function cambiar(id){
     idEliminar = id;
 }
 
-function eliminar() { 
+function eliminarFila() { 
     if (idEliminar){
         axios.delete('/gestion-perfumista/' + idEliminar).then(() => window.location.reload());
         
