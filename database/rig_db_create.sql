@@ -39,29 +39,6 @@ DROP TABLE IF EXISTS rig_productores;
 DROP TABLE IF EXISTS rig_asociaciones_nacionales;
 DROP TABLE IF EXISTS rig_paises;
 
-DROP SEQUENCE IF EXISTS factura_id_seq;
-DROP SEQUENCE IF EXISTS rig_pedidos_id_seq;
-DROP SEQUENCE IF EXISTS rig_renovacion_id_seq;
-DROP SEQUENCE IF EXISTS rig_contrato_id_seq;
-DROP SEQUENCE IF EXISTS rig_familias_olfativas_id;
-DROP SEQUENCE IF EXISTS rig_presentaciones_perfumes_id_seq;
-DROP SEQUENCE IF EXISTS rig_intensidades_id_seq;
-DROP SEQUENCE IF EXISTS rig_esencias_perfumes_id_seq;
-DROP SEQUENCE IF EXISTS rig_palabras_claves_id_seq;
-DROP SEQUENCE IF EXISTS rig_perfumistas_id_seq;
-DROP SEQUENCE IF EXISTS rig_perfumes_id_seq;
-DROP SEQUENCE IF EXISTS rig_presentaciones_otros_ingredientes_id_seq;
-DROP SEQUENCE IF EXISTS rig_otros_ingredientes_id_seq;
-DROP SEQUENCE IF EXISTS rig_presentaciones_ingredientes_id_seq;
-DROP SEQUENCE IF EXISTS rig_prohibidas_id_seq;
-DROP SEQUENCE IF EXISTS rig_ingredientes_esencias_id_seq;
-DROP SEQUENCE IF EXISTS rig_asociaciones_nacionales_id_seq;
-DROP SEQUENCE IF EXISTS rig_variables_id_seq;
-DROP SEQUENCE IF EXISTS rig_condiciones_de_pago_id_seq;
-DROP SEQUENCE IF EXISTS rig_proveedores_id_seq;
-DROP SEQUENCE IF EXISTS rig_productores_id_seq;
-DROP SEQUENCE IF EXISTS rig_paises_id_seq;
-
 CREATE TABLE rig_paises (
 	id SMALLINT PRIMARY KEY,
 	nombre VARCHAR(30) not null unique
@@ -211,8 +188,7 @@ ALTER TABLE rig_evaluaciones_criterios ADD CONSTRAINT rig_evaluaciones_criterios
 
 CREATE TABLE rig_ingredientes_esencias (
 	id_prov SMALLINT,
-	id INTEGER,
-	cas VARCHAR (30) NOT NULL,
+	cas BIGINT,
 	nombre VARCHAR (50) NOT NULL,
 	tipo VARCHAR (15) NOT NULL,
 	des VARCHAR (500) NOT NULL,
@@ -221,77 +197,70 @@ CREATE TABLE rig_ingredientes_esencias (
 	peligrosidad VARCHAR (15),
 	vida_alm SMALLINT,
 	ctrl VARCHAR (15),
-	PRIMARY KEY (id_prov, id)
+	PRIMARY KEY (id_prov, cas)
 );
-
-CREATE SEQUENCE rig_ingredientes_esencias_id_seq AS INTEGER OWNED BY rig_ingredientes_esencias.id;
 
 ALTER TABLE rig_ingredientes_esencias ADD CONSTRAINT rig_ingrediente_esencia_ck CHECK (
 	(tipo IN ('NATURAL', 'SINTETICO'))	AND (peligrosidad IN ('ALTA', 'MEDIA', 'BAJA', 'NINGUNA')) AND (ctrl IN ('SI', 'NO'))),
-	ADD CONSTRAINT rig_ingrediente_esencia_id_prod_fk FOREIGN KEY (id_prov) REFERENCES rig_proveedores,
-	ALTER COLUMN id SET DEFAULT nextval('rig_ingredientes_esencias_id_seq');
+	ADD CONSTRAINT rig_ingrediente_esencia_id_prod_fk FOREIGN KEY (id_prov) REFERENCES rig_proveedores;
 
 CREATE TABLE rig_prohibidas (
-	id SMALLINT PRIMARY KEY,
-	cod_inter VARCHAR (30) NOT NULL UNIQUE,
-	nombre VARCHAR (15) NOT NULL UNIQUE
+	cas BIGINT PRIMARY KEY,
+	nombre VARCHAR (80),
+	tipo VARCHAR (3)
 );
 
-CREATE SEQUENCE rig_prohibidas_id_seq AS SMALLINT OWNED BY rig_prohibidas.id;
-ALTER TABLE rig_prohibidas ALTER COLUMN id SET DEFAULT nextval('rig_prohibidas_id_seq');
+ALTER TABLE rig_prohibidas ADD CONSTRAINT rig_prohibidas_ck CHECK (tipo IN ('P', 'R', 'S', 'R-S', 'R-P', 'P-S', 'P-R-S'));
 
 CREATE TABLE rig_presentaciones_ingredientes (
 	id_prov SMALLINT,
-	id_ing INTEGER,
+	cas_ing BIGINT,
 	cod_present INTEGER,
 	medida NUMERIC (10,2) NOT NULL,
 	unidad VARCHAR (3) NOT NULL,
 	precio NUMERIC (10,2) NOT NULL,
-	PRIMARY KEY (id_prov, id_ing, cod_present)
+	PRIMARY KEY (id_prov, cas_ing, cod_present)
 );
 
 CREATE SEQUENCE rig_presentaciones_ingredientes_id_seq AS INTEGER OWNED BY rig_presentaciones_ingredientes.cod_present;
-ALTER TABLE rig_presentaciones_ingredientes ADD CONSTRAINT rig_presentaciones_ingredientes_ing_fk FOREIGN KEY (id_prov, id_ing) REFERENCES rig_ingredientes_esencias (id_prov, id),
+ALTER TABLE rig_presentaciones_ingredientes ADD CONSTRAINT rig_presentaciones_ingredientes_ing_fk FOREIGN KEY (id_prov, cas_ing) REFERENCES rig_ingredientes_esencias (id_prov, cas),
 	ALTER COLUMN cod_present SET DEFAULT nextval('rig_presentaciones_ingredientes_id_seq');
 
 CREATE TABLE rig_otros_ingredientes (
 	id_prov SMALLINT,
-	id INTEGER,
-	cod_inter VARCHAR (30) NOT NULL,
+	cas BIGINT,
 	nombre VARCHAR (20) NOT NULL,
 	des VARCHAR (50) NOT NULL,
-	PRIMARY KEY (id)
+	PRIMARY KEY (cas)
 );
 
-CREATE SEQUENCE rig_otros_ingredientes_id_seq AS INTEGER OWNED BY rig_otros_ingredientes.id;
-ALTER TABLE rig_otros_ingredientes ADD CONSTRAINT rig_otros_ingredientes_id_prov_fk FOREIGN KEY (id_prov) REFERENCES rig_proveedores,
-	ALTER COLUMN id SET DEFAULT nextval('rig_otros_ingredientes_id_seq');
+ALTER TABLE rig_otros_ingredientes ADD CONSTRAINT rig_otros_ingredientes_id_prov_fk FOREIGN KEY (id_prov) REFERENCES rig_proveedores;
 
 CREATE TABLE rig_presentaciones_otros_ingredientes (
-	id_otro_ing INTEGER,
+	cas_otr_ing BIGINT,
 	cod_present INTEGER,
 	precio NUMERIC (10,2) NOT NULL,
 	volumen NUMERIC (10, 2),
 	otra_pre VARCHAR (15),
 	des VARCHAR (50),
-	PRIMARY KEY (id_otro_ing, cod_present)
+	PRIMARY KEY (cas_otr_ing, cod_present)
 );
 
 CREATE SEQUENCE rig_presentaciones_otros_ingredientes_id_seq AS INTEGER OWNED BY rig_presentaciones_otros_ingredientes.cod_present;
 ALTER TABLE rig_presentaciones_otros_ingredientes ADD CONSTRAINT rig_presentaciones_ingredientes_ck CHECK (otra_pre IN ('RESTRINGIDO', 'PROHIBIDO')),
-	ADD CONSTRAINT rig_presentaciones_otros_ingredientes_fk FOREIGN KEY (id_otro_ing) REFERENCES rig_otros_ingredientes (id),
+	ADD CONSTRAINT rig_presentaciones_otros_ingredientes_fk FOREIGN KEY (cas_otr_ing) REFERENCES rig_otros_ingredientes (cas),
 	ALTER COLUMN cod_present SET DEFAULT nextval('rig_presentaciones_otros_ingredientes_id_seq');
 
 CREATE TABLE rig_ingredientes_extras (
 	id_prov_ing SMALLINT,
-	id_ing INTEGER,
+	cas_ing BIGINT,
 	id_prov_otr SMALLINT,
-	id_otro_ing INTEGER,
-	PRIMARY KEY (id_prov_ing, id_ing, id_prov_otr, id_otro_ing)
+	cas_otr_ing BIGINT,
+	PRIMARY KEY (id_prov_ing, cas_ing, id_prov_otr, cas_otr_ing)
 );
 
-ALTER TABLE rig_ingredientes_extras ADD CONSTRAINT rig_ingredientes_extras_ing_ese_fk FOREIGN KEY (id_prov_ing, id_ing) REFERENCES rig_ingredientes_esencias (id_prov, id),
-	ADD CONSTRAINT rig_ingredientes_extras_otr_ing_gk FOREIGN KEY (id_otro_ing) REFERENCES rig_otros_ingredientes (id);
+ALTER TABLE rig_ingredientes_extras ADD CONSTRAINT rig_ingredientes_extras_ing_ese_fk FOREIGN KEY (id_prov_ing, cas_ing) REFERENCES rig_ingredientes_esencias (id_prov, cas),
+	ADD CONSTRAINT rig_ingredientes_extras_otr_ing_gk FOREIGN KEY (cas_otr_ing) REFERENCES rig_otros_ingredientes (cas);
 
 CREATE TABLE rig_perfumes (
 	id INTEGER PRIMARY KEY,
@@ -350,6 +319,7 @@ CREATE TABLE rig_presentaciones_perfumes (
 	id_int INTEGER,
 	id INTEGER,
 	vol NUMERIC(10, 2),
+	unidad VARCHAR (3),
 	PRIMARY KEY (id_perf, id_int, id)
 );
 
@@ -425,19 +395,19 @@ ALTER TABLE rig_monoliticos ADD CONSTRAINT rig_monoliticos_id_perf_fk FOREIGN KE
 CREATE TABLE rig_esencias (
 	id_fao SMALLINT,
 	id_esenp INTEGER,
-	PRIMARY KEY (id_fao,  id_esenp)
+	PRIMARY KEY (id_fao, id_esenp)
 );
 
 ALTER TABLE rig_esencias ADD CONSTRAINT rig_esencias_id_fao FOREIGN KEY (id_fao) REFERENCES rig_familias_olfativas,
 	ADD CONSTRAINT rig_esencias_id_esenp FOREIGN KEY (id_esenp) REFERENCES rig_esencias_perfumes;
 
 CREATE TABLE rig_componentes_funcionales (
-	id_otro_ing INTEGER,
+	cas_otr_ing INTEGER,
 	id_perf INTEGER,
-	PRIMARY KEY (id_otro_ing, id_perf)
+	PRIMARY KEY (cas_otr_ing, id_perf)
 );
 
-ALTER TABLE rig_componentes_funcionales ADD CONSTRAINT rig_componentes_funcionales_otro_ing_fk FOREIGN KEY (id_otro_ing) REFERENCES rig_otros_ingredientes (id),
+ALTER TABLE rig_componentes_funcionales ADD CONSTRAINT rig_componentes_funcionales_otro_ing_fk FOREIGN KEY (cas_otr_ing) REFERENCES rig_otros_ingredientes (cas),
 	ADD CONSTRAINT rig_componentes_funcionales_id_perf_fk FOREIGN KEY (id_perf) REFERENCES rig_perfumes;
 
 CREATE TABLE rig_origenes (
@@ -496,14 +466,14 @@ CREATE TABLE rig_productos_contratados (
 	id_ctra INTEGER,
 	id SMALLINT, --No amerita una secuencia ya que nunca cambia
 	id_prov_ing SMALLINT,
-	id_ing INTEGER,
-	id_otr_ing INTEGER,
+	cas_ing BIGINT,
+	cas_otr_ing BIGINT,
 	PRIMARY KEY (id_ctra, id) --AK
 );
 
 ALTER TABLE rig_productos_contratados ADD CONSTRAINT rig_productos_contratados_id_ctra_fk FOREIGN KEY (id_ctra) REFERENCES rig_contrato,
-	ADD CONSTRAINT rig_productos_contratados_ing_fk FOREIGN KEY (id_prov_ing, id_ing) REFERENCES rig_ingredientes_esencias (id_prov, id),
-	ADD CONSTRAINT rig_productos_contratados_otr_ing_fk FOREIGN KEY (id_otr_ing) REFERENCES rig_otros_ingredientes (id);
+	ADD CONSTRAINT rig_productos_contratados_ing_fk FOREIGN KEY (id_prov_ing, cas_ing) REFERENCES rig_ingredientes_esencias (id_prov, cas),
+	ADD CONSTRAINT rig_productos_contratados_otr_ing_fk FOREIGN KEY (cas_otr_ing) REFERENCES rig_otros_ingredientes (cas);
 
 CREATE TABLE rig_pedidos (
 	id INTEGER PRIMARY KEY,
@@ -530,16 +500,16 @@ CREATE TABLE rig_detalles_pedidos (
 	renglon SMALLINT, --No amerita una secuencia
 	cantidad INTEGER NOT NULL,
 	id_prov_ing BIGINT,
-	id_ing BIGINT,
+	cas_ing BIGINT,
 	id_pre_ing BIGINT,
-	id_otro_ing BIGINT,
+	cas_otr_ing BIGINT,
 	id_pre_otr BIGINT,
 	PRIMARY KEY (id_ped, renglon)
 );
 
 ALTER TABLE rig_detalles_pedidos ADD CONSTRAINT rig_detalles_pedidos_ck CHECK (cantidad > 0), --AK
-	ADD CONSTRAINT rig_detalles_pedidos_ing_fk FOREIGN KEY (id_prov_ing, id_ing, id_pre_ing) REFERENCES rig_presentaciones_ingredientes (id_prov, id_ing, cod_present),
-	ADD CONSTRAINT rig_detalles_pedidos_otr_fk FOREIGN KEY (id_otro_ing, id_pre_otr) REFERENCES rig_presentaciones_otros_ingredientes (id_otro_ing, cod_present);
+	ADD CONSTRAINT rig_detalles_pedidos_ing_fk FOREIGN KEY (id_prov_ing, cas_ing, id_pre_ing) REFERENCES rig_presentaciones_ingredientes (id_prov, cas_ing, cod_present),
+	ADD CONSTRAINT rig_detalles_pedidos_otr_fk FOREIGN KEY (cas_otr_ing, id_pre_otr) REFERENCES rig_presentaciones_otros_ingredientes (cas_otr_ing, cod_present);
 
 CREATE TABle rig_pagos (
 	id_ped INTEGER,
@@ -1028,64 +998,183 @@ INSERT INTO rig_variables VALUES (DEFAULT, 'Ubicación', 'Ubicación geográfica
 	(DEFAULT, 'Cumplimiento de envios', 'Rendimiento del proveedor a lo largo del período'),
 	(DEFAULT, 'Condiciones de pago', 'Alternativas de pago ofrecidas por el proveedor');
 
+--CREATE TABLE rig_prohibidas (
+--	cas BIGINT PRIMARY KEY,
+--	nombre VARCHAR (15),
+--	tipo VARCHAR (3)
+--);
+
+--ALTER TABLE rig_prohibidas ADD CONSTRAINT rig_prohibidas_ck CHECK (tipo IN ('R', 'S', 'R-S'));
+
+INSERT INTO rig_prohibidas VALUES (100516, 'Benzyl alcohol', 'R'),
+	(100527, 'Benzaldehyde', 'R'),
+	(101393, 'α-Methyl cinnamic aldehyde', 'R'),
+	(101859, 'α-Amyl cinnamic alcohol', 'R'),
+	(101860, 'α-Hexyl cinnamic aldehyde', 'R'),
+	(103413, 'Benzyl cinnamate', 'R'),
+	(103504, 'Dibenzyl ether', 'R'),
+	(103640, 'Bromostyrene', 'P'),
+	(103957, 'Cyclamen aldehyde', 'R-S'),
+	(103694684, '2,2-Dimethyl-3-(3-tolyl)propan-1-ol', 'R-S'),
+	(104278, 'α-Methyl anisylidene acetone', 'P'),
+	(105135, 'Anisyl alcohol', 'R'),
+	(1331813, 'Anisyl alcohol', 'R'),
+	(106025, 'Cyclopentadecanolide', 'R'),
+	(1117619  , 'Citronellol', 'R'),
+	(26489010 , 'Citronellol', 'R'),
+	(141253 , 'Citronellol', 'R'),
+	(7540514, 'Citronellol', 'R'),
+	(106230 , 'Citronellal', 'R'),
+	(5949053, 'Citronellal', 'R'),
+	(106241, 'Geraniol', 'R'),	
+	(107755, 'Hydroxycitronellal', 'R'),
+	(107898544, '3,3-Dimethyl-5-(2,2,3-trimethyl-3-cyclopenten-1-yl)-4-penten-2-ol', 'R'),
+	(108883, 'Toluene', 'P-S'),
+	(109864, 'Ethylene glycol monomethyl ether', 'P'),
+	(110496, 'Ethylene glycol monomethyl acetate', 'P'),
+	(110805, 'Ethylene glycol monoethyl ether', 'P'),
+	(111159, 'Ethylene glycol monoethyl acetate', 'P'),
+	(11028425, 'Cedrene', 'R'),
+	(469614, 'Cedrene', 'R'),
+	(546281, 'Cedrene', 'R'),
+	(111126, 'Methyl heptine carbonate', 'R'),
+	(111284 , '2,4-Hexadien-1-ol', 'P'),
+	(17102646, '2,4-Hexadien-1-ol', 'P'),
+	(111808, 'Methyl octine carbonate', 'R'),
+	(116267, '2,6,6-Trimethylcyclohex-1,3-dienyl methanal', 'R'),
+	(116665, 'Musk moskene', 'P'),
+	(118581, 'Benzyl salicylate', 'R'),
+	(119846, 'Dihydrocoumarin', 'R'),
+	(120514, 'Benzyl benzoate', 'R'),
+	(1205170, 'α-Methyl-1,3-benzodioxole-5-propionaldehyde (MMDHCA)', 'R'),
+	(122032, 'Cuminaldehyde', 'R'),	
+	(122394, 'Diphenylamine', 'P'),
+	(122407, 'α-Amyl cinnamic aldehyde', 'R'),
+	(122576, 'Benzylidene acetone', 'P'),
+	(122781, 'Phenylacetaldehyde', 'R'),
+	(123115, 'p-Methoxybenzaldehyde', 'R'),
+	(13144882, '1-(2,4,4,5,5-Pentamethyl-1-cyclopenten-1-yl)ethan-1-one', 'R'),
+	(13257448, '2-Nonyn-1-al dimethyl acetal', 'R'),
+	(1335462, 'Methyl ionone, mixed isomers', 'R-S'),
+	(127424, 'Methyl ionone, mixed isomers', 'R-S'),
+	(127435, 'Methyl ionone, mixed isomers', 'R-S'),
+	(127515, 'Methyl ionone, mixed isomers', 'R-S'),
+	(7779308, 'Methyl ionone, mixed isomers', 'R-S'),
+	(79890, 'Methyl ionone, mixed isomers', 'R-S'),
+	(1335940, 'Methyl ionone, mixed isomers', 'R-S'),
+	(1335666, 'Isocyclocitral', 'R'),
+	(1423467, 'Isocyclocitral', 'R'),
+	(67634075, 'Isocyclocitral', 'R'),
+	(13393936, 'Hydroabietyl alcohol, Dihydroabietyl alcohol', 'P'),
+	(26266773, 'Hydroabietyl alcohol, Dihydroabietyl alcohol', 'P'),
+	(1333897, 'Hydroabietyl alcohol, Dihydroabietyl alcohol', 'R'),
+	(13706860, 'Acetyl isovaleryl', 'P'),
+	(138863, 'Limonene', 'S'),
+	(7705148, 'Limonene', 'S'),
+	(5989275, 'Limonene', 'S'),
+	(5989548, 'Limonene', 'S'),
+	(140294, 'Benzyl cyanide', 'R-P'),
+	(140670, 'Estragole', 'R'),
+	(1407278, 'Estragole', 'R'),
+	(77525189, 'Estragole', 'R'),
+	(140885, 'Ethyl acrylate', 'P'),
+	(141059, 'Diethyl maleate', 'P'),
+	(141106, 'Pseudoionone', 'P-S'),
+	(144020224, 'Acetic acid, anhydride with 1,5,10-Trimethyl-1,5,9-cyclododecatriene', 'R'),
+	(28371995, 'Acetic acid, anhydride with 1,5,10-Trimethyl-1,5,9-cyclododecatriene', 'R'),
+	(145391, 'Musk tibetene', 'P'),
+	(150765, 'Hydroquinone monomethyl ether', 'P'),
+	(1504741, 'o-Methoxycinnamaldehyde', 'R'),
+	(15323350, 'Acetyl hexamethyl indan (AHMI)', 'R'),
+	(1604280, '6-Methyl-3,5-heptadien-2-one', 'R'),
+	(16251777, '3-Phenylbutanal', 'R'),
+	(17369594, '3-Propylidenephthalide', 'R'),
+	(17373896, 'α-Hexylidene cyclopentanone', 'R'),
+	(17488652, '4-Phenyl-3-buten-2-ol', 'R'),
+	(17874349, '4,6-Dimethyl-8-tert-butylcoumarin', 'P'),
+	(18127010, 'p-tert-Butyldihydrocinnamaldehyde', 'R'),
+	(18318837, 'trans-2-Hexenal dimethyl acetal', 'P'),
+	(18485386, '2,4-Dodecadien-1-ol, (2E, 4E)', 'P'),
+	(18829555, 'trans-2-Heptenal', 'P'),
+	(1885387 , 'Cinnamyl nitrile', 'P'),
+	(4360478, 'Cinnamyl nitrile', 'R'),
+	(19317114, 'Farnesal', 'R'),
+	(19343783, '1,2,3,4-Tetrahydro-4-methylquinoline', 'S'),
+	(2111753, 'Perilla aldehyde', 'R'),
+	(23696857, 'Rose ketones', 'R'),
+	(23726934, 'Rose ketones', 'R'),
+	(59739638, 'Rose ketones', 'R'),
+	(43052875, 'Rose ketones', 'R'),
+	(24720090, 'Rose ketones', 'R'),
+	(23726945, 'Rose ketones', 'R'),
+	(23726923, 'Rose ketones', 'R'),
+	(23726912, 'Rose ketones', 'R'),
+	(35044689, 'Rose ketones', 'R'),
+	(57378684, 'Rose ketones', 'R'),
+	(71048823, 'Rose ketones', 'R'),
+	(35087491, 'Rose ketones', 'R'),
+	(39872576, 'Rose ketones', 'R'),
+	(70266487, 'Rose ketones', 'R'),
+	(33673711, 'Rose ketones', 'R'),
+	(87064195, 'Rose ketones', 'R'),
+	(24048144 , '2,6,10-Trimethylundeca-5,9-dien-1-ol', 'R'),
+	(185019196 , '2,6,10-Trimethylundeca-5,9-dien-1-ol', 'R'),
+	(58001880 , '2,6,10-Trimethylundeca-5,9-dien-1-ol', 'R'),
+	(58001879, '2,6,10-Trimethylundeca-5,9-dien-1-ol', 'R'),
+	(1373932230 , '2,6,10-Trimethylundeca-5,9-dien-1-ol', 'R'),
+	(1018832079, '2,6,10-Trimethylundeca-5,9-dien-1-ol', 'R'),
+	(2442106, '1-Octen-3-yl acetate', 'R'),
+	(2445832, '7-Methylcoumarin', 'P'),
+	(25564221, 'Amylcyclopentenone', 'P'),
+	(2563077, '2-Ethoxy-4-methylphenol', 'P'),
+	(25677401, '2-Pentylidene cyclohexanone', 'P'),
+	(26651967, '1,2,3,4-Tetrahydro-4-methylquinoline', 'P-S'),
+	(72968253, '1,2,3,4-Tetrahydro-4-methylquinoline', 'P-S'),
+	(1117415, '1,2,3,4-Tetrahydro-4-methylquinoline', 'P-S');
+	
 --rig_ingredientes_esencias
 
-INSERT INTO rig_ingredientes_esencias (id_prov, id, cas, nombre, tipo, des, id_ubic, solubilidad, peligrosidad, vida_alm) VALUES (3, DEFAULT,'5392-40-5', 'Citral', 'NATURAL', 'Citral tiene un fuerte olor a limón (cítrico). El olor a limón de Neral es menos intenso, pero más dulce. Por lo tanto, Citral es un compuesto aromático utilizado en perfumería por su efecto cítrico. Citral también se usa como sabor y para fortificar el aceite de limón. También tiene fuertes cualidades antimicrobianas y efectos feromonales en ácaros e insectos. Citral se usa en la síntesis de vitamina A, licopeno, ionona y metilionona, para enmascarar el olor a humo.', 18,'Soluble en alcohol, aceite de parafina y agua de 1340 mg/L a 25°C', 'BAJA', 24*30),
-	(3, DEFAULT,'106-24-1', 'Geraniol', 'NATURAL', 'El geraniol es un monoterpenoide y un alcohol. Es el componente principal del aceite de rosa, el aceite de palmarosa y el aceite de citronela. Es un aceite incoloro, aunque las muestras comerciales pueden aparecer amarillas. El grupo funcional derivado del geraniol (en esencia, geraniol que carece del terminal -OH) se llama geranilo.', 18,'Soluble en alcohol, aceite de parafina, kerosene y agua de 25.16 mg/L a 25°C', 'BAJA', 24*30),
-	(3, DEFAULT,'79-77-6', 'Beta-ionone', 'NATURAL', 'La beta-ionona es un líquido incoloro a amarillo claro con olor a madera de cedro. En una solución alcohólica muy diluida, el olor se asemeja al olor a violetas. La beta-ionona se encuentra en la zanahoria y en muchos aceites esenciales, incluido el aceite de boronia megastigma (boronia marrón) y la ionona comercial. También es un agente saborizante.', 18,'Soluble en alcohol y agua de 1340 mg/L a 25°C', 'MEDIA', 24*30),
-	(1, DEFAULT,'70788-30-6', 'Propanol de madera', 'SINTETICO', 'Es un isómero muy común en la industria del perfume. Se caracteriza por su olor fuerte a madera y almizcle. Su fórmula química es 1-(2,2,6-trimethylcyclohexyl)hexan-3-ol', 18,'Soluble en alcohol y agua de 1.149 mg/L a 25°C', 'BAJA', 24*30),
-	(1, DEFAULT,'98-55-5', 'Terpineol alpha', 'NATURAL', 'Terpineol con fórmula química C10H18O, es una forma natural de monoterpeno de alcohol que se ha aislado a partir de una variedad de fuentes tales como el aceite de cajeput, aceite de pino, y aceite petitgrain. Hay cuatro isómeros , alfa -, beta -, gamma -terpineol, y terpinen-4-ol. beta - y gamma -terpineol difieren sólo por la ubicación del doble enlace. Terpineol es por lo general una mezcla de estos isómeros con alfa -terpineol como componente principal.',25, 'Soluble en alcohol, aceite de parafina, kerosene y agua de 710 mg/L a 25°C' ,'BAJA', 24*30),
-	(1, DEFAULT,'88-41-5', 'Otcbha', 'NATURAL', 'Compuesto de incoloro o amarillo pálido que tiene un fuerte y duradero olor a manzana. Este compuesto es usado generalmente como solvente o como componente de fragancias', 25, 'Solubilidad en alcohol, aceite de parafina y agua de 7.462 mg/L a 25','MEDIA', 24*30),
-	(2, DEFAULT,'93-92-5', 'Aceite de styrallyl', 'NATURAL', 'Compuesto de color amarillo pálido con un dulce olor frutal y herbaceo. Este compuesto es usado generalmente para otorgar un olor a gardenia', 25, 'Solubilidad en alcohol, aceite de parafina y agua de 481.1 mg/L a 25','MEDIA', 24*30),
-	(2, DEFAULT,'60-12-8', 'Alcohol fenetílico', 'NATURAL', 'El alcohol fenetílico, o 2-feniletanol, es el compuesto orgánico que consiste en un grupo de grupo fenetilo (C6H5CH2CH2) unido a OH. Es un líquido incoloro se encuentra presente ampliamente en la naturaleza, se encuentra en una variedad de aceites esenciales. Tiene un agradable olor floral.', 25, 'Soluble en alcohol, aceite de parafina, kerosene y agua de 2.199e+004 mg/L a 25°C','BAJA', 24*30),
-	(2, DEFAULT,'103-95-7', 'Aldehído de ciclamen', 'SINTETICO', 'El aldehído de ciclamen es una molécula de fragancia que se ha utilizado en jabones, detergentes, lociones y perfumes desde la década de 1920. Adicionalmete es empleado en aditivos para alimentos de forma directa', 25, 'Soluble en alcohol, aceite de parafina y agua de 22.59 mg/L a 25°C','BAJA', 24*30),
-	(4, DEFAULT,'125-12-2', 'Acetato de bornilo', 'SINTETICO', 'Acetato de Bornilo es una molécula sintética altamente utilizada en la industria del perfume y en la elaboración de fragancias', 25, 'Soluble en alcohol, aceite de parafina, kerosene y agua de 9.721 mg/L a 25°C','BAJA', 24*30),
-	(4, DEFAULT,'141-12-8', 'Acetato de nerilo', 'SINTETICO', 'Acetato de nerilo es un compuesto químico que se encuentra en los aceites de cítricos. Químicamente, es el acetato de éster de nerol. Se utiliza en sabores y en perfumería para impartir aromas florales y frutales.', 25, 'Soluble en alcohol, aceite de parafina y agua de 18.24 mg/L a 25°C','BAJA', 24*30),
-	(4, DEFAULT,'7785-33-3', 'Acetato de nerilo', 'NATURAL', 'Es un compuesto orgánico de la clase terpeno, uno de los dos isómeros del pineno que está presente en algunos aceites, tales como el aceite de eucalipto y aceite de cáscara de naranja', 28, 'Soluble en alcohol y agua de 0.3194 mg/L a 25°C','BAJA', 24*30),
-	(5, DEFAULT,'100-06-1', 'Acetanisola', 'SINTETICO', 'El acetanisol es un compuesto químico aromático con un aroma descrito como dulce, afrutado, a nuez y similar a la vainilla. Además, el acetanisol a veces puede oler a mantequilla o caramelo. El acetanisol se encuentra naturalmente en el castoreum, la secreción glandular del castor.', 25, 'Soluble en alcohol y agua de 2474 mg/L a 25°C','BAJA', 24*30),
-	(5, DEFAULT,'52474-60-9', 'Aldemone', 'SINTETICO', 'Es un compuesto químico de olor marino/ozono muy difuso. Su fórmula es 1-(4-methoxyphenyl)ethanone y usualmente se encuentra como cristales bláncos o amarillos muy pálidos', 28, 'Soluble en alcohol y agua de 1.512 mg/L a 25°C','BAJA', 24*30),
-	(5, DEFAULT,'2051-78-7', 'Octanoato de allil', 'SINTETICO', 'Es un compuesto químico incoloro y cristalino, de olor a piña/frutal de duración media. También es conocido bajo el nombre de prop-2-enyl butanoate', 28, 'Soluble en alcohol y agua de 1233 mg/L a 25°C','MEDIA', 24*30),
-	(6, DEFAULT,'8015-73-4', 'Aceite de albahaca dulce', 'NATURAL', 'La albahaca es una hierba aromática original de Irán, India, Pakistán y otras regiones tropicales de Asia. El aceite esencial de albahaca es rico en estragol', 64, 'Soluble en alcohol, aceite de parafina y agua de 332.1 mg/L a 25°C','BAJA', 24*30),
-	(6, DEFAULT,'8006-82-4', 'Aceite de pimienta negra', 'NATURAL', 'Proviene de un fruto de aproximadamente 5 mm que se puede usar entero o en polvo para la elaboración de fragancias picantes o como aditivo alimenticio', 25, 'Soluble en alcohol','BAJA', 6*30),
-	(6, DEFAULT,'8015-88-1', 'Aceite de semillas de zanahoria', 'NATURAL', 'El aceite esencial de zanahoria se extrae de las semillas secas de zanahoria mediante la destilación por vapor, la cual preserva perfectamente los nutrientes valiosos. Las semillas de zanahoria producen el aceite esencial pero también pueden utilizarse otras partes de la planta', 25, 'Soluble en alcohol, aceite de parafina y agua de 8.507 mg/L a 25°C','BAJA', 24*30);
+INSERT INTO rig_ingredientes_esencias (id_prov, cas, nombre, tipo, des, id_ubic, solubilidad, peligrosidad, vida_alm) VALUES (3, 5392405, 'Citral', 'NATURAL', 'Citral tiene un fuerte olor a limón (cítrico). El olor a limón de Neral es menos intenso, pero más dulce. Por lo tanto, Citral es un compuesto aromático utilizado en perfumería por su efecto cítrico. Citral también se usa como sabor y para fortificar el aceite de limón. También tiene fuertes cualidades antimicrobianas y efectos feromonales en ácaros e insectos. Citral se usa en la síntesis de vitamina A, licopeno, ionona y metilionona, para enmascarar el olor a humo.', 18,'Soluble en alcohol, aceite de parafina y agua de 1340 mg/L a 25°C', 'BAJA', 24*30),
+	(3, 106241, 'Geraniol', 'NATURAL', 'El geraniol es un monoterpenoide y un alcohol. Es el componente principal del aceite de rosa, el aceite de palmarosa y el aceite de citronela. Es un aceite incoloro, aunque las muestras comerciales pueden aparecer amarillas. El grupo funcional derivado del geraniol (en esencia, geraniol que carece del terminal -OH) se llama geranilo.', 18,'Soluble en alcohol, aceite de parafina, kerosene y agua de 25.16 mg/L a 25°C', 'BAJA', 24*30),
+	(3, 79776, 'Beta-ionone', 'NATURAL', 'La beta-ionona es un líquido incoloro a amarillo claro con olor a madera de cedro. En una solución alcohólica muy diluida, el olor se asemeja al olor a violetas. La beta-ionona se encuentra en la zanahoria y en muchos aceites esenciales, incluido el aceite de boronia megastigma (boronia marrón) y la ionona comercial. También es un agente saborizante.', 18,'Soluble en alcohol y agua de 1340 mg/L a 25°C', 'MEDIA', 24*30),
+	(1, 70788306, 'Propanol de madera', 'SINTETICO', 'Es un isómero muy común en la industria del perfume. Se caracteriza por su olor fuerte a madera y almizcle. Su fórmula química es 1-(2,2,6-trimethylcyclohexyl)hexan-3-ol', 18,'Soluble en alcohol y agua de 1.149 mg/L a 25°C', 'BAJA', 24*30),
+	(1, 98555, 'Terpineol alpha', 'NATURAL', 'Terpineol con fórmula química C10H18O, es una forma natural de monoterpeno de alcohol que se ha aislado a partir de una variedad de fuentes tales como el aceite de cajeput, aceite de pino, y aceite petitgrain. Hay cuatro isómeros , alfa -, beta -, gamma -terpineol, y terpinen-4-ol. beta - y gamma -terpineol difieren sólo por la ubicación del doble enlace. Terpineol es por lo general una mezcla de estos isómeros con alfa -terpineol como componente principal.',25, 'Soluble en alcohol, aceite de parafina, kerosene y agua de 710 mg/L a 25°C' ,'BAJA', 24*30),
+	(1, 88415, 'Otcbha', 'NATURAL', 'Compuesto de incoloro o amarillo pálido que tiene un fuerte y duradero olor a manzana. Este compuesto es usado generalmente como solvente o como componente de fragancias', 25, 'Solubilidad en alcohol, aceite de parafina y agua de 7.462 mg/L a 25','MEDIA', 24*30),
+	(2, 93925, 'Aceite de styrallyl', 'NATURAL', 'Compuesto de color amarillo pálido con un dulce olor frutal y herbaceo. Este compuesto es usado generalmente para otorgar un olor a gardenia', 25, 'Solubilidad en alcohol, aceite de parafina y agua de 481.1 mg/L a 25','MEDIA', 24*30),
+	(2, 60128, 'Alcohol fenetílico', 'NATURAL', 'El alcohol fenetílico, o 2-feniletanol, es el compuesto orgánico que consiste en un grupo de grupo fenetilo (C6H5CH2CH2) unido a OH. Es un líquido incoloro se encuentra presente ampliamente en la naturaleza, se encuentra en una variedad de aceites esenciales. Tiene un agradable olor floral.', 25, 'Soluble en alcohol, aceite de parafina, kerosene y agua de 2.199e+004 mg/L a 25°C','BAJA', 24*30),
+	(2, 103957, 'Aldehído de ciclamen', 'SINTETICO', 'El aldehído de ciclamen es una molécula de fragancia que se ha utilizado en jabones, detergentes, lociones y perfumes desde la década de 1920. Adicionalmete es empleado en aditivos para alimentos de forma directa', 25, 'Soluble en alcohol, aceite de parafina y agua de 22.59 mg/L a 25°C','BAJA', 24*30),
+	(4, 125122, 'Acetato de bornilo', 'SINTETICO', 'Acetato de Bornilo es una molécula sintética altamente utilizada en la industria del perfume y en la elaboración de fragancias', 25, 'Soluble en alcohol, aceite de parafina, kerosene y agua de 9.721 mg/L a 25°C','BAJA', 24*30),
+	(4, 141128, 'Acetato de nerilo', 'SINTETICO', 'Acetato de nerilo es un compuesto químico que se encuentra en los aceites de cítricos. Químicamente, es el acetato de éster de nerol. Se utiliza en sabores y en perfumería para impartir aromas florales y frutales.', 25, 'Soluble en alcohol, aceite de parafina y agua de 18.24 mg/L a 25°C','BAJA', 24*30),
+	(4, 7785333, 'Acetato de nerilo', 'NATURAL', 'Es un compuesto orgánico de la clase terpeno, uno de los dos isómeros del pineno que está presente en algunos aceites, tales como el aceite de eucalipto y aceite de cáscara de naranja', 28, 'Soluble en alcohol y agua de 0.3194 mg/L a 25°C','BAJA', 24*30),
+	(5, 100061, 'Acetanisola', 'SINTETICO', 'El acetanisol es un compuesto químico aromático con un aroma descrito como dulce, afrutado, a nuez y similar a la vainilla. Además, el acetanisol a veces puede oler a mantequilla o caramelo. El acetanisol se encuentra naturalmente en el castoreum, la secreción glandular del castor.', 25, 'Soluble en alcohol y agua de 2474 mg/L a 25°C','BAJA', 24*30),
+	(5, 52474609, 'Aldemone', 'SINTETICO', 'Es un compuesto químico de olor marino/ozono muy difuso. Su fórmula es 1-(4-methoxyphenyl)ethanone y usualmente se encuentra como cristales bláncos o amarillos muy pálidos', 28, 'Soluble en alcohol y agua de 1.512 mg/L a 25°C','BAJA', 24*30),
+	(5, 2051787, 'Octanoato de allil', 'SINTETICO', 'Es un compuesto químico incoloro y cristalino, de olor a piña/frutal de duración media. También es conocido bajo el nombre de prop-2-enyl butanoate', 28, 'Soluble en alcohol y agua de 1233 mg/L a 25°C','MEDIA', 24*30),
+	(6, 8015734, 'Aceite de albahaca dulce', 'NATURAL', 'La albahaca es una hierba aromática original de Irán, India, Pakistán y otras regiones tropicales de Asia. El aceite esencial de albahaca es rico en estragol', 64, 'Soluble en alcohol, aceite de parafina y agua de 332.1 mg/L a 25°C','BAJA', 24*30),
+	(6, 8006824, 'Aceite de pimienta negra', 'NATURAL', 'Proviene de un fruto de aproximadamente 5 mm que se puede usar entero o en polvo para la elaboración de fragancias picantes o como aditivo alimenticio', 25, 'Soluble en alcohol','BAJA', 6*30),
+	(6, 8015881, 'Aceite de semillas de zanahoria', 'NATURAL', 'El aceite esencial de zanahoria se extrae de las semillas secas de zanahoria mediante la destilación por vapor, la cual preserva perfectamente los nutrientes valiosos. Las semillas de zanahoria producen el aceite esencial pero también pueden utilizarse otras partes de la planta', 25, 'Soluble en alcohol, aceite de parafina y agua de 8.507 mg/L a 25°C','BAJA', 24*30);
 
 --rig_presentaciones_ingredientes
 
-INSERT INTO rig_presentaciones_ingredientes VALUES (3, 1, DEFAULT, 4, 'ml', 3.25), (3, 1, DEFAULT, 15, 'ml', 5.00), (3, 1, DEFAULT, 30, 'ml', 6.25), (3, 1, DEFAULT, 80, 'ml', 14.31), (3, 1, DEFAULT, 250, 'g', 41.00), (3, 1, DEFAULT, 500, 'g', 69.00), (3, 1, DEFAULT, 1, 'kg', 118.00),
-	(3, 2, DEFAULT, 4, 'ml', 3.00), (3, 2, DEFAULT, 15, 'ml', 6.00), (3, 2, DEFAULT, 30, 'ml', 6.30), (3, 2, DEFAULT, 80, 'ml', 14.43), (3, 2, DEFAULT, 250, 'g', 28.00),
-	(3, 3, DEFAULT, 4, 'ml', 3.00), (3, 3, DEFAULT, 15, 'ml', 6.00), (3, 3, DEFAULT, 30, 'ml', 10.00), (3, 3, DEFAULT, 80, 'ml', 15.00), (3, 3, DEFAULT, 250, 'g', 25.00), (3, 3, DEFAULT, 500, 'g', 35.00),
-	(1, 4, DEFAULT, 4, 'ml', 4.50), (1, 4, DEFAULT, 15, 'ml', 10.50), (1, 4, DEFAULT, 30, 'ml', 18.50), (1, 4, DEFAULT, 80, 'ml', 40.50), (1, 4, DEFAULT, 250, 'g', 122.00), (1, 4, DEFAULT, 500, 'g', 232.00),
-	(1, 5, DEFAULT, 4, 'ml', 3.00), (1, 5, DEFAULT, 15, 'ml', 6.00), (1, 5, DEFAULT, 30, 'ml', 10.0), (1, 5, DEFAULT, 80, 'ml', 20.00), (1, 5, DEFAULT, 250, 'g', 50.00), (1, 5, DEFAULT, 500, 'g', 75.00), (1, 5, DEFAULT, 1, 'kg', 150.00),
-	(1, 6, DEFAULT, 4, 'ml', 3.00), (1, 6, DEFAULT, 15, 'ml', 6.00), (1, 6, DEFAULT, 30, 'ml', 9.00), (1, 6, DEFAULT, 80, 'ml', 15.00), (1, 6, DEFAULT, 250, 'g', 23.00),
-	(2, 7, DEFAULT, 4, 'ml', 3.00), (2, 7, DEFAULT, 15, 'ml', 6.00), (2, 7, DEFAULT, 30, 'ml', 9.00), (2, 7, DEFAULT, 80, 'ml', 15.00),
-	(2, 8, DEFAULT, 4, 'ml', 3.00), (2, 8, DEFAULT, 15, 'ml', 6.00), (2, 8, DEFAULT, 30, 'ml', 8.00), (2, 8, DEFAULT, 80, 'ml', 11.00), (2, 8, DEFAULT, 250, 'g', 26.50), (2, 8, DEFAULT, 500, 'g', 48.00), (2, 8, DEFAULT, 1, 'kg', 62.00),
-	(2, 9, DEFAULT, 4, 'ml', 3.00), (2, 9, DEFAULT, 15, 'ml', 6.00), (2, 9, DEFAULT, 30, 'ml', 9.00), (2, 9, DEFAULT, 80, 'ml', 12.00),
-	(4, 10, DEFAULT, 4, 'ml', 3.00), (4, 10, DEFAULT, 15, 'ml', 6.00), (4, 10, DEFAULT, 30, 'ml', 9.00), (4, 10, DEFAULT, 80, 'ml', 15.00),
-	(4, 11, DEFAULT, 4, 'ml', 3.00), (4, 11, DEFAULT, 15, 'ml', 6.00), (4, 11, DEFAULT, 30, 'ml', 9.00), (4, 11, DEFAULT, 80, 'ml', 15.00),
-	(4, 12, DEFAULT, 4, 'ml', 3.00), (4, 12, DEFAULT, 15, 'ml', 6.00), (4, 12, DEFAULT, 30, 'ml', 9.00), (4, 12, DEFAULT, 80, 'ml', 15.00),
-	(5, 13, DEFAULT, 8, 'g', 3.00), (5, 13, DEFAULT, 30, 'g', 9.00), (4, 11, DEFAULT, 80, 'g', 15.00),
-	(5, 14, DEFAULT, 4, 'ml', 5.00), (5, 14, DEFAULT, 15, 'ml', 8.00), (5, 14, DEFAULT, 30, 'ml', 10.00), (5, 14, DEFAULT, 80, 'ml', 15.00),
-	(5, 15, DEFAULT, 4, 'ml', 5.00), (5, 15, DEFAULT, 15, 'ml', 8.00), (5, 15, DEFAULT, 30, 'ml', 10.00), (5, 15, DEFAULT, 80, 'ml', 15.00),
-	(6, 16, DEFAULT, 4, 'ml', 3.00),
-	(6, 17, DEFAULT, 4, 'ml', 3.00), (6, 17, DEFAULT, 15, 'ml', 7.50), (6, 17, DEFAULT, 30, 'ml', 12.00), (6, 17, DEFAULT, 80, 'ml', 28.00),
-	(6, 17, DEFAULT, 4, 'ml', 4.50), (6, 17, DEFAULT, 15, 'ml', 9.00), (6, 17, DEFAULT, 30, 'ml', 15.00);
+INSERT INTO rig_presentaciones_ingredientes VALUES (3, 5392405, DEFAULT, 4, 'ml', 3.25), (3, 5392405, DEFAULT, 15, 'ml', 5.00), (3, 5392405, DEFAULT, 30, 'ml', 6.25), (3, 5392405, DEFAULT, 80, 'ml', 14.31), (3, 5392405, DEFAULT, 250, 'g', 41.00), (3, 5392405, DEFAULT, 500, 'g', 69.00), (3, 5392405, DEFAULT, 1, 'kg', 118.00),
+	(3, 106241, DEFAULT, 4, 'ml', 3.00), (3, 106241, DEFAULT, 15, 'ml', 6.00), (3, 106241, DEFAULT, 30, 'ml', 6.30), (3, 106241, DEFAULT, 80, 'ml', 14.43), (3, 106241, DEFAULT, 250, 'g', 28.00),
+	(3, 79776, DEFAULT, 4, 'ml', 3.00), (3, 79776, DEFAULT, 15, 'ml', 6.00), (3, 79776, DEFAULT, 30, 'ml', 10.00), (3, 79776, DEFAULT, 80, 'ml', 15.00), (3, 79776, DEFAULT, 250, 'g', 25.00), (3, 79776, DEFAULT, 500, 'g', 35.00),
+	(1, 70788306, DEFAULT, 4, 'ml', 4.50), (1, 70788306, DEFAULT, 15, 'ml', 10.50), (1, 70788306, DEFAULT, 30, 'ml', 18.50), (1, 70788306, DEFAULT, 80, 'ml', 40.50), (1, 70788306, DEFAULT, 250, 'g', 122.00), (1, 70788306, DEFAULT, 500, 'g', 232.00),
+	(1, 98555, DEFAULT, 4, 'ml', 3.00), (1, 98555, DEFAULT, 15, 'ml', 6.00), (1, 98555, DEFAULT, 30, 'ml', 10.0), (1, 98555, DEFAULT, 80, 'ml', 20.00), (1, 98555, DEFAULT, 250, 'g', 50.00), (1, 98555, DEFAULT, 500, 'g', 75.00), (1, 98555, DEFAULT, 1, 'kg', 150.00),
+	(1, 88415, DEFAULT, 4, 'ml', 3.00), (1, 88415, DEFAULT, 15, 'ml', 6.00), (1, 88415, DEFAULT, 30, 'ml', 9.00), (1, 88415, DEFAULT, 80, 'ml', 15.00), (1, 88415, DEFAULT, 250, 'g', 23.00),
+	(2, 93925, DEFAULT, 4, 'ml', 3.00), (2, 93925, DEFAULT, 15, 'ml', 6.00), (2, 93925, DEFAULT, 30, 'ml', 9.00), (2, 93925, DEFAULT, 80, 'ml', 15.00),
+	(2, 60128, DEFAULT, 4, 'ml', 3.00), (2, 60128, DEFAULT, 15, 'ml', 6.00), (2, 60128, DEFAULT, 30, 'ml', 8.00), (2, 60128, DEFAULT, 80, 'ml', 11.00), (2, 60128, DEFAULT, 250, 'g', 26.50), (2, 60128, DEFAULT, 500, 'g', 48.00), (2, 60128, DEFAULT, 1, 'kg', 62.00),
+	(2, 103957, DEFAULT, 4, 'ml', 3.00), (2, 103957, DEFAULT, 15, 'ml', 6.00), (2, 103957, DEFAULT, 30, 'ml', 9.00), (2, 103957, DEFAULT, 80, 'ml', 12.00),
+	(4, 125122, DEFAULT, 4, 'ml', 3.00), (4, 125122, DEFAULT, 15, 'ml', 6.00), (4, 125122, DEFAULT, 30, 'ml', 9.00), (4, 125122, DEFAULT, 80, 'ml', 15.00),
+	(4, 141128, DEFAULT, 4, 'ml', 3.00), (4, 141128, DEFAULT, 15, 'ml', 6.00), (4, 141128, DEFAULT, 30, 'ml', 9.00), (4, 141128, DEFAULT, 80, 'ml', 15.00),
+	(4, 7785333, DEFAULT, 4, 'ml', 3.00), (4, 7785333, DEFAULT, 15, 'ml', 6.00), (4, 7785333, DEFAULT, 30, 'ml', 9.00), (4, 7785333, DEFAULT, 80, 'ml', 15.00),
+	(5, 100061, DEFAULT, 8, 'g', 3.00), (5, 100061, DEFAULT, 30, 'g', 9.00), (5, 100061, DEFAULT, 80, 'g', 15.00),
+	(5, 52474609, DEFAULT, 4, 'ml', 5.00), (5, 52474609, DEFAULT, 15, 'ml', 8.00), (5, 52474609, DEFAULT, 30, 'ml', 10.00), (5, 52474609, DEFAULT, 80, 'ml', 15.00),
+	(5, 2051787, DEFAULT, 4, 'ml', 5.00), (5, 2051787, DEFAULT, 15, 'ml', 8.00), (5, 2051787, DEFAULT, 30, 'ml', 10.00), (5, 2051787, DEFAULT, 80, 'ml', 15.00),
+	(6, 8015734, DEFAULT, 4, 'ml', 3.00),
+	(6, 8006824, DEFAULT, 4, 'ml', 3.00), (6, 8006824, DEFAULT, 15, 'ml', 7.50), (6, 8006824, DEFAULT, 30, 'ml', 12.00), (6, 8006824, DEFAULT, 80, 'ml', 28.00),
+	(6, 8015881, DEFAULT, 4, 'ml', 4.50), (6, 8015881, DEFAULT, 15, 'ml', 9.00), (6, 8015881, DEFAULT, 30, 'ml', 15.00);
 
 --rig_perfumes
-
---CREATE TABLE rig_perfumes (
---	id INTEGER PRIMARY KEY,
---  id_prod SMALLINT,
---	nombre VARCHAR (30) NOT NULL,
---	genero VARCHAR NOT NULL,
---	tipo VARCHAR (5) NOT NULL,
---	edad VARCHAR (20) NOT NULL,--Revisar,
---	fcha_crea SMALLINT,
---	des TEXT
---);
-
---CREATE SEQUENCE rig_perfumes_id_seq AS INTEGER OWNED BY rig_perfumes.id;
---ALTER TABLE rig_perfumes ADD CONSTRAINT rig_perfumes_ck CHECK ((genero IN ('F', 'M')) AND (tipo IN ('MONO', 'FASES')) AND edad IN ('JOVEN', 'ADULTO', 'MAYOR', 'ATEMPORAL')),
---	ALTER COLUMN id SET DEFAULT nextval('rig_perfumes_id_seq');
 
 INSERT INTO rig_perfumes VALUES (DEFAULT, 1,'Acqua di Giò', 'M', 'FASES', 'ADULTO', 1996, 'Acqua di Giò no es solo agua. Es una fragancia de la vida, una oda voluptuosa a la naturaleza y su perfección, a un hombre que ama la libertad y seguro de sí mismo, que se convierte en uno con el mar.'),
 	(DEFAULT, 1,'Boss Bottled', 'M', 'FASES', 'ADULTO', 2008, 'Boss Bottled Intense reveals the Man of Today and his strength of character. The fragrance is laden with more woods, spices and a powerful concentration of precious oils. Bright apple is tempered by a calmer and more composed green orange blossom. The effect is a fragrance that is less sweet, yet more luxurious, and emphatically, unapologetically masculine.'),
@@ -1097,23 +1186,10 @@ INSERT INTO rig_perfumes VALUES (DEFAULT, 1,'Acqua di Giò', 'M', 'FASES', 'ADUL
 	(DEFAULT, 3,'Let you Love Me de Blumarine', 'F', 'MONO', 'ADULTO', 2020, 'La nueva fragancia femenina Let You Love Me huele a audacia y sensualidad, determinación y feminidad, y la fuerza invencible de una mujer apasionada que besa al hombre de sus sueños y le dice: "Te dejo amarme". La fragancia pertenece al Familia olfativa de aromáticos orientales.'),
 	(DEFAULT, 3,'Gris Charnel de BDK Parfums', 'U', 'FASES', 'ADULTO', 2019, 'Gris Charnel es un aroma de piel, creado con la idea de la sensualidad, la intimidad. Evoca mañanas parisinas grises, donde uno se despierta con un deseo de capullo, todavía consolado por el calor del otro. Es una fragancia que actúa como una segunda piel, sacando su dulzura de un cremoso acuerdo de sándalo indio.');
 	
-
 --rig_perfumistas
 
---CREATE TABLE rig_perfumistas (
---	id INTEGER PRIMARY KEY,
---	nombre VARCHAR (50) NOT NULL UNIQUE,
---	genero VARCHAR NOT NULL,
---	fcha_nac DATE,
---	id_ubic SMALLINT
---);
-
---CREATE SEQUENCE rig_perfumistas_id_seq AS INTEGER OWNED BY rig_perfumistas.id;
---ALTER TABLE rig_perfumistas ADD CONSTRAINT rig_perfumistas_ck CHECK (genero IN ('F', 'M')),
---	ALTER COLUMN id SET DEFAULT nextval('rig_perfumistas_id_seq');
-
 INSERT INTO rig_perfumistas VALUES (DEFAULT, 'Giorgio Armani', 'M', '11-07-1934', 29),
-	(DEFAULT, 'Annick Meardo', 'F', '13-09-1985', 29),
+	(DEFAULT, 'Annick Menardo', 'F', '13-09-1985', 29),
 	(DEFAULT, 'Ralph Lauren', 'M', '04-10-1939', 55),
 	(DEFAULT, 'Joseph Abboud', 'M', '05-5-1950', 55),
 	(DEFAULT, 'Olivier Polge', 'M', '07-01-1978', 29),	
@@ -1121,19 +1197,89 @@ INSERT INTO rig_perfumistas VALUES (DEFAULT, 'Giorgio Armani', 'M', '11-07-1934'
 	(DEFAULT, 'Mathilde Bijaoui', 'F', '03-08-1975', 64),
 	(DEFAULT, 'Veronique Nyberg', 'F', '15-07-1964', 18);		
 
-
-
 --rig_perfumes_perfumistas
-
---CREATE TABLE rig_perfumes_perfumistas (
---	id_perf INTEGER,
---	id_prefta INTEGER,
---	PRIMARY KEY (id_perf, id_prefta)
---);
 
 INSERT INTO rig_perfumes_perfumistas VALUES (1, 1),	(2,2), (3,3), (4,4), (5,5), (6,6), (7,7), (8,8), (9,7);
 
---ALTER TABLE	rig_perfumes_perfumistas ADD CONSTRAINT rig_perfumes_perfumistas_id_perf_fk FOREIGN KEY --(id_perf) REFERENCES rig_perfumes,
---	ADD CONSTRAINT rig_perfumes_perfumistas_id_prefta_fk FOREIGN KEY (id_prefta) REFERENCES rig_perfumistas;
-	
+--rig_intensidades
 
+INSERT INTO rig_intensidades VALUES (1, DEFAULT, 'EdT'), 
+	(2, DEFAULT, 'EdP'),
+	(3, DEFAULT, 'EdT'),
+	(4, DEFAULT, 'EdP'),
+	(5, DEFAULT, 'EdP'),
+	(6, DEFAULT, 'EdP'),
+	(7, DEFAULT, 'EdT'),
+	(8, DEFAULT, 'EdT'),
+	(9, DEFAULT, 'EdP');	
+
+--rig_presentaciones_perfumes
+
+INSERT INTO rig_presentaciones_perfumes VALUES (1, 1, DEFAULT, 8.1, 'ml'),	(1, 1, DEFAULT, 30, 'ml'),	(1, 1, DEFAULT, 51, 'ml'),	(1, 1, DEFAULT, 100, 'ml'),	(1, 1, DEFAULT, 200, 'ml'),
+	(2, 2, DEFAULT, 8.1, 'ml'),	(2, 2, DEFAULT, 30, 'ml'),	(2, 2, DEFAULT, 50, 'ml'),	(2, 2, DEFAULT, 100, 'ml'),	(2, 2, DEFAULT, 200, 'ml'),
+	(3, 3, DEFAULT, 10, 'ml'),	(3, 3, DEFAULT, 30, 'ml'),	(3, 3, DEFAULT, 50, 'ml'),	(3, 3, DEFAULT, 90, 'ml'),	(3, 3, DEFAULT, 150, 'ml'),
+	(4, 4, DEFAULT, 15, 'ml'),	(4, 4, DEFAULT, 35, 'ml'),	(4, 4, DEFAULT, 60, 'ml'),	(4, 4, DEFAULT, 120, 'ml'),	(4, 4, DEFAULT, 180, 'ml'),
+	(5, 5, DEFAULT, 12, 'ml'),	(5, 5, DEFAULT, 24, 'ml'),	(5, 5, DEFAULT, 50, 'ml'),
+	(6, 6, DEFAULT, 12, 'ml'),	(6, 6, DEFAULT, 50, 'ml'),	(6, 6, DEFAULT, 80, 'ml'),	(6, 6, DEFAULT, 130, 'ml'),
+	(7, 7, DEFAULT, 15, 'ml'),	(7, 7, DEFAULT, 35, 'ml'),	(7, 7, DEFAULT, 60, 'ml'),	(7, 7, DEFAULT, 120, 'ml'),	(7, 7, DEFAULT, 180, 'ml'),
+	(8, 8, DEFAULT, 15, 'ml'),	(8, 8, DEFAULT, 35, 'ml'),	(8, 8, DEFAULT, 70, 'ml'),	(8, 8, DEFAULT, 130, 'ml'),	(8, 8, DEFAULT, 150, 'ml'),
+	(9, 9, DEFAULT, 25, 'ml'),	(9, 9, DEFAULT, 40, 'ml'),	(9, 9, DEFAULT, 85, 'ml'),	(9, 9, DEFAULT, 115, 'ml');
+
+
+--CREATE TABLE rig_palabras_claves (
+--	id SMALLINT PRIMARY KEY,
+--	palabra VARCHAR(20) NOT NULL UNIQUE
+--);
+
+INSERT INTO rig_palabras_claves VALUES (DEFAULT, 'verde'),
+	(DEFAULT, 'frescor'),
+	(DEFAULT, 'optimismo'),--1,2
+	(DEFAULT, 'natural'),
+	(DEFAULT, 'libre'),
+	(DEFAULT, 'juvenil'),--6
+	(DEFAULT, 'efímero'),
+	(DEFAULT, 'volatil'),
+	(DEFAULT, 'estimulante');--9
+
+	--(DEFAULT, 'rocio'),
+	--(DEFAULT, 'rocio'),
+	--(DEFAULT, 'rocio'),
+	--(DEFAULT, 'rocio'),
+	--(DEFAULT, 'rocio'),
+	--(DEFAULT, 'rocio'),
+	--(DEFAULT, 'rocio'),
+	--(DEFAULT, 'rocio'),
+
+
+--CREATE SEQUENCE rig_palabras_claves_id_seq AS SMALLINT MAXVALUE 100 OWNED BY rig_palabras_claves.id;
+--ALTER TABLE rig_palabras_claves ALTER COLUMN id SET DEFAULT nextval('rig_palabras_claves_id_seq');
+
+--CREATE TABLE rig_familias_olfativas (
+--	id SMALLINT PRIMARY KEY,
+--	nombre VARCHAR (20) UNIQUE
+--);
+
+--CREATE SEQUENCE rig_familias_olfativas_id_seq AS SMALLINT MAXVALUE 15 OWNED BY rig_familias_olfativas.id;
+--ALTER TABLE rig_familias_olfativas ALTER COLUMN id SET DEFAULT nextval('rig_familias_olfativas_id_seq');
+
+INSERT INTO rig_familias_olfativas VALUES (DEFAULT, 'Verde'),
+	(DEFAULT, 'Citrico'),
+	(DEFAULT, 'Flores'),
+	(DEFAULT, 'Frutas'),
+	(DEFAULT, 'Aromáticos'),
+	(DEFAULT, 'Helechos'),
+	(DEFAULT, 'Chipre'),
+	(DEFAULT, 'Maderas'),
+	(DEFAULT, 'Orientales'),
+	(DEFAULT, 'Otros');
+
+--CREATE TABLE rig_palabras_familias (
+--	id_pal SMALLINT,
+--	id_fao SMALLINT,
+--	PRIMARY KEY (id_pal, id_fao)
+--);
+
+INSERT INTO rig_palabras_familias VALUES (1,1), (1,2), (1,3), (1,4), (1,5), (1,6),
+	(2,3), (2,7), (2,8), (2,9);
+
+	
