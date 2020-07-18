@@ -26,8 +26,8 @@ function agregar(){
         case "ubicacionGeografica":
                 codigo.innerHTML='<tr id="ubicacionGeografica" style="display: none;">'+
                             '<td>Ubicacion Geográfica</td>'+
-                            '<td id="escala"> <div> <input type="text" class="form-control escala" id="escalaubi" placeholder="Rango Maximo"></div> </td>'+
-                            '<td id="porcentaje"> <div class="row"> <input type="text" id="porcentajeubi" class="form-control porcentaje" name="email" required /> '+
+                            '<td id="escala"> <div> <input type="text" class="form-control escala" id="escalaubi" name="ubi-esc" placeholder="Rango Maximo"></div> </td>'+
+                            '<td id="porcentaje"> <div class="row arreglar"> <input type="text" id="porcentajeubi" class="form-control porcentaje" name="ubi-peso" onblur="evaluacionPorcentaje()" required /> '+
                                 '<span class="input-group-addon">%</span></div> '+
                             '</td>'+
                             '<td><div><a onclick="eliminar(event)">Eliminar</a></div></td>'+
@@ -37,8 +37,8 @@ function agregar(){
         case "alternativaEnvio": 
                 codigo.innerHTML='<tr id="alternativaEnvio">'+
                                 '<td>Alternativa de Envío</td>'+
-                                '<td id="escala"> <div> <input type="text" class="form-control escala" id="escalaenv" placeholder="Rango Maximo"></div> </td>'+
-                                '<td id="porcentaje"> <div class="row"> <input type="text" id="porcentajeenv" class="form-control porcentaje" name="email" required />'+ 
+                                '<td id="escala"> <div> <input type="text" class="form-control escala" name="altenv-escala" id="escalaenv" placeholder="Rango Maximo"></div> </td>'+
+                                '<td id="porcentaje"> <div class="row arreglar"> <input type="text" id="porcentajeenv" class="form-control porcentaje" name="altenv-peso" onblur="evaluacionPorcentaje()" required />'+ 
                                     '<span class="input-group-addon">%</span></div>'+
                                 '</td>'+
                                 '<td><div><a onclick="eliminar(event)">Eliminar</a></div></td>'+
@@ -48,8 +48,8 @@ function agregar(){
         case "costoEnvio": 
                 codigo.innerHTML='<tr id="costoEnvio">'+
                                 '<td>Costo de Envío</td>'+
-                                '<td id="escala"> <div> <input type="text" class="form-control escala" id="escalacostenv" placeholder="Rango Maximo"></div> </td>'+
-                                '<td id="porcentaje"> <div class="row"> <input type="text" id="porcentajecostenv" class="form-control porcentaje" name="email" required />'+
+                                '<td id="escala"> <div> <input type="text" class="form-control escala" id="escalacostenv" name="costenv-esc" placeholder="Rango Maximo"></div> </td>'+
+                                '<td id="porcentaje"> <div class="row arreglar"> <input type="text" id="porcentajecostenv" class="form-control porcentaje" name="costenv-peso" onblur="evaluacionPorcentaje()" required />'+
                                     '<span class="input-group-addon">%</span></div>'+
                                 '</td>'+
                                 '<td><div><a onclick="eliminar(event)">Eliminar</a></div></td>'+
@@ -59,8 +59,8 @@ function agregar(){
         case "cumplimientoEnvio": 
                 codigo.innerHTML='<tr id="cumplimientoEnvio">'+
                                 '<td>Cumplimiento de Envíos sin retraso</td>'+
-                                '<td id="escala"> <div> <input type="text" class="form-control escala" id="escalacumpli" placeholder="Rango Maximo"></div> </td>'+
-                                '<td id="porcentaje"> <div class="row"> <input type="text" id="porcentajecumpli" class="form-control porcentaje" name="email" required /> '+
+                                '<td id="escala"> <div> <input type="text" class="form-control escala" id="escalacumpli" name="cumpli-esc" placeholder="Rango Maximo"></div> </td>'+
+                                '<td id="porcentaje"> <div class="row arreglar"> <input type="text" id="porcentajecumpli" class="form-control porcentaje" name="cumpli-peso" onblur="evaluacionPorcentaje()" required /> '+
                                     '<span class="input-group-addon">%</span></div> '+
                                 '</td>'+
                                 '<td><div><a onclick="eliminar(event)">Eliminar</a></div></td>'+
@@ -70,8 +70,8 @@ function agregar(){
         case "alternativaPago":  
                 codigo.innerHTML='<tr id="alternativaPago">'+
                                 '<td>Alternativas de Pago</td>'+
-                                '<td id="escala"> <div> <input type="text" class="form-control escala" id="escalaaltpago" placeholder="Rango Maximo"></div> </td>'+
-                                '<td id="porcentaje"> <div class="row"> <input type="text" id="porcentajealtpago" class="form-control porcentaje" name="email" required /> '+
+                                '<td id="escala"> <div> <input type="text" class="form-control escala" id="escalaaltpago" name="altpago-esc" placeholder="Rango Maximo"></div> </td>'+
+                                '<td id="porcentaje"> <div class="row arreglar"> <input type="text" id="porcentajealtpago" class="form-control porcentaje" name="altpago-peso" onblur="evaluacionPorcentaje()" required /> '+
                                     '<span class="input-group-addon">%</span></div>'+
                                 '</td>'+
                                 '<td><div><a onclick="eliminar(event)">Eliminar</a></div></td>'+
@@ -82,8 +82,8 @@ function agregar(){
          case "pedidosSatis":  
                  codigo.innerHTML='<tr id="pedidosSatis">'+
                                 '<td>Pedidos Enviados Satisfactoriamente</td>'+
-                                '<td id="escala"> <div> <input type="text" class="form-control escala" id="escalaaltpago" placeholder="Rango Maximo"></div> </td>'+
-                                '<td id="porcentaje"> <div class="row"> <input type="text" id="porcentajealtpago" class="form-control porcentaje" name="email" required /> '+
+                                '<td id="escala"> <div> <input type="text" class="form-control escala" id="escalapedidosatis" name="pedsatis-esc" placeholder="Rango Maximo"></div> </td>'+
+                                '<td id="porcentaje"> <div class="row arreglar"> <input type="text" id="porcentajepedidosatis" class="form-control porcentaje" name="pedidossatis-peso" onblur="evaluacionPorcentaje()" required /> '+
                                         '<span class="input-group-addon">%</span></div>'+
                                 '</td>'+
                                 '<td><div><a onclick="eliminar(event)">Eliminar</a></div></td>'+
@@ -93,8 +93,8 @@ function agregar(){
         case "pedidosRetras":  
         codigo.innerHTML='<tr id="pedidosRetras">'+
                         '<td>Pedidos Enviados con Retraso</td>'+
-                        '<td id="escala"> <div> <input type="text" class="form-control escala" id="escalaaltpago" placeholder="Rango Maximo"></div> </td>'+
-                        '<td id="porcentaje"> <div class="row"> <input type="text" id="porcentajealtpago" class="form-control porcentaje" name="email" required /> '+
+                        '<td id="escala"> <div> <input type="text" class="form-control escala" id="escalapedidoretra" name="pedidosretra-esc" placeholder="Rango Maximo"></div> </td>'+
+                        '<td id="porcentaje"> <div class="row arreglar"> <input type="text" id="porcentajepedidoretra" class="form-control porcentaje" name="pedidosretra-peso" onblur="evaluacionPorcentaje()" required /> '+
                                 '<span class="input-group-addon">%</span></div>'+
                         '</td>'+
                         '<td><div><a onclick="eliminar(event)">Eliminar</a></div></td>'+
@@ -104,8 +104,8 @@ function agregar(){
         case "pedidosRecha":  
         codigo.innerHTML='<tr id="pedidosRecha">'+
                         '<td>Pedidos Rechazados</td>'+
-                        '<td id="escala"> <div> <input type="text" class="form-control escala" id="escalaaltpago" placeholder="Rango Maximo"></div> </td>'+
-                        '<td id="porcentaje"> <div class="row"> <input type="text" id="porcentajealtpago" class="form-control porcentaje" name="email" required /> '+
+                        '<td id="escala"> <div> <input type="text" class="form-control escala" id="escalapedidorecha" name="pedidorecha-esc" placeholder="Rango Maximo"></div> </td>'+
+                        '<td id="porcentaje"> <div class="row arreglar"> <input type="text" id="porcentajepedidorecha" class="form-control porcentaje" name="pedidorecha-peso" onblur="evaluacionPorcentaje()" required /> '+
                                 '<span class="input-group-addon">%</span></div>'+
                         '</td>'+
                         '<td><div><a onclick="eliminar(event)">Eliminar</a></div></td>'+
@@ -114,8 +114,8 @@ function agregar(){
         case "pedidosCance":  
         codigo.innerHTML='<tr id="pedidosCance">'+
                        '<td>Pedidos Cancelados</td>'+
-                       '<td id="escala"> <div> <input type="text" class="form-control escala" id="escalaaltpago" placeholder="Rango Maximo"></div> </td>'+
-                       '<td id="porcentaje"> <div class="row"> <input type="text" id="porcentajealtpago" class="form-control porcentaje" name="email" required /> '+
+                       '<td id="escala"> <div> <input type="text" class="form-control escala" id="escalapedidocance" name="pedidoscance-esc" placeholder="Rango Maximo"></div> </td>'+
+                       '<td id="porcentaje"> <div class="row arreglar"> <input type="text" id="porcentajepedidocance" class="form-control porcentaje" name="pedidoscance-peso" onblur="evaluacionPorcentaje()" required /> '+
                                '<span class="input-group-addon">%</span></div>'+
                        '</td>'+
                        '<td><div><a onclick="eliminar(event)">Eliminar</a></div></td>'+
@@ -139,4 +139,49 @@ function eliminar(e){
     $("option[value='"+ elemento +"']")
     .removeAttr('disabled');
     document.getElementById(elemento).remove();
+}
+
+//Funcion para siempre actualizar el % de la formula
+function evaluacionPorcentaje(){
+    console.log('Hola bb')
+    var porcentaje = 0;
+    console.log($('#porcentajeubi').val())
+    //Porcentaje de Inicio
+    if (document.getElementById('#porcentajeubi')){
+        porcentaje += parseInt($('#porcentajeubi').val());
+    }
+
+    if (document.getElementById('#porcentajeenv')){
+        console.log('Hola')
+        porcentaje += $('#porcentajeenv').val;
+    }
+
+    if (document.getElementById('#porcentajecostenv')){
+        console.log('Hola bb')
+        porcentaje += $('#porcentajecostenv').val;
+    }
+
+    if (document.getElementById('#porcentajecumpli')){
+        console.log('Hola bb')
+        porcentaje += $('#porcentajecumpli').val;
+    }
+    if (document.getElementById('#porcentajealtpago')){
+        porcentaje += $('#porcentajealtpago').val;
+    }
+    //Porcentaje de Renovacion
+    if (document.getElementById('#porcentajepedidosatis')){
+        porcentaje += $('#porcentajepedidosatis').val;
+    }
+    if (document.getElementById('#porcentajepedidoretra')){
+        porcentaje += $('#porcentajepedidoretra').val;
+    }
+    if (document.getElementById('#porcentajepedidorecha')){
+        porcentaje += $('#porcentajepedidorecha').val;
+    }
+    if (document.getElementById('#porcentajepedidocance')){
+        porcentaje += $('#porcentajepedidocance').val;
+    }
+    console.log(porcentaje);
+    //FALTA CAMBIAR EL % TOTAAAAAAALLLLL RECUERDAAAA, y agregar a todos los if lo que esta dentro del primero
+    $('#porcentajeTotal').text(porcentaje);
 }

@@ -225,9 +225,6 @@ table, th, td {
     text-align: center;
   }
 
-  table{
-      width: 50%;
-  }
 
 .vacio{
     border-left: hidden;
@@ -247,14 +244,14 @@ td div p{
 }
 .escala{
     max-height: 25px;
-    max-width: 120px;
+    max-width: 140px;
     border: 1px solid black;
     background-color: white;
 }
 
 .porcentaje{
     max-height: 25px;
-    max-width: 130px;
+    max-width: 150px;
     border: 1px solid black;
     background-color: white;
 }
@@ -264,7 +261,7 @@ td div p{
 }
 
 #escala{
-    width: 20%;
+    width: 18%;
 }
 
 #porcentaje{
@@ -332,9 +329,29 @@ div .criterios{
 }
 
 #datosProvedor{
-    width: 40%;
+    width: 20%;
 }
 
 #perfumistaInfo{
     text-align: center;
+}
+
+.datosProveedor{
+    height:60%;
+}
+
+.arreglar{
+    margin-right: 0px !important;
+}
+
+table{
+    width: 50%;
+}
+
+.criterioEva{
+    width: 35%;
+}
+
+#escalaEva{
+    width: 20%;
 }

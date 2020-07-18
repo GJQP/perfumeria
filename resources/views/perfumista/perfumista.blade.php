@@ -6,7 +6,13 @@
 @section('contenido')  
 <div class="container mgt-2 mgrb-1">
     <div class="stage tarjeta muli pdb-2">
-        <div class="blocktext unna"> Creacion de Perfumista</div>
+        <div class="blocktext unna"> 
+        @if(!empty($perfumista))
+            Editar Perfumista
+        @else
+            Crear Perfumista
+        @endif
+        </div>
         <form method="POST" autocomplete="off" action="{{empty($perfumista)? '/gestion-perfumista/crear':'/gestion-perfumista/' . $perfumista->id}}">
             
             @if(!empty($perfumista))

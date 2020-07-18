@@ -42,7 +42,7 @@
             <div class="blocktext mgln-4">
             <table class="mgl-3 consulta">
                 <tr>
-                    <th id="">Criterio de Evaluacion</th>
+                    <th id="criterio">Criterio de Evaluacion</th>
                     <th id="escala">Escala</th>
                     <th id="porcentaje">Porcentaje</th>
                 </tr>

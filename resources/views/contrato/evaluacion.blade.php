@@ -17,19 +17,33 @@
         <!--Tabla de Formula Inicial-->
         <div class="blocktext mgln-4">
             <table id="tabla" class="mgl-3">
+                <form method="POST" autocomplete="off">
+                    @csrf
                 <tr>
-                    <th id="criterio">Criterio de Evaluacion</th>
+                    <th id="criterioEva">Criterio de Evaluacion</th>
                     <th id="datosProvedor">Datos del Proveedor</th>
-                    <th id="escala">Escala</th>
+                    <th id="escalaEva">Escala</th>
                     <th id="porcentaje">Porcentaje</th>
                 </tr>
-                
+                <tr>
+                    <td> Destileria Muñoz Galvez</td>
+                    <td>
+                        <select class="datosProveedor form-control">
+                            <option disabled>Caraotas</option>
+                            <option disabled>Pasas</option>
+                        </select>
+                </td>
+                <td id="escala"> <div> <input type="text" class="form-control escala" id="escalaubi" name="ubi-esc" placeholder="Escala Maxima 5"></div> </td>
+                <td>20%</td>
+                </tr>
+
                 <tr id="total">
+                    <td class="vacio"></td>
                     <td class="vacio"></td>
                     <td id="escala">Total</td>
                     <td id="total"> <div class="mgt-5r"> <h5>100%</h5></div></td>
-                    <td></td>
                 </tr>
+                </form>
               </table>
             
             </div>  
