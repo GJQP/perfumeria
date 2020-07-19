@@ -31,8 +31,8 @@
             <!--Tabla de Formula Inicial-->
             <div class="blocktext mgln-4">
             
-              <table method="POST" id="tabla" class="mgl-3">
-                <form autocomplete="off"></form>
+              <table id="tabla" class="mgl-3">
+                <form  method="POST" autocomplete="off">
                   @csrf
                   <tr>
                       <th id="">Criterio de Evaluacion</th>
@@ -44,7 +44,7 @@
                   <tr id="total">
                       <td class="vacio"></td>
                       <td id="escala">Total</td>
-                      <td id="total"> <div class="mgt-5r"> <h5 id="porcentajeTotal">100%</h5></div></td>
+                      <td id="total"> <div class="mgt-5r"> <h5 id="porcentajeTotal"></h5></div></td>
                       <td class="vacioac"></td>
                   </tr>
                 </table>
@@ -79,7 +79,7 @@
                 <!--Botones-->
                 <div class="blocktext mgt-2 pdb-2 row">
                   <button type="button" class="btn btn-danger">Cancelar</button>
-                  <button type="button" class="btn btn-secondary mgl-1" disabled>Crear Formula</button>
+                  <button type="submit" class="btn btn-primary mgl-1" >Crear Formula</button>
                 </div>
           </form>
         </div>

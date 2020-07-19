@@ -145,43 +145,39 @@ function eliminar(e){
 function evaluacionPorcentaje(){
     console.log('Hola bb')
     var porcentaje = 0;
-    console.log($('#porcentajeubi').val())
     //Porcentaje de Inicio
-    if (document.getElementById('#porcentajeubi')){
+    if ($('#porcentajeubi').length){
         porcentaje += parseInt($('#porcentajeubi').val());
     }
 
-    if (document.getElementById('#porcentajeenv')){
-        console.log('Hola')
-        porcentaje += $('#porcentajeenv').val;
+    if ($('#porcentajeenv').length){
+        porcentaje += parseInt($('#porcentajeenv').val());
     }
 
-    if (document.getElementById('#porcentajecostenv')){
-        console.log('Hola bb')
-        porcentaje += $('#porcentajecostenv').val;
+    if ($('#porcentajecostenv').length){
+        porcentaje += parseInt($('#porcentajecostenv').val());
     }
 
-    if (document.getElementById('#porcentajecumpli')){
-        console.log('Hola bb')
-        porcentaje += $('#porcentajecumpli').val;
+    if ($('#porcentajecumpli').length){
+        porcentaje += parseInt($('#porcentajecumpli').val());
     }
-    if (document.getElementById('#porcentajealtpago')){
-        porcentaje += $('#porcentajealtpago').val;
+    if ($('#porcentajealtpago').length){
+        porcentaje += parseInt($('#porcentajealtpago').val());
     }
     //Porcentaje de Renovacion
-    if (document.getElementById('#porcentajepedidosatis')){
-        porcentaje += $('#porcentajepedidosatis').val;
+    if ($('#porcentajepedidosatis').length){
+        porcentaje += parseInt($('#porcentajepedidosatis').val());
     }
-    if (document.getElementById('#porcentajepedidoretra')){
-        porcentaje += $('#porcentajepedidoretra').val;
+    if ($('#porcentajepedidoretra').length){
+        porcentaje += parseInt($('#porcentajepedidoretra').val());
     }
-    if (document.getElementById('#porcentajepedidorecha')){
-        porcentaje += $('#porcentajepedidorecha').val;
+    if ($('#porcentajepedidorecha').length){
+        porcentaje += parseInt($('#porcentajepedidorecha').val());
     }
-    if (document.getElementById('#porcentajepedidocance')){
-        porcentaje += $('#porcentajepedidocance').val;
+    if ($('#porcentajepedidocance').length){
+        porcentaje += parseInt($('#porcentajepedidocance').val());
     }
     console.log(porcentaje);
-    //FALTA CAMBIAR EL % TOTAAAAAAALLLLL RECUERDAAAA, y agregar a todos los if lo que esta dentro del primero
-    $('#porcentajeTotal').text(porcentaje);
+
+    $('#porcentajeTotal').text(porcentaje +'%');
 }

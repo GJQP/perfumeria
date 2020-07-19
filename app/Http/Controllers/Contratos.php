@@ -95,4 +95,8 @@ class Contratos extends Controller
     {
         //
     }
+
+    public function vistacontrato(){
+        return view('contrato.selecProductos');
+    }
 }

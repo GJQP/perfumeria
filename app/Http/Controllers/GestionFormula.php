@@ -23,7 +23,7 @@ class GestionFormula extends Controller
      */
     public function create()
     {
-        //
+        return view('formula.crearformula');
     }
 
     /**
@@ -34,7 +34,8 @@ class GestionFormula extends Controller
      */
     public function store(Request $request)
     {
-        //
+        //falta el insert aqui
+        return view('formula.gestionformula');
     }
 
     /**
@@ -80,10 +81,5 @@ class GestionFormula extends Controller
     public function destroy($id)
     {
         //
-    }
-
-    public function crearinicio()
-    {
-        return view('formula.crearformula');
     }
 }

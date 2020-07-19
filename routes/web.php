@@ -32,7 +32,8 @@ Route::delete('/gestion-perfumista/{id}','Perfumistas@destroy');
 Route::get ('/gestion-formula','GestionFormula@index');
 
 //Crear Formula
-Route::get ('/gestion-formula/crear','GestionFormula@crearinicio');
+Route::get ('/gestion-formula/crear','GestionFormula@create');
+Route::post('/gestion-formula/crear','GestionFormula@store');
 
 //Gestion de Contratos
 Route::get ('/gestion-contratos','Contratos@contratos');
@@ -41,3 +42,4 @@ Route::get ('/gestion-contratos/{id}','Contratos@index');
 //Crear Contrato
 Route::get ('/gestion-contrato/crear','Contratos@create');
 Route::get ('/gestion-contratos/{id}/crear/evaluacion-{proveedor}','Contratos@evaluacion');
+Route::post('/gestion-contratos/{id}/crear/evaluacion-{proveedor}','Contratos@vistacontrato');

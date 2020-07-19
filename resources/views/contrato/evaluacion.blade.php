@@ -43,10 +43,36 @@
                     <td id="escala">Total</td>
                     <td id="total"> <div class="mgt-5r"> <h5>100%</h5></div></td>
                 </tr>
-                </form>
+                
               </table>
-            
             </div>  
+            <div class="blocktext row mgt-2">
+                <button class="btn btn-danger"><a href="/gestion-contrato/crear-id">Cancelar</a></button>
+                <button type="submit" class="btn btn-primary mgl-1">Evaluar</button>
+            </div>
+        </form>
+    </div>
+</div>
+<!--Modal para decir que si se quiere  crear contrato -->
+<div class="modal fade" id="eliminar" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+        <div class="modal-header">
+            <h3 class="modal-title">Eliminar Formula</h3>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body" id="contenido-modal">
+           <p>
+               ¿Esta seguro que desea eliminar la Formula de Inicio de la Empresa piiiiii?
+           </p>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-primary" data-dismiss="modal">Cancelar</button>
+            <button type="button" class="btn btn-danger" onclick="eliminar()">Eliminar</button>
+        </div>
+        </div>
     </div>
 </div>
 @endsection
