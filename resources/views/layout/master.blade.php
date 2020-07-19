@@ -28,6 +28,18 @@
                 </div>
             </div>
         </nav>
+        <div>
+            @if(session('status'))
+            <div class="alert alert-primary" aling="center">
+                {{session('status')}}
+            </div>
+            @endif
+            @if(session('error'))
+            <div class="alert alert-danger" aling="center">
+                {{session('error')}}
+            </div>
+        </div>
+        @endif
         @yield('contenido')
     
     </body>

@@ -3,8 +3,9 @@ DROP TABLE IF EXISTS rig_detalles_pedidos;
 DROP TABLE IF EXISTS rig_pedidos;
 DROP TABLE IF EXISTS rig_productos_contratados;
 DROP TABLE IF EXISTS rig_condiciones_contratos;
+DROP TABLE IF EXISTS rig_renovaciones;
 DROP TABLE IF EXISTS rig_renovacion;
-DROP TABLE IF EXISTS rig_contrato;
+DROP TABLE IF EXISTS rig_contratos;
 DROP TABLE IF EXISTS rig_origenes;
 DROP TABLE IF EXISTS rig_componentes_funcionales;
 DROP TABLE IF EXISTS rig_esencias;
@@ -93,7 +94,7 @@ ALTER TABLE rig_proveedores ADD CONSTRAINT rig_proveedores_id_ubic_fk FOREIGN KE
 	ALTER COLUMN id SET DEFAULT nextval('rig_proveedores_id_seq');
 
 CREATE TABLE rig_membresias (
-	fcha_reg TIMESTAMP  PRIMARY KEY DEFAULT CURRENT_DATE,
+	fcha_reg TIMESTAMP PRIMARY KEY DEFAULT CURRENT_DATE,
 	tipo_m VARCHAR (15) NOT NULL,
 	fcha_fin DATE,
 	id_prod SMALLINT,
@@ -419,7 +420,7 @@ CREATE TABLE rig_origenes (
 ALTER TABLE rig_origenes ADD CONSTRAINT rig_origenes_id_fao_fk FOREIGN KEY (id_fao) REFERENCES rig_familias_olfativas,
 	ADD CONSTRAINT rig_origenes_funcionales_id_esenp_fk FOREIGN KEY (id_esenp) REFERENCES rig_esencias_perfumes;
 
-CREATE TABLE rig_contrato (
+CREATE TABLE rig_contratos (
 	id INTEGER PRIMARY KEY,
 	fcha_reg DATE NOT NULL,
 	exc VARCHAR (2) NOT NULL,
@@ -430,22 +431,22 @@ CREATE TABLE rig_contrato (
 	id_prov SMALLINT
 );
 
-CREATE SEQUENCE rig_contrato_id_seq AS INTEGER OWNED BY rig_contrato.id;
-ALTER TABLE rig_contrato ADD CONSTRAINT rig_contrato_ck CHECK (exc IN ('SI', 'NO') AND ((id_prod IS NULL) != (id_prov IS NULL))),
+CREATE SEQUENCE rig_contrato_id_seq AS INTEGER OWNED BY rig_contratos.id;
+ALTER TABLE rig_contratos ADD CONSTRAINT rig_contrato_ck CHECK (exc IN ('SI', 'NO')),
 	ADD CONSTRAINT rig_contrato_id_prod_fk FOREIGN KEY (id_prod) REFERENCES rig_productores,
 	ADD CONSTRAINT rig_contrato_id_prov_fk FOREIGN KEY (id_prov) REFERENCES rig_proveedores,
 	ALTER COLUMN id SET DEFAULT nextval('rig_contrato_id_seq');
 
-CREATE TABLE rig_renovacion (
+CREATE TABLE rig_renovaciones (
 	id_ctra INTEGER,
 	id INTEGER,
 	fcha_reg DATE,
 	PRIMARY KEY (id_ctra, id)
 );
 
-CREATE SEQUENCE rig_renovacion_id_seq AS INTEGER OWNED BY rig_renovacion.id;
-ALTER TABLE rig_renovacion ADD CONSTRAINT rig_renovacion_id_ctra FOREIGN KEY (id_ctra) REFERENCES rig_contrato,
-	ALTER COLUMN id SET DEFAULT nextval('rig_renovacion_id_seq');
+CREATE SEQUENCE rig_renovaciones_id_seq AS INTEGER OWNED BY rig_renovaciones.id;
+ALTER TABLE rig_renovaciones ADD CONSTRAINT rig_renovaciones_id_ctra FOREIGN KEY (id_ctra) REFERENCES rig_contratos,
+	ALTER COLUMN id SET DEFAULT nextval('rig_renovaciones_id_seq');
 
 CREATE TABLE rig_condiciones_contratos (
 	id_ctra INTEGER,
@@ -457,7 +458,7 @@ CREATE TABLE rig_condiciones_contratos (
 	PRIMARY KEY (id_ctra, id)
 );
 
-ALTER TABLE rig_condiciones_contratos ADD CONSTRAINT rig_condiciones_contratos_id_ctra_fk FOREIGN KEY (id_ctra) REFERENCES rig_contrato,
+ALTER TABLE rig_condiciones_contratos ADD CONSTRAINT rig_condiciones_contratos_id_ctra_fk FOREIGN KEY (id_ctra) REFERENCES rig_contratos,
 	ADD CONSTRAINT rig_condiciones_contratos_cond_env_fk FOREIGN KEY (id_prov_ce, id_ubic) REFERENCES rig_condiciones_de_envio (id_prov, id_ubic),
 	ADD CONSTRAINT rig_condiciones_contratos_cond_pgo_fk FOREIGN KEY (id_prov_cp, id_condpgo) REFERENCES rig_condiciones_de_pago (id_prov, id);
 
@@ -471,7 +472,7 @@ CREATE TABLE rig_productos_contratados (
 	PRIMARY KEY (id_ctra, id) --AK
 );
 
-ALTER TABLE rig_productos_contratados ADD CONSTRAINT rig_productos_contratados_id_ctra_fk FOREIGN KEY (id_ctra) REFERENCES rig_contrato,
+ALTER TABLE rig_productos_contratados ADD CONSTRAINT rig_productos_contratados_id_ctra_fk FOREIGN KEY (id_ctra) REFERENCES rig_contratos,
 	ADD CONSTRAINT rig_productos_contratados_ing_fk FOREIGN KEY (id_prov_ing, cas_ing) REFERENCES rig_ingredientes_esencias (id_prov, cas),
 	ADD CONSTRAINT rig_productos_contratados_otr_ing_fk FOREIGN KEY (cas_otr_ing) REFERENCES rig_otros_ingredientes (cas);
 

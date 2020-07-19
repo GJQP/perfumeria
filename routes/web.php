@@ -1,4 +1,4 @@
-<?php
+/<?php
 
 use Illuminate\Support\Facades\Route;
 
@@ -35,9 +35,14 @@ Route::get ('/gestion-formula','GestionFormula@index');
 Route::get ('/gestion-formula/crear','GestionFormula@crearinicio');
 
 //Gestion de Contratos
-Route::get ('/gestion-contratos','Contratos@contratos');
-Route::get ('/gestion-contratos/{id}','Contratos@index');
+Route::get ('/gestion-contratos','Contratos@index')->name('contratos.index');
+
+//Gestion de contrato
+Route::post ('/gestion-contratos/crear','Contratos@create')->name('contrato.crear');
+Route::get ('/gestion-contratos/cancelar-contrato/{id}', 'Contratos@cancelarContrato')->name('contrato.cancelar');
+Route::post('/gestion-contratos/cancelar-contrato/fin', 'Contratos@cancelar')->name('contrato.fin');
+Route::get ('/gestion-contratos/renovar/{id}','Contratos@renovarContrato')->name('contrato.renovar');
 
 //Crear Contrato
-Route::get ('/gestion-contrato/crear','Contratos@create');
-Route::get ('/gestion-contratos/{id}/crear/evaluacion-{proveedor}','Contratos@evaluacion');
+//Route::get ('/gestion-contrato/crear','Contratos@create');
+//Route::get ('/gestion-contratos/{id}/crear/evaluacion-{proveedor}','Contratos@evaluacion');
