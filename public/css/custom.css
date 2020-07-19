@@ -1,0 +1,357 @@
+/* Muli & Unna Fonts*/
+@import url('https://fonts.googleapis.com/css2?family=Muli&family=Unna:ital@1&display=swap" rel="stylesheet');
+
+
+.nav{
+    max-height: 15% !important;
+    background-color: #3BA4A0;
+    max-width: 100% !important;
+    font-family: 'Unna', serif;
+    box-sizing: unset !important;
+}
+
+.unna{
+    font-family: 'Unna', serif;
+    font-size: 2rem;
+}
+
+.container{
+    max-width: 100% !important;
+}
+
+.titulo{
+    width: 65%;
+}
+
+.inicio{
+    position: absolute;
+    right: 13rem;
+}
+
+#inicio{
+    font-family:  'Unna', serif;
+}
+
+.logo{
+    width: 17%;
+    height: 10%;
+}
+
+.pdt-1{
+    padding-top: 1.5rem;
+}
+
+.pdb-2{
+   padding-bottom: 1.5rem;
+}
+
+.pdb-3{
+    padding-bottom: 3rem;
+}
+
+.mgl-1{
+    margin-left: 1.5rem;
+}
+
+.mgl-3{
+    margin-left: 12.5%;
+}
+
+.mgln-4{
+    margin-left: -9rem;
+}
+
+.mgr-1{
+    margin-right: 0.5rem;
+}
+
+.mgrn-5{
+    margin-top: 1rem;
+    margin-right: -5rem;
+}
+
+.mgt-5r{
+    margin-top: 3%;
+}
+
+.mgt-1{
+    margin-top: 1rem;
+}
+
+.mgt-2{
+    margin-top: 2rem;
+}
+
+.mgrb-1{
+    padding-bottom: 1.5rem;
+}
+
+
+.titulo h1,.titulo h2{
+    color: white;
+    font-size: 370% !important ;
+}
+
+#imagen1 , #imagen2{
+    margin-bottom: 2rem;
+    width: 40%;
+    max-height: 40%;
+}
+
+#imagen3{
+    padding-bottom: 2rem;
+    width: 50%;
+    max-height: 40%;
+}
+
+.centrar{
+   margin-left: 20% !important;
+   margin-bottom: 8rem; 
+}
+
+.centradoimg{
+    padding-left: 15%;
+    padding-right: 15%;
+}
+/*cambiar height a 300px */
+.cuadrado{
+    box-shadow: 5px 5px 5px grey;
+    margin-left: 2rem;
+    height: 350px;
+    align-self: center;
+    background-color: grey;
+}
+
+.gris{
+    background-color: #f0f0f0;
+}
+
+.amarillo{
+    background-color: #EEAC2C;
+}
+
+.rojo{
+    background-color: #E94545;
+}
+
+.verde{
+    background-color: #5CAB27;
+}
+
+.cuadrado .texto{
+    padding-top: 1rem;
+    text-align: center;
+    color: #E5E5E5;
+    font-family: 'Muli','sans-serif';
+}
+
+li a{
+    padding-top: 1rem;
+    text-align: center;
+    color: #E5E5E5;
+    font-family: 'Muli','sans-serif';
+}
+.texto h1{
+    font-size: 3rem;
+}
+.texto li{
+    padding-top: 0.8rem;
+    text-align: justify;
+    padding-left: 1rem;
+    font-size: 2rem;
+} 
+
+.recomendador{
+    font-size: 1.8rem;
+}
+
+#imagen1:hover{
+    background-color:#E94545;
+}
+
+#imagen1:hover .texto,#imagen2:hover .texto,#imagen3:hover .texto,a, a:hover{
+    color: white;   
+}
+
+#imagen2:hover{
+    background-color: #EEAC2C;
+}
+
+#imagen3:hover{
+    background-color: #5CAB27;   
+}
+
+.tarjeta{
+    box-shadow: 5px 5px 5px grey;
+    background-color: white;
+    border: 5px;
+}
+
+.muli{
+    font-family: 'Muli','sans-serif';
+}
+
+div p{
+    font-size: 135%;
+}
+
+.dropdown-item{
+    font-size: 130%;
+}
+
+.dropdown-menu {         
+    max-height: 200px;
+    max-width: 300px;
+    overflow-y: auto;
+  }
+
+.btn-secondary{
+    background-color:#b8b6b6 ;
+}
+
+.blocktext {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+table, th, td {
+    border: 1px solid black;
+    border-collapse: collapse;
+    background-color: rgb(243, 238, 230);
+  }
+  th, td {
+    padding: 5px;
+    text-align: center;
+  }
+
+
+.vacio{
+    border-left: hidden;
+    border-bottom: hidden;
+    background-color: white;
+ 
+}
+
+.vacioac{
+    border-bottom: hidden;
+    border-right: hidden;
+    background-color: white;
+}
+
+td div p{
+    font-size: 15px;
+}
+.escala{
+    max-height: 25px;
+    max-width: 140px;
+    border: 1px solid black;
+    background-color: white;
+}
+
+.porcentaje{
+    max-height: 25px;
+    max-width: 150px;
+    border: 1px solid black;
+    background-color: white;
+}
+
+#criterio{
+    width: 50%;
+}
+
+#escala{
+    width: 18%;
+}
+
+#porcentaje{
+    width:20%;
+}
+
+p.mgr-1{
+    text-align: right;
+}
+
+.consulta td .escala, .consulta td .porcentaje{
+    background-color: rgb(184, 182, 182);
+    color:#E5E5E5;
+}
+
+td .row {
+    margin-left: 0px;
+}
+td div input{
+    text-align: center;
+    font-size: 90% !important;
+}
+
+.input-group-addon {
+    margin-top: 2px;
+    margin-left: -20px;
+    color: #666;
+}
+
+.min-aprob{
+    max-width: 13%;
+    text-align: center;
+}
+
+td div a, td a{
+    color: black !important;
+    text-align: center;
+}
+
+#criterios, option{
+    font-size: 100%;
+    font-family: 'Muli','sans-serif';
+    max-width: 22%;
+}
+
+div .criterios{
+    max-width: 18%;
+}
+
+#nombres, .empresas{
+    width: 40%;
+}
+
+#accion,.accion,.expiracion{
+    width: 30%;
+}
+
+#listaProductos{
+    width: 90%;
+    font-size: 85%;
+}
+
+.default{
+    height: 16rem;
+}
+
+#datosProvedor{
+    width: 20%;
+}
+
+#perfumistaInfo{
+    text-align: center;
+}
+
+.datosProveedor{
+    height:60%;
+}
+
+.arreglar{
+    margin-right: 0px !important;
+}
+
+table{
+    width: 50%;
+}
+
+.criterioEva{
+    width: 35%;
+}
+
+#escalaEva{
+    width: 20%;
+}
