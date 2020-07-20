@@ -46,9 +46,9 @@
                 
               </table>
             </div>  
-            <div class="blocktext row mgt-2">
+            <div class="blocktext row mgt-2 pdb-2">
                 <button class="btn btn-danger"><a href="/gestion-contrato/crear-id">Cancelar</a></button>
-                <button type="submit" class="btn btn-primary mgl-1">Evaluar</button>
+                <button type="submit" class="btn btn-primary mgl-1 ">Evaluar</button>
             </div>
         </form>
     </div>

@@ -38,12 +38,27 @@ Route::post('/gestion-formula/crear','GestionFormula@store');
 //Gestion de Contratos
 Route::get ('/gestion-contratos','Contratos@contratos');
 Route::get ('/gestion-contratos/{id}','Contratos@index');
-Route::get ('/gestion-contratos/renovar','Contratos@ren');
+
+//Mostrar Empresas
+Route::get ('/gestion-contrato/crear','Contratos@create');
+
+//Evaluar
+Route::get ('/gestion-contratos/{id}/crear/evaluacion-{proveedor}','Contratos@evaluacion');
 
 //Crear Contrato
-Route::get ('/gestion-contrato/crear','Contratos@create');
-Route::get ('/gestion-contratos/{id}/crear/evaluacion-{proveedor}','Contratos@evaluacion');
 Route::post('/gestion-contratos/{id}/crear/evaluacion-{proveedor}','Contratos@vistacontrato');
+
+//Seleccion de elementos del Contrato
+Route::get('/gestion-contratos/{id}/crear/evaluacion-{proveedor}/{contrato}','Contratos@contrato');
+
+//Guardar el contrato
+Route::post('/gestion-contratos/{id}/crear/evaluacion-{proveedor}/{contrato}','Contratos@storeContrato');
+
+//Cargar Pagina del decuento
+Route::get('/gestion-contratos/{id}/crear/evaluacion-{proveedor}/{contrato}/descuento','Contratos@descuento');
+
+//Guardar el descuento
+Route::post('/gestion-contratos/{id}/crear/evaluacion-{proveedor}/{contrato}/descuento','Contratos@storeDescuento');
 
 //Gestion Compras
 Route::get ('/gestion-compras','Compras@index');

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Http\RedirectResponse;
 
 class Contratos extends Controller
 {
@@ -47,6 +48,7 @@ class Contratos extends Controller
         return view('contrato.evaluacion');
     }
 
+   
     /**
      * Store a newly created resource in storage.
      *
@@ -104,6 +106,26 @@ class Contratos extends Controller
     }
 
     public function vistacontrato(){
+        //insert del resultado de la evaluacion
+        return redirect('/gestion-contratos/1/crear/evaluacion-1/1');
+    }
+
+    public function contrato(){
         return view('contrato.selecProductos');
     }
+
+    public function storeContrato(){
+        return redirect('/gestion-contratos/1/crear/evaluacion-1/1/descuento');
+    }
+
+    public function descuento(){
+        return view('contrato.descuento');
+    }
+
+    public function storeDescuento($request, $id){
+        //insert del descuento
+        //tambien hay que agregarle el ID para que te muestre la empresa de una vez
+        return redirect('/gestion-contratos');
+    }
+
 }
