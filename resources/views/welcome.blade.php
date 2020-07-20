@@ -22,7 +22,7 @@
                 <div id="imagen2" class="cuadrado ">
                     <div class="texto">
                         <h1>Contratos</h1> 
-                        <li><a href="/gestion-contratos" >Gestion de Contratos</a></li>
+                        <li><a href="{{route('contratos.index')}}" >Gestion de Contratos</a></li>
                     </div>
             </div>
             <div id="imagen3" class="cuadrado centrar ">

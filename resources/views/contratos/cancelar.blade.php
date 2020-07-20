@@ -7,7 +7,7 @@
     <div class="stage tarjeta muli">
 		<h3 class="mb-3 text-center display-5">Cancelar contrato<span class="strong verde">
 		<div aling="center">
-            <form class="form-inline form-group" action="{{route('contrato.fin')}}" method="POST">
+            <form class="form-inline form-group" action="{{route('contrato.fin', $contrato->id)}}" method="POST">
             @method('POST')
             @csrf
                 <label for="sel1">Cancelante</label>

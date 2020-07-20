@@ -6,7 +6,7 @@
 <div class="container mgt-2 mgrb-1">
     <div class="stage tarjeta muli">
         <div aling="center">
-            <form class="form-inline form-group" action="{{route('contrato.crear')}}" method="GET">
+            <form class="form-inline form-group" action="{{route('contrato.seleccionarProveedores')}}" method="GET">
                 <label for="sel1">Seleccione un productor para generar un contrato:</label>
                 <select class="form-control" name="id_prod">
                 @foreach ($productores as $productor)

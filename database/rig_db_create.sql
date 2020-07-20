@@ -423,7 +423,7 @@ CREATE TABLE rig_contratos (
 	id INTEGER PRIMARY KEY,
 	fcha_reg DATE NOT NULL,
 	exc VARCHAR (2) NOT NULL,
-	cancelante VARCHAR (20),
+	cancelante VARCHAR (50),
 	fcha_fin DATE,
 	mot_fin VARCHAR (50),
 	id_prod SMALLINT NOT NULL,
@@ -815,7 +815,8 @@ INSERT INTO rig_condiciones_de_pago VALUES (1, DEFAULT, 'CONTADO', 1, 100, 6),
 	(4, DEFAULT, 'PARCIAL', 4, 25, 4),
 	(5, DEFAULT, 'CONTADO', 1, 100, 5),
 	(5, DEFAULT, 'PARCIAL', 3, 33, 5),
-	(5, DEFAULT, 'PARCIAL', 2, 50, 6);
+	(5, DEFAULT, 'PARCIAL', 2, 50, 6),
+	(6, DEFAULT, 'PARCIAL', 2, 50, 6);
 
 --rig_condiciones_de_envio
 
