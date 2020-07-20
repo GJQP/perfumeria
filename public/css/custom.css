@@ -70,6 +70,10 @@
     margin-right: -5rem;
 }
 
+.mgtp-1{
+    margin-top: 0.25rem;
+}
+
 .mgt-5r{
     margin-top: 3%;
 }
@@ -354,4 +358,20 @@ table{
 
 #escalaEva{
     width: 20%;
+}
+
+.nombreEmp{
+    width: 30%;
+}
+
+.estado{
+    width: 20%;
+}
+
+.tiempoEntrega{
+    width:20% ;
+}
+
+.hacerPedido{
+    text-align: justify right;
 }

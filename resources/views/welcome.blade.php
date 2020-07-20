@@ -22,13 +22,13 @@
                 <div id="imagen2" class="cuadrado ">
                     <div class="texto">
                         <h1>Contratos</h1> 
-                        <li><a href="/gestion-contratos" disabled>Gestion de Contratos</a></li>
+                        <li><a href="/gestion-contratos" >Gestion de Contratos</a></li>
                     </div>
             </div>
             <div id="imagen3" class="cuadrado centrar ">
                 <div class="texto">
                     <h1>Compras</h1> 
-                    <li><a href="" disabled>Panel de Compras</a></li>
+                    <li><a href="/gestion-compras" >Panel de Compras</a></li>
                 </div>
             </div>
         </div>

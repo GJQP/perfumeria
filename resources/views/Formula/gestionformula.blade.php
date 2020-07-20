@@ -38,14 +38,18 @@
                     </div>
                 </div>
             </div>
-            <!--Tabla de Formula Inicial-->
+            
             <div class="blocktext mgln-4">
+            <!--Crear If para mostrar una tabla dependiendo del parametro que se pase-->
+        
             <table class="mgl-3 consulta">
                 <tr>
                     <th id="criterio">Criterio de Evaluacion</th>
                     <th id="escala">Escala</th>
                     <th id="porcentaje">Porcentaje</th>
                 </tr>
+                <!--Tabla de Formula Inicial-->
+                <!--
                 <tr>
                     <td>Ubicacion Geográfica</td>
                     <td id="escala"> <div class="escala"> <p> rango maximo</p> </div> </td>
@@ -71,12 +75,30 @@
                     <td id="escala"> <div class="escala"> <p> rango maximo</p> </div> </td>
                     <td> <div class="porcentaje"> <p class="mgr-1">%</p> </div> </td>
                 </tr>
-                <tr>
-                    <td class="vacio"></td>
-                    <td id="escala">Total</td>
-                    <td id="total"></td>
+              
+              -->
+              <!--Tabla de Renovacion-->
+              <tr>
+                    <td>Pedidos Enviados Satisfactoriamente</td>
+                    <td id="escala"> <div class="escala"> <p> rango maximo</p> </div> </td>
+                    <td> <div class="porcentaje"> <p class="mgr-1">%</p> </div> </td>
                 </tr>
-              </table>
+                <tr>
+                    <td>Pedidos Enviados con retraso</td>
+                    <td id="escala"> <div class="escala"> <p> rango maximo</p> </div> </td>
+                    <td> <div class="porcentaje"> <p class="mgr-1">%</p> </div> </td>
+                </tr>
+                <tr>
+                    <td>Pedidos Rechazados</td>
+                    <td id="escala"> <div class="escala"> <p> rango maximo</p> </div> </td>
+                    <td> <div class="porcentaje"> <p class="mgr-1">%</p> </div> </td>
+                </tr>
+                <tr>
+                    <td>Pedidos Cancelados</td>
+                    <td id="escala"> <div class="escala"> <p> rango maximo</p> </div> </td>
+                    <td> <div class="porcentaje"> <p class="mgr-1">%</p> </div> </td>
+                </tr>
+                </table>
               </div>
               <!--Botones-->
               <div class="blocktext mgt-2 pdb-2 row">
@@ -97,7 +119,7 @@
         </div>
         <div class="modal-body" id="contenido-modal">
            <p>
-               ¿Esta seguro que desea eliminar la Formula de Inicio de la Empresa piiiiii?
+               ¿Esta seguro que desea eliminar la Formula de esta Empresa?
            </p>
         </div>
         <div class="modal-footer">

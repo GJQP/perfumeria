@@ -26,7 +26,7 @@ class Contratos extends Controller
         $contratosR = DB::select("$query");
         $contratos = array();
         // Esto se implementa para obtener los contratos vigentes
-        foreach($contratosI as $contrato) 
+        foreach($contratosI as $contrato)
         {
             $cont = 0;
             foreach($contratosR as $contratoR)
@@ -55,7 +55,7 @@ class Contratos extends Controller
         $request = $request->all();
         dd($request);
         DB::update("UPDATE rig_contratos SET (fcha_fin = current_date, mot_fin = $request[desc], cancelante = $request[cancelante]) WHERE ID = $id");
-        return redirect()->route('contratos.index')->with('status', 'Contrato cancelado'); 
+        return redirect()->route('contratos.index')->with('status', 'Contrato cancelado');
     }
 
     // Lista 100%
@@ -85,6 +85,11 @@ class Contratos extends Controller
     {
         //return view('contratos.crearContrato');
         dd($request);
+    }
+
+    /**Funcion para renovar contrato, faltaria pasarle la formula de renovacion de la empresa*/
+    public function cambio(){
+        return view('contrato.renovarContrato');
     }
 
     public function evaluacion(){
@@ -145,5 +150,9 @@ class Contratos extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function vistacontrato(){
+        return view('contrato.selecProductos');
     }
 }

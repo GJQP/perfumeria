@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
-class GestionFormula extends Controller
+class Compras extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -13,7 +13,7 @@ class GestionFormula extends Controller
      */
     public function index()
     {
-        return view('formula.gestionformula');
+        return view('compras.gestionCompras');
     }
 
     /**
@@ -23,7 +23,7 @@ class GestionFormula extends Controller
      */
     public function create()
     {
-        return view('formula.crearformula');
+        //
     }
 
     /**
@@ -34,8 +34,7 @@ class GestionFormula extends Controller
      */
     public function store(Request $request)
     {
-        //falta el insert aqui
-        return view('formula.gestionformula');
+        //
     }
 
     /**

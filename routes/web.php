@@ -1,4 +1,4 @@
-/<?php
+<?php
 
 use Illuminate\Support\Facades\Route;
 
@@ -32,7 +32,8 @@ Route::delete('/gestion-perfumista/{id}','Perfumistas@destroy');
 Route::get ('/gestion-formula','GestionFormula@index');
 
 //Crear Formula
-Route::get ('/gestion-formula/crear','GestionFormula@crearinicio');
+Route::get ('/gestion-formula/crear','GestionFormula@create');
+Route::post('/gestion-formula/crear','GestionFormula@store');
 
 //Gestion de Contratos
 Route::get ('/gestion-contratos','Contratos@index')->name('contratos.index');
@@ -44,5 +45,9 @@ Route::post('/gestion-contratos/cancelar-contrato/fin', 'Contratos@cancelar')->n
 Route::get ('/gestion-contratos/renovar/{id}','Contratos@renovarContrato')->name('contrato.renovar');
 
 //Crear Contrato
-//Route::get ('/gestion-contrato/crear','Contratos@create');
-//Route::get ('/gestion-contratos/{id}/crear/evaluacion-{proveedor}','Contratos@evaluacion');
+Route::get ('/gestion-contrato/crear','Contratos@create');
+Route::get ('/gestion-contratos/{id}/crear/evaluacion-{proveedor}','Contratos@evaluacion');
+Route::post('/gestion-contratos/{id}/crear/evaluacion-{proveedor}','Contratos@vistacontrato');
+
+//Gestion Compras
+Route::get ('/gestion-compras','Compras@index');
