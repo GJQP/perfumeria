@@ -41,7 +41,7 @@
                             <a href="">Cancelar Contrato</a>
                         </div>
                         <div>
-                            <a href="">Renovar Contrato</a>
+                            <a href="/gestion-contratos/1/renovar/evaluacion-1">Renovar Contrato</a>
                     </div>
                     </td>
                 </tr>

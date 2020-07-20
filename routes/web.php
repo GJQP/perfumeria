@@ -42,7 +42,7 @@ Route::get ('/gestion-contratos/{id}','Contratos@index');
 //Mostrar Empresas
 Route::get ('/gestion-contrato/crear','Contratos@create');
 
-//Evaluar
+//Evaluacion Inicial
 Route::get ('/gestion-contratos/{id}/crear/evaluacion-{proveedor}','Contratos@evaluacion');
 
 //Crear Contrato
@@ -59,6 +59,12 @@ Route::get('/gestion-contratos/{id}/crear/evaluacion-{proveedor}/{contrato}/desc
 
 //Guardar el descuento
 Route::post('/gestion-contratos/{id}/crear/evaluacion-{proveedor}/{contrato}/descuento','Contratos@storeDescuento');
+
+//Evaluacion de Renovacion
+Route::get('/gestion-contratos/{id}/renovar/evaluacion-{proveedor}','Contratos@renovacion');
+
+//Guardar el porcentaje de la renovacion
+Route::put('/gestion-contratos/{id}/renovar/evaluacion-{proveedor}','Contratos@storeRenovacion');
 
 //Gestion Compras
 Route::get ('/gestion-compras','Compras@index');

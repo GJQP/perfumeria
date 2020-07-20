@@ -39,11 +39,6 @@ class Contratos extends Controller
         return view('contrato.crearContrato');
     }
 
-    /**Funcion para renovar contrato, faltaria pasarle la formula de renovacion de la empresa*/
-    public function cambio(){
-        return view('contrato.renovarContrato');
-    }
-
     public function evaluacion(){
         return view('contrato.evaluacion');
     }
@@ -105,27 +100,45 @@ class Contratos extends Controller
         //
     }
 
+    //funcion para cambiar el link y guardar el resultado de la evaluacion
     public function vistacontrato(){
         //insert del resultado de la evaluacion
         return redirect('/gestion-contratos/1/crear/evaluacion-1/1');
     }
 
+    //funcion para mostrar la vista de contrato
     public function contrato(){
         return view('contrato.selecProductos');
     }
 
+    //funcion para guardar el contrato
     public function storeContrato(){
+        //insert del contrato
         return redirect('/gestion-contratos/1/crear/evaluacion-1/1/descuento');
     }
 
+    //funcion para cargar la vista de descuento
     public function descuento(){
         return view('contrato.descuento');
     }
 
+    //funcion para guardar el descuento
     public function storeDescuento($request, $id){
         //insert del descuento
         //tambien hay que agregarle el ID para que te muestre la empresa de una vez
         return redirect('/gestion-contratos');
     }
 
+    //funcion para cargar vista de renovacion contrato
+    public function renovacion() {
+        return view('contrato.renovarContrato');
+    }
+
+    //funcion para guardar la renovacion
+    public function storeRenovacion($request){
+        //insert del % de renovacion
+        //modificacion de la fecha de cancelacion
+        //agregar el id a la ruta
+        return redirect('/gestion-contratos/1');
+    }
 }
