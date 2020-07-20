@@ -4,7 +4,6 @@ DROP TABLE IF EXISTS rig_pedidos;
 DROP TABLE IF EXISTS rig_productos_contratados;
 DROP TABLE IF EXISTS rig_condiciones_contratos;
 DROP TABLE IF EXISTS rig_renovaciones;
-DROP TABLE IF EXISTS rig_renovacion;
 DROP TABLE IF EXISTS rig_contratos;
 DROP TABLE IF EXISTS rig_origenes;
 DROP TABLE IF EXISTS rig_componentes_funcionales;
@@ -289,7 +288,7 @@ CREATE TABLE rig_perfumistas (
 
 CREATE SEQUENCE rig_perfumistas_id_seq AS INTEGER OWNED BY rig_perfumistas.id;
 ALTER TABLE rig_perfumistas ADD CONSTRAINT rig_perfumistas_ck CHECK (genero IN ('F', 'M')),
-	ALTER COLUMN id SET DEFAULT nextval('rig_perfumistas_id_seq'),	
+	ALTER COLUMN id SET DEFAULT nextval('rig_perfumistas_id_seq'),
 	ADD CONSTRAINT rig_perfumistas_id_ubic_fk FOREIGN KEY (id_ubic) REFERENCES rig_paises;
 
 CREATE TABLE rig_perfumes_perfumistas (
@@ -545,7 +544,7 @@ INSERT INTO rig_paises VALUES
 	(DEFAULT, 'Haiti'),
 	(DEFAULT, 'Guadalupe'),
 	(DEFAULT, 'Alemania'),
-	(DEFAULT, 'Países Bajos - Holanda'), 
+	(DEFAULT, 'Países Bajos - Holanda'),
 	(DEFAULT, 'Grecia'),
 	(DEFAULT, 'Georgia'),
 	(DEFAULT, 'Dinamarca'),
@@ -786,8 +785,8 @@ INSERT INTO rig_proveedores VALUES (DEFAULT, 'Destilerías Muñoz Gálvez S.A.',
 --rig_sucursales
 
 INSERT INTO rig_sucursales VALUES (66, 1), (2,1), (9,1), (22,1), (64,1), (18,1), (29,1), (115,1), (46,1), (47,1), (50,1),
-	(139,1), (28,1), (13, 1), (1,1), (35,1), (25,1), (74, 1), (70,1), (69,1), (77,1), (78,1), (92,1), (15,1), (5,1), (12,1), 
-	(82,1),	(42,1), (55,1), (55,2), (64,3), (18,3), (13,3), (66,3), (28,3), (104,3), (105,3), (157,3), (115,3), (139,3), 
+	(139,1), (28,1), (13, 1), (1,1), (35,1), (25,1), (74, 1), (70,1), (69,1), (77,1), (78,1), (92,1), (15,1), (5,1), (12,1),
+	(82,1),	(42,1), (55,1), (55,2), (64,3), (18,3), (13,3), (66,3), (28,3), (104,3), (105,3), (157,3), (115,3), (139,3),
 	(97,3), (50,3), (188,3), (59,3);
 
 --rig_membresias
@@ -850,7 +849,7 @@ INSERT INTO rig_condiciones_de_envio VALUES (1, 66, 'Envio simple', 0.5, 'MARITI
 	(1, 104, 'Envio simple', 0.7, 'AEREO'),
 	(1, 188, 'Envio simple', 0.7, 'AEREO'),
 	(1, 59, 'Envio simple', 0.7, 'AEREO'),
-	(1, 97, 'Envio simple', 0.7, 'TERRESTRE'),	
+	(1, 97, 'Envio simple', 0.7, 'TERRESTRE'),
 	(2, 2, 'Envio simple', 0.6, 'MARITIMO'),
 	(2, 9, 'Envio simple', 0.5, 'MARITIMO'),
 	(2, 22, 'Envio simple', 0.22, 'TERRESTRE'),
@@ -990,7 +989,7 @@ INSERT INTO rig_condiciones_de_envio VALUES (1, 66, 'Envio simple', 0.5, 'MARITI
 	(6, 188, 'Envio simple', 0.7, 'AEREO'),
 	(6, 59, 'Envio simple', 0.7, 'AEREO'),
 	(6, 97, 'Envio simple', 0.7, 'TERRESTRE');
-	
+
 --rig_variables
 
 INSERT INTO rig_variables VALUES (DEFAULT, 'Ubicación', 'Ubicación geográfica del proveedor'),
@@ -1027,7 +1026,7 @@ INSERT INTO rig_prohibidas VALUES (100516, 'Benzyl alcohol', 'R'),
 	(7540514, 'Citronellol', 'R'),
 	(106230 , 'Citronellal', 'R'),
 	(5949053, 'Citronellal', 'R'),
-	(106241, 'Geraniol', 'R'),	
+	(106241, 'Geraniol', 'R'),
 	(107755, 'Hydroxycitronellal', 'R'),
 	(107898544, '3,3-Dimethyl-5-(2,2,3-trimethyl-3-cyclopenten-1-yl)-4-penten-2-ol', 'R'),
 	(108883, 'Toluene', 'P-S'),
@@ -1048,7 +1047,7 @@ INSERT INTO rig_prohibidas VALUES (100516, 'Benzyl alcohol', 'R'),
 	(119846, 'Dihydrocoumarin', 'R'),
 	(120514, 'Benzyl benzoate', 'R'),
 	(1205170, 'α-Methyl-1,3-benzodioxole-5-propionaldehyde (MMDHCA)', 'R'),
-	(122032, 'Cuminaldehyde', 'R'),	
+	(122032, 'Cuminaldehyde', 'R'),
 	(122394, 'Diphenylamine', 'P'),
 	(122407, 'α-Amyl cinnamic aldehyde', 'R'),
 	(122576, 'Benzylidene acetone', 'P'),
@@ -1132,7 +1131,7 @@ INSERT INTO rig_prohibidas VALUES (100516, 'Benzyl alcohol', 'R'),
 	(26651967, '1,2,3,4-Tetrahydro-4-methylquinoline', 'P-S'),
 	(72968253, '1,2,3,4-Tetrahydro-4-methylquinoline', 'P-S'),
 	(1117415, '1,2,3,4-Tetrahydro-4-methylquinoline', 'P-S');
-	
+
 --rig_ingredientes_esencias
 
 INSERT INTO rig_ingredientes_esencias (id_prov, cas, nombre, tipo, des, id_ubic, solubilidad, peligrosidad, vida_alm) VALUES (3, 5392405, 'Citral', 'NATURAL', 'Citral tiene un fuerte olor a limón (cítrico). El olor a limón de Neral es menos intenso, pero más dulce. Por lo tanto, Citral es un compuesto aromático utilizado en perfumería por su efecto cítrico. Citral también se usa como sabor y para fortificar el aceite de limón. También tiene fuertes cualidades antimicrobianas y efectos feromonales en ácaros e insectos. Citral se usa en la síntesis de vitamina A, licopeno, ionona y metilionona, para enmascarar el olor a humo.', 18,'Soluble en alcohol, aceite de parafina y agua de 1340 mg/L a 25°C', 'BAJA', 24*30),
@@ -1186,17 +1185,17 @@ INSERT INTO rig_perfumes VALUES (DEFAULT, 1,'Acqua di Giò', 'M', 'FASES', 'ADUL
 	(DEFAULT, 3,'Exotic Musk', 'F', 'MONO', 'ADULTO', 2019, 'Mostrando el preciado ingrediente aromático que evoca vívidamente un destino exótico, cada fragancia de Bentley Beyond - The Collection traduce un viaje en aroma. Compuesto por tres nuevos perfumistas jóvenes, el primer trío de la colección nos lleva a tres países diferentes, cada uno asociado con una nota olfativa y un tema de color inspirado en'),
 	(DEFAULT, 3,'Let you Love Me de Blumarine', 'F', 'MONO', 'ADULTO', 2020, 'La nueva fragancia femenina Let You Love Me huele a audacia y sensualidad, determinación y feminidad, y la fuerza invencible de una mujer apasionada que besa al hombre de sus sueños y le dice: "Te dejo amarme". La fragancia pertenece al Familia olfativa de aromáticos orientales.'),
 	(DEFAULT, 3,'Gris Charnel de BDK Parfums', 'U', 'FASES', 'ADULTO', 2019, 'Gris Charnel es un aroma de piel, creado con la idea de la sensualidad, la intimidad. Evoca mañanas parisinas grises, donde uno se despierta con un deseo de capullo, todavía consolado por el calor del otro. Es una fragancia que actúa como una segunda piel, sacando su dulzura de un cremoso acuerdo de sándalo indio.');
-	
+
 --rig_perfumistas
 
 INSERT INTO rig_perfumistas VALUES (DEFAULT, 'Giorgio Armani', 'M', '11-07-1934', 29),
 	(DEFAULT, 'Annick Menardo', 'F', '13-09-1985', 29),
 	(DEFAULT, 'Ralph Lauren', 'M', '04-10-1939', 55),
 	(DEFAULT, 'Joseph Abboud', 'M', '05-5-1950', 55),
-	(DEFAULT, 'Olivier Polge', 'M', '07-01-1978', 29),	
+	(DEFAULT, 'Olivier Polge', 'M', '07-01-1978', 29),
 	(DEFAULT, 'Alexandra Monet', 'F', '08-06-1970', 29),
 	(DEFAULT, 'Mathilde Bijaoui', 'F', '03-08-1975', 64),
-	(DEFAULT, 'Veronique Nyberg', 'F', '15-07-1964', 18);		
+	(DEFAULT, 'Veronique Nyberg', 'F', '15-07-1964', 18);
 
 --rig_perfumes_perfumistas
 
@@ -1204,7 +1203,7 @@ INSERT INTO rig_perfumes_perfumistas VALUES (1, 1),	(2,2), (3,3), (4,4), (5,5), 
 
 --rig_intensidades
 
-INSERT INTO rig_intensidades VALUES (1, DEFAULT, 'EdT'), 
+INSERT INTO rig_intensidades VALUES (1, DEFAULT, 'EdT'),
 	(2, DEFAULT, 'EdP'),
 	(3, DEFAULT, 'EdT'),
 	(4, DEFAULT, 'EdP'),
@@ -1212,7 +1211,7 @@ INSERT INTO rig_intensidades VALUES (1, DEFAULT, 'EdT'),
 	(6, DEFAULT, 'EdP'),
 	(7, DEFAULT, 'EdT'),
 	(8, DEFAULT, 'EdT'),
-	(9, DEFAULT, 'EdP');	
+	(9, DEFAULT, 'EdP');
 
 --rig_presentaciones_perfumes
 
@@ -1283,4 +1282,3 @@ INSERT INTO rig_familias_olfativas VALUES (DEFAULT, 'Verde'),
 INSERT INTO rig_palabras_familias VALUES (1,1), (1,2), (1,3), (1,4), (1,5), (1,6),
 	(2,3), (2,7), (2,8), (2,9);
 
-	

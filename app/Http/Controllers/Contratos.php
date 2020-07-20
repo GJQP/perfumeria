@@ -83,8 +83,12 @@ class Contratos extends Controller
      */
     public function create(Request $request)
     {
-        //return view('contratos.crearContrato');
-        dd($request);
+        return view('contratos.crearContrato')->with([
+            'productores'=>$this->getProductores(),
+            'id_prod'=>$request->id_prod,
+            'proveedores'=> []
+
+        ]);
     }
 
     /**Funcion para renovar contrato, faltaria pasarle la formula de renovacion de la empresa*/
@@ -93,7 +97,7 @@ class Contratos extends Controller
     }
 
     public function evaluacion(){
-        //return view('contrato.evaluacion');
+        return view('contrato.evaluacion');
     }
 
     /**
@@ -154,5 +158,10 @@ class Contratos extends Controller
 
     public function vistacontrato(){
         return view('contrato.selecProductos');
+    }
+
+    private function getProductores(){
+        $query = "SELECT prod.id, prod.nombre FROM rig_productores prod, rig_membresias mem WHERE prod.id = mem.id_prod AND mem.fcha_fin IS NULL";
+        return DB::select("$query");
     }
 }

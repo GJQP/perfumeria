@@ -39,7 +39,7 @@ Route::post('/gestion-formula/crear','GestionFormula@store');
 Route::get ('/gestion-contratos','Contratos@index')->name('contratos.index');
 
 //Gestion de contrato
-Route::post ('/gestion-contratos/crear','Contratos@create')->name('contrato.crear');
+Route::get ('/gestion-contratos/crear','Contratos@create')->name('contrato.crear');
 Route::get ('/gestion-contratos/cancelar-contrato/{id}', 'Contratos@cancelarContrato')->name('contrato.cancelar');
 Route::post('/gestion-contratos/cancelar-contrato/fin', 'Contratos@cancelar')->name('contrato.fin');
 Route::get ('/gestion-contratos/renovar/{id}','Contratos@renovarContrato')->name('contrato.renovar');
@@ -51,3 +51,5 @@ Route::post('/gestion-contratos/{id}/crear/evaluacion-{proveedor}','Contratos@vi
 
 //Gestion Compras
 Route::get ('/gestion-compras','Compras@index');
+
+
