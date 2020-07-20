@@ -427,8 +427,8 @@ CREATE TABLE rig_contratos (
 	cancelante VARCHAR (20),
 	fcha_fin DATE,
 	mot_fin VARCHAR (50),
-	id_prod SMALLINT,
-	id_prov SMALLINT
+	id_prod SMALLINT NOT NULL,
+	id_prov SMALLINT NOT NULL,
 );
 
 CREATE SEQUENCE rig_contrato_id_seq AS INTEGER OWNED BY rig_contratos.id;
