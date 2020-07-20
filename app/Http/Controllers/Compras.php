@@ -4,14 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
-class Contratos extends Controller
+class Compras extends Controller
 {
-        //redireccionar a la pagina de inicio
-        public function inicio()
-        {
-            return view('welcome');
-        }
-
     /**
      * Display a listing of the resource.
      *
@@ -19,13 +13,7 @@ class Contratos extends Controller
      */
     public function index()
     {
-        //$resultado = insert;
-      return view('contrato.gestionContratos')->with('$resultado');
-    }
-
-    //Funcion de Prueba, se puede cambiar la ruta por index
-    public function contratos(){
-        return view('contrato.gestionContratos');
+        return view('compras.gestionCompras');
     }
 
     /**
@@ -35,16 +23,7 @@ class Contratos extends Controller
      */
     public function create()
     {
-        return view('contrato.crearContrato');
-    }
-
-    /**Funcion para renovar contrato, faltaria pasarle la formula de renovacion de la empresa*/
-    public function cambio(){
-        return view('contrato.renovarContrato');
-    }
-
-    public function evaluacion(){
-        return view('contrato.evaluacion');
+        //
     }
 
     /**
@@ -101,9 +80,5 @@ class Contratos extends Controller
     public function destroy($id)
     {
         //
-    }
-
-    public function vistacontrato(){
-        return view('contrato.selecProductos');
     }
 }
