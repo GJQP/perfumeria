@@ -420,14 +420,15 @@ ALTER TABLE rig_origenes ADD CONSTRAINT rig_origenes_id_fao_fk FOREIGN KEY (id_f
 	ADD CONSTRAINT rig_origenes_funcionales_id_esenp_fk FOREIGN KEY (id_esenp) REFERENCES rig_esencias_perfumes;
 
 CREATE TABLE rig_contratos (
-	id INTEGER PRIMARY KEY,
+	id_prod SMALLINT,
+	id_prov SMALLINT,
+	id INTEGER,
 	fcha_reg DATE NOT NULL,
 	exc VARCHAR (2) NOT NULL,
 	cancelante VARCHAR (50),
 	fcha_fin DATE,
 	mot_fin VARCHAR (50),
-	id_prod SMALLINT NOT NULL,
-	id_prov SMALLINT NOT NULL
+	PRIMARY KEY (id_prod, id_prov, id)
 );
 
 CREATE SEQUENCE rig_contrato_id_seq AS INTEGER OWNED BY rig_contratos.id;
@@ -437,61 +438,71 @@ ALTER TABLE rig_contratos ADD CONSTRAINT rig_contrato_ck CHECK (exc IN ('SI', 'N
 	ALTER COLUMN id SET DEFAULT nextval('rig_contrato_id_seq');
 
 CREATE TABLE rig_renovaciones (
+	id_prod SMALLINT,
+	id_prov SMALLINT,
 	id_ctra INTEGER,
 	id INTEGER,
 	fcha_reg DATE,
-	PRIMARY KEY (id_ctra, id)
+	PRIMARY KEY (id_prod, id_prov, id_ctra, id)
 );
 
 CREATE SEQUENCE rig_renovaciones_id_seq AS INTEGER OWNED BY rig_renovaciones.id;
-ALTER TABLE rig_renovaciones ADD CONSTRAINT rig_renovaciones_id_ctra FOREIGN KEY (id_ctra) REFERENCES rig_contratos,
+ALTER TABLE rig_renovaciones ADD CONSTRAINT rig_renovaciones_id_ctra FOREIGN KEY (id_prod, id_prov, id_ctra) REFERENCES rig_contratos,
 	ALTER COLUMN id SET DEFAULT nextval('rig_renovaciones_id_seq');
 
 CREATE TABLE rig_condiciones_contratos (
+	id_prod SMALLINT,
+	id_prov SMALLINT,
 	id_ctra INTEGER,
 	id SMALLINT, --No amerita una secuencia ya que nunca cambia
 	id_prov_ce SMALLINT,
 	id_ubic SMALLINT,
 	id_prov_cp SMALLINT,
 	id_condpgo INTEGER,
-	PRIMARY KEY (id_ctra, id)
+	PRIMARY KEY (id_prod, id_prov, id_ctra, id)
 );
 
-ALTER TABLE rig_condiciones_contratos ADD CONSTRAINT rig_condiciones_contratos_id_ctra_fk FOREIGN KEY (id_ctra) REFERENCES rig_contratos,
+ALTER TABLE rig_condiciones_contratos ADD CONSTRAINT rig_condiciones_contratos_id_ctra_fk FOREIGN KEY (id_prod, id_prov, id_ctra) REFERENCES rig_contratos,
 	ADD CONSTRAINT rig_condiciones_contratos_cond_env_fk FOREIGN KEY (id_prov_ce, id_ubic) REFERENCES rig_condiciones_de_envio (id_prov, id_ubic),
 	ADD CONSTRAINT rig_condiciones_contratos_cond_pgo_fk FOREIGN KEY (id_prov_cp, id_condpgo) REFERENCES rig_condiciones_de_pago (id_prov, id);
 
 
 CREATE TABLE rig_productos_contratados (
+	id_prod SMALLINT,
+	id_prov SMALLINT,
 	id_ctra INTEGER,
 	id SMALLINT, --No amerita una secuencia ya que nunca cambia
 	id_prov_ing SMALLINT,
 	cas_ing BIGINT,
 	cas_otr_ing BIGINT,
-	PRIMARY KEY (id_ctra, id) --AK
+	PRIMARY KEY (id_prod, id_prov, id_ctra, id) --AK
 );
 
-ALTER TABLE rig_productos_contratados ADD CONSTRAINT rig_productos_contratados_id_ctra_fk FOREIGN KEY (id_ctra) REFERENCES rig_contratos,
+ALTER TABLE rig_productos_contratados ADD CONSTRAINT rig_productos_contratados_id_ctra_fk FOREIGN KEY (id_prod, id_prov, id_ctra) REFERENCES rig_contratos,
 	ADD CONSTRAINT rig_productos_contratados_ing_fk FOREIGN KEY (id_prov_ing, cas_ing) REFERENCES rig_ingredientes_esencias (id_prov, cas),
 	ADD CONSTRAINT rig_productos_contratados_otr_ing_fk FOREIGN KEY (cas_otr_ing) REFERENCES rig_otros_ingredientes (cas);
 
 CREATE TABLE rig_pedidos (
-	id INTEGER PRIMARY KEY,
+	id BIGINT PRIMARY KEY,
 	fcha_reg DATE NOT NULL,
 	estatus VARCHAR (10) NOT NULL DEFAULT 'NO ENVIADO',
 	factura INTEGER UNIQUE,
 	total NUMERIC(20,2),
+	id_prod_conp SMALLINT,
+	id_prov_conp SMALLINT,
 	id_ctra_conp BIGINT,
 	id_conp BIGINT,
+	id_prod_cone SMALLINT,
+	id_prov_cone SMALLINT,
 	id_ctra_cone BIGINT,
-	id_conev BIGINT
+	id_cone BIGINT
 );
 
-CREATE SEQUENCE rig_pedidos_id_seq AS INTEGER OWNED BY rig_pedidos.id;
+CREATE SEQUENCE rig_pedidos_id_seq AS BIGINT OWNED BY rig_pedidos.id;
 CREATE SEQUENCE rig_factura_id_seq OWNED BY rig_pedidos.factura;
 ALTER TABLE rig_pedidos ADD CONSTRAINT rig_pedido_ck CHECK (estatus IN ('ENVIADO', 'NO ENVIADO')),
-	ADD CONSTRAINT rig_pedido_conev_fk FOREIGN KEY (id_ctra_cone, id_conev) REFERENCES rig_condiciones_contratos (id_ctra, id),
-	ADD CONSTRAINT rig_pedido_conp_fk FOREIGN KEY (id_ctra_conp, id_conp) REFERENCES rig_condiciones_contratos (id_ctra, id),
+	ADD CONSTRAINT rig_pedido_conev_fk FOREIGN KEY (id_prod_cone, id_prov_cone, id_ctra_cone, id_cone) REFERENCES rig_condiciones_contratos (id_prod, id_prov, id_ctra, id),
+	ADD CONSTRAINT rig_pedido_conp_fk FOREIGN KEY (id_prod_conp, id_prov_conp, id_ctra_conp, id_conp) REFERENCES rig_condiciones_contratos (id_prod, id_prov, id_ctra, id),
 	ALTER COLUMN id SET DEFAULT nextval('rig_pedidos_id_seq'),
 	ALTER COLUMN factura SET DEFAULT nextval('rig_factura_id_seq');
 
@@ -1232,38 +1243,65 @@ INSERT INTO rig_presentaciones_perfumes VALUES (1, 1, DEFAULT, 8.1, 'ml'),	(1, 1
 --	palabra VARCHAR(20) NOT NULL UNIQUE
 --);
 
-INSERT INTO rig_palabras_claves VALUES (DEFAULT, 'verde'),
-	(DEFAULT, 'frescor'),
-	(DEFAULT, 'optimismo'),--1,2
-	(DEFAULT, 'natural'),
-	(DEFAULT, 'libre'),
-	(DEFAULT, 'juvenil'),--6
-	(DEFAULT, 'efímero'),
-	(DEFAULT, 'volatil'),
-	(DEFAULT, 'estimulante');--9
+INSERT INTO rig_palabras_claves VALUES 
+	-- Verde
+	(DEFAULT, 'verde'), --1
+	(DEFAULT, 'fresca'),--2
+	(DEFAULT, 'optimista'),--3
+	(DEFAULT, 'natural'), --4
+	(DEFAULT, 'libre'), --5
+	(DEFAULT, 'deshinibida'), --6
+	-- Cítrico
+	(DEFAULT, 'cítrico'),--7
+	(DEFAULT, 'juvenil'),--8
+	(DEFAULT, 'efímero'), --9
+	(DEFAULT, 'volatil'), --10
+	(DEFAULT, 'estimulante'),--11
+	(DEFAULT, 'olor fuerte'),--12
+	(DEFAULT, 'placer'),--13
+	(DEFAULT, 'verano'),--14
+	(DEFAULT, 'refrescante'),--15
+	-- Flores
+	(DEFAULT, 'floral'),--16
+	(DEFAULT, 'fresco'),--17
+	(DEFAULT, 'tranquilidad'),--18
+	(DEFAULT, 'relajante'),--19
+	(DEFAULT, 'alegre'),--20
+	(DEFAULT, 'vivo'),--21
+	-- Frutas
+	(DEFAULT, 'frutal'),--22
+	(DEFAULT, 'tropical'),--23
+	(DEFAULT, 'felicidad'), --24
+	(DEFAULT, 'ganas de vivir'),--25
+	--Aromáticos
+	(DEFAULT, 'aromático'), --26
+	(DEFAULT, 'vital'), --27
+	(DEFAULT, 'asertivo'), --28
+	(DEFAULT, 'tenaz'), --29
+	(DEFAULT, 'lucidez'), --30
+	(DEFAULT, 'vigor'), --31
+	(DEFAULT, 'familiaridad'), --32
+	--Helechos
+	(DEFAULT, 'profundidad'), --33
+	(DEFAULT, 'energía'), --34
+	(DEFAULT, 'confianza'),--35
+	(DEFAULT, 'atemporal'), --36
+	--Chipre
+	(DEFAULT, 'cálido'),--37
+	(DEFAULT, 'seco'),--38
+	--Maderas
+	(DEFAULT, 'amaderado'),--39
+	--Orientales
+	(DEFAULT, 'almizclado'), --40
+	(DEFAULT, 'sensual'), --41
+	(DEFAULT, 'intensos'), --42
+	(DEFAULT, 'oriental'), --43
+	(DEFAULT, 'empolvados'), --44
+	--Otros
+	(DEFAULT, 'otros'); --45
 
-	--(DEFAULT, 'rocio'),
-	--(DEFAULT, 'rocio'),
-	--(DEFAULT, 'rocio'),
-	--(DEFAULT, 'rocio'),
-	--(DEFAULT, 'rocio'),
-	--(DEFAULT, 'rocio'),
-	--(DEFAULT, 'rocio'),
-	--(DEFAULT, 'rocio'),
-
-
---CREATE SEQUENCE rig_palabras_claves_id_seq AS SMALLINT MAXVALUE 100 OWNED BY rig_palabras_claves.id;
---ALTER TABLE rig_palabras_claves ALTER COLUMN id SET DEFAULT nextval('rig_palabras_claves_id_seq');
-
---CREATE TABLE rig_familias_olfativas (
---	id SMALLINT PRIMARY KEY,
---	nombre VARCHAR (20) UNIQUE
---);
-
---CREATE SEQUENCE rig_familias_olfativas_id_seq AS SMALLINT MAXVALUE 15 OWNED BY rig_familias_olfativas.id;
---ALTER TABLE rig_familias_olfativas ALTER COLUMN id SET DEFAULT nextval('rig_familias_olfativas_id_seq');
-
-INSERT INTO rig_familias_olfativas VALUES (DEFAULT, 'Verde'),
+INSERT INTO rig_familias_olfativas VALUES 
+	(DEFAULT, 'Verde'),
 	(DEFAULT, 'Citrico'),
 	(DEFAULT, 'Flores'),
 	(DEFAULT, 'Frutas'),
@@ -1280,6 +1318,26 @@ INSERT INTO rig_familias_olfativas VALUES (DEFAULT, 'Verde'),
 --	PRIMARY KEY (id_pal, id_fao)
 --);
 
-INSERT INTO rig_palabras_familias VALUES (1,1), (1,2), (1,3), (1,4), (1,5), (1,6),
-	(2,3), (2,7), (2,8), (2,9);
+INSERT INTO rig_palabras_familias VALUES 
+	-- Verde
+	(1,1), (2,1), (3,1), (4,1), (5,1), (6,1),
+	-- Cítrico
+	(7,2), (8,2), (9,2), (10,2), (11,2), (12,2), (13,2), (14,2), (15,2),
+	-- Flores
+	(16,3), (17,3), (18,3), (19,3), (20,3), (21,3),(15,3), (30,3),
+	-- Frutas
+	(22,4), (23,4), (24,4), (25,4), (15,4), (14,4),
+	-- Aromáticos
+	(26,5), (27,5), (28,5), (29,5), (30,5), (31,5), (32,5),
+	-- Helechos
+	(33,6), (34,6), (35,6), (36,6),
+	-- Chipre
+	(37,7), (38,7),
+	-- Maderas
+	(39,8), (37,8), (38,8),
+	-- Orientales
+	(40,9), (41,9), (42,9), (43,9), (44,9), (37,9), (38,9),
+	-- Otros
+	(45,10);
 
+	
