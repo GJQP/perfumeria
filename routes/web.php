@@ -36,13 +36,13 @@ Route::get ('/gestion-formula/crear','GestionFormula@create');
 Route::post('/gestion-formula/crear','GestionFormula@store');
 
 //Gestion de contratos
-Route::post('/gestion-contratos/crear/{id_prod}/{id_prov}/generar', 'Contratos@generar')->name('contrato.generar');
+Route::post('/gestion-contratos/crear/{id_prod}/{id_prov}/generar', 'Contratos@registrarContrato')->name('contrato.generar');
 Route::get ('/gestion-contratos','Contratos@index')->name('contratos.index');
 Route::get ('/gestion-contratos/crear','Contratos@seleccionarProveedores')->name('contrato.seleccionarProveedores');
 Route::get ('/gestion-contratos/crear/{id_prod}/{id_prov}','Contratos@crearContrato')->name('contrato.crear');
-Route::get ('/gestion-contratos/cancelar-contrato/{id_ctra}', 'Contratos@cancelarContrato')->name('contrato.cancelar');
-Route::post('/gestion-contratos/cancelar-contrato/fin/{id_ctra}', 'Contratos@cancelar')->name('contrato.fin');
-Route::get ('/gestion-contratos/renovar/{id_ctra}','Contratos@renovarContrato')->name('contrato.renovar');
+Route::get ('/gestion-contratos/cancelar-contrato/{id_prod}/{id_prov}/{id_ctra}', 'Contratos@motivoCancelación')->name('contrato.cancelar');
+Route::post('/gestion-contratos/cancelar-contrato/fin/{id_prod}/{id_prov}/{id_ctra}', 'Contratos@cancelar')->name('contrato.fin');
+Route::get ('/gestion-contratos/renovar//{id_prod}/{id_prov}/{id_ctra}','Contratos@renovarContrato')->name('contrato.renovar');
 
 
 //Crear Contrato

@@ -9,8 +9,7 @@ use Carbon\Carbon;
 class Contratos extends Controller
 {
         //redireccionar a la pagina de inicio
-        public function inicio()
-        {
+        public function inicio() {
             return view('welcome');
         }
 
@@ -19,49 +18,59 @@ class Contratos extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
-    {   $contratosI = "SELECT con.id, date(con.fcha_reg + interval '1 year') AS fcha, con.id_prod, con.id_prov, pv.nombre AS nombre_prov, pd.nombre AS nombre_prod FROM rig_contratos con, rig_proveedores pv, rig_productores pd WHERE con.fcha_reg + interval '1 year'>= current_date AND con.fcha_fin IS NULL AND con.id_prov = pv.id AND con.id_prod = pd.id";
+    public function index() {   
+        // Consultamos por todos los contratos activos sin verificar su renovación
+        $contratosI = "SELECT  con.id_prod, con.id_prov, con.id, date(con.fcha_reg + interval '1 year') AS fcha_cul, pv.nombre AS nombre_prov, pd.nombre AS nombre_prod FROM rig_contratos con, rig_proveedores pv, rig_productores pd WHERE con.fcha_reg + interval '1 year'>= current_date AND con.fcha_fin IS NULL AND con.id_prov = pv.id AND con.id_prod = pd.id";
         $contratosI = DB::select("$contratosI");
-        $contratosR = "SELECT con.id, MAX(date(ren.fcha_reg + interval '1 year')) AS fcha, con.id_prod, con.id_prov, pv.nombre AS nombre_prov, pd.nombre AS nombre_prod FROM rig_contratos con, rig_proveedores pv, rig_productores pd, rig_renovaciones ren WHERE (ren.fcha_reg + interval '1 year'>= current_date AND ren.id_ctra = con.id )AND con.fcha_fin IS NULL AND con.id_prov = pv.id AND con.id_prod = pd.id GROUP BY con.id, pv.nombre, pd.nombre";
+        // Consultamos por todos los contratos con renovación activa
+        $contratosR = "SELECT con.id_prod, con.id_prov, con.id, MAX(date(ren.fcha_reg + interval '1 year')) AS fcha_cul, pv.nombre AS nombre_prov, pd.nombre AS nombre_prod FROM rig_contratos con, rig_proveedores pv, rig_productores pd, rig_renovaciones ren WHERE (ren.fcha_reg + interval '1 year'>= current_date AND ren.id_ctra = con.id )AND con.fcha_fin IS NULL AND con.id_prov = pv.id AND con.id_prod = pd.id GROUP BY con.id_prod, con.id_prov, con.id, pv.nombre, pd.nombre";
         $contratosR = DB::select("$contratosR");
+        // Creamos el array de contratos a devolver
         $contratos = array();
-        // Esto se implementa para obtener los contratos vigentes
-        foreach($contratosI as $contrato)
+        // Esto se implementa para descartar los duplicados
+        foreach($contratosI as $contrato) 
         {
             $cont = 0;
             foreach($contratosR as $contratoR)
-                if ($contrato->id == $contratoR->id)
+                if ($contrato->id_prov == $contratoR->id_prov && $contrato->id_prod == $contratoR->id_prod && $contrato->id == $contratoR->id)
                     $cont += 1;
             if($cont == 0)
                 array_push($contratos, $contrato);
         }
+        // Anexamos todos lo contratos
         $contratos = array_merge($contratos, $contratosR);
+        // Selecionamos todos los productores activos y disponibles
         $productores = "SELECT prod.id, prod.nombre FROM rig_productores prod, rig_membresias mem WHERE prod.id = mem.id_prod AND mem.fcha_fin IS NULL";
         $productores = DB::select("$productores");
+        // Retornamos la vista index de contratos con las variables necesarias
         return view('contratos.index', ['contratos' => $contratos, 'productores' => $productores]);
     }
 
     // Falta el modal del dialogo
-    public function cancelarContrato(int $id)
+    public function motivoCancelación(int $id_prod, int $id_prov, int $id) 
     {
-        $query = "SELECT con.id, date(con.fcha_reg + interval '1 year') AS fcha, con.id_prod, con.id_prov, pv.nombre AS nombre_prov, pd.nombre AS nombre_prod FROM rig_contratos con, rig_proveedores pv, rig_productores pd WHERE con.fcha_reg + interval '1 year'>= current_date AND con.fcha_fin IS NULL AND con.id_prov = pv.id AND con.id_prod = pd.id AND con.id = $id";
-        $contrato = DB::select("$query");
-        //dd($contrato);
+        // Buscamos el contrato
+        $contrato = "SELECT con.id_prod, con.id_prov, con.id, prod.nombre AS nombre_prod, prov.nombre AS nombre_prov FROM rig_contratos con, rig_productores prod, rig_proveedores prov WHERE con.id_prod = $id_prod AND con.id_prov = $id_prov AND con.id = $id AND con.id_prod = prod.id AND con.id_prov = prov.id";
+        $contrato = DB::select("$contrato");
+        // Si no existe o ya fué cancelado
+        if(empty($contrato))
+            return redirect()->back()->with('error', 'Operación sobre contrato inválida');
+        // Retornamos la vista
         return view('contratos.cancelar', ['contrato' => $contrato[0]]);
     }
 
-    public function cancelar(int $id, Request $request)
+    public function cancelar(int $id_prod, int $id_prov, int $id, Request $request) 
     {
         $request = $request->all();
-        //dd($request);
-        DB::update("UPDATE rig_contratos SET fcha_fin = current_date, mot_fin = '$request[desc]', cancelante = '$request[cancelante]' WHERE id = $id");
+        // Eliminamos el contrato solicitado
+        DB::update("UPDATE rig_contratos SET fcha_fin = current_date, mot_fin = '$request[desc]', cancelante = '$request[cancelante]' WHERE id_prod = $id_prod AND id_prov = $id_prov AND id = $id");
         return redirect()->route('contratos.index')->with('status', 'Contrato cancelado');
     }
 
     // Lista 100%
-    public function renovarContrato(int $id)
+    public function renovarContrato(int $id_prod, int $id_prov, int $id)
     {
-        $query = "SELECT id, date(fcha_reg + interval '11 months') AS fcha FROM rig_contratos WHERE id=$id AND fcha_fin IS NULL";
+        $query = "SELECT id, date(fcha_reg + interval '11 months') AS fcha FROM rig_contratos WHERE id_prod = $id_prod AND id_prov = $id_prov AND id = $id AND fcha_fin IS NULL";
         $contrato = DB::select("$query");
         if(!empty($contrato) && Carbon::create($contrato[0]->fcha)->lessThanOrEqualTo(Carbon::now()))
         {
@@ -69,7 +78,7 @@ class Contratos extends Controller
             $renovacion = DB::select("$query");
             if(empty($renovacion) || Carbon::create($renovacion[0]->fcha)->lessThanOrEqualTo(Carbon::now()))
             {
-                DB::insert("INSERT INTO rig_renovaciones VALUES ($id, 2, current_date)");
+                DB::insert("INSERT INTO rig_renovaciones VALUES ($id_prod, $id_prod, $id, 2, current_date)");
                 return redirect()->route('contratos.index')->with('status', 'Contrato renovado');
             }
         }
@@ -96,18 +105,19 @@ class Contratos extends Controller
     public function crearContrato(int $id_prod, int $id_prov) 
     {
         //dd($id_prod, $id_prov);
-        $contratosActivos = "SELECT con.id FROM rig_contratos con WHERE con.fcha_fin IS NULL AND id_prov = $id_prov AND id_prod = $id_prod AND (con.fcha_reg + interval '1 year'>= current_date OR con.id = ANY (SELECT id_ctra FROM rig_renovaciones WHERE fcha_reg + interval '1 year' >= current_date GROUP BY id_ctra)) GROUP BY con.id";
-        $contratosActivos = DB::select($contratosActivos);
+        // Seleciono todos los id de los contratos vigentes de ambas partes
+        $query = "SELECT con.id FROM rig_contratos con WHERE con.fcha_fin IS NULL AND id_prov = $id_prov AND id_prod = $id_prod AND (con.fcha_reg + interval '1 year'>= current_date OR con.id = ANY (SELECT id_ctra FROM rig_renovaciones WHERE id_prod = $id_prod AND id_prov = $id_prov AND fcha_reg + interval '1 year' >= current_date GROUP BY id_ctra)) GROUP BY con.id";
+        $contratosActivos = DB::select($query);
+        // Verifico si ya si se encuentra activo algún contrato entre el proveedor y el productor
         if(!empty($contratosActivos))
            return redirect()->back()->with('error', 'El proveedor selecionado ya tiene un contrato activo con el productor');
-
-
-        $ingredientesExc = "SELECT cas_ing FROM rig_productos_contratados WHERE id_ctra = ANY(SELECT con.id FROM rig_contratos con WHERE con.id_prov = $id_prov AND con.fcha_fin IS NULL AND con.exc = 'SI' AND (con.fcha_reg + interval '1 year'>= current_date OR con.id = ANY (SELECT id_ctra FROM rig_renovaciones WHERE fcha_reg + interval '1 year' >= current_date GROUP BY id_ctra)) GROUP BY con.id) AND cas_ing IS NOT NULL GROUP BY cas_ing";        
+        // Consulto por todos los ingrendientes/esencias exclusivas del proveedor 
+        $ingredientesExc = "SELECT cas_ing FROM rig_productos_contratados WHERE id_prov=$id_prov AND id_ctra = ANY(SELECT con.id FROM rig_contratos con WHERE id_prov = $id_prov AND con.fcha_fin IS NULL AND exc ='SI' AND (con.fcha_reg + interval '1 year'>= current_date OR con.id = ANY (SELECT id_ctra FROM rig_renovaciones WHERE id_prov = $id_prov AND fcha_reg + interval '1 year' >= current_date GROUP BY id_ctra)) GROUP BY con.id) AND cas_ing IS NOT NULL GROUP BY cas_ing";        
         $ingredientesExc = DB::select($ingredientesExc);
-
+        // Consulto por todos los ingredientes_esencias que vende el proveedor
         $ingredientesProv = "SELECT cas, nombre FROM rig_ingredientes_esencias WHERE id_prov = $id_prov";
         $ingredientesProv = DB::select($ingredientesProv);
-
+        // Creo mi lista de ingredientes_esencias
         $ingredientes = [];
         foreach($ingredientesProv as $ingrediente)
         {
@@ -118,13 +128,13 @@ class Contratos extends Controller
             if($cont == 0)
                 $ingredientes = array_merge($ingredientes, [$ingrediente]);
         }
-
-        $otrosIngredientesExc = "SELECT cas_otr_ing FROM rig_productos_contratados WHERE id_ctra = ANY(SELECT con.id FROM rig_contratos con WHERE con.id_prov = $id_prov AND con.fcha_fin IS NULL AND con.exc = 'SI' AND (con.fcha_reg + interval '1 year'>= current_date OR con.id = ANY (SELECT id_ctra FROM rig_renovaciones WHERE fcha_reg + interval '1 year' >= current_date GROUP BY id_ctra)) GROUP BY con.id) AND cas_otr_ing IS NOT NULL GROUP BY cas_otr_ing";        
+        // Consulto por todos los otros_ingredientes exclusivos que vende el proveedor           
+        $otrosIngredientesExc = "SELECT cas_otr_ing FROM rig_productos_contratados WHERE id_prod=$id_prod AND id_prov=$id_prov AND id_ctra = ANY(SELECT con.id FROM rig_contratos con WHERE id_prov = $id_prov AND con.fcha_fin IS NULL AND exc ='SI' AND (con.fcha_reg + interval '1 year'>= current_date OR con.id = ANY (SELECT id_ctra FROM rig_renovaciones WHERE  id_prov = $id_prov AND fcha_reg + interval '1 year' >= current_date GROUP BY id_ctra)) GROUP BY con.id) AND cas_otr_ing IS NOT NULL GROUP BY cas_otr_ing";        
         $otrosIngredientesExc = DB::select($otrosIngredientesExc);
-
+        // Consulto por todos los otros ingredientes del proveedor
         $otrosIngredientesProv = "SELECT cas, nombre FROM rig_otros_ingredientes WHERE id_prov = $id_prov";
         $otrosIngredientesProv = DB::select($otrosIngredientesProv);
-
+        // Creo mi lista de otros_ingredientes
         $otros_ingredientes= [];
         foreach($otrosIngredientesProv as $ingrediente)
         {
@@ -135,15 +145,16 @@ class Contratos extends Controller
             if($cont == 0)
                 $otros_ingredientes = array_merge($otros_ingredientes, [$ingrediente]);
         }
-
+        // Consulto por mis condiciones de envio
         $condicionesEnvio = "SELECT ce.*, pa.nombre AS pais FROM rig_condiciones_de_envio ce, rig_sucursales suc, rig_paises pa WHERE suc.id_prod = 1 AND suc.id_ubic = ce.id_ubic AND id_prov = $id_prov AND ce.id_ubic = pa.id";
         $condicionesEnvio = DB::select($condicionesEnvio);
+        // Consulto por mis condicioens de pago
         $condicionesPago = "SELECT * FROM rig_condiciones_de_pago WHERE id_prov = $id_prov";
         $condicionesPago = DB::select($condicionesPago);
-        //dd($ingredientes, $otros_ingredientes, $condicionesEnvio, $condicionesPago);
+        // Si el proveedor no tiene almenos un igrediente disponible aborto la creación del contrato
         if(empty($ingredientes) && empty($otros_ingredientes))
            return redirect()->back()->with('error', 'El proveedor selecionado no tiene productos disponibles');
-
+        //Retornamos la vista del contrato
         return view('contratos.crearContrato')->with([
             'ingredientes' => $ingredientes, 
             'otros_ingredientes' => $otros_ingredientes,
@@ -151,12 +162,12 @@ class Contratos extends Controller
             'condicionesPago' => $condicionesPago,
             'id_prov' => $id_prov,
             'id_prod' => $id_prod
-            ]);
-        
+        ]);        
     }
 
-    public function generar(int $id_prod, int $id_prov, Request $request)
+    public function registrarContrato(int $id_prod, int $id_prov, Request $request)
     {
+        // Verificamos que los datos introducidos cumplan con lo requerido
         if(($request->ingredientes == null && $request->otros_ingredientes == null) || $request->condicionesEnvio == null || $request->condicionesPago == null)
             return redirect()->back()->with(['error' => 'Debes selecionar almenos un ingrediente, una condición de pago y una de envio']);    
         
@@ -164,40 +175,41 @@ class Contratos extends Controller
         if($request->exclusivo != null)
             $exc = 'SI';
         //dd($id_prov,$id_prod,$request->all());
-        DB::insert("INSERT INTO rig_contratos (id, fcha_reg, exc, id_prod, id_prov) VALUES (DEFAULT, current_date, '$exc', $id_prod, $id_prov)  RETURNING *");
+        DB::insert("INSERT INTO rig_contratos (id_prod, id_prov, id, fcha_reg, exc) VALUES ($id_prod, $id_prov, DEFAULT, current_date, '$exc')");
         $id_ctra = DB::getPdo()->lastInsertId();
         //dd($id_ctra);
         $cont = 1;
         if($request->ingredientes != null)
             foreach($request->ingredientes as $ingrediente)
             {
-                DB::insert("INSERT INTO rig_productos_contratados VALUES ($id_ctra, $cont, $id_prov, $ingrediente, null)");
+                DB::insert("INSERT INTO rig_productos_contratados VALUES ($id_prod, $id_prov, $id_ctra, $cont, $id_prov, $ingrediente, null)");
                 $cont += 1;
             }
         if($request->otros_ingredientes != null)
             foreach($request->otros_ingredientes as $ingrediente)
             {
-                DB::insert("INSERT INTO rig_productos_contratados VALUES ($id_ctra, $cont, $id_prov, null, $ingrediente)");
+                DB::insert("INSERT INTO rig_productos_contratados VALUES ($id_prod, $id_prov, $id_ctra, $cont, null, null, $ingrediente)");
                 $cont += 1;
             }
 
         $cont = 1;
         foreach($request->condicionesEnvio as $ubicacion)
         {
-            DB::insert("INSERT INTO rig_condiciones_contratos VALUES ($id_ctra, $cont, $id_prov, $ubicacion, null, null)");
+            DB::insert("INSERT INTO rig_condiciones_contratos VALUES ($id_prod, $id_prov, $id_ctra, $cont, $id_prov, $ubicacion, null, null)");
             $cont++;
         }
 
         foreach($request->condicionesPago as $id)
         {
-            DB::insert("INSERT INTO rig_condiciones_contratos VALUES ($id_ctra, $cont, null, null, $id_prov, $id)");
+            DB::insert("INSERT INTO rig_condiciones_contratos VALUES ($id_prod, $id_prov, $id_ctra, $cont, null, null, $id_prov, $id)");
             $cont++;
         }
         return redirect()->route('contratos.index')->with('status', 'Contrato creado exitosamente');
     }
 
     /**Funcion para renovar contrato, faltaria pasarle la formula de renovacion de la empresa*/
-    public function cambio(){
+    public function cambio()
+    {
         return view('contrato.renovarContrato');
     }
 

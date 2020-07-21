@@ -38,7 +38,7 @@
         </div>
         <!--Boton para volver al menu de gestion-->
         <div class="blocktext mgt-1 mgrb-1">
-            <button type="button" class="btn btn-danger" > <a href="/gestion-contratos">Cancelar</a></button>
+            <button type="button" class="btn btn-danger" > <a href="{{route('contratos.index')}}">Cancelar</a></button>
         </div>
     </div>
 </div>

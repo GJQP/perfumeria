@@ -38,12 +38,12 @@
                 <tr>
                     <td>{{$contrato->nombre_prod}}</td>
                     <td>{{$contrato->nombre_prov}}</td>
-                    <td>{{$contrato->fcha}}</td>
+                    <td>{{$contrato->fcha_cul}}</td>
                     <td>
-                        @if(Carbon\Carbon::create($contrato->fcha)->lessThanOrEqualTo(Carbon\Carbon::now()->next('month')))
-                            <a href="{{route('contrato.renovar', $contrato->id)}}"  class="btn btn-info btn-sm">Renovar contrato</a>
+                        @if(Carbon\Carbon::create($contrato->fcha_cul)->lessThanOrEqualTo(Carbon\Carbon::now()->next('month')))
+                            <a href="{{route('contrato.renovar', [$contrato->id_prod, $contrato->id_prov, $contrato->id])}}"  class="btn btn-info">Renovar contrato</a>
                         @endif
-                        <a href="{{route('contrato.cancelar', $contrato->id)}}" class="btn btn-danger btn-sm">Cancelar contrato</a>
+                        <a href="{{route('contrato.cancelar', [$contrato->id_prod, $contrato->id_prov, $contrato->id])}}" class="btn btn-danger">Cancelar contrato</a>
                     </td>
                 </tr>
                 @endforeach

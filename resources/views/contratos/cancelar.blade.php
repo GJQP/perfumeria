@@ -7,7 +7,7 @@
     <div class="stage tarjeta muli">
 		<h2 class="mb-3 text-center display-5">Cancelar contrato<span class="strong verde">
 		<div aling="center">
-            <form class="form-group pdb-2" action="{{route('contrato.fin', $contrato->id)}}" method="POST">
+            <form class="form-group pdb-2" action="{{route('contrato.fin', [$contrato->id_prod, $contrato->id_prov, $contrato->id])}}" method="POST">
             @method('POST')
             @csrf
             <div class="blocktext">
