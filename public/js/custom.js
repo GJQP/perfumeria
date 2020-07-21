@@ -206,11 +206,11 @@ function preguntar(){
 }
 
 function renovar(){
-    axios.get('/gestion-contratos/renovar/' + contRenovar).then(() => window.location.reload());
+    axios.get('/gestion-contratos/renovar/' + idprod + '/' + idprov + '/'+ contRenovar).then(() => window.location.reload());
 }
 
 function cancelarContrato(){
     console.log('hola');
-    axios.delete('gestion-contratos/cancelar/'+ contRenovar+'/'+ idprod);
+    axios.delete('gestion-contratos/cancelar/' + idprod + '/' + idprov + '/'+ contRenovar);
 }
 
