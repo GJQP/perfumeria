@@ -8,15 +8,15 @@
         <example-component></example-component>
         <!--Seleccionar la Empresa-->
         <div class="row blocktext">
-            <div aling="center">
+            <div class="pdt-1 blocktext">
                 <form class="form-inline form-group" action="{{route('contrato.seleccionarProveedores')}}" method="GET">
                     <label for="sel1">Productor a generar un contrato:</label>
-                    <select class="form-control" name="id_prod">
+                    <select class="form-control selecEmp" name="id_prod">
                         @foreach ($productores as $productor)
                             <option value="{{$productor->id}}" {{$productor->id == $id_prod? 'selected':''}}>{{$productor->nombre}}</option>
                         @endforeach
                     </select>
-                    <button type="submit" class="btn btn-primary">Cambiar productor</button>
+                    <button type="submit" class="btn btn-primary mgl-1">Cambiar productor</button>
                 </form>
             </div>
         </div>

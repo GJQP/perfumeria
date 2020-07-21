@@ -9,7 +9,7 @@
 	$w=0; 
 	$k=0
 @endphp
-{{$id_prov}}
+<!--{{$id_prov}}-->
 <div class="container mgt-2 mgrb-1">
 	<div class="stage tarjeta muli">
 	<div class="blockquote text-center">
@@ -27,7 +27,7 @@
 		</h2>
 		</div>
 		<div id="collapseCero" class="collapse show" aria-labelledby="headingCero" data-parent="#accordionExample">
-		<div class="card-body">		
+		<div class="card-body mgl-1">		
 			<input class="form-check-input" type="checkbox" value="True" name="exclusivo" id="forE">
   			<label class="form-check-label" for="forE">
 			  Exclusivo

@@ -30,7 +30,15 @@
                       <th id="tiempoEntrega">Tiempo Maximo de Entrega</th>
                       <th id="accion">Acción</th>
                   </tr>
-                  
+                  <tr>
+                    <td>Destileria Muñoz Galvez</td>
+                    <td>Activo</td>
+                    <td>2020-10-05</td>
+                    <td>
+                        <div><a>Cancelar Pedido</a></div>
+                        <div><a></a></div>
+                    </td>
+            </table>
         </div>
     </div>
 </div>
