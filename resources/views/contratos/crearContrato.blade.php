@@ -26,8 +26,8 @@
 			</button>
 		</h2>
 		</div>
-		<div id="collapseCero" class="collapse show" aria-labelledby="headingCero" data-parent="#accordionExample">
-		<div class="card-body mgl-1">		
+		<div id="collapseCero" class="collapse" aria-labelledby="headingCero" data-parent="#accordionExample">
+		<div class="card-body pdl-card2">		
 			<input class="form-check-input" type="checkbox" value="True" name="exclusivo" id="forE">
   			<label class="form-check-label" for="forE">
 			  Exclusivo
@@ -43,16 +43,30 @@
 			</button>
 		</h2>
 		</div>
-		<div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordionExample">
-		<div class="card-body">		
-		@foreach($ingredientes as $ingrediente)
-		<div class="form-check">
-  			<input class="form-check-input" type="checkbox" value="{{$ingrediente->cas}}" name="ingredientes[{{$i++}}]" id="for{{$ingrediente->cas}}">
-  			<label class="form-check-label" for="for{{$ingrediente->cas}}">
-			  {{$ingrediente->cas}} {{$ingrediente->nombre}}
-  			</label>
-		</div>	
-		@endforeach		
+		<div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordionExample">
+		<div class="card-body pdl-card">	
+			<table>
+				<tr>
+					<th>Eleccion</th>
+					<th>CAS</th>
+					<th>Nombre</th>
+				</tr>
+				@foreach($ingredientes as $ingrediente)
+				<div class="form-check">
+					<tr>
+						<td><input  type="checkbox" value="{{$ingrediente->cas}}" name="ingredientes[{{$i++}}]" id="for{{$ingrediente->cas}}"></td>
+						<td>{{$ingrediente->cas}}</td>
+						<td>{{$ingrediente->nombre}}</td>
+					</tr>
+					<!--
+						<input class="form-check-input" type="checkbox" value="{{$ingrediente->cas}}" name="ingredientes[{{$i++}}]" id="for{{$ingrediente->cas}}">
+						<label class="form-check-label" for="for{{$ingrediente->cas}}">
+						{{$ingrediente->cas}} {{$ingrediente->nombre}}
+						</label>
+					-->
+				</div>	
+				@endforeach	
+			</table>	
 		</div>
 		</div>
 	</div>
@@ -86,15 +100,33 @@
 		</h2>
 		</div>
 		<div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordionExample">
-		<div class="card-body">
-		@foreach($condicionesEnvio as $condicion)
-		<div class="form-check">
-  			<input class="form-check-input" type="checkbox" value="{{$condicion->id_ubic}}" name="condicionesEnvio[{{$w++}}]" id="for{{$condicion->id_ubic}}">
-  			<label class="form-check-label" for="for{{$condicion->id_ubic}}">
-			  {{$condicion->nombre}} Recargo: {{$condicion->porce_serv}} Medio: {{$condicion->medio}} Para: {{$condicion->pais}}
-  			</label>
-		</div>	
-		@endforeach		
+		<div class="card-body pdl-card">
+		<table>
+			<tr>
+				<th>Eleccion</th>
+				<th>Servicio</th>
+				<th>Recargo</th>
+				<th>Medio</th>
+				<th>Pais de Envio</th>
+			</tr>
+			@foreach($condicionesEnvio as $condicion)
+			<div class="form-check">
+				<tr>
+					<td><input  type="checkbox" value="{{$condicion->id_ubic}}" name="condicionesEnvio[{{$w++}}]" id="for{{$condicion->id_ubic}}"></td>
+					<td>{{$condicion->nombre}}</td>
+					<td>{{$condicion->porce_serv}}</td>
+					<td>{{$condicion->medio}}</td>
+					<td>{{$condicion->pais}}</td>
+
+				</tr>
+				<!--
+				<input class="form-check-input" type="checkbox" value="{{$condicion->id_ubic}}" name="condicionesEnvio[{{$w++}}]" id="for{{$condicion->id_ubic}}">
+				<label class="form-check-label" for="for{{$condicion->id_ubic}}">
+				{{$condicion->nombre}} Recargo: {{$condicion->porce_serv}} Medio: {{$condicion->medio}} Para: {{$condicion->pais}}
+				</label>-->
+			</div>	
+			@endforeach	
+		</table>
 		</div>
 		</div>
 	</div>
@@ -107,21 +139,39 @@
 		</h2>
 		</div>
 		<div id="collapseFour" class="collapse" aria-labelledby="headingFour" data-parent="#accordionExample">
-		<div class="card-body">
-		@foreach($condicionesPago as $condicion)
-		<div class="form-check">
-  			<input class="form-check-input" type="checkbox" value="{{$condicion->id}}" name="condicionesPago[{{$k++}}]" id="for{{$condicion->id}}">
-  			<label class="form-check-label" for="for{{$condicion->id}}">
-			  {{$condicion->tipo}} Número de cuotas: {{$condicion->coutas}} a pagar en {{$condicion->cant_meses}} meses
-  			</label>
-		</div>	
-		@endforeach	
+		<div class="card-body pdl-card">
+			<table>
+				<tr>
+					<th>Eleccion</th>
+					<th>Tipo</th>
+					<th>Número de Cuotas</th>
+					<th>Plazo del Pago</th>
+				</tr>
+			@foreach($condicionesPago as $condicion)
+			<div class="form-check">
+				<tr>
+				<td><input  type="checkbox" value="{{$condicion->id}}" name="condicionesPago[{{$k++}}]" id="for{{$condicion->id}}"></td>
+					<td>{{$condicion->tipo}}</td>
+					<td>{{$condicion->coutas}}</td>
+					<td>{{$condicion->cant_meses}}</td>
+				</tr>
+				<!--
+				<input class="form-check-input" type="checkbox" value="{{$condicion->id}}" name="condicionesPago[{{$k++}}]" id="for{{$condicion->id}}">
+				<label class="form-check-label" for="for{{$condicion->id}}">
+				{{$condicion->tipo}} Número de cuotas: {{$condicion->coutas}} a pagar en {{$condicion->cant_meses}} meses
+				</label>
+			-->
+			</div>	
+			@endforeach	
+		</table>
 		</div>
 		</div>
 	</div>
 	</div>
 	</div>
-	<button type="submit" class="btn btn-primary">Generar contrato</button>
+	<div class="blocktext">
+		<button type="submit" class="btn btn-primary">Generar contrato</button>
+	</div>
 	</form>
 </div>
 @endsection

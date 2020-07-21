@@ -1,5 +1,9 @@
 @extends('layout.master')
 
+@section('scripts')
+<script type="text/javascript" src="{{ asset('js/custom.js') }}"></script>
+@endsection
+
 @section('titulo','Gestion de Contratos')
 
 @section('contenido')
@@ -41,7 +45,8 @@
                     <td>{{$contrato->fcha_cul}}</td>
                     <td>
                         @if(Carbon\Carbon::create($contrato->fcha_cul)->lessThanOrEqualTo(Carbon\Carbon::now()->next('month')))
-                            <a href="{{route('contrato.renovar', [$contrato->id_prod, $contrato->id_prov, $contrato->id])}}"  class="btn btn-info">Renovar contrato</a>
+                            <!--{{route('contrato.renovar', $contrato->id)}}-->
+                            <a href="#"  class="btn btn-info btn-sm" data-toggle="modal" data-target="#renovar" onclick="guardarId({{$contrato->id}},{{$contrato->id_prov}},{{$contrato->id_prod}})">Renovar contrato</a>
                         @endif
                         <a href="{{route('contrato.cancelar', [$contrato->id_prod, $contrato->id_prov, $contrato->id])}}" class="btn btn-danger">Cancelar contrato</a>
                     </td>
@@ -51,4 +56,26 @@
         </div>
     </div>
 </div>
+    <!-- Popup de confirmacion de renovacion-->
+    <div class="modal fade" id="renovar" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Renovar Contrato</h3>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" >
+               <p id="cuerpo">
+                   ¿Esta seguro que desea renovar este Contrato?
+               </p>
+            </div>
+            <div class="modal-footer" id="botones">
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-primary" onclick="preguntar()">Renovar</button>
+            </div>
+            </div>
+        </div>
+    </div>
 @endsection
