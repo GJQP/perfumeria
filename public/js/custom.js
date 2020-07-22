@@ -198,13 +198,13 @@ function preguntar(){
     console.log('hola');
     let cuerpo = '¿Qué acción desea realizar?'
     let boton = '<button type="button" class="btn btn-danger" data-dismiss="modal">Cancelar</button>'+
-                '<button type="button" class="btn btn-warning"><a onclick="cancelarContrato()" href="#">Crear Nuevo Contrato</a></button>'+
+                '<button type="button" class="btn btn-warning"><a onclick="cancelarContrato()" href="/gestion-contratos/crear/'+idprod+'/'+ idprov +'">Crear Nuevo Contrato</a></button>'+
                 '<button type="button" class="btn btn-primary" onclick="renovar()">Renovar</button>';
     $('#cuerpo').text(cuerpo);
     $('#botones').html(boton);
     //"/gestion-contratos/crear/'+idprod+'/'+ idprov +'"
     //gestion-contratos/cancelar/{id_cont}/{id_prov}
-    //gestion-contratos/crear/'+idprod+'/'+ idprov +'
+    
 }
 
 function renovar(){

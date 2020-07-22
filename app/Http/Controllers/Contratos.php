@@ -104,7 +104,9 @@ class Contratos extends Controller
 
     public function renovarCreacion($id_cont,$id_prov){
         $query = "SELECT nombre FROM rig_productores WHERE id = $id_prov";
-        $nombre = DB::select($query);
+        $array = DB::select($query);
+        $nombre = $array[0]->nombre;
+        //$nombre = 'Renovacion';
         $queryUpdate ="UPDATE rig_contratos SET fcha_fin = current_date, mot_fin = 'Renovacion', cancelante = '$nombre' WHERE id = $id_cont";
         DB::update($queryUpdate);
     }
