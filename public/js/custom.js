@@ -194,12 +194,17 @@ function guardarId(id, prov, prod){
     console.log(contRenovar);
 }
 
+function renovar(){
+    axios.get('/gestion-contratos/renovar/' + idprod + '/' + idprov + '/'+contRenovar).then(() => window.location.reload());
+}
+
+
 function preguntar(){
     console.log('hola');
     let cuerpo = '¿Qué acción desea realizar?'
     let boton = '<button type="button" class="btn btn-danger" data-dismiss="modal">Cancelar</button>'+
                 '<button type="button" class="btn btn-success"><a onclick="cancelarContrato()" href="/gestion-contratos/crear/'+idprod+'/'+ idprov +'">Crear Nuevo Contrato</a></button>'+
-                '<button type="button" class="btn btn-primary" onclick="renovar()">Renovar</button>';
+                '<button type="button" class="btn btn-primary" onclick="renovar()">Renovar actual</button>';
     $('#cuerpo').text(cuerpo);
     $('#botones').html(boton);
     //"/gestion-contratos/crear/'+idprod+'/'+ idprov +'"
@@ -207,9 +212,6 @@ function preguntar(){
     
 }
 
-function renovar(){
-    axios.get('/gestion-contratos/renovar/' + idprod + '/' + idprov + '/'+contRenovar).then(() => window.location.reload());
-}
 
 function cancelarContrato(){
     console.log('hola');

@@ -78,7 +78,7 @@ class Contratos extends Controller
             $renovacion = DB::select("$query");
             if(empty($renovacion) || Carbon::create($renovacion[0]->fcha)->lessThanOrEqualTo(Carbon::now()))
             {
-                DB::insert("INSERT INTO rig_renovaciones VALUES ($id_prod, $id_prod, $id, 2, current_date)");
+                DB::insert("INSERT INTO rig_renovaciones VALUES ($id_prod, $id_prod, $id, DEFAULT, current_date)");
                 return redirect()->route('contratos.index')->with('status', 'Contrato renovado');
             }
         }
