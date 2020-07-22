@@ -45,9 +45,9 @@
                     <td>{{$contrato->fcha_cul}}</td>
                     <td>
                         @if(Carbon\Carbon::create($contrato->fcha_cul)->lessThanOrEqualTo(Carbon\Carbon::now()->next('month')))
-                            <a href="#"  class="btn btn-info btn-sm" data-toggle="modal" data-target="#renovar" onclick="guardarId({{$contrato->id}},{{$contrato->id_prov}},{{$contrato->id_prod}})">Renovar contrato</a>
+                            <a href="#"  class="btn btn-info text-light" data-toggle="modal" data-target="#renovar" onclick="guardarId({{$contrato->id}},{{$contrato->id_prov}},{{$contrato->id_prod}})">Renovar contrato </a>
                         @endif
-                        <a href="{{route('contrato.cancelar', [$contrato->id_prod, $contrato->id_prov, $contrato->id])}}" class="btn btn-danger">Cancelar contrato</a>
+                        <a href="{{route('contrato.cancelar', [$contrato->id_prod, $contrato->id_prov, $contrato->id])}}" class="btn btn-danger text-light">Cancelar contrato</a>
                     </td>
                 </tr>
                 @endforeach
@@ -67,7 +67,7 @@
             </div>
             <div class="modal-body" >
                <p id="cuerpo">
-                   ¿Esta seguro que desea renovar este Contrato?
+                   ¿Ambas partes desean renovar este Contrato?
                </p>
             </div>
             <div class="modal-footer" id="botones">

@@ -198,7 +198,7 @@ function preguntar(){
     console.log('hola');
     let cuerpo = '¿Qué acción desea realizar?'
     let boton = '<button type="button" class="btn btn-danger" data-dismiss="modal">Cancelar</button>'+
-                '<button type="button" class="btn btn-warning"><a onclick="cancelarContrato()" href="/gestion-contratos/crear/'+idprod+'/'+ idprov +'">Crear Nuevo Contrato</a></button>'+
+                '<button type="button" class="btn btn-success"><a onclick="cancelarContrato()" href="/gestion-contratos/crear/'+idprod+'/'+ idprov +'">Crear Nuevo Contrato</a></button>'+
                 '<button type="button" class="btn btn-primary" onclick="renovar()">Renovar</button>';
     $('#cuerpo').text(cuerpo);
     $('#botones').html(boton);
@@ -229,7 +229,7 @@ function descuento(){
                     '<input type="date" class="form-control mgl-1" name="fechaDesc" aria-label="Fecha Culminacion" aria-describedby="basic-addon1">'+
                 '</div>';
     botones ='<button type="button" class="btn btn-primary" data-dismiss="modal">Cancelar</button>'+
-              '<button type="submit" class="btn btn-warning">Aplicar</button>'+
+              '<button type="submit" class="btn btn-success">Aplicar</button>'+
               '</form>';
     $('.modal-body').html(camposDesc);
     $('#botones').html(botones);

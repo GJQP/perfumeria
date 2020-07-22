@@ -32,10 +32,18 @@
 		</div>
 		<div id="collapseCero" class="collapse" aria-labelledby="headingCero" data-parent="#accordionExample">
 		<div class="card-body pdl-card2">		
-			<input class="form-check-input" type="checkbox" value="True" name="exclusivo" id="forE">
-  			<label class="form-check-label" for="forE">
-			  Exclusivo
-  			</label>		
+			<table>
+					<tr>
+						<th>Eleccion</th>
+						<th>Requerimiento</th>
+					</tr>
+					<div class="form-check">
+					<tr>					
+						<td><input type="checkbox" value="True" name="exclusivo" id="forE"></td>
+						<td><label class="form-check-label" for="forE">Exclusivo</label></td>
+					</tr>
+					<div>
+			</table>		
 		</div>
 		</div>
 	</div>
@@ -203,7 +211,7 @@
             </div>
             <div class="modal-footer" id="botones">
                 <button type="button" class="btn btn-danger" data-dismiss="modal">Cancelar</button>
-				<button type="submit" class="btn btn-warning">Aplicar</button>
+				<button type="submit" class="btn btn-success">Aplicar</button>
 			</form>
 			</div>
 			</div>	
