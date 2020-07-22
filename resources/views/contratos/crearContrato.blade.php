@@ -66,7 +66,7 @@
 				@foreach($ingredientes as $ingrediente)
 				<div class="form-check">
 					<tr>
-						<td><input  type="checkbox" value="{{$ingrediente->cas}}" name="ingredientes[{{$i++}}]" id="for{{$ingrediente->cas}}"></td>
+						<td><input  type="checkbox" value="{{$ingrediente->id}}" name="ingredientes[{{$i++}}]" id="for{{$ingrediente->id}}"></td>
 						<td>{{$ingrediente->cas}}</td>
 						<td>{{$ingrediente->nombre}}</td>
 					</tr>

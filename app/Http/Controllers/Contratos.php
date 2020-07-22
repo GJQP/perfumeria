@@ -121,10 +121,10 @@ class Contratos extends Controller
         if(!empty($contratosActivos))
            return redirect()->back()->with('error', 'El proveedor selecionado ya tiene un contrato activo con el productor');
         // Consulto por todos los ingrendientes/esencias exclusivas del proveedor 
-        $ingredientesExc = "SELECT cas_ing FROM rig_productos_contratados WHERE id_prov=$id_prov AND id_ctra = ANY(SELECT con.id FROM rig_contratos con WHERE id_prov = $id_prov AND con.fcha_fin IS NULL AND exc ='SI' AND (con.fcha_reg + interval '1 year'>= current_date OR con.id = ANY (SELECT id_ctra FROM rig_renovaciones WHERE id_prov = $id_prov AND fcha_reg + interval '1 year' >= current_date GROUP BY id_ctra)) GROUP BY con.id) AND cas_ing IS NOT NULL GROUP BY cas_ing";        
+        $ingredientesExc = "SELECT id_ing FROM rig_productos_contratados WHERE id_prov=$id_prov AND id_ctra = ANY(SELECT con.id FROM rig_contratos con WHERE id_prov = $id_prov AND con.fcha_fin IS NULL AND exc ='SI' AND (con.fcha_reg + interval '1 year'>= current_date OR con.id = ANY (SELECT id_ctra FROM rig_renovaciones WHERE id_prov = $id_prov AND fcha_reg + interval '1 year' >= current_date GROUP BY id_ctra)) GROUP BY con.id) AND id_ing IS NOT NULL GROUP BY id_ing";        
         $ingredientesExc = DB::select($ingredientesExc);
         // Consulto por todos los ingredientes_esencias que vende el proveedor
-        $ingredientesProv = "SELECT cas, nombre FROM rig_ingredientes_esencias WHERE id_prov = $id_prov";
+        $ingredientesProv = "SELECT id, cas, nombre FROM rig_ingredientes_esencias WHERE id_prov = $id_prov";
         $ingredientesProv = DB::select($ingredientesProv);
         // Creo mi lista de ingredientes_esencias
         $ingredientes = [];
@@ -132,7 +132,7 @@ class Contratos extends Controller
         {
             $cont = 0;
             foreach($ingredientesExc as $exc)
-                if($ingrediente->cas == $exc->cas_ing)
+                if($ingrediente->id == $exc->id_ing)
                     $cont += 1;
             if($cont == 0)
                 $ingredientes = array_merge($ingredientes, [$ingrediente]);

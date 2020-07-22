@@ -189,7 +189,8 @@ ALTER TABLE rig_evaluaciones_criterios ADD CONSTRAINT rig_evaluaciones_criterios
 
 CREATE TABLE rig_ingredientes_esencias (
 	id_prov SMALLINT,
-	cas BIGINT,
+	id INTEGER,
+	cas BIGINT NOT NULL,
 	nombre VARCHAR (50) NOT NULL,
 	tipo VARCHAR (15) NOT NULL,
 	des VARCHAR (500) NOT NULL,
@@ -197,20 +198,24 @@ CREATE TABLE rig_ingredientes_esencias (
 	peligrosidad VARCHAR (15),
 	vida_alm SMALLINT,
 	ctrl VARCHAR (15),
-	PRIMARY KEY (id_prov, cas)
+	PRIMARY KEY (id_prov, id)
 );
-
+CREATE SEQUENCE rig_ingredientes_esencias_id_seq AS integer OWNED BY rig_ingredientes_esencias.id;
 ALTER TABLE rig_ingredientes_esencias ADD CONSTRAINT rig_ingrediente_esencia_ck CHECK (
 	(tipo IN ('NATURAL', 'SINTETICO'))	AND (peligrosidad IN ('ALTA', 'MEDIA', 'BAJA', 'NINGUNA')) AND (ctrl IN ('SI', 'NO'))),
-	ADD CONSTRAINT rig_ingrediente_esencia_id_prod_fk FOREIGN KEY (id_prov) REFERENCES rig_proveedores;
+	ADD CONSTRAINT rig_ingrediente_esencia_id_prod_fk FOREIGN KEY (id_prov) REFERENCES rig_proveedores,
+	ALTER COLUMN id SET DEFAULT nextval('rig_ingredientes_esencias_id_seq');
 
 CREATE TABLE rig_origenes_ingredientes_esencias (
 	id_prov SMALLINT,
-	cas_ing BIGINT,
+	id_ing INTEGER,
 	id_ubic SMALLINT,
-	PRIMARY KEY (id_prov, cas_ing, id_ubic)
+	PRIMARY KEY (id_prov, id_ing, id_ubic)
 );
 
+ALTER TABLE rig_origenes_ingredientes_esencias ADD CONSTRAINT rig_origenes_ingredientes_esencias_ing FOREIGN KEY (id_prov, id_ing) REFERENCES rig_ingredientes_esencias (id_prov, id),
+	ADD CONSTRAINT rig_origenes_ingredientes_esencias_ubic FOREIGN KEY (id_ubic) REFERENCES rig_paises;
+	
 CREATE TABLE rig_prohibidas (
 	cas BIGINT PRIMARY KEY,
 	nombre VARCHAR (80),
@@ -221,16 +226,16 @@ ALTER TABLE rig_prohibidas ADD CONSTRAINT rig_prohibidas_ck CHECK (tipo IN ('P',
 
 CREATE TABLE rig_presentaciones_ingredientes (
 	id_prov SMALLINT,
-	cas_ing BIGINT,
+	id_ing INTEGER,
 	cod_present INTEGER,
 	medida NUMERIC (10,2) NOT NULL,
 	unidad VARCHAR (3) NOT NULL,
 	precio NUMERIC (10,2) NOT NULL,
-	PRIMARY KEY (id_prov, cas_ing, cod_present)
+	PRIMARY KEY (id_prov, id_ing, cod_present)
 );
 
 CREATE SEQUENCE rig_presentaciones_ingredientes_id_seq AS INTEGER OWNED BY rig_presentaciones_ingredientes.cod_present;
-ALTER TABLE rig_presentaciones_ingredientes ADD CONSTRAINT rig_presentaciones_ingredientes_ing_fk FOREIGN KEY (id_prov, cas_ing) REFERENCES rig_ingredientes_esencias (id_prov, cas),
+ALTER TABLE rig_presentaciones_ingredientes ADD CONSTRAINT rig_presentaciones_ingredientes_ing_fk FOREIGN KEY (id_prov, id_ing) REFERENCES rig_ingredientes_esencias (id_prov, id),
 	ALTER COLUMN cod_present SET DEFAULT nextval('rig_presentaciones_ingredientes_id_seq');
 
 CREATE TABLE rig_otros_ingredientes (
@@ -260,13 +265,13 @@ ALTER TABLE rig_presentaciones_otros_ingredientes ADD CONSTRAINT rig_presentacio
 
 CREATE TABLE rig_ingredientes_extras (
 	id_prov_ing SMALLINT,
-	cas_ing BIGINT,
+	id_ing BIGINT,
 	id_prov_otr SMALLINT,
 	cas_otr_ing BIGINT,
-	PRIMARY KEY (id_prov_ing, cas_ing, id_prov_otr, cas_otr_ing)
+	PRIMARY KEY (id_prov_ing, id_ing, id_prov_otr, cas_otr_ing)
 );
 
-ALTER TABLE rig_ingredientes_extras ADD CONSTRAINT rig_ingredientes_extras_ing_ese_fk FOREIGN KEY (id_prov_ing, cas_ing) REFERENCES rig_ingredientes_esencias (id_prov, cas),
+ALTER TABLE rig_ingredientes_extras ADD CONSTRAINT rig_ingredientes_extras_ing_ese_fk FOREIGN KEY (id_prov_ing, id_ing) REFERENCES rig_ingredientes_esencias (id_prov, id),
 	ADD CONSTRAINT rig_ingredientes_extras_otr_ing_gk FOREIGN KEY (cas_otr_ing) REFERENCES rig_otros_ingredientes (cas);
 
 CREATE TABLE rig_perfumes (
@@ -480,13 +485,13 @@ CREATE TABLE rig_productos_contratados (
 	id_ctra INTEGER,
 	id SMALLINT, --No amerita una secuencia ya que nunca cambia
 	id_prov_ing SMALLINT,
-	cas_ing BIGINT,
+	id_ing INTEGER,
 	cas_otr_ing BIGINT,
 	PRIMARY KEY (id_prod, id_prov, id_ctra, id) --AK
 );
 
 ALTER TABLE rig_productos_contratados ADD CONSTRAINT rig_productos_contratados_id_ctra_fk FOREIGN KEY (id_prod, id_prov, id_ctra) REFERENCES rig_contratos,
-	ADD CONSTRAINT rig_productos_contratados_ing_fk FOREIGN KEY (id_prov_ing, cas_ing) REFERENCES rig_ingredientes_esencias (id_prov, cas),
+	ADD CONSTRAINT rig_productos_contratados_ing_fk FOREIGN KEY (id_prov_ing, id_ing) REFERENCES rig_ingredientes_esencias (id_prov, id),
 	ADD CONSTRAINT rig_productos_contratados_otr_ing_fk FOREIGN KEY (cas_otr_ing) REFERENCES rig_otros_ingredientes (cas);
 
 CREATE TABLE rig_pedidos (
@@ -518,16 +523,16 @@ CREATE TABLE rig_detalles_pedidos (
 	renglon SMALLINT, --No amerita una secuencia
 	cantidad INTEGER NOT NULL,
 	id_prov_ing BIGINT,
-	cas_ing BIGINT,
-	id_pre_ing BIGINT,
+	id_ing BIGINT,
+	cod_pre_ing BIGINT,
 	cas_otr_ing BIGINT,
-	id_pre_otr BIGINT,
+	cod_pre_otr BIGINT,
 	PRIMARY KEY (id_ped, renglon)
 );
 
 ALTER TABLE rig_detalles_pedidos ADD CONSTRAINT rig_detalles_pedidos_ck CHECK (cantidad > 0), --AK
-	ADD CONSTRAINT rig_detalles_pedidos_ing_fk FOREIGN KEY (id_prov_ing, cas_ing, id_pre_ing) REFERENCES rig_presentaciones_ingredientes (id_prov, cas_ing, cod_present),
-	ADD CONSTRAINT rig_detalles_pedidos_otr_fk FOREIGN KEY (cas_otr_ing, id_pre_otr) REFERENCES rig_presentaciones_otros_ingredientes (cas_otr_ing, cod_present);
+	ADD CONSTRAINT rig_detalles_pedidos_ing_fk FOREIGN KEY (id_prov_ing, id_ing, cod_pre_ing) REFERENCES rig_presentaciones_ingredientes (id_prov, id_ing, cod_present),
+	ADD CONSTRAINT rig_detalles_pedidos_otr_fk FOREIGN KEY (cas_otr_ing, cod_pre_otr) REFERENCES rig_presentaciones_otros_ingredientes (cas_otr_ing, cod_present);
 
 CREATE TABle rig_pagos (
 	id_ped INTEGER,
@@ -1159,69 +1164,69 @@ INSERT INTO rig_prohibidas VALUES
 
 --rig_ingredientes_esencias
 
-INSERT INTO rig_ingredientes_esencias (id_prov, cas, nombre, tipo, des, solubilidad, peligrosidad, vida_alm) VALUES 
-	(3, 5392405, 'Citral', 'NATURAL', 'Citral tiene un fuerte olor a limón (cítrico). El olor a limón de Neral es menos intenso, pero más dulce. Por lo tanto, Citral es un compuesto aromático utilizado en perfumería por su efecto cítrico. Citral también se usa como sabor y para fortificar el aceite de limón. También tiene fuertes cualidades antimicrobianas y efectos feromonales en ácaros e insectos. Citral se usa en la síntesis de vitamina A, licopeno, ionona y metilionona, para enmascarar el olor a humo.', 'Soluble en alcohol, aceite de parafina y agua de 1340 mg/L a 25°C', 'BAJA', 24*30),
-	(3, 106241, 'Geraniol', 'NATURAL', 'El geraniol es un monoterpenoide y un alcohol. Es el componente principal del aceite de rosa, el aceite de palmarosa y el aceite de citronela. Es un aceite incoloro, aunque las muestras comerciales pueden aparecer amarillas. El grupo funcional derivado del geraniol (en esencia, geraniol que carece del terminal -OH) se llama geranilo.','Soluble en alcohol, aceite de parafina, kerosene y agua de 25.16 mg/L a 25°C', 'BAJA', 24*30),
-	(3, 79776, 'Beta-ionone', 'NATURAL', 'La beta-ionona es un líquido incoloro a amarillo claro con olor a madera de cedro. En una solución alcohólica muy diluida, el olor se asemeja al olor a violetas. La beta-ionona se encuentra en la zanahoria y en muchos aceites esenciales, incluido el aceite de boronia megastigma (boronia marrón) y la ionona comercial. También es un agente saborizante.','Soluble en alcohol y agua de 1340 mg/L a 25°C', 'MEDIA', 24*30),
-	(1, 70788306, 'Propanol de madera', 'SINTETICO', 'Es un isómero muy común en la industria del perfume. Se caracteriza por su olor fuerte a madera y almizcle. Su fórmula química es 1-(2,2,6-trimethylcyclohexyl)hexan-3-ol', 'Soluble en alcohol y agua de 1.149 mg/L a 25°C', 'BAJA', 24*30),
-	(1, 98555, 'Terpineol alpha', 'NATURAL', 'Terpineol con fórmula química C10H18O, es una forma natural de monoterpeno de alcohol que se ha aislado a partir de una variedad de fuentes tales como el aceite de cajeput, aceite de pino, y aceite petitgrain. Hay cuatro isómeros , alfa -, beta -, gamma -terpineol, y terpinen-4-ol. beta - y gamma -terpineol difieren sólo por la ubicación del doble enlace. Terpineol es por lo general una mezcla de estos isómeros con alfa -terpineol como componente principal.', 'Soluble en alcohol, aceite de parafina, kerosene y agua de 710 mg/L a 25°C' ,'BAJA', 24*30),
-	(1, 88415, 'Otcbha', 'NATURAL', 'Compuesto de incoloro o amarillo pálido que tiene un fuerte y duradero olor a manzana. Este compuesto es usado generalmente como solvente o como componente de fragancias', 'Solubilidad en alcohol, aceite de parafina y agua de 7.462 mg/L a 25','MEDIA', 24*30),
-	(2, 93925, 'Aceite de styrallyl', 'NATURAL', 'Compuesto de color amarillo pálido con un dulce olor frutal y herbaceo. Este compuesto es usado generalmente para otorgar un olor a gardenia', 'Solubilidad en alcohol, aceite de parafina y agua de 481.1 mg/L a 25','MEDIA', 24*30),
-	(2, 60128, 'Alcohol fenetílico', 'NATURAL', 'El alcohol fenetílico, o 2-feniletanol, es el compuesto orgánico que consiste en un grupo de grupo fenetilo (C6H5CH2CH2) unido a OH. Es un líquido incoloro se encuentra presente ampliamente en la naturaleza, se encuentra en una variedad de aceites esenciales. Tiene un agradable olor floral.', 'Soluble en alcohol, aceite de parafina, kerosene y agua de 2.199e+004 mg/L a 25°C','BAJA', 24*30),
-	(2, 103957, 'Aldehído de ciclamen', 'SINTETICO', 'El aldehído de ciclamen es una molécula de fragancia que se ha utilizado en jabones, detergentes, lociones y perfumes desde la década de 1920. Adicionalmete es empleado en aditivos para alimentos de forma directa', 'Soluble en alcohol, aceite de parafina y agua de 22.59 mg/L a 25°C','BAJA', 24*30),
-	(4, 125122, 'Acetato de bornilo', 'SINTETICO', 'Acetato de Bornilo es una molécula sintética altamente utilizada en la industria del perfume y en la elaboración de fragancias',  'Soluble en alcohol, aceite de parafina, kerosene y agua de 9.721 mg/L a 25°C','BAJA', 24*30),
-	(4, 141128, 'Acetato de nerilo', 'SINTETICO', 'Acetato de nerilo es un compuesto químico que se encuentra en los aceites de cítricos. Químicamente, es el acetato de éster de nerol. Se utiliza en sabores y en perfumería para impartir aromas florales y frutales.', 'Soluble en alcohol, aceite de parafina y agua de 18.24 mg/L a 25°C','BAJA', 24*30),
-	(4, 7785333, '(+)-α-Terpineol', 'NATURAL', 'Es un compuesto orgánico de la clase terpeno, uno de los dos isómeros del pineno que está presente en algunos aceites, tales como el aceite de eucalipto y aceite de cáscara de naranja', 'Soluble en alcohol y agua de 0.3194 mg/L a 25°C','BAJA', 24*30),
-	(5, 100061, 'Acetanisola', 'SINTETICO', 'El acetanisol es un compuesto químico aromático con un aroma descrito como dulce, afrutado, a nuez y similar a la vainilla. Además, el acetanisol a veces puede oler a mantequilla o caramelo. El acetanisol se encuentra naturalmente en el castoreum, la secreción glandular del castor.', 'Soluble en alcohol y agua de 2474 mg/L a 25°C','BAJA', 24*30),
-	(5, 52474609, 'Aldemone', 'SINTETICO', 'Es un compuesto químico de olor marino/ozono muy difuso. Su fórmula es 1-(4-methoxyphenyl)ethanone y usualmente se encuentra como cristales bláncos o amarillos muy pálidos', 'Soluble en alcohol y agua de 1.512 mg/L a 25°C','BAJA', 24*30),
-	(5, 2051787, 'Octanoato de allil', 'SINTETICO', 'Es un compuesto químico incoloro y cristalino, de olor a piña/frutal de duración media. También es conocido bajo el nombre de prop-2-enyl butanoate', 'Soluble en alcohol y agua de 1233 mg/L a 25°C','MEDIA', 24*30),
-	(6, 8015734, 'Aceite de albahaca dulce', 'NATURAL', 'La albahaca es una hierba aromática original de Irán, India, Pakistán y otras regiones tropicales de Asia. El aceite esencial de albahaca es rico en estragol', 'Soluble en alcohol, aceite de parafina y agua de 332.1 mg/L a 25°C','BAJA', 24*30),
-	(6, 8006824, 'Aceite de pimienta negra', 'NATURAL', 'Proviene de un fruto de aproximadamente 5 mm que se puede usar entero o en polvo para la elaboración de fragancias picantes o como aditivo alimenticio', 'Soluble en alcohol','BAJA', 6*30),
-	(6, 8015881, 'Aceite de semillas de zanahoria', 'NATURAL', 'El aceite esencial de zanahoria se extrae de las semillas secas de zanahoria mediante la destilación por vapor, la cual preserva perfectamente los nutrientes valiosos. Las semillas de zanahoria producen el aceite esencial pero también pueden utilizarse otras partes de la planta', 'Soluble en alcohol, aceite de parafina y agua de 8.507 mg/L a 25°C','BAJA', 24*30);
+INSERT INTO rig_ingredientes_esencias (id_prov, id, cas, nombre, tipo, des, solubilidad, peligrosidad, vida_alm) VALUES 
+	(3, DEFAULT, 5392405, 'Citral', 'NATURAL', 'Citral tiene un fuerte olor a limón (cítrico). El olor a limón de Neral es menos intenso, pero más dulce. Por lo tanto, Citral es un compuesto aromático utilizado en perfumería por su efecto cítrico. Citral también se usa como sabor y para fortificar el aceite de limón. También tiene fuertes cualidades antimicrobianas y efectos feromonales en ácaros e insectos. Citral se usa en la síntesis de vitamina A, licopeno, ionona y metilionona, para enmascarar el olor a humo.', 'Soluble en alcohol, aceite de parafina y agua de 1340 mg/L a 25°C', 'BAJA', 24*30),
+	(3, DEFAULT, 106241,'Geraniol', 'NATURAL', 'El geraniol es un monoterpenoide y un alcohol. Es el componente principal del aceite de rosa, el aceite de palmarosa y el aceite de citronela. Es un aceite incoloro, aunque las muestras comerciales pueden aparecer amarillas. El grupo funcional derivado del geraniol (en esencia, geraniol que carece del terminal -OH) se llama geranilo.','Soluble en alcohol, aceite de parafina, kerosene y agua de 25.16 mg/L a 25°C', 'BAJA', 24*30),
+	(3, DEFAULT, 79776,'Beta-ionone', 'NATURAL', 'La beta-ionona es un líquido incoloro a amarillo claro con olor a madera de cedro. En una solución alcohólica muy diluida, el olor se asemeja al olor a violetas. La beta-ionona se encuentra en la zanahoria y en muchos aceites esenciales, incluido el aceite de boronia megastigma (boronia marrón) y la ionona comercial. También es un agente saborizante.','Soluble en alcohol y agua de 1340 mg/L a 25°C', 'MEDIA', 24*30),
+	(1, DEFAULT, 70788306,'Propanol de madera', 'SINTETICO', 'Es un isómero muy común en la industria del perfume. Se caracteriza por su olor fuerte a madera y almizcle. Su fórmula química es 1-(2,2,6-trimethylcyclohexyl)hexan-3-ol', 'Soluble en alcohol y agua de 1.149 mg/L a 25°C', 'BAJA', 24*30),
+	(1, DEFAULT, 98555,'Terpineol alpha', 'NATURAL', 'Terpineol con fórmula química C10H18O, es una forma natural de monoterpeno de alcohol que se ha aislado a partir de una variedad de fuentes tales como el aceite de cajeput, aceite de pino, y aceite petitgrain. Hay cuatro isómeros , alfa -, beta -, gamma -terpineol, y terpinen-4-ol. beta - y gamma -terpineol difieren sólo por la ubicación del doble enlace. Terpineol es por lo general una mezcla de estos isómeros con alfa -terpineol como componente principal.', 'Soluble en alcohol, aceite de parafina, kerosene y agua de 710 mg/L a 25°C' ,'BAJA', 24*30),
+	(1, DEFAULT, 88415,'Otcbha', 'NATURAL', 'Compuesto de incoloro o amarillo pálido que tiene un fuerte y duradero olor a manzana. Este compuesto es usado generalmente como solvente o como componente de fragancias', 'Solubilidad en alcohol, aceite de parafina y agua de 7.462 mg/L a 25','MEDIA', 24*30),
+	(2, DEFAULT, 93925,'Aceite de styrallyl', 'NATURAL', 'Compuesto de color amarillo pálido con un dulce olor frutal y herbaceo. Este compuesto es usado generalmente para otorgar un olor a gardenia', 'Solubilidad en alcohol, aceite de parafina y agua de 481.1 mg/L a 25','MEDIA', 24*30),
+	(2, DEFAULT, 60128,'Alcohol fenetílico', 'NATURAL', 'El alcohol fenetílico, o 2-feniletanol, es el compuesto orgánico que consiste en un grupo de grupo fenetilo (C6H5CH2CH2) unido a OH. Es un líquido incoloro se encuentra presente ampliamente en la naturaleza, se encuentra en una variedad de aceites esenciales. Tiene un agradable olor floral.', 'Soluble en alcohol, aceite de parafina, kerosene y agua de 2.199e+004 mg/L a 25°C','BAJA', 24*30),
+	(2, DEFAULT, 103957,'Aldehído de ciclamen', 'SINTETICO', 'El aldehído de ciclamen es una molécula de fragancia que se ha utilizado en jabones, detergentes, lociones y perfumes desde la década de 1920. Adicionalmete es empleado en aditivos para alimentos de forma directa', 'Soluble en alcohol, aceite de parafina y agua de 22.59 mg/L a 25°C','BAJA', 24*30),
+	(4, DEFAULT, 125122,'Acetato de bornilo', 'SINTETICO', 'Acetato de Bornilo es una molécula sintética altamente utilizada en la industria del perfume y en la elaboración de fragancias',  'Soluble en alcohol, aceite de parafina, kerosene y agua de 9.721 mg/L a 25°C','BAJA', 24*30),
+	(4, DEFAULT, 141128,'Acetato de nerilo', 'SINTETICO', 'Acetato de nerilo es un compuesto químico que se encuentra en los aceites de cítricos. Químicamente, es el acetato de éster de nerol. Se utiliza en sabores y en perfumería para impartir aromas florales y frutales.', 'Soluble en alcohol, aceite de parafina y agua de 18.24 mg/L a 25°C','BAJA', 24*30),
+	(4, DEFAULT, 7785333,'(+)-α-Terpineol', 'NATURAL', 'Es un compuesto orgánico de la clase terpeno, uno de los dos isómeros del pineno que está presente en algunos aceites, tales como el aceite de eucalipto y aceite de cáscara de naranja', 'Soluble en alcohol y agua de 0.3194 mg/L a 25°C','BAJA', 24*30),
+	(5, DEFAULT, 100061,'Acetanisola', 'SINTETICO', 'El acetanisol es un compuesto químico aromático con un aroma descrito como dulce, afrutado, a nuez y similar a la vainilla. Además, el acetanisol a veces puede oler a mantequilla o caramelo. El acetanisol se encuentra naturalmente en el castoreum, la secreción glandular del castor.', 'Soluble en alcohol y agua de 2474 mg/L a 25°C','BAJA', 24*30),
+	(5, DEFAULT, 52474609,'Aldemone', 'SINTETICO', 'Es un compuesto químico de olor marino/ozono muy difuso. Su fórmula es 1-(4-methoxyphenyl)ethanone y usualmente se encuentra como cristales bláncos o amarillos muy pálidos', 'Soluble en alcohol y agua de 1.512 mg/L a 25°C','BAJA', 24*30),
+	(5, DEFAULT, 2051787,'Octanoato de allil', 'SINTETICO', 'Es un compuesto químico incoloro y cristalino, de olor a piña/frutal de duración media. También es conocido bajo el nombre de prop-2-enyl butanoate', 'Soluble en alcohol y agua de 1233 mg/L a 25°C','MEDIA', 24*30),
+	(6, DEFAULT, 8015734,'Aceite de albahaca dulce', 'NATURAL', 'La albahaca es una hierba aromática original de Irán, India, Pakistán y otras regiones tropicales de Asia. El aceite esencial de albahaca es rico en estragol', 'Soluble en alcohol, aceite de parafina y agua de 332.1 mg/L a 25°C','BAJA', 24*30),
+	(6, DEFAULT, 8006824,'Aceite de pimienta negra', 'NATURAL', 'Proviene de un fruto de aproximadamente 5 mm que se puede usar entero o en polvo para la elaboración de fragancias picantes o como aditivo alimenticio', 'Soluble en alcohol','BAJA', 6*30),
+	(6, DEFAULT, 8015881,'Aceite de semillas de zanahoria', 'NATURAL', 'El aceite esencial de zanahoria se extrae de las semillas secas de zanahoria mediante la destilación por vapor, la cual preserva perfectamente los nutrientes valiosos. Las semillas de zanahoria producen el aceite esencial pero también pueden utilizarse otras partes de la planta', 'Soluble en alcohol, aceite de parafina y agua de 8.507 mg/L a 25°C','BAJA', 24*30);
 
 --rig_orgigenes_ingredientes_esencias
 
 INSERT INTO rig_origenes_ingredientes_esencias VALUES
-	(3, 5392405, 18),
-	(3, 5392405, 24),
-	(3, 106241,	18),
-	(3, 106241, 37),
-	(3, 79776, 18),
-	(3, 79776, 24),
-	(2, 93925, 25),
-	(2, 60128, 25),
-	(2, 103957, 25),
-	(4, 125122, 25),
-	(4, 141128, 25),
-	(4, 7785333, 25),
-	(5, 100061, 28),
-	(5, 52474609, 28),
-	(5, 2051787, 28),
-	(6, 8015734, 64),
-	(6, 8006824, 64),
-	(6, 8015881, 64);
+	(3, 1, 18),
+	(3, 2, 24),
+	(3, 3,	18),
+	(1, 4, 37),
+	(1, 5, 18),
+	(1, 6, 24),
+	(2, 7, 25),
+	(2, 8, 25),
+	(2, 9, 25),
+	(4, 10, 25),
+	(4, 11, 25),
+	(4, 12, 25),
+	(5, 13, 28),
+	(5, 14, 28),
+	(5, 15, 28),
+	(6, 16, 64),
+	(6, 17, 64),
+	(6, 18, 64);
 
 --rig_presentaciones_ingredientes
 
 INSERT INTO rig_presentaciones_ingredientes VALUES 
-	(3, 5392405, DEFAULT, 4, 'ml', 3.25), (3, 5392405, DEFAULT, 15, 'ml', 5.00), (3, 5392405, DEFAULT, 30, 'ml', 6.25), (3, 5392405, DEFAULT, 80, 'ml', 14.31), (3, 5392405, DEFAULT, 250, 'g', 41.00), (3, 5392405, DEFAULT, 500, 'g', 69.00), (3, 5392405, DEFAULT, 1, 'kg', 118.00),
-	(3, 106241, DEFAULT, 4, 'ml', 3.00), (3, 106241, DEFAULT, 15, 'ml', 6.00), (3, 106241, DEFAULT, 30, 'ml', 6.30), (3, 106241, DEFAULT, 80, 'ml', 14.43), (3, 106241, DEFAULT, 250, 'g', 28.00),
-	(3, 79776, DEFAULT, 4, 'ml', 3.00), (3, 79776, DEFAULT, 15, 'ml', 6.00), (3, 79776, DEFAULT, 30, 'ml', 10.00), (3, 79776, DEFAULT, 80, 'ml', 15.00), (3, 79776, DEFAULT, 250, 'g', 25.00), (3, 79776, DEFAULT, 500, 'g', 35.00),
-	(1, 70788306, DEFAULT, 4, 'ml', 4.50), (1, 70788306, DEFAULT, 15, 'ml', 10.50), (1, 70788306, DEFAULT, 30, 'ml', 18.50), (1, 70788306, DEFAULT, 80, 'ml', 40.50), (1, 70788306, DEFAULT, 250, 'g', 122.00), (1, 70788306, DEFAULT, 500, 'g', 232.00),
-	(1, 98555, DEFAULT, 4, 'ml', 3.00), (1, 98555, DEFAULT, 15, 'ml', 6.00), (1, 98555, DEFAULT, 30, 'ml', 10.0), (1, 98555, DEFAULT, 80, 'ml', 20.00), (1, 98555, DEFAULT, 250, 'g', 50.00), (1, 98555, DEFAULT, 500, 'g', 75.00), (1, 98555, DEFAULT, 1, 'kg', 150.00),
-	(1, 88415, DEFAULT, 4, 'ml', 3.00), (1, 88415, DEFAULT, 15, 'ml', 6.00), (1, 88415, DEFAULT, 30, 'ml', 9.00), (1, 88415, DEFAULT, 80, 'ml', 15.00), (1, 88415, DEFAULT, 250, 'g', 23.00),
-	(2, 93925, DEFAULT, 4, 'ml', 3.00), (2, 93925, DEFAULT, 15, 'ml', 6.00), (2, 93925, DEFAULT, 30, 'ml', 9.00), (2, 93925, DEFAULT, 80, 'ml', 15.00),
-	(2, 60128, DEFAULT, 4, 'ml', 3.00), (2, 60128, DEFAULT, 15, 'ml', 6.00), (2, 60128, DEFAULT, 30, 'ml', 8.00), (2, 60128, DEFAULT, 80, 'ml', 11.00), (2, 60128, DEFAULT, 250, 'g', 26.50), (2, 60128, DEFAULT, 500, 'g', 48.00), (2, 60128, DEFAULT, 1, 'kg', 62.00),
-	(2, 103957, DEFAULT, 4, 'ml', 3.00), (2, 103957, DEFAULT, 15, 'ml', 6.00), (2, 103957, DEFAULT, 30, 'ml', 9.00), (2, 103957, DEFAULT, 80, 'ml', 12.00),
-	(4, 125122, DEFAULT, 4, 'ml', 3.00), (4, 125122, DEFAULT, 15, 'ml', 6.00), (4, 125122, DEFAULT, 30, 'ml', 9.00), (4, 125122, DEFAULT, 80, 'ml', 15.00),
-	(4, 141128, DEFAULT, 4, 'ml', 3.00), (4, 141128, DEFAULT, 15, 'ml', 6.00), (4, 141128, DEFAULT, 30, 'ml', 9.00), (4, 141128, DEFAULT, 80, 'ml', 15.00),
-	(4, 7785333, DEFAULT, 4, 'ml', 3.00), (4, 7785333, DEFAULT, 15, 'ml', 6.00), (4, 7785333, DEFAULT, 30, 'ml', 9.00), (4, 7785333, DEFAULT, 80, 'ml', 15.00),
-	(5, 100061, DEFAULT, 8, 'g', 3.00), (5, 100061, DEFAULT, 30, 'g', 9.00), (5, 100061, DEFAULT, 80, 'g', 15.00),
-	(5, 52474609, DEFAULT, 4, 'ml', 5.00), (5, 52474609, DEFAULT, 15, 'ml', 8.00), (5, 52474609, DEFAULT, 30, 'ml', 10.00), (5, 52474609, DEFAULT, 80, 'ml', 15.00),
-	(5, 2051787, DEFAULT, 4, 'ml', 5.00), (5, 2051787, DEFAULT, 15, 'ml', 8.00), (5, 2051787, DEFAULT, 30, 'ml', 10.00), (5, 2051787, DEFAULT, 80, 'ml', 15.00),
-	(6, 8015734, DEFAULT, 4, 'ml', 3.00),
-	(6, 8006824, DEFAULT, 4, 'ml', 3.00), (6, 8006824, DEFAULT, 15, 'ml', 7.50), (6, 8006824, DEFAULT, 30, 'ml', 12.00), (6, 8006824, DEFAULT, 80, 'ml', 28.00),
-	(6, 8015881, DEFAULT, 4, 'ml', 4.50), (6, 8015881, DEFAULT, 15, 'ml', 9.00), (6, 8015881, DEFAULT, 30, 'ml', 15.00);
+	(3, 1, DEFAULT, 4, 'ml', 3.25), (3, 1, DEFAULT, 15, 'ml', 5.00), (3, 1, DEFAULT, 30, 'ml', 6.25), (3, 1, DEFAULT, 80, 'ml', 14.31), (3, 1, DEFAULT, 250, 'g', 41.00), (3, 1, DEFAULT, 500, 'g', 69.00), (3, 1, DEFAULT, 1, 'kg', 118.00),
+	(3, 2, DEFAULT, 4, 'ml', 3.00), (3, 2, DEFAULT, 15, 'ml', 6.00), (3, 2, DEFAULT, 30, 'ml', 6.30), (3, 2, DEFAULT, 80, 'ml', 14.43), (3, 2, DEFAULT, 250, 'g', 28.00),
+	(3, 3, DEFAULT, 4, 'ml', 3.00), (3, 3, DEFAULT, 15, 'ml', 6.00), (3, 3, DEFAULT, 30, 'ml', 10.00), (3, 3, DEFAULT, 80, 'ml', 15.00), (3, 3, DEFAULT, 250, 'g', 25.00), (3, 3, DEFAULT, 500, 'g', 35.00),
+	(1, 4, DEFAULT, 4, 'ml', 4.50), (1, 4, DEFAULT, 15, 'ml', 10.50), (1, 4, DEFAULT, 30, 'ml', 18.50), (1, 4, DEFAULT, 80, 'ml', 40.50), (1, 4, DEFAULT, 250, 'g', 122.00), (1, 4, DEFAULT, 500, 'g', 232.00),
+	(1, 5, DEFAULT, 4, 'ml', 3.00), (1, 5, DEFAULT, 15, 'ml', 6.00), (1, 5, DEFAULT, 30, 'ml', 10.0), (1, 5, DEFAULT, 80, 'ml', 20.00), (1, 5, DEFAULT, 250, 'g', 50.00), (1, 5, DEFAULT, 500, 'g', 75.00), (1, 5, DEFAULT, 1, 'kg', 150.00),
+	(1, 6, DEFAULT, 4, 'ml', 3.00), (1, 6, DEFAULT, 15, 'ml', 6.00), (1, 6, DEFAULT, 30, 'ml', 9.00), (1, 6, DEFAULT, 80, 'ml', 15.00), (1, 6, DEFAULT, 250, 'g', 23.00),
+	(2, 7, DEFAULT, 4, 'ml', 3.00), (2, 7, DEFAULT, 15, 'ml', 6.00), (2, 7, DEFAULT, 30, 'ml', 9.00), (2, 7, DEFAULT, 80, 'ml', 15.00),
+	(2, 8, DEFAULT, 4, 'ml', 3.00), (2, 8, DEFAULT, 15, 'ml', 6.00), (2, 8, DEFAULT, 30, 'ml', 8.00), (2, 8, DEFAULT, 80, 'ml', 11.00), (2, 8, DEFAULT, 250, 'g', 26.50), (2, 8, DEFAULT, 500, 'g', 48.00), (2, 8, DEFAULT, 1, 'kg', 62.00),
+	(2, 9, DEFAULT, 4, 'ml', 3.00), (2, 9, DEFAULT, 15, 'ml', 6.00), (2, 9, DEFAULT, 30, 'ml', 9.00), (2, 9, DEFAULT, 80, 'ml', 12.00),
+	(4, 10, DEFAULT, 4, 'ml', 3.00), (4, 10, DEFAULT, 15, 'ml', 6.00), (4, 10, DEFAULT, 30, 'ml', 9.00), (4, 10, DEFAULT, 80, 'ml', 15.00),
+	(4, 11, DEFAULT, 4, 'ml', 3.00), (4, 11, DEFAULT, 15, 'ml', 6.00), (4, 11, DEFAULT, 30, 'ml', 9.00), (4, 11, DEFAULT, 80, 'ml', 15.00),
+	(4, 12, DEFAULT, 4, 'ml', 3.00), (4, 12, DEFAULT, 15, 'ml', 6.00), (4, 12, DEFAULT, 30, 'ml', 9.00), (4, 12, DEFAULT, 80, 'ml', 15.00),
+	(5, 13, DEFAULT, 8, 'g', 3.00), (5, 13, DEFAULT, 30, 'g', 9.00), (5, 13, DEFAULT, 80, 'g', 15.00),
+	(5, 14, DEFAULT, 4, 'ml', 5.00), (5, 14, DEFAULT, 15, 'ml', 8.00), (5, 14, DEFAULT, 30, 'ml', 10.00), (5, 14, DEFAULT, 80, 'ml', 15.00),
+	(5, 15, DEFAULT, 4, 'ml', 5.00), (5, 15, DEFAULT, 15, 'ml', 8.00), (5, 15, DEFAULT, 30, 'ml', 10.00), (5, 15, DEFAULT, 80, 'ml', 15.00),
+	(6, 16, DEFAULT, 4, 'ml', 3.00),
+	(6, 17, DEFAULT, 4, 'ml', 3.00), (6, 17, DEFAULT, 15, 'ml', 7.50), (6, 17, DEFAULT, 30, 'ml', 12.00), (6, 17, DEFAULT, 80, 'ml', 28.00),
+	(6, 18, DEFAULT, 4, 'ml', 4.50), (6, 18, DEFAULT, 15, 'ml', 9.00), (6, 18, DEFAULT, 30, 'ml', 15.00);
 
 --rig_perfumes
 
