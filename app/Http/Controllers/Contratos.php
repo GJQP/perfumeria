@@ -183,7 +183,7 @@ class Contratos extends Controller
         $exc = 'NO';
         if($request->exclusivo != null)
             $exc = 'SI';
-        //dd($id_prov,$id_prod,$request->all());
+        // Creamos el contrato con los datos suministrados
         DB::insert("INSERT INTO rig_contratos (id_prod, id_prov, id, fcha_reg, exc) VALUES ($id_prod, $id_prov, DEFAULT, current_date, '$exc')");
         $id_ctra = DB::getPdo()->lastInsertId();
         //dd($id_ctra);

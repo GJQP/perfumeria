@@ -186,8 +186,22 @@
 	</div>
 	
 </div>
-<!-- Popup para agregar descuento-->
 <div class="modal fade" id="descuento" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+            	<div class="modal-body" >
+				<h3 class="modal-title">¿El proveedor acepta?</h3>
+				<div class="modal-footer" id="botones">
+					<button type="button" class="btn btn-danger" data-dismiss="modal">Cancelar</button>
+					<button type="submit" class="btn btn-success">Aceptar</button>
+				</div>
+			</form>
+			</div>
+			</div>	
+        </div>
+	</div>
+<!-- Popup para agregar descuento-->
+<!--div class="modal fade" id="descuento" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
             <div class="modal-header">
@@ -216,5 +230,5 @@
 			</div>
 			</div>	
         </div>
-	</div>
+	</div-->
 @endsection
