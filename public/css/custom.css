@@ -98,6 +98,10 @@
     padding-bottom: 1.5rem;
 }
 
+.mgb-1{
+    margin-bottom: 1rem;
+}
+
 
 .titulo h1,.titulo h2{
     color: white;
@@ -413,4 +417,8 @@ table{
     height: 25% !important;
     resize: none;
     overflow-y: auto;
+}
+
+.desc{
+    width: 20% !important;
 }

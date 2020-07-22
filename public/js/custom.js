@@ -216,3 +216,21 @@ function cancelarContrato(){
     axios.get('gestion-contratos/cancelar/' + contRenovar + '/' + idprod,{_method: 'delete'} );
 }
 
+function descuento(){
+    camposDesc = '<div class="input-group mgb-1 ">'+
+                    '<label>Ingrese el porcentaje del Descuento:</label>'+
+                    '<input type="text" class="desc mgl-1" aria-label="porcentajeDesc" aria-describedby="basic-addon2" name="porcentajeDesc">'+
+                    '<div class="input-group-append">'+
+                    '<span class="input-group-text" id="basic-addon2">%</span>'+
+                    '</div>'+
+                '</div>'+
+                '<div class="input-group">'+
+                    '<label>Ingrese el porcentaje del Descuento:</label>'+
+                    '<input type="date" class="form-control mgl-1" name="fechaDesc" aria-label="Fecha Culminacion" aria-describedby="basic-addon1">'+
+                '</div>';
+    botones ='<button type="button" class="btn btn-primary" data-dismiss="modal">Cancelar</button>'+
+              '<button type="submit" class="btn btn-warning">Aplicar</button>'+
+              '</form>';
+    $('.modal-body').html(camposDesc);
+    $('#botones').html(botones);
+}

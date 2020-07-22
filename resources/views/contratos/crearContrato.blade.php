@@ -1,5 +1,9 @@
 @extends('layout.master')
 
+@section('scripts')
+<script type="text/javascript" src="{{ asset('js/custom.js') }}"></script>
+@endsection
+
 @section('titulo','Gestion de Contratos')
 
 @section('contenido')
@@ -170,8 +174,39 @@
 	</div>
 	</div>
 	<div class="blocktext">
-		<button type="submit" class="btn btn-primary">Generar contrato</button>
+		<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#descuento">Generar contrato</button>
 	</div>
-	</form>
+	
 </div>
+<!-- Popup para agregar descuento-->
+<div class="modal fade" id="descuento" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Agregar un Descuento</h3>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" >
+				<div class="input-group mgb-1 ">
+                    <label>Ingrese el porcentaje del Descuento(opcional):</label>
+                    <input type="text" class="desc mgl-1" aria-label="porcentajeDesc" aria-describedby="basic-addon2" name="porcentajeDesc">
+                    <div class="input-group-append">
+                    <span class="input-group-text" id="basic-addon2">%</span>
+                    </div>
+                </div>
+                <div class="input-group">
+                    <label>Ingrese el porcentaje del Descuento(opcional):</label>
+                    <input type="date" class="form-control mgl-1" name="fechaDesc" aria-label="Fecha Culminacion" aria-describedby="basic-addon1">
+                </div>
+            </div>
+            <div class="modal-footer" id="botones">
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Cancelar</button>
+				<button type="submit" class="btn btn-warning">Aplicar</button>
+			</form>
+			</div>
+			</div>	
+        </div>
+	</div>
 @endsection
