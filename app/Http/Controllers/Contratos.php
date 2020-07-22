@@ -155,7 +155,7 @@ class Contratos extends Controller
                 $otros_ingredientes = array_merge($otros_ingredientes, [$ingrediente]);
         }
         // Consulto por mis condiciones de envio
-        $condicionesEnvio = "SELECT ce.*, pa.nombre AS pais FROM rig_condiciones_de_envio ce, rig_sucursales suc, rig_paises pa WHERE suc.id_prod = 1 AND suc.id_ubic = ce.id_ubic AND id_prov = $id_prov AND ce.id_ubic = pa.id";
+        $condicionesEnvio = "SELECT ce.*, pa.nombre AS pais FROM rig_condiciones_de_envio ce, rig_sucursales suc, rig_paises pa WHERE suc.id_prod = $id_prod AND suc.id_ubic = ce.id_ubic AND id_prov = $id_prov AND ce.id_ubic = pa.id";
         $condicionesEnvio = DB::select($condicionesEnvio);
         // Consulto por mis condicioens de pago
         $condicionesPago = "SELECT * FROM rig_condiciones_de_pago WHERE id_prov = $id_prov";
