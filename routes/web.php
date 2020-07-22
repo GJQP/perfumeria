@@ -43,6 +43,7 @@ Route::get ('/gestion-contratos/crear/{id_prod}/{id_prov}','Contratos@crearContr
 Route::get ('/gestion-contratos/cancelar-contrato/{id_ctra}', 'Contratos@cancelarContrato')->name('contrato.cancelar');
 Route::post('/gestion-contratos/cancelar-contrato/fin/{id_ctra}', 'Contratos@cancelar')->name('contrato.fin');
 Route::get ('/gestion-contratos/renovar/{id_ctra}','Contratos@renovarContrato')->name('contrato.renovar');
+Route::delete ('gestion-contratos/cancelar/{id_cont}/{id_prov}','Contratos@renovarCreacion')->name('contrato.renovarPorCreacion');
 
 
 //Crear Contrato
