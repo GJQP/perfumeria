@@ -23,11 +23,11 @@
                         </div>
 
                         <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordion">
-                            <div class="card-body">
+                            <div class="card-body blocktext">
                                 <!-- Tabla de PRODUCTOS-->
-                                <div class="blocktext mgtp-1 tablaDatos pdb-2">
+                                <div class="mgtp-1 pdb-2">
                                     @if(\Illuminate\Support\Arr::has($detalle,'productos'))
-                                        <table>
+                                        <table class="tablaDatos">
                                             <tr>
                                                 <th>Nombre (CAS)</th>
                                                 <th>Presentación</th>
@@ -61,11 +61,11 @@
                             </h5>
                         </div>
                         <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordion">
-                            <div class="card-body">
+                            <div class="card-body blocktext">
                                 <!-- Tabla de ENVIOS-->
-                                <div class="blocktext mgtp-1 tablaDatos pdb-2">
+                                <div class=" mgtp-1 pdb-2">
                                     @if(\Illuminate\Support\Arr::has($detalle,'envios'))
-                                        <table>
+                                        <table class="tablaDatos">
                                             <tr>
                                                 <th>Medio</th>
                                                 <th>Descripción</th>
@@ -101,11 +101,11 @@
                             </h5>
                         </div>
                         <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordion">
-                            <div class="card-body">
+                            <div class="card-body blocktext">
                                 <!-- Tabla de PAGOS-->
-                                <div class="blocktext mgtp-1 tablaDatos pdb-2">
+                                <div class=" mgtp-1 pdb-2">
                                     @if(\Illuminate\Support\Arr::has($detalle,'pagos'))
-                                        <table>
+                                        <table class="tablaDatos">
                                             <tr>
                                                 <th>Tipo</th>
                                                 <th>Número de Cuotas</th>
