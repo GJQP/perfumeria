@@ -42,17 +42,17 @@ DROP TABLE IF EXISTS rig_paises;
 
 CREATE TABLE rig_paises (
 	id SMALLINT PRIMARY KEY,
-	nombre VARCHAR(30) not null unique
+	nombre VARCHAR(30) NOT NULL UNIQUE
 );
 
-CREATE SEQUENCE IF NOT EXISTS rig_paises_id AS SMALLINT MAXVALUE 300 OWNED BY rig_paises.id;
-ALTER TABLE rig_paises ALTER COLUMN id SET DEFAULT nextval('rig_paises_id');
+CREATE SEQUENCE IF NOT EXISTS rig_paises_id_seq AS SMALLINT MAXVALUE 300 OWNED BY rig_paises.id;
+ALTER TABLE rig_paises ALTER COLUMN id SET DEFAULT nextval('rig_paises_id_seq');
 
 CREATE TABLE rig_asociaciones_nacionales (
 	id SMALLINT PRIMARY KEY ,
 	nombre VARCHAR (100) NOT NULL UNIQUE,
 	region VARCHAR (20) NOT NULL,
-	id_ubic BIGINT NOT NULL
+	id_ubic SMALLINT NOT NULL
 );
 
 CREATE SEQUENCE rig_asociaciones_nacionales_id_seq AS SMALLINT MAXVALUE 300 OWNED BY rig_asociaciones_nacionales.id;
@@ -519,7 +519,7 @@ ALTER TABLE rig_pedidos ADD CONSTRAINT rig_pedido_ck CHECK (estatus IN ('ENVIADO
 	ALTER COLUMN factura SET DEFAULT nextval('rig_factura_id_seq');
 
 CREATE TABLE rig_detalles_pedidos (
-	id_ped INTEGER,
+	id_ped BIGINT,
 	renglon SMALLINT, --No amerita una secuencia
 	cantidad INTEGER NOT NULL,
 	id_prov_ing BIGINT,

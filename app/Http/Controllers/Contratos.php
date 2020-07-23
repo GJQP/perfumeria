@@ -67,16 +67,23 @@ class Contratos extends Controller
         return redirect()->route('contratos.index')->with('status', 'Contrato cancelado');
     }
 
-    // Lista 100%
+    // Esta función se emplea para renovar el contrato entre un productor y un proveedor
     public function renovarContrato(int $id_prod, int $id_prov, int $id)
     {
-        $query = "SELECT id, date(fcha_reg + interval '11 months') AS fcha FROM rig_contratos WHERE id_prod = $id_prod AND id_prov = $id_prov AND id = $id AND fcha_fin IS NULL";
-        $contrato = DB::select("$query");
-        if(!empty($contrato) && Carbon::create($contrato[0]->fcha)->lessThanOrEqualTo(Carbon::now()))
+        // Solicitamos el contrato a renovar
+        $contrato = "SELECT id, date(fcha_reg + interval '1 year') AS fcha FROM rig_contratos WHERE id_prod = $id_prod AND id_prov = $id_prov AND id = $id AND fcha_fin IS NULL";
+        $contrato = DB::select("$contrato");
+        // Verifico si el contrato existe
+        if(!empty($contrato))
         {
-            $query = "SELECT ren.id_ctra, MAX(date(ren.fcha_reg + interval '11 months')) AS fcha FROM rig_contratos con, rig_renovaciones ren WHERE (ren.fcha_reg + interval '1 year'>= current_date AND ren.id_ctra = $id )AND con.fcha_fin IS NULL GROUP BY ren.id_ctra";
-            $renovacion = DB::select("$query");
-            if(empty($renovacion) || Carbon::create($renovacion[0]->fcha)->lessThanOrEqualTo(Carbon::now()))
+            // Busco si el contrato tiene alguna renovación asociada
+            $renovacion = "SELECT ren.id_ctra, MAX(date(ren.fcha_reg + interval '1 year')) AS fcha FROM rig_contratos con, rig_renovaciones ren WHERE (ren.fcha_reg + interval '1 year'>= current_date AND ren.id_ctra = $id )AND con.fcha_fin IS NULL GROUP BY ren.id_ctra";
+            $renovacion = DB::select("$renovacion");
+            // Verifico: Si no tiene renovación y está en el período de renovar
+            $fecha_fin = Carbon::create($contrato[0]->fcha);
+            if(!empty($renovacion))
+                $fecha_fin = Carbon::create($renovacion[0]->fcha);                                 
+            if($fecha_fin->betweenIncluded(Carbon::now()->subMonth(), Carbon::now()))
             {
                 DB::insert("INSERT INTO rig_renovaciones VALUES ($id_prod, $id_prov, $id, DEFAULT, current_date)");
                 return redirect()->route('contratos.index')->with('status', 'Contrato renovado');
@@ -102,7 +109,7 @@ class Contratos extends Controller
         ]);
     }
 
-    public function renovarCreacion($id_cont,$id_prov){
+    public function renovarCreacion($id_cont, $id_prov){
         $query = "SELECT nombre FROM rig_productores WHERE id = $id_prov";
         $array = DB::select($query);
         $nombre = $array[0]->nombre;
@@ -113,7 +120,6 @@ class Contratos extends Controller
 
     public function crearContrato(int $id_prod, int $id_prov) 
     {
-        //dd($id_prod, $id_prov);
         // Seleciono todos los id de los contratos vigentes de ambas partes
         $query = "SELECT con.id FROM rig_contratos con WHERE con.fcha_fin IS NULL AND id_prov = $id_prov AND id_prod = $id_prod AND (con.fcha_reg + interval '1 year'>= current_date OR con.id = ANY (SELECT id_ctra FROM rig_renovaciones WHERE id_prod = $id_prod AND id_prov = $id_prov AND fcha_reg + interval '1 year' >= current_date GROUP BY id_ctra)) GROUP BY con.id";
         $contratosActivos = DB::select($query);
@@ -184,21 +190,21 @@ class Contratos extends Controller
         if($request->exclusivo != null)
             $exc = 'SI';
         // Creamos el contrato con los datos suministrados
-        DB::insert("INSERT INTO rig_contratos (id_prod, id_prov, id, fcha_reg, exc) VALUES ($id_prod, $id_prov, DEFAULT, current_date, '$exc')");
+        $temp = DB::select("INSERT INTO rig_contratos (id_prod, id_prov, id, fcha_reg, exc) VALUES ($id_prod, $id_prov, DEFAULT, current_date, '$exc') RETURNING id");
         $id_ctra = DB::getPdo()->lastInsertId();
-        //dd($id_ctra);
         $cont = 1;
+        //Insertamos los ingredientes 
         if($request->ingredientes != null)
             foreach($request->ingredientes as $ingrediente)
             {
                 DB::insert("INSERT INTO rig_productos_contratados VALUES ($id_prod, $id_prov, $id_ctra, $cont, $id_prov, $ingrediente, null)");
-                $cont += 1;
+                $cont++;
             }
         if($request->otros_ingredientes != null)
             foreach($request->otros_ingredientes as $ingrediente)
             {
                 DB::insert("INSERT INTO rig_productos_contratados VALUES ($id_prod, $id_prov, $id_ctra, $cont, null, null, $ingrediente)");
-                $cont += 1;
+                $cont++;
             }
 
         $cont = 1;

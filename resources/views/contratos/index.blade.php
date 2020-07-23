@@ -44,7 +44,7 @@
                     <td>{{$contrato->nombre_prov}}</td>
                     <td>{{$contrato->fcha_cul}}</td>
                     <td>
-                        @if(Carbon\Carbon::create($contrato->fcha_cul)->lessThanOrEqualTo(Carbon\Carbon::now()->next('month')))
+                        @if(Carbon\Carbon::create($contrato->fcha_cul)->betweenIncluded(Carbon\Carbon::now()->subMonth(), Carbon\Carbon::now()))
                             <a href="#"  class="btn btn-info text-light" data-toggle="modal" data-target="#renovar" onclick="guardarId({{$contrato->id}},{{$contrato->id_prov}},{{$contrato->id_prod}})">Renovar contrato </a>
                         @endif
                         <a href="{{route('contrato.cancelar', [$contrato->id_prod, $contrato->id_prov, $contrato->id])}}" class="btn btn-danger text-light">Cancelar contrato</a>
