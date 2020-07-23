@@ -53,5 +53,6 @@ Route::post('/gestion-contratos/{id}/crear/evaluacion-{proveedor}','Contratos@vi
 
 //Gestion Compras
 Route::get ('/gestion-compras','Compras@index')->name('compras.index');
-Route::get ('/gestion-compras/{id}/crear','Compras@create')->name('compras.crear');
+Route::get('/gestion-compras/{id_prod}/contrato/{id_prov}/{id_contrato}','Compras@contrato')->name('compras.contrato');
+//Route::get ('/gestion-compras/{id}/crear','Compras@create')->name('compras.crear');
 

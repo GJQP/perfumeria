@@ -1,21 +1,138 @@
 @extends('layout.master')
 
-@section('titulo','Crear Pedido')
+@section('titulo','Gestion de Compras')
 
 @section('contenido')
-<div class="container mgt-2 mgrb-1">
-    <div class="stage tarjeta muli">
-         <!--Seleccionar la Empresa-->
-        <div class="row blocktext mgt-1">
-            <p class="mgt-1" for="empresas"><strong>Seleccione la Empresa a la que desee consultar sus Formulas:</strong><p>
-            <div class="dropdown mgl-1">
-                <button class="btn btn-secondary dropdown-toggle" type="button" id="empresa" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                Empresa
-                </button>
+    <div class="container mgt-2 mgrb-1">
+        <div class="stage tarjeta muli">
+            <!--Seleccionar la Empresa-->
+            <div class="pdt-1 blocktext">
+                <div>
+
+                </div>
             </div>
-        </div>
-        <div>
-            
-        </div>
+            <div class="blocktext mgtp-1 tablaDatos pdb-2 row">
+                <div id="accordion" class="col-sm-6">
+                    <div class="card" >
+                        <div class="card-header" id="headingOne">
+                            <h5 class="mb-0">
+                                <button class="btn btn-link" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                                    PRODUCTOS
+                                </button>
+                            </h5>
+                        </div>
+
+                        <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordion">
+                            <div class="card-body">
+                                <!-- Tabla de PRODUCTOS-->
+                                <div class="blocktext mgtp-1 tablaDatos pdb-2">
+                                    @if(\Illuminate\Support\Arr::has($detalle,'productos'))
+                                        <table>
+                                            <tr>
+                                                <th>Nombre (CAS)</th>
+                                                <th>Presentación</th>
+                                                <th>Precio</th>
+                                            </tr>
+                                            @foreach($detalle['productos'] as $condicion)
+                                                <div class="form-check">
+                                                    <tr>
+                                                        <td>{{$condicion->nombre_cas}}</td>
+                                                        <td>{{$condicion->presentacion}}</td>
+                                                        <td>{{$condicion->precio_txt}}</td>
+                                                    </tr>
+                                                </div>
+                                            @endforeach
+                                        </table>
+
+                                    @else
+                                        <p class="mgt-1"><strong>No hay productos disponibles</strong><p>
+                                    @endif
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-header" id="headingTwo">
+                            <h5 class="mb-0">
+                                <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                                    CONDICIONES DE ENVÍO
+                                </button>
+                            </h5>
+                        </div>
+                        <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordion">
+                            <div class="card-body">
+                                <!-- Tabla de ENVIOS-->
+                                <div class="blocktext mgtp-1 tablaDatos pdb-2">
+                                    @if(\Illuminate\Support\Arr::has($detalle,'envios'))
+                                        <table>
+                                            <tr>
+                                                <th>Medio</th>
+                                                <th>Descripción</th>
+                                                <th>Comisión</th>
+                                                <th>País</th>
+                                            </tr>
+                                            @foreach($detalle['envios'] as $condicion)
+                                                <div class="form-check">
+                                                    <tr>
+                                                        <td>{{$condicion->nombre}}</td>
+                                                        <td>{{$condicion->porce_serv}} %</td>
+                                                        <td>{{$condicion->medio}}</td>
+                                                        <td>{{$condicion->pais}}</td>
+                                                    </tr>
+                                                </div>
+                                            @endforeach
+                                        </table>
+
+                                    @else
+                                        <p class="mgt-1"><strong>No hay condiciones de envío</strong><p>
+                                    @endif
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-header" id="headingThree">
+                            <h5 class="mb-0">
+                                <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                                    CONDICIONES DE PAGO
+                                </button>
+                            </h5>
+                        </div>
+                        <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordion">
+                            <div class="card-body">
+                                <!-- Tabla de PAGOS-->
+                                <div class="blocktext mgtp-1 tablaDatos pdb-2">
+                                    @if(\Illuminate\Support\Arr::has($detalle,'pagos'))
+                                        <table>
+                                            <tr>
+                                                <th>Tipo</th>
+                                                <th>Número de Cuotas</th>
+                                                <th>Plazo del Pago</th>
+                                            </tr>
+                                            @foreach($detalle['pagos'] as $condicion)
+                                                <div class="form-check">
+                                                    <tr>
+                                                        <td>{{$condicion->tipo}}</td>
+                                                        <td>{{$condicion->coutas}}</td>
+                                                        <td>{{$condicion->cant_meses}}</td>
+                                                    </tr>
+                                                </div>
+                                            @endforeach
+                                        </table>
+
+                                    @else
+                                        <p class="mgt-1"><strong>No hay condiciones de pagos</strong><p>
+                                    @endif
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
     </div>
-</div>
+@endsection
