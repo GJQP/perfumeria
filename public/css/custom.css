@@ -37,6 +37,10 @@
     height: 10%;
 }
 
+.pdtp-1{
+    padding-top: 0.5rem;
+}
+
 .pdt-1{
     padding-top: 1.5rem;
 }
@@ -56,9 +60,24 @@
 .pdb-3{
     padding-bottom: 3rem;
 }
+.mglp-1{
+    margin-left: 0.5rem;
+}
 
 .mgl-1{
     margin-left: 1.5rem;
+}
+
+.mgl-2{
+    margin-left: 2rem;
+}
+
+.mglp-3{
+    margin-left: 3rem;
+}
+
+.mgl-5{
+    margin-left: 5rem;
 }
 
 .mgl-3{
@@ -426,3 +445,59 @@ table{
 .tablaDatos{
     width: 100% !important;
 }
+
+#filtros div{
+    display: inline;
+}
+
+#genero{
+    max-width: 45% !important;
+}
+
+.generoDiv{
+    width: 20%;
+}
+
+.nombreFiltro{
+    font-size: 120%;
+}
+
+.rangoDiv{
+    width:24%;
+}
+
+.rango{
+    width: 20%;
+    text-align: center;
+}
+
+.separador{
+    width:10px;
+   background-color: black;
+    height: 5px;
+}
+
+.intensidadDiv{
+    width: 20%;
+}
+
+.intensidad{
+    max-width: 59% !important;
+}
+
+.caracterDiv{
+    width: 25%;
+}
+
+.caracter{
+    max-width: 42%;
+}
+
+.aromaPDiv{
+    width: 25%;
+}
+
+.aromaP{
+    width: 45%;
+}
+
