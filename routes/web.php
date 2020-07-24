@@ -54,4 +54,4 @@ Route::get ('/gestion-compras','Compras@index')->name('compras.index');
 Route::get('/gestion-compras/{id_prod}/contrato/{id_prov}/{id_contrato}','Compras@contrato')->name('compras.contrato');
 
 //Recomendador de Perfumes
-Route::get ('/recomendador-perfume', 'Recomendador@index');
+Route::get ('/recomendador-perfumes', 'Recomendador@index');
