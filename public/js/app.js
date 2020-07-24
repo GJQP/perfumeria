@@ -1903,11 +1903,9 @@ module.exports = {
 /*!******************************************************************************************************************************************************************!*\
   !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/Filtros.vue?vue&type=script&lang=js& ***!
   \******************************************************************************************************************************************************************/
-/*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/*! no static exports found */
+/***/ (function(module, exports) {
 
-"use strict";
-__webpack_require__.r(__webpack_exports__);
 //
 //
 //
@@ -1967,9 +1965,112 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-/* harmony default export */ __webpack_exports__["default"] = ({
-  mounted: function mounted() {
-    console.log('Component mounted.');
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+var aromas = new Vue({
+  el: 'aromas',
+  data: {
+    aroma: [{
+      texto: 'Floral',
+      value: 'oro'
+    }, {
+      texto: 'Hola',
+      value: 'uno'
+    }]
+  }
+});
+var usos = new Vue({
+  el: '#uso',
+  data: {
+    usos: [{
+      texto: 'Diario',
+      value: 'diario'
+    }, {
+      texto: 'Trabajo',
+      value: 'trabajo'
+    }, {
+      texto: 'Ocasion Especial',
+      value: 'ocasionEsp'
+    }]
+  }
+});
+var aspectoPer = new Vue({
+  el: '#aspectoPer',
+  data: {
+    aspectos: [{
+      texto: 'Libertad',
+      value: 'libertad'
+    }, {
+      texto: 'Independiente',
+      value: 'independietne'
+    }, {
+      texto: 'Creatividad',
+      value: 'creatividad'
+    }, {
+      texto: 'Diversion',
+      value: 'diversion'
+    }]
+  }
+});
+var familiaOlf = new Vue({
+  el: '#familiaOlf',
+  data: {
+    familias: [{
+      texto: 'Verde',
+      value: 'verde'
+    }, {
+      texto: 'Cítrico',
+      value: 'citrico'
+    }, {
+      texto: 'Flores',
+      value: 'flores'
+    }, {
+      texto: 'Frutas',
+      value: 'frutas'
+    }, {
+      texto: 'Aromáticos',
+      value: 'aromáticos'
+    }, {
+      texto: 'Helechos',
+      value: 'helechos'
+    }, {
+      texto: 'Chipre',
+      value: 'chipre'
+    }, {
+      texto: 'Maderas',
+      value: 'maderas'
+    }, {
+      texto: 'Orientales',
+      value: 'orientales'
+    }]
   }
 });
 
@@ -37518,145 +37619,275 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _vm._m(0)
+  return _c("div", { staticClass: "stage tarjeta muli pdb-2" }, [
+    _vm._m(0),
+    _vm._v(" "),
+    _c("div", { staticClass: "mgtp-1 pdb-1" }, [
+      _vm._m(1),
+      _vm._v(" "),
+      _c("div", { staticClass: "row mgt-1" }, [
+        _c(
+          "div",
+          { staticClass: "mglp-3 row aromaPDiv", attrs: { id: "aromas" } },
+          [
+            _c("h6", { staticClass: "pdtp-1 mgr-1 nombreFiltro" }, [
+              _vm._v("Aroma Prevaleciente:")
+            ]),
+            _vm._v(" "),
+            _c(
+              "select",
+              { staticClass: "form-control aromaP", attrs: { name: "aromaP" } },
+              [
+                _c(
+                  "option",
+                  { attrs: { selected: "", disabled: "", value: "0" } },
+                  [_vm._v("--Aromas--")]
+                ),
+                _vm._v(" "),
+                _vm._l(_vm.aroma, function(aromas) {
+                  return _c(
+                    "option",
+                    { domProps: { value: _vm.aroma.value } },
+                    [_vm._v(_vm._s(_vm.aroma.texto))]
+                  )
+                })
+              ],
+              2
+            )
+          ]
+        ),
+        _vm._v(" "),
+        _c("div", { staticClass: "mglp-2 row usoDiv", attrs: { id: "uso" } }, [
+          _c("h6", { staticClass: "pdtp-1 mgr-1 nombreFiltro" }, [
+            _vm._v("Preferencia de Uso:")
+          ]),
+          _vm._v(" "),
+          _c(
+            "select",
+            { staticClass: "form-control uso", attrs: { name: "uso" } },
+            [
+              _c(
+                "option",
+                { attrs: { selected: "", disabled: "", value: "0" } },
+                [_vm._v("Preferencia")]
+              ),
+              _vm._v(" "),
+              _vm._l(_vm.usos, function(uso) {
+                return _c("option", { domProps: { value: uso.value } }, [
+                  _vm._v(_vm._s(uso.texto))
+                ])
+              })
+            ],
+            2
+          )
+        ]),
+        _vm._v(" "),
+        _c(
+          "div",
+          {
+            staticClass: "mglp-2 row aspectoPerDiv",
+            attrs: { id: "aspectoPer" }
+          },
+          [
+            _c("h6", { staticClass: "pdtp-1 mgr-1 nombreFiltro" }, [
+              _vm._v("Aspecto de Personalidad:")
+            ]),
+            _vm._v(" "),
+            _c(
+              "select",
+              {
+                staticClass: "form-control aspectoPer",
+                attrs: { name: "aspectoPer" }
+              },
+              [
+                _c(
+                  "option",
+                  { attrs: { selected: "", disabled: "", value: "0" } },
+                  [_vm._v("--Aspecto--")]
+                ),
+                _vm._v(" "),
+                _vm._l(_vm.aspectos, function(aspecto) {
+                  return _c("option", { domProps: { value: aspecto.value } }, [
+                    _vm._v(_vm._s(aspecto.texto))
+                  ])
+                })
+              ],
+              2
+            )
+          ]
+        ),
+        _vm._v(" "),
+        _c(
+          "div",
+          {
+            staticClass: "mgl-1 row familiaOlfDiv",
+            attrs: { id: "familiaOlf" }
+          },
+          [
+            _c("h6", { staticClass: "pdtp-1 mgr-1 nombreFiltro" }, [
+              _vm._v("Aspecto de Personalidad:")
+            ]),
+            _vm._v(" "),
+            _c(
+              "select",
+              {
+                staticClass: "form-control familiaOlf",
+                attrs: { name: "familiaOlf" }
+              },
+              [
+                _c(
+                  "option",
+                  { attrs: { selected: "", disabled: "", value: "0" } },
+                  [_vm._v("--Familias--")]
+                ),
+                _vm._v(" "),
+                _vm._l(_vm.familias, function(familia) {
+                  return _c("option", { domProps: { value: familia.value } }, [
+                    _vm._v(_vm._s(familia.texto))
+                  ])
+                })
+              ],
+              2
+            )
+          ]
+        )
+      ]),
+      _vm._v(" "),
+      _vm._m(2)
+    ])
+  ])
 }
 var staticRenderFns = [
   function() {
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "stage tarjeta muli pdb-2" }, [
-      _c("div", { staticClass: "mgl-2 pdtp-1 mgb-1" }, [
-        _c("h4", [_c("u", [_c("strong", [_vm._v("Filtros")])])])
-      ]),
-      _vm._v(" "),
-      _c("div", { staticClass: "mgtp-1 pdb-2" }, [
-        _c("div", { staticClass: "row" }, [
-          _c("div", { staticClass: "mgl-5 row generoDiv" }, [
-            _c("h6", { staticClass: "pdtp-1 mgr-1 nombreFiltro" }, [
-              _vm._v("Género:")
-            ]),
-            _vm._v(" "),
-            _c(
-              "select",
-              {
-                staticClass: "form-control",
-                attrs: { id: "genero", name: "genero" }
-              },
-              [
-                _c("option", { attrs: { selected: "", disabled: "" } }, [
-                  _vm._v("--Genero--")
-                ]),
-                _vm._v(" "),
-                _c("option", { attrs: { value: "masculino" } }, [
-                  _vm._v("Masculino>")
-                ]),
-                _vm._v(" "),
-                _c("option", { attrs: { value: "femenino" } }, [
-                  _vm._v("Femenino")
-                ])
-              ]
-            )
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "row rangoDiv" }, [
-            _c("h6", { staticClass: "pdtp-1 mgr-1 nombreFiltro" }, [
-              _vm._v("Rango de Edad:")
-            ]),
-            _vm._v(" "),
-            _c("input", {
-              staticClass: "form-control rango mgr-1",
-              attrs: { type: "text", placeholder: "Min", name: "rgo-min" }
-            }),
-            _vm._v(" "),
-            _c("div", { staticClass: "separador mgt-1" }),
-            _vm._v(" "),
-            _c("input", {
-              staticClass: "form-control rango mglp-1",
-              attrs: { type: "text", placeholder: "Max", name: "rgo-max" }
-            })
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "row intesidadDiv mgl-1" }, [
-            _c("h6", { staticClass: "pdtp-1 mgr-2 nombreFiltro" }, [
-              _vm._v("Intensidad:")
-            ]),
-            _vm._v(" "),
-            _c(
-              "select",
-              {
-                staticClass: "form-control intensidad mglp-1",
-                attrs: { id: "intensidad", name: "intensidad" }
-              },
-              [
-                _c("option", { attrs: { selected: "", disabled: "" } }, [
-                  _vm._v("--Intensidad--")
-                ]),
-                _vm._v(" "),
-                _c("option", { attrs: { value: "ligero" } }, [
-                  _vm._v("Ligero")
-                ]),
-                _vm._v(" "),
-                _c("option", { attrs: { value: "intermedio" } }, [
-                  _vm._v("Intermedio")
-                ]),
-                _vm._v(" "),
-                _c("option", { attrs: { value: "intenso" } }, [
-                  _vm._v("Intenso")
-                ])
-              ]
-            )
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "row caracterDiv mglp-3" }, [
-            _c("h6", { staticClass: "pdtp-1 mgr-2 nombreFiltro" }, [
-              _vm._v("Caracter:")
-            ]),
-            _vm._v(" "),
-            _c(
-              "select",
-              {
-                staticClass: "form-control caracter mglp-1",
-                attrs: { id: "caracter", name: "caracter" }
-              },
-              [
-                _c("option", { attrs: { selected: "", disabled: "" } }, [
-                  _vm._v("--Caracter--")
-                ]),
-                _vm._v(" "),
-                _c("option", { attrs: { value: "clasico" } }, [
-                  _vm._v("Clásico")
-                ]),
-                _vm._v(" "),
-                _c("option", { attrs: { value: "informal" } }, [
-                  _vm._v("Informal")
-                ]),
-                _vm._v(" "),
-                _c("option", { attrs: { value: "moderno" } }, [
-                  _vm._v("Moderno>")
-                ]),
-                _vm._v(" "),
-                _c("option", { attrs: { value: "natural" } }, [
-                  _vm._v("Natural>")
-                ]),
-                _vm._v(" "),
-                _c("option", { attrs: { value: "seductor" } }, [
-                  _vm._v("Seductor")
-                ])
-              ]
-            )
-          ])
+    return _c("div", { staticClass: "mgl-2 pdtp-1 mgb-1" }, [
+      _c("h4", [_c("u", [_c("strong", [_vm._v("Filtros")])])])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "row" }, [
+      _c("div", { staticClass: "mglp-3 row generoDiv" }, [
+        _c("h6", { staticClass: "pdtp-1 mgr-1 nombreFiltro" }, [
+          _vm._v("Género:")
         ]),
         _vm._v(" "),
-        _c("div", { staticClass: "row mgt-1" }, [
-          _c("div", { staticClass: "mgl-5 row aromaPDiv" }, [
-            _c("h6", { staticClass: "pdtp-1 mgr-1 nombreFiltro" }, [
-              _vm._v("Aroma Prevaleciente:")
-            ])
-          ])
-        ])
+        _c(
+          "select",
+          {
+            staticClass: "form-control",
+            attrs: { id: "genero", name: "genero" }
+          },
+          [
+            _c("option", { attrs: { selected: "", disabled: "" } }, [
+              _vm._v("--Genero--")
+            ]),
+            _vm._v(" "),
+            _c("option", { attrs: { value: "masculino" } }, [
+              _vm._v("Masculino>")
+            ]),
+            _vm._v(" "),
+            _c("option", { attrs: { value: "femenino" } }, [_vm._v("Femenino")])
+          ]
+        )
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "row rangoDiv" }, [
+        _c("h6", { staticClass: "pdtp-1 mgr-1 nombreFiltro" }, [
+          _vm._v("Rango de Edad:")
+        ]),
+        _vm._v(" "),
+        _c("input", {
+          staticClass: "form-control rango mgr-1",
+          attrs: { type: "text", placeholder: "Min", name: "rgo-min" }
+        }),
+        _vm._v(" "),
+        _c("div", { staticClass: "separador mgt-1" }),
+        _vm._v(" "),
+        _c("input", {
+          staticClass: "form-control rango mglp-1",
+          attrs: { type: "text", placeholder: "Max", name: "rgo-max" }
+        })
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "row intesidadDiv mgl-1" }, [
+        _c("h6", { staticClass: "pdtp-1 mgr-2 nombreFiltro" }, [
+          _vm._v("Intensidad:")
+        ]),
+        _vm._v(" "),
+        _c(
+          "select",
+          {
+            staticClass: "form-control intensidad mglp-1",
+            attrs: { id: "intensidad", name: "intensidad" }
+          },
+          [
+            _c("option", { attrs: { selected: "", disabled: "" } }, [
+              _vm._v("--Intensidad--")
+            ]),
+            _vm._v(" "),
+            _c("option", { attrs: { value: "ligero" } }, [_vm._v("Ligero")]),
+            _vm._v(" "),
+            _c("option", { attrs: { value: "intermedio" } }, [
+              _vm._v("Intermedio")
+            ]),
+            _vm._v(" "),
+            _c("option", { attrs: { value: "intenso" } }, [_vm._v("Intenso")])
+          ]
+        )
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "row caracterDiv mglp-3" }, [
+        _c("h6", { staticClass: "pdtp-1 mgr-2 nombreFiltro" }, [
+          _vm._v("Caracter:")
+        ]),
+        _vm._v(" "),
+        _c(
+          "select",
+          {
+            staticClass: "form-control caracter mglp-1",
+            attrs: { id: "caracter", name: "caracter" }
+          },
+          [
+            _c("option", { attrs: { selected: "", disabled: "" } }, [
+              _vm._v("--Caracter--")
+            ]),
+            _vm._v(" "),
+            _c("option", { attrs: { value: "clasico" } }, [_vm._v("Clásico")]),
+            _vm._v(" "),
+            _c("option", { attrs: { value: "informal" } }, [
+              _vm._v("Informal")
+            ]),
+            _vm._v(" "),
+            _c("option", { attrs: { value: "moderno" } }, [_vm._v("Moderno>")]),
+            _vm._v(" "),
+            _c("option", { attrs: { value: "natural" } }, [_vm._v("Natural>")]),
+            _vm._v(" "),
+            _c("option", { attrs: { value: "seductor" } }, [_vm._v("Seductor")])
+          ]
+        )
       ])
     ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "div",
+      { staticClass: "mgr-5 mgt-1", staticStyle: { "text-align": "right" } },
+      [
+        _c(
+          "button",
+          { staticClass: "btn btn-primary", attrs: { type: "submit" } },
+          [_vm._v("Aplicar")]
+        )
+      ]
+    )
   }
 ]
 render._withStripped = true
@@ -49915,14 +50146,15 @@ window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 /*!*********************************************!*\
   !*** ./resources/js/components/Filtros.vue ***!
   \*********************************************/
-/*! exports provided: default */
+/*! no static exports found */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _Filtros_vue_vue_type_template_id_4e0fd050___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Filtros.vue?vue&type=template&id=4e0fd050& */ "./resources/js/components/Filtros.vue?vue&type=template&id=4e0fd050&");
 /* harmony import */ var _Filtros_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Filtros.vue?vue&type=script&lang=js& */ "./resources/js/components/Filtros.vue?vue&type=script&lang=js&");
-/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+/* harmony reexport (unknown) */ for(var __WEBPACK_IMPORT_KEY__ in _Filtros_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__) if(__WEBPACK_IMPORT_KEY__ !== 'default') (function(key) { __webpack_require__.d(__webpack_exports__, key, function() { return _Filtros_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__[key]; }) }(__WEBPACK_IMPORT_KEY__));
+/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
 
 
 
@@ -49952,13 +50184,15 @@ component.options.__file = "resources/js/components/Filtros.vue"
 /*!**********************************************************************!*\
   !*** ./resources/js/components/Filtros.vue?vue&type=script&lang=js& ***!
   \**********************************************************************/
-/*! exports provided: default */
+/*! no static exports found */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Filtros_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/babel-loader/lib??ref--4-0!../../../node_modules/vue-loader/lib??vue-loader-options!./Filtros.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Filtros.vue?vue&type=script&lang=js&");
-/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Filtros_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Filtros_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Filtros_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__);
+/* harmony reexport (unknown) */ for(var __WEBPACK_IMPORT_KEY__ in _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Filtros_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__) if(__WEBPACK_IMPORT_KEY__ !== 'default') (function(key) { __webpack_require__.d(__webpack_exports__, key, function() { return _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Filtros_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__[key]; }) }(__WEBPACK_IMPORT_KEY__));
+ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Filtros_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0___default.a); 
 
 /***/ }),
 

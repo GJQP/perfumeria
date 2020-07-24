@@ -64,16 +64,20 @@
     margin-left: 0.5rem;
 }
 
+.mglp-2{
+    margin-left: 1rem;
+}
+
+.mglp-3{
+    margin-left: 3rem;
+}
+
 .mgl-1{
     margin-left: 1.5rem;
 }
 
 .mgl-2{
     margin-left: 2rem;
-}
-
-.mglp-3{
-    margin-left: 3rem;
 }
 
 .mgl-5{
@@ -90,6 +94,10 @@
 
 .mgr-1{
     margin-right: 0.5rem;
+}
+
+.mgr-5{
+    margin-right: 5rem;
 }
 
 .mgrn-5{
@@ -459,7 +467,7 @@ table{
 }
 
 .nombreFiltro{
-    font-size: 120%;
+    font-size: 105%;
 }
 
 .rangoDiv{
@@ -494,10 +502,46 @@ table{
 }
 
 .aromaPDiv{
-    width: 25%;
+    width: 22%;
 }
 
 .aromaP{
-    width: 45%;
+    width: 40%;
 }
 
+.usoDiv{
+    width:22%;
+}
+
+.uso{
+    width: 43%;
+}
+
+.aspectoPerDiv{
+    width: 23%;
+}
+
+.aspectoPer{
+    width: 40%;
+}
+
+
+.familiaOlfDiv{
+    width: 23%;
+}
+
+.familiaOlf{
+    width: 40%;
+}
+
+.recomendadorCard{
+    height: 70%;
+}
+
+.rueda{
+    width: 50%;
+}
+
+.perfumes{
+    width: 50%;
+}
