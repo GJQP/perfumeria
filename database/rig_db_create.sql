@@ -1027,11 +1027,11 @@ INSERT INTO rig_condiciones_de_envio VALUES
 -- rig_variables
 
 INSERT INTO rig_variables VALUES 
-	(DEFAULT, 'Ubicación', 'Ubicación geográfica del proveedor'),
-	(DEFAULT, 'Costos', 'Precio de los productos y servicios ofrecidos por el productor'),
-	(DEFAULT,  'Alternativas de envio', 'Cantidad de métodos que ofrece el proveedor'),
-	(DEFAULT, 'Cumplimiento de envios', 'Rendimiento del proveedor a lo largo del período'),
-	(DEFAULT, 'Condiciones de pago', 'Alternativas de pago ofrecidas por el proveedor');
+	(DEFAULT, 'Ubicación geografica', 'Ubicación geográfica del proveedor'),
+	(DEFAULT, 'Costos de los productos', 'Precio de los productos y servicios ofrecidos por el productor'),
+	(DEFAULT, 'Alternativas de envio', 'Cantidad de métodos que ofrece el proveedor'),
+	(DEFAULT, 'Condiciones de pago', 'Alternativas de pago ofrecidas por el proveedor'),
+	(DEFAULT, 'Cumplimiento de envios', 'Rendimiento del proveedor a lo largo del período');
 
 -- rig_prohibidas (
 

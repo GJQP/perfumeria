@@ -11,108 +11,72 @@
         <div class="stage tarjeta muli">
             <!--Seleccionar la Empresa-->
             <div class="row blocktext">
-                       <p class="mgt-1" for="empresas"><strong>Seleccione la Empresa a la que desee consultar sus Formulas:</strong><p>
-                        <div class="dropdown mgl-1">
-                            <button class="btn btn-secondary dropdown-toggle" type="button" id="empresa" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                              Empresa
-                            </button>
-                            <div class="dropdown-menu muli" aria-labelledby="dropdownMenuButton">
-                                <!--Elementos internos del dropdown-->
-                                <a class="dropdown-item" onclick="">Action</a>
-                                <a class="dropdown-item" onclick="">Another action</a>
-                                <a class="dropdown-item" onclick="">Priv I Organics LTD</a>                               
-                            </div>
-                        </div>
-            </div>
-            <!--Tipo de Formula-->
-            <div class="row blocktext">
-                <p class="mgt-1" for="empresas"><strong>Seleccione el tipo de Formula:</strong><p></p>
                 <div class="dropdown mgl-1">
-                    <button class="btn btn-secondary dropdown-toggle" type="button" id="tipoformula" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                      Tipo
-                    </button>
-                    <div class="dropdown-menu muli" aria-labelledby="dropdownMenuButton">
-                        <!--Elementos internos del dropdown-->
-                        <a class="dropdown-item" onclick="">Inicial</a>
-                        <a class="dropdown-item" onclick="">Renovacion</a>
-                    </div>
+                    <form class="form-inline form-group" action="{{route('formula.index')}}" method="GET">
+                    <p class="mgt-1" for="empresas"><strong>Seleccione la Empresa a la que desee consultar sus Formulas:</strong><p>
+                        <select class="form-control selecEmp" name="id_prod">
+                        @foreach ($productores as $productor)
+                            <option value="{{$productor->id_prod}}">{{$productor->nombre}}</option>
+                        @endforeach
+                        </select>
+                        <button type="submit" class="btn btn-primary mgl-1">Consultar fórmulas</button>
+                    </form>
                 </div>
             </div>
-            
-            <div class="blocktext mgln-4">
-            <!--Crear If para mostrar una tabla dependiendo del parametro que se pase-->
-        
-            <table class="mgl-3 consulta">
+            <!--Tipo de Formula-->
+            @if(!empty($iniciales))
+            <p class="mgt-1 text-center" for="empresas"><strong>Fórmula inicial</strong><p>         
+            <div class="blocktext mgln-4">       
+            <table class="mgl-3 consulta">                
                 <tr>
                     <th id="criterio">Criterio de Evaluacion</th>
                     <th id="escala">Escala</th>
-                    <th id="porcentaje">Porcentaje</th>
-                </tr>
-                <!--Tabla de Formula Inicial-->
-                <!--
+                    <th id="porcentaje">Peso</th>
+                </tr> 
+            @foreach($iniciales as $variable)    
                 <tr>
-                    <td>Ubicacion Geográfica</td>
-                    <td id="escala"> <div class="escala"> <p> rango maximo</p> </div> </td>
-                    <td> <div class="porcentaje"> <p class="mgr-1">%</p> </div> </td>
+                    <td>{{$variable->nombre}}</td>
+                    <td id="escala"> <div class="escala"> <p>{{$escala->rgo_min}} a {{$escala->rgo_max}}</p> </div> </td>
+                    <td> <div class="porcentaje"> <p class="mgr-1">{{$variable->peso}}%</p> </div> </td>
                 </tr>
+            @endforeach
+            </table>
+            </div>
+            @endif
+            @if(!empty($renovaciones))
+            <p class="mgt-1 text-center" for="empresas" aling="center"><strong>Fórmula renovación</strong><p>
+            <div class="blocktext mgln-4">
+            <table class="mgl-3 consulta">                
                 <tr>
-                    <td>Alternativa de Envío</td>
-                    <td id="escala">  <div class="escala"> <p> rango maximo</p> </div> </td>
-                    <td> <div class="porcentaje"> <p class="mgr-1">%</p> </div> </td>
-                </tr>
+                    <th id="criterio">Criterio de Evaluacion</th>
+                    <th id="escala">Escala</th>
+                    <th id="porcentaje">Peso</th>
+                </tr> 
+            @foreach($renovaciones as $variable)    
                 <tr>
-                    <td>Costo de Envío</td>
-                    <td id="escala"> <div class="escala"> <p> rango maximo</p> </div> </td>
-                    <td> <div class="porcentaje"> <p class="mgr-1">%</p> </div> </td>
+                    <td>{{$variable->nombre}}</td>
+                    <td id="escala"> <div class="escala"> <p>{{$escala->rgo_min}} a {{$escala->rgo_max}}</p> </div> </td>
+                    <td> <div class="porcentaje"> <p class="mgr-1">{{$variable->peso}}%</p> </div> </td>
                 </tr>
-                <tr>
-                    <td>Cumplimiento de Envíos sin retraso</td>
-                    <td id="escala"> <div class="escala"> <p> rango maximo</p> </div> </td>
-                    <td> <div class="porcentaje"> <p class="mgr-1">%</p> </div> </td>
-                </tr>
-                <tr>
-                    <td>Alternativas de Pago</td>
-                    <td id="escala"> <div class="escala"> <p> rango maximo</p> </div> </td>
-                    <td> <div class="porcentaje"> <p class="mgr-1">%</p> </div> </td>
-                </tr>
-              
-              -->
-              <!--Tabla de Renovacion-->
-              <tr>
-                    <td>Pedidos Enviados Satisfactoriamente</td>
-                    <td id="escala"> <div class="escala"> <p> rango maximo</p> </div> </td>
-                    <td> <div class="porcentaje"> <p class="mgr-1">%</p> </div> </td>
-                </tr>
-                <tr>
-                    <td>Pedidos Enviados con retraso</td>
-                    <td id="escala"> <div class="escala"> <p> rango maximo</p> </div> </td>
-                    <td> <div class="porcentaje"> <p class="mgr-1">%</p> </div> </td>
-                </tr>
-                <tr>
-                    <td>Pedidos Rechazados</td>
-                    <td id="escala"> <div class="escala"> <p> rango maximo</p> </div> </td>
-                    <td> <div class="porcentaje"> <p class="mgr-1">%</p> </div> </td>
-                </tr>
-                <tr>
-                    <td>Pedidos Cancelados</td>
-                    <td id="escala"> <div class="escala"> <p> rango maximo</p> </div> </td>
-                    <td> <div class="porcentaje"> <p class="mgr-1">%</p> </div> </td>
-                </tr>
-                </table>
-              </div>
+            @endforeach
+            </table>
+            </div>
+            @endif
+            @if(empty($renovaciones) && empty($iniciales))
+            <p class="mgt-1 text-center" for="empresas" aling="center"><strong>El productor selecionado no tiene fórmulas registradas</strong><p>
+            @endif
               <!--Botones-->
               <div class="blocktext mgt-2 pdb-2 row">
-                <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#eliminar">Eliminar</button>
-                <button type="button" class="btn btn-secondary mgl-1"><a href="/gestion-formula/crear">Crear Formula</a></button>
+                <button type="button" class="btn btn-success mgl-1"><a href="/gestion-formula/crear/{{$productores[0]->id_prod}}">Crear Formula</a></button>
               </div>
         </div>
     </div>
-    <!-- Popup para la eliminacion de una formula-->
+    <!-- Popup para la eliminacion de una formula REMOVIDO-->
 <div class="modal fade" id="eliminar" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
         <div class="modal-header">
-            <h3 class="modal-title">Eliminar Formula</h3>
+            <h3 class="modal-title">Eliminar Fórmula</h3>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
             </button>

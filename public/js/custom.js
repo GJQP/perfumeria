@@ -29,103 +29,54 @@ function agregar(){
         case "ubicacionGeografica":
                 codigo.innerHTML='<tr id="ubicacionGeografica" style="display: none;">'+
                             '<td>Ubicacion Geográfica</td>'+
-                            '<td id="escala"> <div> <input type="text" class="form-control escala" id="escalaubi" name="ubi-esc" placeholder="Rango Maximo"></div> </td>'+
-                            '<td id="porcentaje"> <div class="row arreglar"> <input type="text" id="porcentajeubi" class="form-control porcentaje" name="ubi-peso" onblur="evaluacionPorcentaje()" required /> '+
+                            '<td id="porcentaje"> <div class="row arreglar"> <input type="text" id="p_ubic" class="form-control porcentaje" name="p_ubic" onblur="evaluacionPorcentaje()" required /> '+
                                 '<span class="input-group-addon">%</span></div> '+
                             '</td>'+
-                            '<td><div><a onclick="eliminar(event)">Eliminar</a></div></td>'+
+                            '<td><div><a onclick="eliminar(event)">Remover</a></div></td>'+
                          '</tr>' ;
                          codigo.id ='ubicacionGeografica';
                                 break;
         case "alternativaEnvio": 
                 codigo.innerHTML='<tr id="alternativaEnvio">'+
                                 '<td>Alternativa de Envío</td>'+
-                                '<td id="escala"> <div> <input type="text" class="form-control escala" name="altenv-escala" id="escalaenv" placeholder="Rango Maximo"></div> </td>'+
-                                '<td id="porcentaje"> <div class="row arreglar"> <input type="text" id="porcentajeenv" class="form-control porcentaje" name="altenv-peso" onblur="evaluacionPorcentaje()" required />'+ 
+                                '<td id="porcentaje"> <div class="row arreglar"> <input type="text" id="p_env" class="form-control porcentaje" name="p_alen" onblur="evaluacionPorcentaje()" required />'+ 
                                     '<span class="input-group-addon">%</span></div>'+
                                 '</td>'+
-                                '<td><div><a onclick="eliminar(event)">Eliminar</a></div></td>'+
+                                '<td><div><a onclick="eliminar(event)">Remover</a></div></td>'+
                             '</tr>';
                             codigo.id ='alternativaEnvio'
                                 break;
-        case "costoEnvio": 
-                codigo.innerHTML='<tr id="costoEnvio">'+
-                                '<td>Costo de Envío</td>'+
-                                '<td id="escala"> <div> <input type="text" class="form-control escala" id="escalacostenv" name="costenv-esc" placeholder="Rango Maximo"></div> </td>'+
-                                '<td id="porcentaje"> <div class="row arreglar"> <input type="text" id="porcentajecostenv" class="form-control porcentaje" name="costenv-peso" onblur="evaluacionPorcentaje()" required />'+
+        case "costoProductos": 
+                codigo.innerHTML='<tr id="costoProductos">'+
+                                '<td>Costo de productos</td>'+
+                                '<td id="porcentaje"> <div class="row arreglar"> <input type="text" id="p_cen" class="form-control porcentaje" name="p_prod" onblur="evaluacionPorcentaje()" required />'+
                                     '<span class="input-group-addon">%</span></div>'+
                                 '</td>'+
-                                '<td><div><a onclick="eliminar(event)">Eliminar</a></div></td>'+
+                                '<td><div><a onclick="eliminar(event)">Remover</a></div></td>'+
                             '</tr>';
-                            codigo.id ='costoEnvio';
-                                break;
-        case "cumplimientoEnvio": 
-                codigo.innerHTML='<tr id="cumplimientoEnvio">'+
-                                '<td>Cumplimiento de Envíos sin retraso</td>'+
-                                '<td id="escala"> <div> <input type="text" class="form-control escala" id="escalacumpli" name="cumpli-esc" placeholder="Rango Maximo"></div> </td>'+
-                                '<td id="porcentaje"> <div class="row arreglar"> <input type="text" id="porcentajecumpli" class="form-control porcentaje" name="cumpli-peso" onblur="evaluacionPorcentaje()" required /> '+
-                                    '<span class="input-group-addon">%</span></div> '+
-                                '</td>'+
-                                '<td><div><a onclick="eliminar(event)">Eliminar</a></div></td>'+
-                            '</tr>';
-                codigo.id ='cumplimientoEnvio';
+                            codigo.id ='costoProductos';
                                 break;
         case "alternativaPago":  
                 codigo.innerHTML='<tr id="alternativaPago">'+
                                 '<td>Alternativas de Pago</td>'+
-                                '<td id="escala"> <div> <input type="text" class="form-control escala" id="escalaaltpago" name="altpago-esc" placeholder="Rango Maximo"></div> </td>'+
-                                '<td id="porcentaje"> <div class="row arreglar"> <input type="text" id="porcentajealtpago" class="form-control porcentaje" name="altpago-peso" onblur="evaluacionPorcentaje()" required /> '+
+                                '<td id="porcentaje"> <div class="row arreglar"> <input type="text" id="porcentajealtpago" class="form-control porcentaje" name="p_pag" onblur="evaluacionPorcentaje()" required /> '+
                                     '<span class="input-group-addon">%</span></div>'+
                                 '</td>'+
-                                '<td><div><a onclick="eliminar(event)">Eliminar</a></div></td>'+
+                                '<td><div><a onclick="eliminar(event)">Remover</a></div></td>'+
                             '</tr>';
                 codigo.id ='alternativaPago';
                                 break;
         //Opciones cuando es de Renovacion
-         case "pedidosSatis":  
-                 codigo.innerHTML='<tr id="pedidosSatis">'+
-                                '<td>Pedidos Enviados Satisfactoriamente</td>'+
-                                '<td id="escala"> <div> <input type="text" class="form-control escala" id="escalapedidosatis" name="pedsatis-esc" placeholder="Rango Maximo"></div> </td>'+
-                                '<td id="porcentaje"> <div class="row arreglar"> <input type="text" id="porcentajepedidosatis" class="form-control porcentaje" name="pedidossatis-peso" onblur="evaluacionPorcentaje()" required /> '+
-                                        '<span class="input-group-addon">%</span></div>'+
-                                '</td>'+
-                                '<td><div><a onclick="eliminar(event)">Eliminar</a></div></td>'+
-                                '</tr>';
-                codigo.id ='pedidosSatis';
-                                break;
-        case "pedidosRetras":  
-        codigo.innerHTML='<tr id="pedidosRetras">'+
-                        '<td>Pedidos Enviados con Retraso</td>'+
-                        '<td id="escala"> <div> <input type="text" class="form-control escala" id="escalapedidoretra" name="pedidosretra-esc" placeholder="Rango Maximo"></div> </td>'+
-                        '<td id="porcentaje"> <div class="row arreglar"> <input type="text" id="porcentajepedidoretra" class="form-control porcentaje" name="pedidosretra-peso" onblur="evaluacionPorcentaje()" required /> '+
-                                '<span class="input-group-addon">%</span></div>'+
+        case "cumplimientoEnvio": 
+        codigo.innerHTML='<tr id="cumplimientoEnvio">'+
+                        '<td>Cumplimiento de Envíos sin retraso</td>'+
+                        '<td id="porcentaje"> <div class="row arreglar"> <input type="text" id="porcentajecumpli" class="form-control porcentaje" name="p_cen" onblur="evaluacionPorcentaje()" required /> '+
+                            '<span class="input-group-addon">%</span></div> '+
                         '</td>'+
-                        '<td><div><a onclick="eliminar(event)">Eliminar</a></div></td>'+
-                        '</tr>';
-        codigo.id ='pedidosRetras';
-                        break;  
-        case "pedidosRecha":  
-        codigo.innerHTML='<tr id="pedidosRecha">'+
-                        '<td>Pedidos Rechazados</td>'+
-                        '<td id="escala"> <div> <input type="text" class="form-control escala" id="escalapedidorecha" name="pedidorecha-esc" placeholder="Rango Maximo"></div> </td>'+
-                        '<td id="porcentaje"> <div class="row arreglar"> <input type="text" id="porcentajepedidorecha" class="form-control porcentaje" name="pedidorecha-peso" onblur="evaluacionPorcentaje()" required /> '+
-                                '<span class="input-group-addon">%</span></div>'+
-                        '</td>'+
-                        '<td><div><a onclick="eliminar(event)">Eliminar</a></div></td>'+
-                        '</tr>';
-        codigo.id ='pedidosRecha';
-        case "pedidosCance":  
-        codigo.innerHTML='<tr id="pedidosCance">'+
-                       '<td>Pedidos Cancelados</td>'+
-                       '<td id="escala"> <div> <input type="text" class="form-control escala" id="escalapedidocance" name="pedidoscance-esc" placeholder="Rango Maximo"></div> </td>'+
-                       '<td id="porcentaje"> <div class="row arreglar"> <input type="text" id="porcentajepedidocance" class="form-control porcentaje" name="pedidoscance-peso" onblur="evaluacionPorcentaje()" required /> '+
-                               '<span class="input-group-addon">%</span></div>'+
-                       '</td>'+
-                       '<td><div><a onclick="eliminar(event)">Eliminar</a></div></td>'+
-                       '</tr>';
-       codigo.id ='pedidosCance';
-                       break;
-                        break;                              
+                        '<td><div><a onclick="eliminar(event)">Remover</a></div></td>'+
+                    '</tr>';
+        codigo.id ='cumplimientoEnvio';
+                        break;                        
     }
     //Deshabilitar la opcion de agregar un criterio
     $("option[value='"+ codigo.id + "']")
@@ -146,7 +97,7 @@ function eliminar(e){
 
 //Funcion para siempre actualizar el % de la formula
 function evaluacionPorcentaje(){
-    console.log('Hola bb')
+    console.log('Hola bb');
     var porcentaje = 0;
     //Porcentaje de Inicio
     if ($('#porcentajeubi').length){
@@ -206,10 +157,7 @@ function preguntar(){
                 '<button type="button" class="btn btn-success"><a onclick="cancelarContrato()" href="/gestion-contratos/crear/'+idprod+'/'+ idprov +'">Crear Nuevo Contrato</a></button>'+
                 '<button type="button" class="btn btn-primary" onclick="renovar()">Renovar actual</button>';
     $('#cuerpo').text(cuerpo);
-    $('#botones').html(boton);
-    //"/gestion-contratos/crear/'+idprod+'/'+ idprov +'"
-    //gestion-contratos/cancelar/{id_cont}/{id_prov}
-    
+    $('#botones').html(boton);    
 }
 
 
@@ -235,4 +183,48 @@ function descuento(){
               '</form>';
     $('.modal-body').html(camposDesc);
     $('#botones').html(botones);
+}
+
+
+function modificarFormula() {
+    let form = document.getElementById('formula');
+    let tabla = document.getElementById("total")
+    let selc = document.getElementById('criterios');
+    let titulo = document.getElementById('titulo');
+    console.log(form.value);
+    if(document.getElementById('ubicacionGeografica'))
+        document.getElementById('ubicacionGeografica').remove();
+    if(document.getElementById('alternativaEnvio'))
+        document.getElementById('alternativaEnvio').remove();
+    if(document.getElementById('costoProductos'))
+        document.getElementById('costoProductos').remove();
+    if(document.getElementById('cumplimientoEnvio'))
+        document.getElementById('cumplimientoEnvio').remove();
+    if(document.getElementById('alternativaPago'))
+        document.getElementById('alternativaPago').remove();
+    while (titulo.firstChild) 
+        titulo.removeChild(titulo.firstChild);
+    while (selc.firstChild) 
+        selc.removeChild(selc.firstChild);
+    switch(form.value){
+        case '0':
+            $('#formula').val('0');
+            break;
+        case 'inicial':
+            selc.innerHTML = '<option disabled selected value="0"> -- Seleccione un Criterio -- </option>'+
+            '<option value="ubicacionGeografica">Ubicacion Geografica</option>' +
+            '<option value="alternativaEnvio">Alternativas de Envío</option>' +
+            '<option value="costoProductos">Costo de productos</option>' +
+            '<option value="alternativaPago">Alternativas de Pago</option>';
+            titulo.innerHTML = '<strong>Creando fórmula inicial</strong>';
+            $('#formula').val('inicial');
+            break;
+        case 'renovacion':
+            selc.innerHTML = '<option disabled selected value="0"> -- Seleccione un Criterio -- </option>' +
+            '<option value="cumplimientoEnvio">Cumplimiento de Envíos</option> ';
+            titulo.innerHTML = '<strong>Creando fórmula de renovación</strong>';
+            $('#formula').val('renovacion');
+            break;
+    }
+    
 }
