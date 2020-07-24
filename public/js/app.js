@@ -1996,7 +1996,7 @@ module.exports = {
 //
 //
 var aromas = new Vue({
-  el: 'aromas',
+  el: '#app',
   data: {
     aroma: [{
       texto: 'Floral',
@@ -2004,12 +2004,7 @@ var aromas = new Vue({
     }, {
       texto: 'Hola',
       value: 'uno'
-    }]
-  }
-});
-var usos = new Vue({
-  el: '#uso',
-  data: {
+    }],
     usos: [{
       texto: 'Diario',
       value: 'diario'
@@ -2019,12 +2014,7 @@ var usos = new Vue({
     }, {
       texto: 'Ocasion Especial',
       value: 'ocasionEsp'
-    }]
-  }
-});
-var aspectoPer = new Vue({
-  el: '#aspectoPer',
-  data: {
+    }],
     aspectos: [{
       texto: 'Libertad',
       value: 'libertad'
@@ -2037,12 +2027,7 @@ var aspectoPer = new Vue({
     }, {
       texto: 'Diversion',
       value: 'diversion'
-    }]
-  }
-});
-var familiaOlf = new Vue({
-  el: '#familiaOlf',
-  data: {
+    }],
     familias: [{
       texto: 'Verde',
       value: 'verde'
@@ -37619,143 +37604,158 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "stage tarjeta muli pdb-2" }, [
-    _vm._m(0),
-    _vm._v(" "),
-    _c("div", { staticClass: "mgtp-1 pdb-1" }, [
-      _vm._m(1),
+  return _c(
+    "div",
+    { staticClass: "stage tarjeta muli pdb-2", attrs: { id: "app" } },
+    [
+      _vm._m(0),
       _vm._v(" "),
-      _c("div", { staticClass: "row mgt-1" }, [
-        _c(
-          "div",
-          { staticClass: "mglp-3 row aromaPDiv", attrs: { id: "aromas" } },
-          [
-            _c("h6", { staticClass: "pdtp-1 mgr-1 nombreFiltro" }, [
-              _vm._v("Aroma Prevaleciente:")
-            ]),
-            _vm._v(" "),
-            _c(
-              "select",
-              { staticClass: "form-control aromaP", attrs: { name: "aromaP" } },
-              [
-                _c(
-                  "option",
-                  { attrs: { selected: "", disabled: "", value: "0" } },
-                  [_vm._v("--Aromas--")]
-                ),
-                _vm._v(" "),
-                _vm._l(_vm.aroma, function(aromas) {
-                  return _c(
-                    "option",
-                    { domProps: { value: _vm.aroma.value } },
-                    [_vm._v(_vm._s(_vm.aroma.texto))]
-                  )
-                })
-              ],
-              2
-            )
-          ]
-        ),
+      _c("div", { staticClass: "mgtp-1 pdb-1" }, [
+        _vm._m(1),
         _vm._v(" "),
-        _c("div", { staticClass: "mglp-2 row usoDiv", attrs: { id: "uso" } }, [
-          _c("h6", { staticClass: "pdtp-1 mgr-1 nombreFiltro" }, [
-            _vm._v("Preferencia de Uso:")
-          ]),
+        _c("div", { staticClass: "row mgt-1" }, [
+          _c(
+            "div",
+            { staticClass: "mglp-3 row aromaPDiv", attrs: { id: "aromas" } },
+            [
+              _c("h6", { staticClass: "pdtp-1 mgr-1 nombreFiltro" }, [
+                _vm._v("Aroma Prevaleciente:")
+              ]),
+              _vm._v(" "),
+              _c(
+                "select",
+                {
+                  staticClass: "form-control aromaP",
+                  attrs: { name: "aromaP" }
+                },
+                [
+                  _c(
+                    "option",
+                    { attrs: { selected: "", disabled: "", value: "0" } },
+                    [_vm._v("--Aromas--")]
+                  ),
+                  _vm._v(" "),
+                  _vm._l(_vm.aroma, function(aromas) {
+                    return _c(
+                      "option",
+                      { domProps: { value: _vm.aroma.value } },
+                      [_vm._v(_vm._s(_vm.aroma.texto))]
+                    )
+                  })
+                ],
+                2
+              )
+            ]
+          ),
           _vm._v(" "),
           _c(
-            "select",
-            { staticClass: "form-control uso", attrs: { name: "uso" } },
+            "div",
+            { staticClass: "mglp-2 row usoDiv", attrs: { id: "uso" } },
             [
-              _c(
-                "option",
-                { attrs: { selected: "", disabled: "", value: "0" } },
-                [_vm._v("Preferencia")]
-              ),
+              _c("h6", { staticClass: "pdtp-1 mgr-1 nombreFiltro" }, [
+                _vm._v("Preferencia de Uso:")
+              ]),
               _vm._v(" "),
-              _vm._l(_vm.usos, function(uso) {
-                return _c("option", { domProps: { value: uso.value } }, [
-                  _vm._v(_vm._s(uso.texto))
-                ])
-              })
-            ],
-            2
+              _c(
+                "select",
+                { staticClass: "form-control uso", attrs: { name: "uso" } },
+                [
+                  _c(
+                    "option",
+                    { attrs: { selected: "", disabled: "", value: "0" } },
+                    [_vm._v("Preferencia")]
+                  ),
+                  _vm._v(" "),
+                  _vm._l(_vm.usos, function(uso) {
+                    return _c("option", { domProps: { value: uso.value } }, [
+                      _vm._v(_vm._s(uso.texto))
+                    ])
+                  })
+                ],
+                2
+              )
+            ]
+          ),
+          _vm._v(" "),
+          _c(
+            "div",
+            {
+              staticClass: "mglp-2 row aspectoPerDiv",
+              attrs: { id: "aspectoPer" }
+            },
+            [
+              _c("h6", { staticClass: "pdtp-1 mgr-1 nombreFiltro" }, [
+                _vm._v("Aspecto de Personalidad:")
+              ]),
+              _vm._v(" "),
+              _c(
+                "select",
+                {
+                  staticClass: "form-control aspectoPer",
+                  attrs: { name: "aspectoPer" }
+                },
+                [
+                  _c(
+                    "option",
+                    { attrs: { selected: "", disabled: "", value: "0" } },
+                    [_vm._v("--Aspecto--")]
+                  ),
+                  _vm._v(" "),
+                  _vm._l(_vm.aspectos, function(aspecto) {
+                    return _c(
+                      "option",
+                      { domProps: { value: aspecto.value } },
+                      [_vm._v(_vm._s(aspecto.texto))]
+                    )
+                  })
+                ],
+                2
+              )
+            ]
+          ),
+          _vm._v(" "),
+          _c(
+            "div",
+            {
+              staticClass: "mgl-1 row familiaOlfDiv",
+              attrs: { id: "familiaOlf" }
+            },
+            [
+              _c("h6", { staticClass: "pdtp-1 mgr-1 nombreFiltro" }, [
+                _vm._v("Aspecto de Personalidad:")
+              ]),
+              _vm._v(" "),
+              _c(
+                "select",
+                {
+                  staticClass: "form-control familiaOlf",
+                  attrs: { name: "familiaOlf" }
+                },
+                [
+                  _c(
+                    "option",
+                    { attrs: { selected: "", disabled: "", value: "0" } },
+                    [_vm._v("--Familias--")]
+                  ),
+                  _vm._v(" "),
+                  _vm._l(_vm.familias, function(familia) {
+                    return _c(
+                      "option",
+                      { domProps: { value: familia.value } },
+                      [_vm._v(_vm._s(familia.texto))]
+                    )
+                  })
+                ],
+                2
+              )
+            ]
           )
         ]),
         _vm._v(" "),
-        _c(
-          "div",
-          {
-            staticClass: "mglp-2 row aspectoPerDiv",
-            attrs: { id: "aspectoPer" }
-          },
-          [
-            _c("h6", { staticClass: "pdtp-1 mgr-1 nombreFiltro" }, [
-              _vm._v("Aspecto de Personalidad:")
-            ]),
-            _vm._v(" "),
-            _c(
-              "select",
-              {
-                staticClass: "form-control aspectoPer",
-                attrs: { name: "aspectoPer" }
-              },
-              [
-                _c(
-                  "option",
-                  { attrs: { selected: "", disabled: "", value: "0" } },
-                  [_vm._v("--Aspecto--")]
-                ),
-                _vm._v(" "),
-                _vm._l(_vm.aspectos, function(aspecto) {
-                  return _c("option", { domProps: { value: aspecto.value } }, [
-                    _vm._v(_vm._s(aspecto.texto))
-                  ])
-                })
-              ],
-              2
-            )
-          ]
-        ),
-        _vm._v(" "),
-        _c(
-          "div",
-          {
-            staticClass: "mgl-1 row familiaOlfDiv",
-            attrs: { id: "familiaOlf" }
-          },
-          [
-            _c("h6", { staticClass: "pdtp-1 mgr-1 nombreFiltro" }, [
-              _vm._v("Aspecto de Personalidad:")
-            ]),
-            _vm._v(" "),
-            _c(
-              "select",
-              {
-                staticClass: "form-control familiaOlf",
-                attrs: { name: "familiaOlf" }
-              },
-              [
-                _c(
-                  "option",
-                  { attrs: { selected: "", disabled: "", value: "0" } },
-                  [_vm._v("--Familias--")]
-                ),
-                _vm._v(" "),
-                _vm._l(_vm.familias, function(familia) {
-                  return _c("option", { domProps: { value: familia.value } }, [
-                    _vm._v(_vm._s(familia.texto))
-                  ])
-                })
-              ],
-              2
-            )
-          ]
-        )
-      ]),
-      _vm._v(" "),
-      _vm._m(2)
-    ])
-  ])
+        _vm._m(2)
+      ])
+    ]
+  )
 }
 var staticRenderFns = [
   function() {

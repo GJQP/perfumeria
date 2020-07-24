@@ -13,7 +13,7 @@ class Recomendador extends Controller
      */
     public function index()
     {
-        return view('recomendador.recomendador1');
+        return view('recomendador.recomendador');
     }
 
     /**

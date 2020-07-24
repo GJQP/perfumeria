@@ -1,5 +1,5 @@
 <template>
-  <div class="stage tarjeta muli pdb-2">
+  <div class="stage tarjeta muli pdb-2" id="app">
             <div class="mgl-2 pdtp-1 mgb-1">
                 <h4><u><strong>Filtros</strong></u></h4>
             </div>
@@ -89,51 +89,37 @@
 
 <script> 
     var aromas = new Vue({
-        el: 'aromas',
+        el: '#app',
         data:{
         aroma:[
             {texto: 'Floral', value: 'oro'},
-        { texto: 'Hola', value: 'uno'}],
-        }
-    })
+            { texto: 'Hola', value: 'uno'}
+            ],
 
-    var usos = new Vue({
-        el: '#uso',
-        data:{
-            usos:[
+        usos:[
                 { texto: 'Diario', value:'diario'},
                 { texto: 'Trabajo', value:'trabajo'},
                 { texto: 'Ocasion Especial', value:'ocasionEsp'}
-            ]
-        }
-    })
-
-    var aspectoPer = new Vue({
-        el: '#aspectoPer',
-        data:{
-            aspectos:[
-                { texto: 'Libertad', value:'libertad'},
-                { texto: 'Independiente', value:'independietne'},
-                { texto: 'Creatividad', value:'creatividad'},
-                { texto: 'Diversion', value:'diversion'}
-            ]
-        }
-    })
-
-    var familiaOlf = new Vue({
-        el: '#familiaOlf',
-        data:{
-            familias:[
-                { texto: 'Verde', value:'verde'},
-                { texto: 'Cítrico', value:'citrico'},
-                { texto: 'Flores', value:'flores'},
-                { texto: 'Frutas', value:'frutas'},
-                { texto: 'Aromáticos', value:'aromáticos'},
-                { texto: 'Helechos', value:'helechos'},
-                { texto: 'Chipre', value:'chipre'},
-                { texto: 'Maderas', value:'maderas'},
-                { texto: 'Orientales', value:'orientales'}
-            ]
-        }
+            ],
+           
+        aspectos:[
+            { texto: 'Libertad', value:'libertad'},
+            { texto: 'Independiente', value:'independietne'},
+            { texto: 'Creatividad', value:'creatividad'},
+            { texto: 'Diversion', value:'diversion'}
+        ],
+       
+        familias:[
+            { texto: 'Verde', value:'verde'},
+            { texto: 'Cítrico', value:'citrico'},
+            { texto: 'Flores', value:'flores'},
+            { texto: 'Frutas', value:'frutas'},
+            { texto: 'Aromáticos', value:'aromáticos'},
+            { texto: 'Helechos', value:'helechos'},
+            { texto: 'Chipre', value:'chipre'},
+            { texto: 'Maderas', value:'maderas'},
+            { texto: 'Orientales', value:'orientales'}
+        ]
+    }
     })
 </script>
