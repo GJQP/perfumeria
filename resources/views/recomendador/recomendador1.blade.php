@@ -21,8 +21,18 @@
                 Hola
             </div>
             <!--Lado derecho para mostrar perfumes-->
-            <div class="perfumes blocktext">
-                
+            <div class="perfumes">
+                <div>
+                    <img class="blocktext" src="" alt="#">
+                    <h4 class="mgt-1 blocktext"><u>Nombre del Perfume</u></h4>
+                </div>
+                <div>
+                    <div>
+                        <p class="blocktext">Distribuido por:</p>
+                        <p class="blocktext">Creado por:</p>
+                        <a href="#" class="mgt-1 ficha blocktext">Ficha del Perfume</a>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

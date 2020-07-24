@@ -545,3 +545,17 @@ table{
 .perfumes{
     width: 50%;
 }
+
+.imgPerf{
+    width: 15%;
+    height: 20%;
+    border: 2px black;
+}
+
+.ficha{
+    color: #3BA4A0;
+}
+
+.ficha:hover{
+    color: blue;
+}
