@@ -29,6 +29,83 @@ files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
 
-const app = new Vue({
-    el: '#app',
+const aromas = new Vue({
+    el: '#filtrosComp',
+    data:{
+        prueba:[],
+        valores:[],
+        generos:[
+            { texto:'Femenino', value: 'femenino'},
+            { texto:'Masculino', value: 'masculino'}
+        ],
+
+        intensidades:[
+            { texto:'Ligero', value: 'ligero'},
+            { texto:'Intermedio', value: 'intermedio'},
+            { texto:'Intenso', value: 'intenso'}
+        ],
+        
+        caracteres:[
+            { texto:'Clasico', value: 'clasico'},
+            { texto:'Informal', value: 'informal'},
+            { texto:'Moderno', value: 'moderno'},
+            { texto:'Natural', value: 'natural'},
+            { texto:'Seductor', value: 'seductor'}
+        ],
+
+        aromas:[
+            {texto: 'Floral', value: 'floral'},
+            { texto: 'Frutal,', value: 'frutal,'},
+            { texto: 'Verde', value: 'verde'},
+            { texto: 'Herbal', value: 'herbal'},
+            { texto: 'Cítrico', value: 'citrico,'},
+            { texto: 'Herbal Aromático', value: 'herbalaro'}
+            ],
+
+        usos:[
+                { texto: 'Diario', value:'diario'},
+                { texto: 'Trabajo', value:'trabajo'},
+                { texto: 'Ocasion Especial', value:'ocasionEsp'}
+            ],
+           
+        aspectos:[
+            { texto: 'Libertad', value:'libertad'},
+            { texto: 'Independiente', value:'independietne'},
+            { texto: 'Creatividad', value:'creatividad'},
+            { texto: 'Diversion', value:'diversion'}
+        ],
+       
+        familias:[
+            { texto: 'Verde', value:'verde'},
+            { texto: 'Cítrico', value:'citrico'},
+            { texto: 'Flores', value:'flores'},
+            { texto: 'Frutas', value:'frutas'},
+            { texto: 'Aromáticos', value:'aromáticos'},
+            { texto: 'Helechos', value:'helechos'},
+            { texto: 'Chipre', value:'chipre'},
+            { texto: 'Maderas', value:'maderas'},
+            { texto: 'Orientales', value:'orientales'}
+        ]
+    },
+
+    methods:{
+        agregarCarac: function(ev){
+            var contador = ev.srcElement.parentNode.id + 1;
+            var boton = ev.srcElement;
+            let contenedor = document.getElementById('contenedorCarac');
+            boton.parentElement.removeChild(boton);
+            var div = document.createElement("div");
+            div.id = contador;
+            div.classList.add("row");
+            div.classList.add("agregado");
+            let nuevaFila =
+                            '<select class="form-control caracter mglp-1" id="caracter" name="caracter">'+
+                                '<option selected disabled>--Caracter--</option>'+
+                                '<option v-for="caracter in caracteres" v-bind:value="caracter.value">'+ caracter.text+'</option>'+
+                            '</select>'+
+                            '<button v-on:click="agregarCarac" id="agregar" class="circle plus"></button>';
+            div.innerHTML = nuevaFila;
+            contenedor.after(div);
+        }
+    }
 });
