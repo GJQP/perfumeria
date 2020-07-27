@@ -56,6 +56,7 @@
                                         <option v-for="caracter in caracteres" v-bind:value="caracter.value">@{{caracter.texto}}</option>
                                     </select>
                                     <button v-on:click="agregar" id="agregar" class="circle plus"></button>
+                                    <button class="circle minus"></button>
                                 </div>
                         </div>
                     </div>
@@ -70,6 +71,7 @@
                             <option v-for="aroma in aromas" v-bind:value="aroma.value">@{{aroma.texto}}</option>
                         </select>
                         <button class="circle plus"></button>
+                        <button class="circle minus"></button>
                     </div>
                     <!--Preferencia de Uso-->
                     <div class="mglp-2 row usoDiv" id="uso">
@@ -87,6 +89,7 @@
                             <option v-for="aspecto in aspectos" v-bind:value="aspecto.value">@{{aspecto.texto}}</option>
                         </select>
                         <button class="circle plus"></button>
+                        <button class="circle minus"></button>
                     </div>
                     <!--Familia Olfativa-->
                     <div class="mgl-1 row familiaOlfDiv" id="familiaOlf">
@@ -96,6 +99,7 @@
                             <option v-for="familia in familias" v-bind:value="familia.value">@{{familia.texto}}</option>
                         </select>
                         <button class="circle plus"></button>
+                        <button class="circle minus"></button>
                     </div>
                 </div>
                 <div class="mgr-5 mgt-1" style="text-align: right;">
