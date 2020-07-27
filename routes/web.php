@@ -32,8 +32,10 @@ Route::delete('/gestion-perfumista/{id}','Perfumistas@destroy');
 Route::get ('/gestion-formula/{id_prod?}','GestionFormula@index')->name('formula.index');
 
 //Crear Formula
-Route::get ('/gestion-formula/crear/{id_prod}','GestionFormula@create');
-Route::post('/gestion-formula/crear/registrar','GestionFormula@store')->name('formula.registrar');
+Route::get ('/gestion-formula/crear/{id_prod}','GestionFormula@create')->name('formula.crear');
+Route::post ('/gestion-formula/crear/{id_prod}/registrar','GestionFormula@store')->name('formula.registrar');
+
+
 
 //Gestion de contratos
 Route::post('/gestion-contratos/crear/{id_prod}/{id_prov}/generar', 'Contratos@registrarContrato')->name('contrato.generar');

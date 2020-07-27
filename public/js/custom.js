@@ -8,12 +8,12 @@ function cambiar(id){
     idEliminar = id;
 }
 
-function eliminarFila() {
+function eliminarFila() { 
     if (idEliminar){
         axios.delete('/gestion-perfumista/' + idEliminar).then(() => window.location.reload());
-
+        
     }
-}
+}  
 function cambio(e){
     let elemento = e.srcElement.id;
     console.log(elemento);
@@ -29,37 +29,37 @@ function agregar(){
         case "ubicacionGeografica":
                 codigo.innerHTML='<tr id="ubicacionGeografica" style="display: none;">'+
                             '<td>Ubicacion Geográfica</td>'+
-                            '<td id="porcentaje"> <div class="row arreglar"> <input type="text" id="p_ubic" class="form-control porcentaje" name="p_ubic" onblur="evaluacionPorcentaje()" required /> '+
+                            '<td id="porcentaje"> <div class="row arreglar"> <input type="number" min=1 max=100  value="1"  id="p_ubic" class="form-control porcentaje" name="p_ubic" onblur="evaluacionPorcentaje()" onload="evaluacionPorcentaje()" required /> '+
                                 '<span class="input-group-addon">%</span></div> '+
                             '</td>'+
                             '<td><div><a onclick="eliminar(event)">Remover</a></div></td>'+
                          '</tr>' ;
                          codigo.id ='ubicacionGeografica';
                                 break;
-        case "alternativaEnvio":
+        case "alternativaEnvio": 
                 codigo.innerHTML='<tr id="alternativaEnvio">'+
                                 '<td>Alternativa de Envío</td>'+
-                                '<td id="porcentaje"> <div class="row arreglar"> <input type="text" id="p_env" class="form-control porcentaje" name="p_alen" onblur="evaluacionPorcentaje()" required />'+
+                                '<td id="porcentaje"> <div class="row arreglar"> <input type="number" min=1 max=100 id="p_alen" class="form-control porcentaje" name="p_alen" onblur="evaluacionPorcentaje()" onload="evaluacionPorcentaje()"  value="1" required />'+ 
                                     '<span class="input-group-addon">%</span></div>'+
                                 '</td>'+
                                 '<td><div><a onclick="eliminar(event)">Remover</a></div></td>'+
                             '</tr>';
                             codigo.id ='alternativaEnvio'
                                 break;
-        case "costoProductos":
+        case "costoProductos": 
                 codigo.innerHTML='<tr id="costoProductos">'+
                                 '<td>Costo de productos</td>'+
-                                '<td id="porcentaje"> <div class="row arreglar"> <input type="text" id="p_cen" class="form-control porcentaje" name="p_prod" onblur="evaluacionPorcentaje()" required />'+
+                                '<td id="porcentaje"> <div class="row arreglar"> <input type="number" min=1 max=100 id="p_prod" class="form-control porcentaje" name="p_prod" onblur="evaluacionPorcentaje()" onload="evaluacionPorcentaje()"  value="1" required />'+
                                     '<span class="input-group-addon">%</span></div>'+
                                 '</td>'+
                                 '<td><div><a onclick="eliminar(event)">Remover</a></div></td>'+
                             '</tr>';
                             codigo.id ='costoProductos';
                                 break;
-        case "alternativaPago":
+        case "alternativaPago":  
                 codigo.innerHTML='<tr id="alternativaPago">'+
                                 '<td>Alternativas de Pago</td>'+
-                                '<td id="porcentaje"> <div class="row arreglar"> <input type="text" id="porcentajealtpago" class="form-control porcentaje" name="p_pag" onblur="evaluacionPorcentaje()" required /> '+
+                                '<td id="porcentaje"> <div class="row arreglar"> <input type="number" min=1 max=100 id="p_pag" class="form-control porcentaje" name="p_pag" onblur="evaluacionPorcentaje()" onload="evaluacionPorcentaje()"  value="1"  required /> '+
                                     '<span class="input-group-addon">%</span></div>'+
                                 '</td>'+
                                 '<td><div><a onclick="eliminar(event)">Remover</a></div></td>'+
@@ -67,16 +67,16 @@ function agregar(){
                 codigo.id ='alternativaPago';
                                 break;
         //Opciones cuando es de Renovacion
-        case "cumplimientoEnvio":
+        case "cumplimientoEnvio": 
         codigo.innerHTML='<tr id="cumplimientoEnvio">'+
                         '<td>Cumplimiento de Envíos sin retraso</td>'+
-                        '<td id="porcentaje"> <div class="row arreglar"> <input type="text" id="porcentajecumpli" class="form-control porcentaje" name="p_cen" onblur="evaluacionPorcentaje()" required /> '+
-                            '<span class="input-group-addon">%</span></div> '+
+                        '<td id="porcentaje"> <div class="row arreglar"> <input type="number" min=1 max=100 id="p_cen" class="form-control porcentaje" name="p_cen" onblur="evaluacionPorcentaje()" value="100" readonly required /> '+
+                        '<span class="input-group-addon">%</span></div> '+
                         '</td>'+
                         '<td><div><a onclick="eliminar(event)">Remover</a></div></td>'+
                     '</tr>';
         codigo.id ='cumplimientoEnvio';
-                        break;
+                        break;                        
     }
     //Deshabilitar la opcion de agregar un criterio
     $("option[value='"+ codigo.id + "']")
@@ -97,39 +97,24 @@ function eliminar(e){
 
 //Funcion para siempre actualizar el % de la formula
 function evaluacionPorcentaje(){
-    //console.log('Hola bb');
     var porcentaje = 0;
     //Porcentaje de Inicio
-    if ($('#porcentajeubi').length){
-        porcentaje += parseInt($('#porcentajeubi').val());
+    if ($('#p_ubic').length){
+        porcentaje += parseInt($('#p_ubic').val());
     }
 
-    if ($('#porcentajeenv').length){
-        porcentaje += parseInt($('#porcentajeenv').val());
+    if ($('#p_alen').length){
+        porcentaje += parseInt($('#p_alen').val());
     }
 
-    if ($('#porcentajecostenv').length){
-        porcentaje += parseInt($('#porcentajecostenv').val());
+    if ($('#p_prod').length){
+        porcentaje += parseInt($('#p_prod').val());
     }
-
-    if ($('#porcentajecumpli').length){
-        porcentaje += parseInt($('#porcentajecumpli').val());
+    if ($('#p_pag').length){
+        porcentaje += parseInt($('#p_pag').val());
     }
-    if ($('#porcentajealtpago').length){
-        porcentaje += parseInt($('#porcentajealtpago').val());
-    }
-    //Porcentaje de Renovacion
-    if ($('#porcentajepedidosatis').length){
-        porcentaje += parseInt($('#porcentajepedidosatis').val());
-    }
-    if ($('#porcentajepedidoretra').length){
-        porcentaje += parseInt($('#porcentajepedidoretra').val());
-    }
-    if ($('#porcentajepedidorecha').length){
-        porcentaje += parseInt($('#porcentajepedidorecha').val());
-    }
-    if ($('#porcentajepedidocance').length){
-        porcentaje += parseInt($('#porcentajepedidocance').val());
+    if ($('#p_cen').length){
+        porcentaje += parseInt($('#p_cen').val());
     }
     console.log(porcentaje);
 
@@ -157,7 +142,7 @@ function preguntar(){
                 '<button type="button" class="btn btn-success"><a onclick="cancelarContrato()" href="/gestion-contratos/crear/'+idprod+'/'+ idprov +'">Crear Nuevo Contrato</a></button>'+
                 '<button type="button" class="btn btn-primary" onclick="renovar()">Renovar actual</button>';
     $('#cuerpo').text(cuerpo);
-    $('#botones').html(boton);
+    $('#botones').html(boton);    
 }
 
 
@@ -202,9 +187,9 @@ function modificarFormula() {
         document.getElementById('cumplimientoEnvio').remove();
     if(document.getElementById('alternativaPago'))
         document.getElementById('alternativaPago').remove();
-    while (titulo.firstChild)
+    while (titulo.firstChild) 
         titulo.removeChild(titulo.firstChild);
-    while (selc.firstChild)
+    while (selc.firstChild) 
         selc.removeChild(selc.firstChild);
     switch(form.value){
         case '0':
@@ -226,5 +211,11 @@ function modificarFormula() {
             $('#formula').val('renovacion');
             break;
     }
+    
+}
 
+function cambiarProveedorForm() {
+    let idprod = document.getElementById('formis').value;
+    console.log(idprod);
+    axios.get('/gestion-formula/' + idprod ).then(() => window.location.reload());
 }
