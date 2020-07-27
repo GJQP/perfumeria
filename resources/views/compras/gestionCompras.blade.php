@@ -35,16 +35,8 @@
                             <td>Activo</td>
                             <td>{{$proveedor->fcha_reg}}</td>
                             <td>
-                                <div>
-                                    <button class="btn btn-link btn-primary">
-                                        <a
-                                            href="{{route('compras.contrato',[$id_prod,$proveedor->id_prov,$proveedor->id_contrato])}}"
-                                        >
-                                            Ver Pedidos
-                                        </a>
-                                    </button>
-
-                                </div>
+                                <div><a href="{{route('compras.contrato',[1,1,1])}}">Realizar Pedido</a></div>
+                                <div><a></a></div>
                             </td>
                         </tr>
                     @endforeach

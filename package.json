@@ -24,7 +24,6 @@
         "vue-template-compiler": "^2.6.10"
     },
     "dependencies": {
-        "bs-stepper": "^1.7.0",
         "vue-select": "^3.10.7"
     }
 }

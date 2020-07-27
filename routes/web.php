@@ -54,7 +54,6 @@ Route::post('/gestion-contratos/{id}/crear/evaluacion-{proveedor}','Contratos@vi
 //Gestion Compras
 Route::get ('/gestion-compras','Compras@index')->name('compras.index');
 Route::get('/gestion-compras/{id_prod}/contrato/{id_prov}/{id_contrato}','Compras@contrato')->name('compras.contrato');
-Route::get('/gestion-compras/pedido/{id_cto}','Compras@pedido')->name('compras.pedidos');
 
 //Recomendador de Perfumes
 Route::get ('/recomendador-perfumes', 'Recomendador@index');

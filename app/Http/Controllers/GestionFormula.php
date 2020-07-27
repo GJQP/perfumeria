@@ -36,7 +36,6 @@ class GestionFormula extends Controller
         $renovaciones = [];
         foreach($variables as $variable)
             if($variable->tipo_eval == "INICIAL")
-<<<<<<< HEAD
                 $iniciales = array_merge($iniciales, [$variable]);
             else    
                 $renovaciones = array_merge($renovaciones, [$variable]);
@@ -45,14 +44,6 @@ class GestionFormula extends Controller
         $escala = DB::select("$escala");
 
         return view('formula.gestionformula')->with([
-=======
-                $iniciales = array_merge($iniciales, $variable);
-            else
-                $renovaciones = array_merge($renovaciones, $variable);
-        $escala = "SELECT fcha_reg, rgo_ini, rgo_fin FROM rig_escalas WHERE id_prod = $id";
-        $escala = DB::select("$escala");
-        return view('Formula.gestionformula')->with([
->>>>>>> f44cf9a7307cd772ae9cf0061a82f63737e97e33
             "productores" => $productores,
             "iniciales" => $iniciales,
             "renovaciones" => $renovaciones,
@@ -71,7 +62,7 @@ class GestionFormula extends Controller
     {
         $escala = "SELECT DATE(fcha_reg) AS fcha_reg, rgo_ini, rgo_fin FROM rig_escalas WHERE id_prod = $id_prod";
         $escala = DB::select("$escala");
-        return view('Formula.crearformula')->with([
+        return view('formula.crearformula')->with([
             "id_prod" => $id_prod,
             "escala" => $escala
         ]);
@@ -127,11 +118,7 @@ class GestionFormula extends Controller
         //dd($request->all());
         $vars= [];
         if($request->p_ubic != NULL)
-<<<<<<< HEAD
             $vars = array_merge($vars , [['Ubicación geografica', $request->p_ubic]]); 
-=======
-            $var = array_merge($var , [['Ubicación geografica', $request->p_ubic]]);
->>>>>>> f44cf9a7307cd772ae9cf0061a82f63737e97e33
         if($request->p_alen != NULL)
             $vars = array_merge($vars , [['Alternativas de envio', $request->p_alen]]);
         if($request->p_prod != NULL)
@@ -139,7 +126,6 @@ class GestionFormula extends Controller
         if($request->p_pag != NULL)
             $vars = array_merge($vars , [['Condiciones de pago', $request->p_pag]]);
         if($request->p_cen != NULL)
-<<<<<<< HEAD
             $vars = array_merge($vars , [['Cumplimiento de envios', $request->p_cen]]);
 
         // Verificamos que se encuentre en el rango de el mínimo aprobatorio
@@ -175,16 +161,6 @@ class GestionFormula extends Controller
     {
         $escala = DB::select("SELECT id_prod, DATE(fcha_reg) AS fcha_reg, rgo_ini, rgo_fin, fcha_fin FROM rig_escalas WHERE id_prod = $id_prod AND fcha_fin IS NULL");
         return view('Formula.elegirEscala')->with(['escala' => $escala, 'id_prod' => $id_prod]);
-=======
-            $var = array_merge($var , [['Cumplimiento de envios', $request->p_cum]]);
-
-        $variables = "SELECT nombre, id FROM rig_variables";
-        $variables = DB::select("$variables");
-        dd($variables, $var);
-        return redirect()->back()->with(['error' => 'La suma de las variables debe ser igual a 100 y el mínimo aprobatorio debe estar entre 1 y 100']);
-        dd("Hola");
-        return view('formula.index');
->>>>>>> f44cf9a7307cd772ae9cf0061a82f63737e97e33
     }
 
     /**

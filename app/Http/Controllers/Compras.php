@@ -13,17 +13,17 @@ class Compras extends Controller
      *
      * Pasos Compras:
 
-    1.Mostrar proveedores (contratos vigentes no cancelados filtro productor para el momento de la consulta)
-    2.elegir
-    3.mostrar productos contratados, condiciones de envio y pago
-    4.Crear pedido – encabezado – guardar
-    4.1 crear detalles – guardar
-    4.2 elegir envio si aplica
-    4.3 calcular y guardar montototal
-    4.4 si hay varias formas de pago elegir – guardar
-    4.5 cuando el proveedor confirme o cancele seguir…
-    si confirma, cambiar estatus y guardar cambio más numero factura
-    4.5.1 generar pagos según condiciones (mostrar los montos y dejar que el usuario confirme antes de guardar)…
+1.Mostrar proveedores (contratos vigentes no cancelados filtro productor para el momento de la consulta)
+2.elegir
+3.mostrar productos contratados, condiciones de envio y pago
+4.Crear pedido – encabezado – guardar
+4.1 crear detalles – guardar
+4.2 elegir envio si aplica
+4.3 calcular y guardar montototal
+4.4 si hay varias formas de pago elegir – guardar
+4.5 cuando el proveedor confirme o cancele seguir…
+si confirma, cambiar estatus y guardar cambio más numero factura
+4.5.1 generar pagos según condiciones (mostrar los montos y dejar que el usuario confirme antes de guardar)…
      *
      */
 
@@ -41,13 +41,9 @@ class Compras extends Controller
     public function contrato($id_prod,$id_prov,$id_contrato){
         $detalle = $this->getDetallesContrato([$id_prod,$id_prov,$id_contrato]);
         abort_if(empty($detalle),404);
+        //dd($detalle);
 
-        return view('compras.crearPedido')->with(['detalle'=>$detalle,'id_contrato'=>$id_contrato]);
-    }
-
-    public function pedido($id_cto, Request $request){
-        //abort si no puedo hacer un nuevo pedido o redirect al que tengo abierto
-        return view('compras.detallePedido')->with(['presentaciones'=>$this->getProductos($id_cto)]);
+        return view('compras.crearPedido')->with(['detalle'=>$detalle]);
     }
 
     /**
@@ -125,8 +121,7 @@ class Compras extends Controller
         return DB::select('
             SELECT
 	            p.nombre,
-                p.id id_prov,
-                c.id id_contrato,
+                c.id,
                 c.fcha_reg
             FROM rig_proveedores p,
 	            rig_contratos c
@@ -197,7 +192,8 @@ class Compras extends Controller
         $productos = DB::select('
             SELECT prod.nombre || \' \' ||to_char(prod.cas, \'9999999-00-0\') nombre_cas ,
 	        to_char(prod.medida,\'990.00\') || \' \' || prod.unidad presentacion,
-	        to_char(prod.precio,\'$ 999,999,990.00\') precio_txt
+	        to_char(prod.precio,\'$ 999,999,990.00\') precio_txt,
+            prod.*
                 FROM (
                 SELECT id_prov_ing, id_ing FROM rig_productos_contratados
                 WHERE id_prod = ? AND id_prov = ? AND id_ctra = ?
@@ -216,28 +212,5 @@ class Compras extends Controller
             'envios'=>$envios,
             'pagos'=>$pagos,
             'productos'=>$productos];
-    }
-
-    private function getProductos($id_cto){
-        return DB::select('
-            SELECT prod.nombre || \' \' ||
-	        to_char(prod.medida,\'990.00\') || \' \' || prod.unidad presentacion,
-	        to_char(prod.precio,\'$ 999,999,990.00\') precio_txt,
-            prod.precio,
-            prod.id_prov,
-            prod.id_ing,
-            prod.cod_present
-                FROM (
-                SELECT id_prov_ing, id_ing FROM rig_productos_contratados
-                WHERE id_ctra = ?
-                ) c,
-                (
-                    SELECT i.id_prov, i.id, i.cas, i.nombre ,p.cod_present, p.medida,p.precio,p.unidad, p.id_ing
-                    FROM rig_ingredientes_esencias i,
-                         rig_presentaciones_ingredientes p
-                    WHERE i.id_prov = p.id_prov AND i.id= p.id_ing
-                ) prod
-            WHERE c.id_prov_ing = prod.id_prov AND c.id_ing = prod.id
-        ',[$id_cto]);
     }
 }
