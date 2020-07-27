@@ -29,11 +29,11 @@ class GestionFormula extends Controller
         foreach($variables as $variable)
             if($variable->tipo_eval == "INICIAL")
                 $iniciales = array_merge($iniciales, $variable);
-            else    
+            else
                 $renovaciones = array_merge($renovaciones, $variable);
         $escala = "SELECT fcha_reg, rgo_ini, rgo_fin FROM rig_escalas WHERE id_prod = $id";
         $escala = DB::select("$escala");
-        return view('formula.gestionformula')->with([
+        return view('Formula.gestionformula')->with([
             "productores" => $productores,
             "iniciales" => $iniciales,
             "renovaciones" => $renovaciones,
@@ -50,7 +50,7 @@ class GestionFormula extends Controller
     {
         $escala = "SELECT fcha_reg, rgo_ini, rgo_fin FROM rig_escalas WHERE id_prod = $id_prod";
         $escala = DB::select("$escala");
-        return view('formula.crearformula')->with([
+        return view('Formula.crearformula')->with([
             "id_prod" => $id_prod,
             "escala" => $escala
         ]);
@@ -67,7 +67,7 @@ class GestionFormula extends Controller
         //dd($request->all());
         $var= [];
         if($request->p_ubic != NULL)
-            $var = array_merge($var , [['Ubicación geografica', $request->p_ubic]]); 
+            $var = array_merge($var , [['Ubicación geografica', $request->p_ubic]]);
         if($request->p_alen != NULL)
             $var = array_merge($var , [['Alternativas de envio', $request->p_alen]]);
         if($request->p_prod != NULL)
@@ -76,10 +76,10 @@ class GestionFormula extends Controller
             $var = array_merge($var , [['Condiciones de pago', $request->p_pag]]);
         if($request->p_cen != NULL)
             $var = array_merge($var , [['Cumplimiento de envios', $request->p_cum]]);
-        
+
         $variables = "SELECT nombre, id FROM rig_variables";
         $variables = DB::select("$variables");
-        dd($variables, $var); 
+        dd($variables, $var);
         return redirect()->back()->with(['error' => 'La suma de las variables debe ser igual a 100 y el mínimo aprobatorio debe estar entre 1 y 100']);
         dd("Hola");
         return view('formula.index');
