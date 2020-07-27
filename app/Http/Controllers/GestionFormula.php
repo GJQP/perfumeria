@@ -13,33 +13,45 @@ class GestionFormula extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index($id = NULL)
-    {
+    public function index(Request $request)
+    {   
+        // Extraemos el id del productor
+        $id = $request->id_prod;
+        // Buscamos 
         $productores = "SELECT mem.id_prod, prod.nombre FROM rig_membresias mem, rig_productores prod WHERE fcha_fin IS NULL AND id_prod IS NOT NULL AND mem.id_prod = prod.id";
         $productores = DB::select("$productores");
         if(empty($productores))
             return redirect()->back()->with('error', 'No hay proveedores con mebresías activas');
-        //dd($productores);
+        
+        // Si el id del productor no fué definido agarramos al primero por defecto
         if($id == NULL)
             $id = $productores[0]->id_prod;
-        $variables = "SELECT rec.id_var, rec.fcha_reg, rec.tipo_eval, rec.peso FROM rig_evaluaciones_criterios rec INNER JOIN rig_variables var ON rec.id_var = var.id WHERE rec.id_prod=$id";
+
+        // Obtengo las variables
+        $variables = "SELECT rec.id_var, rec.fcha_reg, rec.tipo_eval, rec.peso, var.nombre FROM rig_evaluaciones_criterios rec INNER JOIN rig_variables var ON rec.id_var = var.id WHERE rec.id_prod=$id AND rec.fcha_fin IS NULL";
         $variables = DB::select("$variables");
+        
+        // Buscamos los valores de la formula inicial y de renovación
         $iniciales = [];
         $renovaciones = [];
         foreach($variables as $variable)
             if($variable->tipo_eval == "INICIAL")
-                $iniciales = array_merge($iniciales, $variable);
+                $iniciales = array_merge($iniciales, [$variable]);
             else    
-                $renovaciones = array_merge($renovaciones, $variable);
-        $escala = "SELECT fcha_reg, rgo_ini, rgo_fin FROM rig_escalas WHERE id_prod = $id";
+                $renovaciones = array_merge($renovaciones, [$variable]);
+        // Buscamos la escala correspondiente
+        $escala = "SELECT DATE(fcha_reg), rgo_ini, rgo_fin FROM rig_escalas WHERE id_prod = $id";
         $escala = DB::select("$escala");
+
         return view('formula.gestionformula')->with([
             "productores" => $productores,
             "iniciales" => $iniciales,
             "renovaciones" => $renovaciones,
-            "escalas" => $escala
+            "escala" => $escala,
+            "id_prod" => $id
         ]);
     }
+
 
     /**
      * Show the form for creating a new resource.
@@ -48,7 +60,7 @@ class GestionFormula extends Controller
      */
     public function create(int $id_prod)
     {
-        $escala = "SELECT fcha_reg, rgo_ini, rgo_fin FROM rig_escalas WHERE id_prod = $id_prod";
+        $escala = "SELECT DATE(fcha_reg) AS fcha_reg, rgo_ini, rgo_fin FROM rig_escalas WHERE id_prod = $id_prod";
         $escala = DB::select("$escala");
         return view('formula.crearformula')->with([
             "id_prod" => $id_prod,
@@ -62,27 +74,93 @@ class GestionFormula extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Request $request, int $id_prod)
     {
-        //dd($request->all());
-        $var= [];
-        if($request->p_ubic != NULL)
-            $var = array_merge($var , [['Ubicación geografica', $request->p_ubic]]); 
-        if($request->p_alen != NULL)
-            $var = array_merge($var , [['Alternativas de envio', $request->p_alen]]);
-        if($request->p_prod != NULL)
-            $var = array_merge($var , [['Costos de los productos', $request->p_prod]]);
-        if($request->p_pag != NULL)
-            $var = array_merge($var , [['Condiciones de pago', $request->p_pag]]);
-        if($request->p_cen != NULL)
-            $var = array_merge($var , [['Cumplimiento de envios', $request->p_cum]]);
+        //dd($id_prod);
+        // Pedimo el valor del mínimo y del máximo
+        $min = $request->min;
+        $max = $request->max;
+        $minApro = $request->minApro;
         
+        // Verificamos ambas sean nulas o no lo sean
+        if($min == NULL && $max != NULL || $max == NULL && $min != NULL)
+            return redirect()->back()->with(['error' => 'Debes especificar ambos rangos de la formula']);
+
+        // Verificamos que se seleciona un parámetro
+        if($request->p_ubic == NULL && $request->p_alen == NULL && $request->p_prod == NULL && $request->p_pag == NULL && $request->p_cen == NULL)
+            return redirect()->back()->with(['error' => 'Debes selecionar almenos una variable']);
+
+        // Verificamos que el minimo sea menor al máximo
+        if($min >= $max && $min != NULL && $max != NULL)
+            return  redirect()->back()->with(['error' => 'El máximo tiene que se mayor que el menor']);
+        
+        if($minApro < 1 || $minApro >= 100)
+            return redirect()->back()->with(['error' => 'El minimo aprobatorio debe estar en el rango de la escala']);
+        
+        $pesoTotal = 0;
+        // Preparo las variables
+        if($request->p_ubic != NULL)
+            $pesoTotal += $request->p_ubic;
+        if($request->p_alen != NULL)
+            $pesoTotal += $request->p_alen;
+        if($request->p_prod != NULL)
+            $pesoTotal += $request->p_prod;
+        if($request->p_pag != NULL)
+            $pesoTotal += $request->p_pag;
+        if($request->p_cen != NULL)
+            $pesoTotal += $request->p_cen;
+
+        // Si el peso no es de 100% me retorno
+        //dd($pesoTotal);
+        if($pesoTotal != 100)
+            return  redirect()->back()->with(['error' => 'El peso debe ser igual a 100%']);
+ 
+        //dd($request->all());
+        $vars= [];
+        if($request->p_ubic != NULL)
+            $vars = array_merge($vars , [['Ubicación geografica', $request->p_ubic]]); 
+        if($request->p_alen != NULL)
+            $vars = array_merge($vars , [['Alternativas de envio', $request->p_alen]]);
+        if($request->p_prod != NULL)
+            $vars = array_merge($vars , [['Costos de los productos', $request->p_prod]]);
+        if($request->p_pag != NULL)
+            $vars = array_merge($vars , [['Condiciones de pago', $request->p_pag]]);
+        if($request->p_cen != NULL)
+            $vars = array_merge($vars , [['Cumplimiento de envios', $request->p_cen]]);
+
+        // Verificamos que se encuentre en el rango de el mínimo aprobatorio
+        if($min != NULL && $max != NULL) 
+        {
+            DB::update("UPDATE rig_escalas SET fcha_fin=current_date WHERE id_prod = $id_prod AND fcha_fin IS NULL");
+            DB::insert("INSERT INTO rig_escalas (id_prod, fcha_reg, rgo_ini, rgo_fin) VALUES ($id_prod, NOW(), $min, $max) RETURNING *");
+        }
+       
+        // Buscamos las variables 
         $variables = "SELECT nombre, id FROM rig_variables";
         $variables = DB::select("$variables");
-        dd($variables, $var); 
-        return redirect()->back()->with(['error' => 'La suma de las variables debe ser igual a 100 y el mínimo aprobatorio debe estar entre 1 y 100']);
-        dd("Hola");
-        return view('formula.index');
+
+        
+        $tipoEval = 'INICIAL';
+        if($request->p_cen != NULL)
+            $tipoEval = 'RENOVACION';
+
+        // Cancelamos la fórmula vieja
+        DB::update("UPDATE rig_evaluaciones_criterios SET fcha_fin=current_date WHERE id_prod = $id_prod AND fcha_fin IS NULL AND tipo_eval = '$tipoEval'");
+
+        $cont = 0;
+        foreach($variables as $variable)
+            foreach($vars as $var)
+                if(strcmp($variable->nombre, $var[0]) == 0)
+                    DB::insert("INSERT INTO rig_evaluaciones_criterios VALUES($id_prod, $variable->id, NOW() + INTERVAL '0 second', '$tipoEval', '$var[1]')");
+        
+        return  redirect()->route('formula.index')->with(['status' => 'Fórmula registrada exitosamente']);
+    }
+
+
+    public function escala($id_prod)
+    {
+        $escala = DB::select("SELECT id_prod, DATE(fcha_reg) AS fcha_reg, rgo_ini, rgo_fin, fcha_fin FROM rig_escalas WHERE id_prod = $id_prod AND fcha_fin IS NULL");
+        return view('Formula.elegirEscala')->with(['escala' => $escala, 'id_prod' => $id_prod]);
     }
 
     /**

@@ -13,13 +13,13 @@
             <div class="row blocktext">
                 <div class="dropdown mgl-1">
                     <form class="form-inline form-group" action="{{route('formula.index')}}" method="GET">
-                    <p class="mgt-1" for="empresas"><strong>Seleccione la Empresa a la que desee consultar sus Formulas:</strong><p>
-                        <select class="form-control selecEmp" name="id_prod">
-                        @foreach ($productores as $productor)
-                            <option value="{{$productor->id_prod}}">{{$productor->nombre}}</option>
-                        @endforeach
+                        <label for="id_prod">Seleccione la empresa a gestionar sus formulas</label>
+                        <select class="form-control" name="id_prod" id="id_prod">
+                            @foreach ($productores as $productor)
+                                <option value="{{$productor->id_prod}}" {{$productor->id_prod == $id_prod? 'selected':''}}>{{$productor->nombre}}</option>
+                            @endforeach
                         </select>
-                        <button type="submit" class="btn btn-primary mgl-1">Consultar fórmulas</button>
+                        <button type="submit" class="btn btn-primary">Cambiar productor</button>
                     </form>
                 </div>
             </div>
@@ -36,8 +36,8 @@
             @foreach($iniciales as $variable)    
                 <tr>
                     <td>{{$variable->nombre}}</td>
-                    <td id="escala"> <div class="escala"> <p>{{$escala->rgo_min}} a {{$escala->rgo_max}}</p> </div> </td>
-                    <td> <div class="porcentaje"> <p class="mgr-1">{{$variable->peso}}%</p> </div> </td>
+                    <td id="escala">{{$escala[0]->rgo_ini}} a {{$escala[0]->rgo_fin}}</td>
+                    <td>{{$variable->peso}}%</td>
                 </tr>
             @endforeach
             </table>
@@ -55,8 +55,8 @@
             @foreach($renovaciones as $variable)    
                 <tr>
                     <td>{{$variable->nombre}}</td>
-                    <td id="escala"> <div class="escala"> <p>{{$escala->rgo_min}} a {{$escala->rgo_max}}</p> </div> </td>
-                    <td> <div class="porcentaje"> <p class="mgr-1">{{$variable->peso}}%</p> </div> </td>
+                    <td id="escala">{{$escala[0]->rgo_ini}} a {{$escala[0]->rgo_fin}}</td>
+                    <td>{{$variable->peso}}%</td>
                 </tr>
             @endforeach
             </table>
@@ -67,7 +67,7 @@
             @endif
               <!--Botones-->
               <div class="blocktext mgt-2 pdb-2 row">
-                <button type="button" class="btn btn-success mgl-1"><a href="/gestion-formula/crear/{{$productores[0]->id_prod}}">Crear Formula</a></button>
+                <a href="{{route('formula.crear',['id_prod' => $id_prod])}}" class="btn btn-primary btn-lg" role="button" aria-disabled="true"> Crear nueva fórmula </a>
               </div>
         </div>
     </div>

@@ -512,7 +512,7 @@ CREATE TABLE rig_pedidos (
 
 CREATE SEQUENCE rig_pedidos_id_seq AS BIGINT OWNED BY rig_pedidos.id;
 CREATE SEQUENCE rig_factura_id_seq OWNED BY rig_pedidos.factura;
-ALTER TABLE rig_pedidos ADD CONSTRAINT rig_pedido_ck CHECK (estatus IN ('ENVIADO', 'NO ENVIADO')),
+ALTER TABLE rig_pedidos ADD CONSTRAINT rig_pedido_ck CHECK (estatus IN ('ENVIADO', 'NO ENVIADO', 'RECHAZADO')),
 	ADD CONSTRAINT rig_pedido_conev_fk FOREIGN KEY (id_prod_cone, id_prov_cone, id_ctra_cone, id_cone) REFERENCES rig_condiciones_contratos (id_prod, id_prov, id_ctra, id),
 	ADD CONSTRAINT rig_pedido_conp_fk FOREIGN KEY (id_prod_conp, id_prov_conp, id_ctra_conp, id_conp) REFERENCES rig_condiciones_contratos (id_prod, id_prov, id_ctra, id),
 	ALTER COLUMN id SET DEFAULT nextval('rig_pedidos_id_seq'),
