@@ -8,12 +8,12 @@ function cambiar(id){
     idEliminar = id;
 }
 
-function eliminarFila() { 
+function eliminarFila() {
     if (idEliminar){
         axios.delete('/gestion-perfumista/' + idEliminar).then(() => window.location.reload());
-        
+
     }
-}  
+}
 function cambio(e){
     let elemento = e.srcElement.id;
     console.log(elemento);
@@ -36,17 +36,17 @@ function agregar(){
                          '</tr>' ;
                          codigo.id ='ubicacionGeografica';
                                 break;
-        case "alternativaEnvio": 
+        case "alternativaEnvio":
                 codigo.innerHTML='<tr id="alternativaEnvio">'+
                                 '<td>Alternativa de Envío</td>'+
-                                '<td id="porcentaje"> <div class="row arreglar"> <input type="number" min=1 max=100 id="p_alen" class="form-control porcentaje" name="p_alen" onblur="evaluacionPorcentaje()" onload="evaluacionPorcentaje()"  value="1" required />'+ 
+                                '<td id="porcentaje"> <div class="row arreglar"> <input type="number" min=1 max=100 id="p_alen" class="form-control porcentaje" name="p_alen" onblur="evaluacionPorcentaje()" onload="evaluacionPorcentaje()"  value="1" required />'+
                                     '<span class="input-group-addon">%</span></div>'+
                                 '</td>'+
                                 '<td><div><a onclick="eliminar(event)">Remover</a></div></td>'+
                             '</tr>';
                             codigo.id ='alternativaEnvio'
                                 break;
-        case "costoProductos": 
+        case "costoProductos":
                 codigo.innerHTML='<tr id="costoProductos">'+
                                 '<td>Costo de productos</td>'+
                                 '<td id="porcentaje"> <div class="row arreglar"> <input type="number" min=1 max=100 id="p_prod" class="form-control porcentaje" name="p_prod" onblur="evaluacionPorcentaje()" onload="evaluacionPorcentaje()"  value="1" required />'+
@@ -56,7 +56,7 @@ function agregar(){
                             '</tr>';
                             codigo.id ='costoProductos';
                                 break;
-        case "alternativaPago":  
+        case "alternativaPago":
                 codigo.innerHTML='<tr id="alternativaPago">'+
                                 '<td>Alternativas de Pago</td>'+
                                 '<td id="porcentaje"> <div class="row arreglar"> <input type="number" min=1 max=100 id="p_pag" class="form-control porcentaje" name="p_pag" onblur="evaluacionPorcentaje()" onload="evaluacionPorcentaje()"  value="1"  required /> '+
@@ -67,7 +67,7 @@ function agregar(){
                 codigo.id ='alternativaPago';
                                 break;
         //Opciones cuando es de Renovacion
-        case "cumplimientoEnvio": 
+        case "cumplimientoEnvio":
         codigo.innerHTML='<tr id="cumplimientoEnvio">'+
                         '<td>Cumplimiento de Envíos sin retraso</td>'+
                         '<td id="porcentaje"> <div class="row arreglar"> <input type="number" min=1 max=100 id="p_cen" class="form-control porcentaje" name="p_cen" onblur="evaluacionPorcentaje()" value="100" readonly required /> '+
@@ -76,7 +76,7 @@ function agregar(){
                         '<td><div><a onclick="eliminar(event)">Remover</a></div></td>'+
                     '</tr>';
         codigo.id ='cumplimientoEnvio';
-                        break;                        
+                        break;
     }
     //Deshabilitar la opcion de agregar un criterio
     $("option[value='"+ codigo.id + "']")
@@ -97,6 +97,7 @@ function eliminar(e){
 
 //Funcion para siempre actualizar el % de la formula
 function evaluacionPorcentaje(){
+    //console.log('Hola bb');
     var porcentaje = 0;
     //Porcentaje de Inicio
     if ($('#p_ubic').length){
@@ -142,7 +143,7 @@ function preguntar(){
                 '<button type="button" class="btn btn-success"><a onclick="cancelarContrato()" href="/gestion-contratos/crear/'+idprod+'/'+ idprov +'">Crear Nuevo Contrato</a></button>'+
                 '<button type="button" class="btn btn-primary" onclick="renovar()">Renovar actual</button>';
     $('#cuerpo').text(cuerpo);
-    $('#botones').html(boton);    
+    $('#botones').html(boton);
 }
 
 
@@ -187,9 +188,9 @@ function modificarFormula() {
         document.getElementById('cumplimientoEnvio').remove();
     if(document.getElementById('alternativaPago'))
         document.getElementById('alternativaPago').remove();
-    while (titulo.firstChild) 
+    while (titulo.firstChild)
         titulo.removeChild(titulo.firstChild);
-    while (selc.firstChild) 
+    while (selc.firstChild)
         selc.removeChild(selc.firstChild);
     switch(form.value){
         case '0':
@@ -211,7 +212,7 @@ function modificarFormula() {
             $('#formula').val('renovacion');
             break;
     }
-    
+
 }
 
 function cambiarProveedorForm() {

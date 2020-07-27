@@ -149,7 +149,7 @@
 
 .centrar{
    margin-left: 20% !important;
-   margin-bottom: 8rem; 
+   margin-bottom: 8rem;
 }
 
 .centradoimg{
@@ -202,7 +202,7 @@ li a{
     text-align: justify;
     padding-left: 1rem;
     font-size: 2rem;
-} 
+}
 
 .recomendador{
     font-size: 1.8rem;
@@ -213,7 +213,7 @@ li a{
 }
 
 #imagen1:hover .texto,#imagen2:hover .texto,#imagen3:hover .texto,a, a:hover{
-    color: white;   
+    color: white;
 }
 
 #imagen2:hover{
@@ -221,7 +221,7 @@ li a{
 }
 
 #imagen3:hover{
-    background-color: #5CAB27;   
+    background-color: #5CAB27;
 }
 
 .tarjeta{
@@ -242,7 +242,7 @@ div p{
     font-size: 130%;
 }
 
-.dropdown-menu {         
+.dropdown-menu {
     max-height: 200px;
     max-width: 300px;
     overflow-y: auto;
@@ -273,7 +273,7 @@ table, th, td {
     border-left: hidden;
     border-bottom: hidden;
     background-color: white;
- 
+
 }
 
 .vacioac{
@@ -340,7 +340,7 @@ td div input{
 }
 
 td div a, td a{
-    color: black !important;
+    /*color: black !important;*/
     text-align: center;
 }
 

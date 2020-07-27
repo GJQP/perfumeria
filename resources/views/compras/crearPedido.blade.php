@@ -13,16 +13,17 @@
             </div>
             <div class="blocktext mgtp-1 tablaDatos pdb-2 row">
                 <div id="accordion" class="col-sm-6">
+                    <h3>Condiciones del Contrato</h3>
                     <div class="card" >
                         <div class="card-header" id="headingOne">
                             <h5 class="mb-0">
-                                <button class="btn btn-link" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                                <button class="btn btn-link" data-toggle="collapse" data-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
                                     PRODUCTOS
                                 </button>
                             </h5>
                         </div>
 
-                        <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordion">
+                        <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordion">
                             <div class="card-body blocktext">
                                 <!-- Tabla de PRODUCTOS-->
                                 <div class="mgtp-1 pdb-2">
@@ -132,7 +133,40 @@
                     </div>
                 </div>
             </div>
+            <div class="blocktext mgtp-1 tablaDatos pdb-2 row">
+                <div class="col-sm-12 text-center">
+                    <h3>Pedidos</h3>
+                </div>
+                <div class="col-sm-12 text-center">
+                    <button class="btn btn-link btn-success row"><a href="{{route('compras.pedidos',$id_contrato)}}">Crear Pedido</button>
+                </div>
 
+                <div>
+                    @if(\Illuminate\Support\Arr::has($detalle,'pedidos'))
+                        <table class="tablaDatos mgt-2">
+                            <tr>
+                                <th>Nombre (CAS)</th>
+                                <th>Presentación</th>
+                                <th>Precio</th>
+                            </tr>
+                            @foreach($detalle['productos'] as $condicion)
+                                <div class="form-check">
+                                    <tr>
+                                        <td>{{$condicion->nombre_cas}}</td>
+                                        <td>{{$condicion->presentacion}}</td>
+                                        <td>{{$condicion->precio_txt}}</td>
+                                    </tr>
+                                </div>
+                            @endforeach
+                        </table>
+
+                    @else
+                        <p class="mgt-1"><strong>No hay productos disponibles</strong><p>
+                    @endif
+
+                </div>
+
+            </div>
 
     </div>
 @endsection
