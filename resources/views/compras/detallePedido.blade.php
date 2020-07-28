@@ -27,17 +27,17 @@
                         </button>
                     </div>
                     <div class="line"></div>
-                    <div class="step" data-target="#monto-part">
-                        <button type="button" class="step-trigger" role="tab" aria-controls="monto-part" id="monto-part-trigger">
+                    <div class="step" data-target="#pago-part">
+                        <button type="button" class="step-trigger" role="tab" aria-controls="pago-part" id="information-part-trigger">
                             <span class="bs-stepper-circle">3</span>
-                            <span class="bs-stepper-label">Montos</span>
+                            <span class="bs-stepper-label">Método de Pago</span>
                         </button>
                     </div>
                     <div class="line"></div>
-                    <div class="step" data-target="#pago-part">
-                        <button type="button" class="step-trigger" role="tab" aria-controls="pago-part" id="information-part-trigger">
+                    <div class="step" data-target="#monto-part">
+                        <button type="button" class="step-trigger" role="tab" aria-controls="monto-part" id="monto-part-trigger">
                             <span class="bs-stepper-circle">4</span>
-                            <span class="bs-stepper-label">Método de Pago</span>
+                            <span class="bs-stepper-label">Confirmación</span>
                         </button>
                     </div>
                     <div class="line"></div>
@@ -51,24 +51,54 @@
                 <div class="bs-stepper-content">
                     <!-- your steps content here -->
                     <div id="detalle-part" class="content" role="tabpanel" aria-labelledby="detalle-part-trigger">
-                        <insert-row opciones="{{json_encode($presentaciones)}}"></insert-row>
+                        <insert-row opciones-ing="{{json_encode($presentaciones)}}"
+                                    opciones-otr-ing="{{json_encode($Otrpresentaciones)}}"
+                                    cant-env="{{collect($envios)->count() == 1? $envios[0]->id : 0}}"
+                                    cant-pag="{{collect($pagos)->count() == 1? $pagos[0]->id : 0}}"
+                        ></insert-row>
                     </div>
 
                     <div id="envio-part" class="content" role="tabpanel" aria-labelledby="envio-part-trigger">
-                        <button class="btn btn-primary" onclick="stepper.next()">Next 2</button>
-                    </div>
+                        <div class="centrar">
+                            <p>Seleccione el método de Envío:</p>
+                            @foreach($envios as $key => $envio)
+                                <input type="radio" name="envio" value="{{$envio->id}}" {{$key == 0? 'checked' : ''}}>
+                                <label for="envio">{{$envio->desc}}</label><br>
+                            @endforeach
+                            <button class="btn btn-primary" onclick="guardarOpcionEnvio(
+                                {{collect($pagos)->count() == 1? $pagos[0]->id : ''}})">Next 2</button>
+                        </div>
 
-                    <div id="monto-part" class="content" role="tabpanel" aria-labelledby="monto-part-trigger">
-                        <button class="btn btn-primary" onclick="stepper.next()">Next 2</button>
                     </div>
 
                     <div id="pago-part" class="content" role="tabpanel" aria-labelledby="pago-part-trigger">
-                        <button class="btn btn-primary" onclick="stepper.next()">Next 2</button>
+                        <div class="centrar">
+                            <p>Seleccione el método de Pago para el monto <span id="total"></span></p>
+                            @foreach($pagos as $key => $pago)
+                                <input type="radio" name="pago" value="{{$pago->id}}" {{$key == 0? 'checked' : ''}}>
+                                <label for="envio">{{$pago->desc}}</label><br>
+                            @endforeach
+                            <button class="btn btn-primary" onclick="guardarPago()">Next 3</button>
+                        </div>
+                    </div>
+
+                    <div id="monto-part" class="content" role="tabpanel" aria-labelledby="monto-part-trigger">
+                        <div class="centrar">
+                            <h3 class="mgb-3">
+                                ¿El proveedor acepta?
+                            </h3>
+                            <button class="btn btn-danger" onclick="cambiarEstado(false)">Cancelar</button>
+                            <button class="btn btn-primary" onclick="cambiarEstado(true)">Confirmar</button>
+                        </div>
+
+
                     </div>
 
                     <div id="pagar-part" class="content" role="tabpanel" aria-labelledby="pagar-part-trigger">
-                        <button class="btn btn-primary" onclick="stepper.next()">Next 2</button>
+                        <button class="btn btn-primary" onclick="stepper.next()">Next 5</button>
                     </div>
+
+
 
                 </div>
             </div>
@@ -77,6 +107,9 @@
 
     <script type="text/javascript">
         document.addEventListener('DOMContentLoaded', function () {
+
+            window.id_cto = {{$id_cto}}
+            window.id_ped = {{isset($id_ped)? : null }}
 
             window.stepper = new Stepper(document.querySelector('.bs-stepper'), {
                     linear: true,
@@ -87,6 +120,43 @@
                         stepper: '.bs-stepper'
                     }
             });
+
+            window.guardarOpcionEnvio = function (idPag) {
+
+                    let id = document.querySelector('input[name="envio"]:checked').value;
+                    data = {id_cone: id, id_ped}
+                    axios.post(`/pedido/${id_cto}/envio`, data)
+
+                    let recargo = document.querySelector('input[name="envio"]:checked').nextElementSibling.innerText.split(' ').pop()
+
+                    let nuevoPrecio = totalPago * (1 + recargo.split('%')[0]/100);
+
+                    document.getElementById('total').innerHTML ="$ " + (nuevoPrecio).toFixed(2);
+
+                    if (idPag)
+                        guardarPago();
+                    else
+                        stepper.next()
+            };
+
+            window.guardarPago = function () {
+
+                let id = document.querySelector('input[name="pago"]:checked').value;
+                data = {id_conp: id, id_ped}
+                axios.post(`/pedido/${id_cto}/pago`, data).then( () => stepper.next())
+
+            }
+
+            window.cambiarEstado = function (aprobado){
+
+                data = {res: aprobado, id_ped}
+
+                axios.post(`/pedido/${id_cto}/respuesta`, data).then( () => aprobado? stepper.next():window.location = '/' )
+            }
+
+            window.totalPago = {!! 00.00 !!};
+
+
 
         })
 

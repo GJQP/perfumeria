@@ -2134,34 +2134,105 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "InsertRow",
-  props: ['opciones'],
+  props: ['opcionesIng', 'opcionesOtrIng', 'cantEnv', 'cantPag'],
   data: function data() {
     return {
-      options: JSON.parse(this.opciones),
-      selected: null,
-      inserted: []
+      optionsIng: JSON.parse(this.opcionesIng),
+      optionsOtrIng: JSON.parse(this.opcionesOtrIng),
+      selectedIng: null,
+      selectedOtrIng: null,
+      insertedIng: [],
+      insertedOtrIng: []
     };
   },
   methods: {
-    agregarFila: function agregarFila() {
-      if (this.selected !== null) {
-        this.inserted.push(this.options[this.selected]);
-        this.options.splice(this.selected, 1);
-      }
+    agregarFila: function agregarFila(esIng) {
+      if (esIng && this.selectedIng !== null) {
+        this.insertedIng.push(this.optionsIng[this.selectedIng]);
+        this.optionsIng.splice(this.selectedIng, 1);
+      } else if (!esIng && this.selectedOtrIng !== null) {
+        this.insertedOtrIng.push(this.optionsOtrIng[this.selectedOtrIng]);
+        this.optionsOtrIng.splice(this.selectedOtrIng, 1);
+      } //console.log(this.inserted)
 
-      console.log(this.inserted);
     },
-    eliminarFila: function eliminarFila(index) {
-      this.options.push(this.inserted[index]);
-      this.inserted.splice(index, 1);
+    eliminarFila: function eliminarFila(index, esIng) {
+      if (esIng) {
+        this.optionsIng.push(this.insertedIng[index]);
+        this.insertedIng.splice(index, 1);
+      } else {
+        this.optionsOtrIng.push(this.insertedOtrIng[index]);
+        this.insertedOtrIng.splice(index, 1);
+      }
     },
     guardar: function guardar() {
+      var _this = this;
+
       //axios.post()
-      if (this.inserted.filter(function (item) {
+      if (this.insertedIng.filter(function (item) {
         return !item.hasOwnProperty('cantidad');
-      }).length === 0) stepper.next();
+      }).length === 0 && this.insertedOtrIng.filter(function (item) {
+        return !item.hasOwnProperty('cantidad');
+      }).length === 0) {
+        var data = {
+          ingredientes: this.insertedIng,
+          otros_ingredientes: this.insertedOtrIng
+        };
+        if (id_ped) data['id_ped'] = id_ped;
+        axios.post("/pedido/".concat(id_cto, "/detalles"), data).then(function (_ref) {
+          var data = _ref.data;
+          id_ped = data.id_ped;
+          totalPago = 0;
+
+          _this.insertedIng.map(function (item) {
+            totalPago += item.cantidad * item.precio;
+          });
+
+          _this.insertedOtrIng.map(function (item) {
+            totalPago += item.cantidad * item.precio;
+          });
+
+          document.getElementById('total').innerHTML = "$ " + totalPago.toFixed(2);
+          if (_this.cantEnv == 0) stepper.next();else {
+            guardarOpcionEnvio(); //console.log(nuevoPrecio);
+
+            if (_this.cantPag == 0) {
+              stepper.to(3);
+            } else {
+              guardarPago();
+              stepper.to(4);
+            }
+          }
+        });
+      } else alert('Debe ingresar cantidad validas');
     }
   }
   /*,
@@ -17526,7 +17597,7 @@ return jQuery;
   var undefined;
 
   /** Used as the semantic version number. */
-  var VERSION = '4.17.19';
+  var VERSION = '4.17.15';
 
   /** Used as the size to enable large array optimizations. */
   var LARGE_ARRAY_SIZE = 200;
@@ -21233,21 +21304,8 @@ return jQuery;
      * @returns {Array} Returns the new sorted array.
      */
     function baseOrderBy(collection, iteratees, orders) {
-      if (iteratees.length) {
-        iteratees = arrayMap(iteratees, function(iteratee) {
-          if (isArray(iteratee)) {
-            return function(value) {
-              return baseGet(value, iteratee.length === 1 ? iteratee[0] : iteratee);
-            }
-          }
-          return iteratee;
-        });
-      } else {
-        iteratees = [identity];
-      }
-
       var index = -1;
-      iteratees = arrayMap(iteratees, baseUnary(getIteratee()));
+      iteratees = arrayMap(iteratees.length ? iteratees : [identity], baseUnary(getIteratee()));
 
       var result = baseMap(collection, function(value, key, collection) {
         var criteria = arrayMap(iteratees, function(iteratee) {
@@ -21504,10 +21562,6 @@ return jQuery;
         var key = toKey(path[index]),
             newValue = value;
 
-        if (key === '__proto__' || key === 'constructor' || key === 'prototype') {
-          return object;
-        }
-
         if (index != lastIndex) {
           var objValue = nested[key];
           newValue = customizer ? customizer(objValue, key, nested) : undefined;
@@ -21660,14 +21714,11 @@ return jQuery;
      *  into `array`.
      */
     function baseSortedIndexBy(array, value, iteratee, retHighest) {
-      var low = 0,
-          high = array == null ? 0 : array.length;
-      if (high === 0) {
-        return 0;
-      }
-
       value = iteratee(value);
-      var valIsNaN = value !== value,
+
+      var low = 0,
+          high = array == null ? 0 : array.length,
+          valIsNaN = value !== value,
           valIsNull = value === null,
           valIsSymbol = isSymbol(value),
           valIsUndefined = value === undefined;
@@ -23152,11 +23203,10 @@ return jQuery;
       if (arrLength != othLength && !(isPartial && othLength > arrLength)) {
         return false;
       }
-      // Check that cyclic values are equal.
-      var arrStacked = stack.get(array);
-      var othStacked = stack.get(other);
-      if (arrStacked && othStacked) {
-        return arrStacked == other && othStacked == array;
+      // Assume cyclic values are equal.
+      var stacked = stack.get(array);
+      if (stacked && stack.get(other)) {
+        return stacked == other;
       }
       var index = -1,
           result = true,
@@ -23318,11 +23368,10 @@ return jQuery;
           return false;
         }
       }
-      // Check that cyclic values are equal.
-      var objStacked = stack.get(object);
-      var othStacked = stack.get(other);
-      if (objStacked && othStacked) {
-        return objStacked == other && othStacked == object;
+      // Assume cyclic values are equal.
+      var stacked = stack.get(object);
+      if (stacked && stack.get(other)) {
+        return stacked == other;
       }
       var result = true;
       stack.set(object, other);
@@ -26703,10 +26752,6 @@ return jQuery;
      * // The `_.property` iteratee shorthand.
      * _.filter(users, 'active');
      * // => objects for ['barney']
-     *
-     * // Combining several predicates using `_.overEvery` or `_.overSome`.
-     * _.filter(users, _.overSome([{ 'age': 36 }, ['age', 40]]));
-     * // => objects for ['fred', 'barney']
      */
     function filter(collection, predicate) {
       var func = isArray(collection) ? arrayFilter : baseFilter;
@@ -27456,15 +27501,15 @@ return jQuery;
      * var users = [
      *   { 'user': 'fred',   'age': 48 },
      *   { 'user': 'barney', 'age': 36 },
-     *   { 'user': 'fred',   'age': 30 },
+     *   { 'user': 'fred',   'age': 40 },
      *   { 'user': 'barney', 'age': 34 }
      * ];
      *
      * _.sortBy(users, [function(o) { return o.user; }]);
-     * // => objects for [['barney', 36], ['barney', 34], ['fred', 48], ['fred', 30]]
+     * // => objects for [['barney', 36], ['barney', 34], ['fred', 48], ['fred', 40]]
      *
      * _.sortBy(users, ['user', 'age']);
-     * // => objects for [['barney', 34], ['barney', 36], ['fred', 30], ['fred', 48]]
+     * // => objects for [['barney', 34], ['barney', 36], ['fred', 40], ['fred', 48]]
      */
     var sortBy = baseRest(function(collection, iteratees) {
       if (collection == null) {
@@ -32339,11 +32384,11 @@ return jQuery;
 
       // Use a sourceURL for easier debugging.
       // The sourceURL gets injected into the source that's eval-ed, so be careful
-      // to normalize all kinds of whitespace, so e.g. newlines (and unicode versions of it) can't sneak in
-      // and escape the comment, thus injecting code that gets evaled.
+      // with lookup (in case of e.g. prototype pollution), and strip newlines if any.
+      // A newline wouldn't be a valid sourceURL anyway, and it'd enable code injection.
       var sourceURL = '//# sourceURL=' +
         (hasOwnProperty.call(options, 'sourceURL')
-          ? (options.sourceURL + '').replace(/\s/g, ' ')
+          ? (options.sourceURL + '').replace(/[\r\n]/g, ' ')
           : ('lodash.templateSources[' + (++templateCounter) + ']')
         ) + '\n';
 
@@ -32376,6 +32421,8 @@ return jQuery;
 
       // If `variable` is not specified wrap a with-statement around the generated
       // code to add the data object to the top of the scope chain.
+      // Like with sourceURL, we take care to not check the option's prototype,
+      // as this configuration is a code injection vector.
       var variable = hasOwnProperty.call(options, 'variable') && options.variable;
       if (!variable) {
         source = 'with (obj) {\n' + source + '\n}\n';
@@ -33082,9 +33129,6 @@ return jQuery;
      * values against any array or object value, respectively. See `_.isEqual`
      * for a list of supported value comparisons.
      *
-     * **Note:** Multiple values can be checked by combining several matchers
-     * using `_.overSome`
-     *
      * @static
      * @memberOf _
      * @since 3.0.0
@@ -33100,10 +33144,6 @@ return jQuery;
      *
      * _.filter(objects, _.matches({ 'a': 4, 'c': 6 }));
      * // => [{ 'a': 4, 'b': 5, 'c': 6 }]
-     *
-     * // Checking for several possible values
-     * _.filter(users, _.overSome([_.matches({ 'a': 1 }), _.matches({ 'a': 4 })]));
-     * // => [{ 'a': 1, 'b': 2, 'c': 3 }, { 'a': 4, 'b': 5, 'c': 6 }]
      */
     function matches(source) {
       return baseMatches(baseClone(source, CLONE_DEEP_FLAG));
@@ -33117,9 +33157,6 @@ return jQuery;
      * **Note:** Partial comparisons will match empty array and empty object
      * `srcValue` values against any array or object value, respectively. See
      * `_.isEqual` for a list of supported value comparisons.
-     *
-     * **Note:** Multiple values can be checked by combining several matchers
-     * using `_.overSome`
      *
      * @static
      * @memberOf _
@@ -33137,10 +33174,6 @@ return jQuery;
      *
      * _.find(objects, _.matchesProperty('a', 4));
      * // => { 'a': 4, 'b': 5, 'c': 6 }
-     *
-     * // Checking for several possible values
-     * _.filter(users, _.overSome([_.matchesProperty('a', 1), _.matchesProperty('a', 4)]));
-     * // => [{ 'a': 1, 'b': 2, 'c': 3 }, { 'a': 4, 'b': 5, 'c': 6 }]
      */
     function matchesProperty(path, srcValue) {
       return baseMatchesProperty(path, baseClone(srcValue, CLONE_DEEP_FLAG));
@@ -33364,10 +33397,6 @@ return jQuery;
      * Creates a function that checks if **all** of the `predicates` return
      * truthy when invoked with the arguments it receives.
      *
-     * Following shorthands are possible for providing predicates.
-     * Pass an `Object` and it will be used as an parameter for `_.matches` to create the predicate.
-     * Pass an `Array` of parameters for `_.matchesProperty` and the predicate will be created using them.
-     *
      * @static
      * @memberOf _
      * @since 4.0.0
@@ -33394,10 +33423,6 @@ return jQuery;
      * Creates a function that checks if **any** of the `predicates` return
      * truthy when invoked with the arguments it receives.
      *
-     * Following shorthands are possible for providing predicates.
-     * Pass an `Object` and it will be used as an parameter for `_.matches` to create the predicate.
-     * Pass an `Array` of parameters for `_.matchesProperty` and the predicate will be created using them.
-     *
      * @static
      * @memberOf _
      * @since 4.0.0
@@ -33417,9 +33442,6 @@ return jQuery;
      *
      * func(NaN);
      * // => false
-     *
-     * var matchesFunc = _.overSome([{ 'a': 1 }, { 'a': 2 }])
-     * var matchesPropertyFunc = _.overSome([['a', 1], ['a', 2]])
      */
     var overSome = createOver(arraySome);
 
@@ -38138,7 +38160,7 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", [
-    _vm.options.length > 0
+    _vm.optionsIng.length > 0
       ? _c("div", { staticClass: "form-inline" }, [
           _c("label", [_vm._v("Seleccione el producto:")]),
           _vm._v(" "),
@@ -38149,8 +38171,8 @@ var render = function() {
                 {
                   name: "model",
                   rawName: "v-model",
-                  value: _vm.selected,
-                  expression: "selected"
+                  value: _vm.selectedIng,
+                  expression: "selectedIng"
                 }
               ],
               staticClass: "form-control",
@@ -38164,13 +38186,13 @@ var render = function() {
                       var val = "_value" in o ? o._value : o.value
                       return val
                     })
-                  _vm.selected = $event.target.multiple
+                  _vm.selectedIng = $event.target.multiple
                     ? $$selectedVal
                     : $$selectedVal[0]
                 }
               }
             },
-            _vm._l(_vm.options, function(val, key) {
+            _vm._l(_vm.optionsIng, function(val, key) {
               return _c("option", { domProps: { value: key } }, [
                 _vm._v(_vm._s(val.presentacion))
               ])
@@ -38180,22 +38202,31 @@ var render = function() {
           _vm._v(" "),
           _c(
             "button",
-            { staticClass: "btn btn-primary", on: { click: _vm.agregarFila } },
+            {
+              staticClass: "btn btn-primary",
+              on: {
+                click: function($event) {
+                  return _vm.agregarFila(true)
+                }
+              }
+            },
             [_vm._v("Agregar producto")]
           )
         ])
       : _vm._e(),
     _vm._v(" "),
-    _vm.inserted.length > 0
+    _vm.insertedIng.length > 0
       ? _c(
           "table",
           { staticClass: "tablaDatos mgt-2", attrs: { id: "tabla" } },
           [
             _vm._m(0),
             _vm._v(" "),
-            _vm._l(_vm.inserted, function(val, key) {
+            _vm._l(_vm.insertedIng, function(val, key) {
               return _c("tr", [
                 _c("td", [_vm._v(_vm._s(val.presentacion))]),
+                _vm._v(" "),
+                _c("td", [_vm._v("$ " + _vm._s(val.precio))]),
                 _vm._v(" "),
                 _c("td", [
                   _c("input", {
@@ -38207,7 +38238,7 @@ var render = function() {
                         expression: "val.cantidad"
                       }
                     ],
-                    attrs: { type: "number" },
+                    attrs: { type: "number", min: "0" },
                     domProps: { value: val.cantidad },
                     on: {
                       input: function($event) {
@@ -38227,7 +38258,7 @@ var render = function() {
                       staticClass: "btn btn-danger",
                       on: {
                         click: function($event) {
-                          return _vm.eliminarFila(key)
+                          return _vm.eliminarFila(key, true)
                         }
                       }
                     },
@@ -38241,10 +38272,125 @@ var render = function() {
         )
       : _vm._e(),
     _vm._v(" "),
-    _vm.inserted.length > 0
+    _vm.optionsOtrIng.length > 0
+      ? _c("div", { staticClass: "form-inline" }, [
+          _c("label", [_vm._v("Seleccione el producto:")]),
+          _vm._v(" "),
+          _c(
+            "select",
+            {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.selectedOtrIng,
+                  expression: "selectedOtrIng"
+                }
+              ],
+              staticClass: "form-control",
+              on: {
+                change: function($event) {
+                  var $$selectedVal = Array.prototype.filter
+                    .call($event.target.options, function(o) {
+                      return o.selected
+                    })
+                    .map(function(o) {
+                      var val = "_value" in o ? o._value : o.value
+                      return val
+                    })
+                  _vm.selectedOtrIng = $event.target.multiple
+                    ? $$selectedVal
+                    : $$selectedVal[0]
+                }
+              }
+            },
+            _vm._l(_vm.optionsOtrIng, function(val, key) {
+              return _c("option", { domProps: { value: key } }, [
+                _vm._v(_vm._s(val.presentacion))
+              ])
+            }),
+            0
+          ),
+          _vm._v(" "),
+          _c(
+            "button",
+            {
+              staticClass: "btn btn-primary",
+              on: {
+                click: function($event) {
+                  return _vm.agregarFila(false)
+                }
+              }
+            },
+            [_vm._v("Agregar producto")]
+          )
+        ])
+      : _vm._e(),
+    _vm._v(" "),
+    _vm.insertedOtrIng.length > 0
+      ? _c(
+          "table",
+          { staticClass: "tablaDatos mgt-2", attrs: { id: "tabla2" } },
+          [
+            _vm._m(1),
+            _vm._v(" "),
+            _vm._l(_vm.insertedOtrIng, function(val, key) {
+              return _c("tr", [
+                _c("td", [_vm._v(_vm._s(val.presentacion))]),
+                _vm._v(" "),
+                _c("td", [_vm._v("$ " + _vm._s(val.precio))]),
+                _vm._v(" "),
+                _c("td", [
+                  _c("input", {
+                    directives: [
+                      {
+                        name: "model",
+                        rawName: "v-model",
+                        value: val.cantidad,
+                        expression: "val.cantidad"
+                      }
+                    ],
+                    attrs: { type: "number", min: "0" },
+                    domProps: { value: val.cantidad },
+                    on: {
+                      input: function($event) {
+                        if ($event.target.composing) {
+                          return
+                        }
+                        _vm.$set(val, "cantidad", $event.target.value)
+                      }
+                    }
+                  })
+                ]),
+                _vm._v(" "),
+                _c("td", [
+                  _c(
+                    "button",
+                    {
+                      staticClass: "btn btn-danger",
+                      on: {
+                        click: function($event) {
+                          return _vm.eliminarFila(key, false)
+                        }
+                      }
+                    },
+                    [_vm._v("Eliminar")]
+                  )
+                ])
+              ])
+            })
+          ],
+          2
+        )
+      : _vm._e(),
+    _vm._v(" "),
+    _vm.insertedIng.length > 0 || _vm.insertedOtrIng.length > 0
       ? _c(
           "button",
-          { staticClass: "btn btn-primary", on: { click: _vm.guardar } },
+          {
+            staticClass: "btn btn-primary offset-2 mt-4",
+            on: { click: _vm.guardar }
+          },
           [_vm._v("Siguiente")]
         )
       : _c("p", [_vm._v(" No hay productos seleccionados")])
@@ -38256,11 +38402,27 @@ var staticRenderFns = [
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
     return _c("tr", [
-      _c("th", { attrs: { id: "" } }, [_vm._v("Producto")]),
+      _c("th", [_vm._v("Producto")]),
       _vm._v(" "),
-      _c("th", { attrs: { id: "porcentaje" } }, [_vm._v("Cantidad")]),
+      _c("th", [_vm._v("Precio")]),
       _vm._v(" "),
-      _c("th", { attrs: { id: "eliminar" } }, [_vm._v("Acción")])
+      _c("th", [_vm._v("Cantidad")]),
+      _vm._v(" "),
+      _c("th", [_vm._v("Acción")])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("tr", [
+      _c("th", [_vm._v("Producto")]),
+      _vm._v(" "),
+      _c("th", [_vm._v("Precio")]),
+      _vm._v(" "),
+      _c("th", [_vm._v("Cantidad")]),
+      _vm._v(" "),
+      _c("th", [_vm._v("Acción")])
     ])
   }
 ]

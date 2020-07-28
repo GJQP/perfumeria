@@ -46,73 +46,143 @@ class Compras extends Controller
     }
 
     public function pedido($id_cto, Request $request){
+
+        //ddd($this->getEnvio($id_cto));
         //abort si no puedo hacer un nuevo pedido o redirect al que tengo abierto
-        return view('compras.detallePedido')->with(['presentaciones'=>$this->getProductos($id_cto)]);
+
+
+        return view('compras.detallePedido')->with([
+            'presentaciones'=>$this->getProductos($id_cto),
+            'Otrpresentaciones'=>$this->getOtrosProductos($id_cto),
+            'envios'=>$this->getEnvio($id_cto),
+            'pagos'=>$this->getPagos($id_cto),
+            'id_cto'=> $id_cto,
+            'selected'=> []
+        ]);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
+    public function pagos($id_cto, $id_ped){
+
+
+        return view('compras.detallePedido')->with([
+            'presentaciones'=>$this->getProductos($id_cto),
+            'Otrpresentaciones'=>$this->getOtrosProductos($id_cto),
+            'envios'=>$this->getEnvio($id_cto),
+            'pagos'=>$this->getPagos($id_cto),
+            'id_cto'=> $id_cto,
+            'selected'=> []
+        ]);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
+    public function setProductos(Request $request){
+
+        DB::beginTransaction();
+
+        $pedido = DB::insert('
+            INSERT INTO rig_pedidos
+                (fcha_reg,estatus)
+                VALUES (current_date,?)
+        ',['NO ENVIADO']);
+
+        $id_ped = DB::select('SELECT currval(\'rig_pedidos_id_seq\') AS id_ped');
+
+        $i = 1;
+
+        if (isset($request['ingredientes'])){
+            foreach ($request->ingredientes as $ingrediente)
+                DB::insert('
+                    INSERT INTO rig_detalles_pedidos
+                    (id_ped, renglon, cantidad, id_prov_ing, id_ing)
+                    VALUES (currval(\'rig_pedidos_id_seq\'),?,?,?,?)
+                ', [
+                    $i++,
+                    $ingrediente['cantidad'],
+                    $ingrediente['id_prov'],
+                    $ingrediente['id_ing']
+                ]);
+        }
+
+        if (isset($request['otros_ingredientes'])){
+            foreach ($request->otros_ingredientes as $ingrediente)
+                DB::insert('
+                    INSERT INTO rig_detalles_pedidos
+                    (id_ped,renglon, cantidad, cas_otr_ing, cod_pre_otr)
+                    VALUES (?,?,?,?,?)
+            ',[
+                    $id_ped,
+                    $i++,
+                    $ingrediente['cantidad'],
+                    $ingrediente['cas'],
+                    $ingrediente['cod_present']
+                ]);
+        }
+
+        DB::commit();
+
+        return response()->json($id_ped[0]);
+
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
+    public function setCondEnv($id_cto, Request $request){
+
+        //dd($request);
+
+        $pkContrato = DB::select('SELECT id_prod, id_prov FROM rig_contratos WHERE id = ?',[
+            $id_cto
+        ]);
+
+        DB::update('UPDATE rig_pedidos SET
+                       id_prod_cone = ?,
+                       id_prov_cone = ?,
+                       id_ctra_cone = ?,
+                       id_cone = ?
+                        WHERE id= ?
+        ',[
+                $pkContrato[0]->id_prod,
+                $pkContrato[0]->id_prov,
+                $id_cto,
+                $request->id_cone,
+                $request->id_ped
+        ]);
+
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
+    public function setCondPag($id_cto, Request $request){
+
+        //dd($request);
+
+        $pkContrato = DB::select('SELECT id_prod, id_prov FROM rig_contratos WHERE id = ?',[
+            $id_cto
+        ]);
+
+        DB::update('UPDATE rig_pedidos SET
+                       id_prod_conp = ?,
+                       id_prov_conp = ?,
+                       id_ctra_conp = ?,
+                       id_conp = ?
+                     WHERE id = ?
+        ',[
+            $pkContrato[0]->id_prod,
+            $pkContrato[0]->id_prov,
+            $id_cto,
+            $request->id_conp,
+            $request->id_ped
+        ]);
+
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
+    public function setEstado(Request $request){
+        DB::update('
+            UPDATE rig_pedidos
+            SET estatus = ?
+            WHERE id = ?
+        ',[
+            $request->res? 'ENVIADO':'RECHAZADO',
+            $request->id_ped
+        ]);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
+    private function findOrCreate($id_cto){
         //
     }
 
@@ -186,7 +256,8 @@ class Compras extends Controller
         ',$pkContrato);
 
         $pagos = DB::select('
-            SELECT p.tipo, p.coutas, p.porcen_cuo, p.cant_meses FROM (
+            SELECT p.tipo, p.coutas, p.porcen_cuo, p.cant_meses
+                FROM (
                     SELECT id_prov, id_condpgo FROM rig_condiciones_contratos
                     WHERE id_prod = ? AND id_prov = ? AND id_ctra = ? AND id_ubic IS NULL
                     ) cond,
@@ -239,5 +310,76 @@ class Compras extends Controller
                 ) prod
             WHERE c.id_prov_ing = prod.id_prov AND c.id_ing = prod.id
         ',[$id_cto]);
+    }
+
+    private function getOtrosProductos($id_cto){
+        return DB::select('
+            SELECT
+                o.nombre || \' \' ||
+                to_char(o.volumen,\'990.00 ml\') presentacion,
+                to_char(o.precio,\'$ 999,999,990.00\') precio,
+                o.precio,
+                o.cas,
+                o.cod_present
+                FROM (
+                SELECT cas_otr_ing FROM rig_productos_contratados
+                WHERE id_ctra = ?
+                ) c,
+                (
+                    SELECT p.precio, p.volumen, i.nombre, i.cas, p.cod_present
+                    FROM rig_otros_ingredientes i,
+                         rig_presentaciones_otros_ingredientes p
+                    WHERE i.cas = p.cas_otr_ing
+                ) o
+            WHERE c.cas_otr_ing = o.cas
+        ',[$id_cto]);
+    }
+
+    private function getEnvio($id_cto){
+        return DB::select('
+            SELECT
+                   e.nombre || \' \' || e.medio || \' \' || \'a \' || p.nombre || \' \' || e.porce_serv || \'%\' AS desc,
+                   c.id
+            FROM rig_condiciones_contratos c,
+                 rig_condiciones_de_envio e
+
+            JOIN rig_paises p
+            ON p.id = e.id_ubic
+
+            WHERE
+                c.id_ctra = ?
+                AND
+                c.id_prov_ce = e.id_prov
+                AND
+                c.id_ubic = e.id_ubic
+
+        ', [$id_cto]);
+    }
+
+    private function getMonto($id_cto){
+
+    }
+
+    private function getPagos($id_cto){
+        return DB::select('
+            SELECT
+                   p.coutas || \' cuota(s) de \' || p.cant_meses || \' meses al \' || p.porcen_cuo || \'%\' AS desc,
+                   c.id
+            FROM rig_condiciones_contratos c,
+                 rig_condiciones_de_pago p
+
+            WHERE
+                c.id_ctra = ?
+                AND
+                c.id_prov_cp = p.id_prov
+                AND
+                c.id_condpgo = p.id
+
+        ', [$id_cto]);
+
+    }
+
+    private function generarPagos($id_pago){
+
     }
 }
