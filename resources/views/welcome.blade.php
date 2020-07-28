@@ -5,31 +5,28 @@
 
 @section('contenido')  
         <div class="container gris centradoimg mgt-2">
-            <div class="row">
-                <div id="imagen1" class="cuadrado ">
+            
+                <div id="imagen1" class="cuadrado centrar">
                     <div class="texto">
                         <h1>Empresa</h1> 
-                        <li><a href="/gestion-formula">Gestion de Formula</a></li>
+                        <li><a class="titulosUni" href="/gestion-formula">Gestion de Formula</a></li>
                         <li>
-                            <a class="recomendador" href="recomendador-perfumes" disabled>Recomendador<br/>
-                                <!--El &nbsp es para crear un espacio en blanco para que quede bien justificado-->
-                                &nbsp &nbsp &nbsp 
-                                de Perfume</a>  
+                            <a class="titulosUni" href="recomendador-perfumes">Recomendador de Perfumes</a>  
                         </li>
-                        <li><a href="/gestion-perfumista">Crear Perfumista</a> </li>
                     </div>
                 </div>
-                <div id="imagen2" class="cuadrado ">
+                <div id="imagen2" class="cuadrado centrar">
                     <div class="texto">
                         <h1>Contratos</h1> 
-                        <li><a href="{{route('contratos.index')}}" >Gestion de Contratos</a></li>
+                        <li><a class="titulosUni"href="{{route('contratos.index')}}" >Gestion de Contratos</a></li>
                     </div>
-            </div>
+                </div>
             <div id="imagen3" class="cuadrado centrar ">
                 <div class="texto">
                     <h1>Compras</h1> 
-                    <li><a href="/gestion-compras" >Panel de Compras</a></li>
+                    <li><a class="titulosUni" href="/gestion-compras" >Panel de Compras</a></li>
                 </div>
             </div>
-        </div>
+        
+    </div>
 @endsection

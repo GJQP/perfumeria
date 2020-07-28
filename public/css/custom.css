@@ -142,13 +142,12 @@
 
 #imagen1 , #imagen2{
     margin-bottom: 2rem;
-    width: 40%;
+    width: 70%;
     max-height: 40%;
 }
 
 #imagen3{
-    padding-bottom: 2rem;
-    width: 50%;
+    width: 70%;
     max-height: 40%;
 }
 
@@ -211,6 +210,11 @@ li a{
 
 .recomendador{
     font-size: 1.8rem;
+    text-align: center !important;
+}
+
+.titulosUni{
+    font-size: 130%;
 }
 
 #imagen1:hover{
