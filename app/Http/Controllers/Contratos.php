@@ -106,7 +106,7 @@ class Contratos extends Controller
 
         // Verifico si el productor pasa la evaluación
         if($total < $minApro[0]->peso)
-            return redirect()->route('contratos.index')->with('error', 'Todas las calificaciones tienen que ser válidas');
+            return redirect()->back()->with('error', 'Todas las calificaciones tienen que ser válidas');
 
         // Registramos el resultado
         DB::insert("INSERT INTO rig_resultados VALUES ($id_prod, $id_prov, NOW(), 'INICIAL', $total)");        
