@@ -13,7 +13,7 @@
             </div>
             <div class="blocktext mgtp-1 tablaDatos pdb-2 row">
                 <div id="accordion" class="col-sm-6">
-                    <h3>Condiciones del Contrato</h3>
+                    <h3 class="blocktext">Condiciones del Contrato</h3>
                     <div class="card" >
                         <div class="card-header" id="headingOne">
                             <h5 class="mb-0">

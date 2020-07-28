@@ -25,8 +25,8 @@
                     <td>{{$perfumista->genero === 'M'? 'Masculino':'Femenino'}}</td>
                     <td>{{$perfumista->fcha_nac}}</td>
                     <td>
-                        <div><a href="{{"gestion-perfumista/". $perfumista->id}}">Modificar</a></div>
-                        <div><a href="#" data-toggle="modal"  data-target="#eliminar" onclick="cambiar({{$perfumista->id}})">Eliminar</a></div>
+                        <div><a class="aN" href="{{"gestion-perfumista/". $perfumista->id}}">Modificar</a></div>
+                        <div><a class="aN" href="#" data-toggle="modal"  data-target="#eliminar" onclick="cambiar({{$perfumista->id}})">Eliminar</a></div>
                     </td>
                 </tr>
                 @empty

@@ -86,7 +86,7 @@
 				@foreach($ingredientes as $ingrediente)
 				<div class="form-check">
 					<tr>
-                        <td><a href="#">Ver</a></td>
+                        <td><a class="aN" href="#">Ver</a></td>
 						<td>{{$ingrediente->cas}}</td>
 						<td>{{$ingrediente->nombre}}</td>
 					</tr>

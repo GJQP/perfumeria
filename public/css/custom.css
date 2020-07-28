@@ -30,6 +30,7 @@
 
 #inicio{
     font-family:  'Unna', serif;
+    font-size: 170%;
 }
 
 .logo{
@@ -629,4 +630,12 @@ table{
 .agregado{
     margin-left: 0rem;
     width: 100%;
+}
+
+.aN{
+    color:black;
+}
+
+.aN:hover{
+    color:black !important;
 }
