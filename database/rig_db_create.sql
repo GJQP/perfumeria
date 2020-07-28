@@ -6,6 +6,7 @@ DROP TABLE IF EXISTS rig_condiciones_contratos;
 DROP TABLE IF EXISTS rig_renovaciones;
 DROP TABLE IF EXISTS rig_contratos;
 DROP TABLE IF EXISTS rig_origenes;
+DROP TABLE IF EXISTS rig_ingredientes_familias;
 DROP TABLE IF EXISTS rig_componentes_funcionales;
 DROP TABLE IF EXISTS rig_esencias;
 DROP TABLE IF EXISTS rig_monoliticos;
@@ -288,7 +289,7 @@ CREATE TABLE rig_perfumes (
 CREATE SEQUENCE rig_perfumes_id_seq AS INTEGER OWNED BY rig_perfumes.id;
 ALTER TABLE rig_perfumes ADD CONSTRAINT rig_perfumes_ck CHECK ((genero IN ('F', 'M', 'U')) AND (tipo IN ('MONO', 'FASES')) AND edad IN ('JOVEN', 'ADULTO', 'MAYOR', 'ATEMPORAL')),
 	ALTER COLUMN id SET DEFAULT nextval('rig_perfumes_id_seq'),
-	ADD CONSTRAINT rig_perfumes_id_prov_fk FOREIGN KEY (id_prod) REFERENCES rig_productores (id);
+	ADD CONSTRAINT rig_perfumes_id_prod_fk FOREIGN KEY (id_prod) REFERENCES rig_productores (id);
 
 CREATE TABLE rig_perfumistas (
 	id INTEGER PRIMARY KEY,
@@ -383,6 +384,17 @@ CREATE TABLE rig_esencias_perfumes (
 CREATE SEQUENCE rig_esencias_perfumes_id_seq AS INTEGER OWNED BY rig_esencias_perfumes.id;
 ALTER TABLE rig_esencias_perfumes ADD CONSTRAINT rig_esencias_perfumes_ck CHECK (tipo IN ('NATURAL', 'SINTETICO')),
 	ALTER COLUMN id SET DEFAULT nextval('rig_esencias_perfumes_id_seq');
+
+CREATE TABLE rig_ingredientes_familias (
+	id_prov SMALLINT,
+	id_ing INTEGER,
+	id_fao SMALLINT,
+	PRIMARY KEY (id_prov, id_ing, id_fao)
+);
+
+ALTER TABLE rig_ingredientes_familias ADD CONSTRAINT rig_ingredientes_familias_id_ing_fk FOREIGN KEY (id_prov, id_ing) REFERENCES rig_ingredientes_esencias (id_prov, id),
+	ADD CONSTRAINT rig_ingredientes_familias_id_fao_fk FOREIGN KEY (id_fao) REFERENCES rig_familias_olfativas (id);
+
 
 CREATE TABLE rig_notas (
 	id_perf INTEGER,
@@ -533,7 +545,7 @@ CREATE TABLE rig_detalles_pedidos (
 ALTER TABLE rig_detalles_pedidos ADD CONSTRAINT rig_detalles_pedidos_ck CHECK (cantidad > 0), --AK
 	ADD CONSTRAINT rig_detalles_pedidos_ing_fk FOREIGN KEY (id_prov_ing, id_ing, cod_pre_ing) REFERENCES rig_presentaciones_ingredientes (id_prov, id_ing, cod_present),
 	ADD CONSTRAINT rig_detalles_pedidos_otr_fk FOREIGN KEY (cas_otr_ing, cod_pre_otr) REFERENCES rig_presentaciones_otros_ingredientes (cas_otr_ing, cod_present),
-	ADD CONSTRAINT rig_detalles_pedidos_id_ped_fk FOREIGN KEY (id_ped) REFERENCES rig_detalles_pedidos (id);
+	ADD CONSTRAINT rig_detalles_pedidos_id_ped_fk FOREIGN KEY (id_ped) REFERENCES rig_pedidos (id);
 
 CREATE TABle rig_pagos (
 	id_ped INTEGER,
@@ -1357,16 +1369,16 @@ INSERT INTO rig_palabras_claves VALUES
 	(DEFAULT, 'otros'); --45
 
 INSERT INTO rig_familias_olfativas VALUES 
-	(DEFAULT, 'Verde'),
-	(DEFAULT, 'Citrico'),
-	(DEFAULT, 'Flores'),
-	(DEFAULT, 'Frutas'),
-	(DEFAULT, 'Aromáticos'),
-	(DEFAULT, 'Helechos'),
-	(DEFAULT, 'Chipre'),
-	(DEFAULT, 'Maderas'),
-	(DEFAULT, 'Orientales'),
-	(DEFAULT, 'Otros');
+	(DEFAULT, 'Verde'),	--1
+	(DEFAULT, 'Citrico'), --2
+	(DEFAULT, 'Flores'), --3
+	(DEFAULT, 'Frutas'), --4
+	(DEFAULT, 'Aromáticos'), --5
+	(DEFAULT, 'Helechos'), --6
+	(DEFAULT, 'Chipre'), --7
+	(DEFAULT, 'Maderas'), --8 
+	(DEFAULT, 'Orientales'), --9
+	(DEFAULT, 'Otros'); --10
 
 --CREATE TABLE rig_palabras_familias (
 --	id_pal SMALLINT,
@@ -1396,4 +1408,30 @@ INSERT INTO rig_palabras_familias VALUES
 	-- Otros
 	(45,10);
 
-	
+INSERT INTO rig_ingredientes_familias VALUES 
+	(3, 1, 2),
+	(3, 2, 3),
+	(3, 3, 8),
+	(3, 3, 3),
+	(1, 4, 8),
+	(1, 5, 8),
+	(1, 5, 2),
+	(1, 6, 2),
+	(2, 7, 2),
+	(2, 8, 4),
+	(2, 9, 3),
+	(4, 10, 3),
+	(4, 11, 2),
+	(4, 12, 1),
+	(5, 13, 5),
+	(5, 14, 5),
+	(5, 14, 1),
+	(5, 15, 4),
+	(6, 16, 5),
+	(6, 16, 6),
+	(6, 17, 8),
+	(6, 18, 8);
+
+
+
+
