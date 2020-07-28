@@ -112,14 +112,14 @@
                         if (this.cantEnv == 0)
                             stepper.next();
                         else{
-                            guardarOpcionEnvio();
+                            guardarOpcionEnvio(false);
 
                             //console.log(nuevoPrecio);
                             if (this.cantPag == 0){
                                 stepper.to(3);
                             }
                             else {
-                                guardarPago();
+                                guardarPago(false);
                                 stepper.to(4);
                             }
 

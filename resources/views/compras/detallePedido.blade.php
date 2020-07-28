@@ -78,7 +78,7 @@
                                 <input type="radio" name="pago" value="{{$pago->id}}" {{$key == 0? 'checked' : ''}}>
                                 <label for="envio">{{$pago->desc}}</label><br>
                             @endforeach
-                            <button class="btn btn-primary" onclick="guardarPago()">Next 3</button>
+                            <button class="btn btn-primary" onclick="guardarPago(true)">Next 3</button>
                         </div>
                     </div>
 
@@ -113,7 +113,7 @@
 
             window.stepper = new Stepper(document.querySelector('.bs-stepper'), {
                     linear: true,
-                    animation: false,
+                    animation: true,
                     selectors: {
                         steps: '.step',
                         trigger: '.step-trigger',
@@ -139,11 +139,14 @@
                         stepper.next()
             };
 
-            window.guardarPago = function () {
+            window.guardarPago = function (next) {
 
                 let id = document.querySelector('input[name="pago"]:checked').value;
                 data = {id_conp: id, id_ped}
-                axios.post(`/pedido/${id_cto}/pago`, data).then( () => stepper.next())
+                axios.post(`/pedido/${id_cto}/pago`, data)
+
+                if(next)
+                    stepper.next()
 
             }
 
