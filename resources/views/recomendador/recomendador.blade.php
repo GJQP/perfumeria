@@ -1,9 +1,5 @@
 @extends('layout.master')
 
-@section('scripts')
-<script src="{{ asset('js/rueda.js') }}"></script>
-@endsection
-
 @section('titulo','Recomendador de Perfumes')
 
 @section('contenido')  
@@ -51,11 +47,11 @@
                         <h6 class="pdtp-1 mgr-2 nombreFiltro">Caracter:</h6>
                         <div class="caracterSubDiv" id="">
                                 <div class="row agregar" id="contenedorCarac">
-                                    <select class="form-control caracter mglp-1" id="caracter" name="caracter">
+                                    <select class="form-control caracter mglp-1" id="caracter" name="caracter" v-model="caracSelected">
                                         <option selected disabled>--Caracter--</option>
                                         <option v-for="caracter in caracteres" v-bind:value="caracter.value">@{{caracter.texto}}</option>
                                     </select>
-                                    <button v-on:click="agregar" id="agregar" class="circle plus"></button>
+                                    <button v-on:click="agregarCarac" id="agregar" class="circle plus"></button>
                                     <button class="circle minus"></button>
                                 </div>
                         </div>

@@ -45,6 +45,10 @@
     padding-top: 1.5rem;
 }
 
+.pdl-1{
+    padding-left: 1rem;
+}
+
 .pdl-card{
     padding-left: 25rem;
 }
@@ -240,6 +244,10 @@ div p{
 
 .dropdown-item{
     font-size: 130%;
+}
+
+#formula{
+    width: 15%;
 }
 
 .dropdown-menu {

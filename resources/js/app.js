@@ -85,27 +85,15 @@ const aromas = new Vue({
             { texto: 'Chipre', value:'chipre'},
             { texto: 'Maderas', value:'maderas'},
             { texto: 'Orientales', value:'orientales'}
-        ]
+        ],
+                caracSelected: null,
+                caracInserted: []
     },
 
     methods:{
-        agregarCarac: function(ev){
-            var contador = ev.srcElement.parentNode.id + 1;
-            var boton = ev.srcElement;
-            let contenedor = document.getElementById('contenedorCarac');
-            boton.parentElement.removeChild(boton);
-            var div = document.createElement("div");
-            div.id = contador;
-            div.classList.add("row");
-            div.classList.add("agregado");
-            let nuevaFila =
-                            '<select class="form-control caracter mglp-1" id="caracter" name="caracter">'+
-                                '<option selected disabled>--Caracter--</option>'+
-                                '<option v-for="caracter in caracteres" v-bind:value="caracter.value">'+ caracter.text+'</option>'+
-                            '</select>'+
-                            '<button v-on:click="agregarCarac" id="agregar" class="circle plus"></button>';
-            div.innerHTML = nuevaFila;
-            contenedor.after(div);
+        agregarCarac:function(){
+            this.inserted.push(this.caracteres[this.caractSelected]);
+            this.caracteres.splice(this.caracSelected,1);
         }
     }
 });

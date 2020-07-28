@@ -202,13 +202,13 @@ function modificarFormula() {
             '<option value="alternativaEnvio">Alternativas de Envío</option>' +
             '<option value="costoProductos">Costo de productos</option>' +
             '<option value="alternativaPago">Alternativas de Pago</option>';
-            titulo.innerHTML = '<strong>Creando fórmula inicial</strong>';
+            titulo.innerHTML = '<strong>Creando Fórmula Inicial</strong>';
             $('#formula').val('inicial');
             break;
         case 'renovacion':
             selc.innerHTML = '<option disabled selected value="0"> -- Seleccione un Criterio -- </option>' +
             '<option value="cumplimientoEnvio">Cumplimiento de Envíos</option> ';
-            titulo.innerHTML = '<strong>Creando fórmula de renovación</strong>';
+            titulo.innerHTML = '<strong>Creando Fórmula de Renovación</strong>';
             $('#formula').val('renovacion');
             break;
     }
