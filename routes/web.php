@@ -57,6 +57,14 @@ Route::get('/gestion-contratos/evaluacion_ren/{id_prod}/{id_prov}/{id_ctra}','Co
 Route::get ('/gestion-compras','Compras@index')->name('compras.index');
 Route::get('/gestion-compras/{id_prod}/contrato/{id_prov}/{id_contrato}','Compras@contrato')->name('compras.contrato');
 Route::get('/gestion-compras/pedido/{id_cto}','Compras@pedido')->name('compras.pedidos');
+Route::get('/gestion-compras/pagos/{id_cto}/{id_ped}', 'Compras@pagos')->name('compras.pagos');
+
+//ASYNC COMPRAS
+Route::post('/pedido/{id_ctro}/detalles', 'Compras@setProductos');
+Route::post('/pedido/{id_ctro}/envio', 'Compras@setCondEnv');
+Route::post('/pedido/{id_ctro}/pago', 'Compras@setCondPag');
+Route::post('/pedido/{id_ctro}/respuesta', 'Compras@setEstado');
+
 
 //Recomendador de Perfumes
 Route::get ('/recomendador-perfumes', 'Recomendador@index');
