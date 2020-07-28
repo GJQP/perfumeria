@@ -28,6 +28,11 @@ files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(
  * the page. Then, you may begin adding components to this application
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
+const app = new Vue({
+    el: '#app'
+})
+
+
 
 const aromas = new Vue({
     el: '#filtrosComp',
@@ -44,7 +49,7 @@ const aromas = new Vue({
             { texto:'Intermedio', value: 'intermedio'},
             { texto:'Intenso', value: 'intenso'}
         ],
-        
+
         caracteres:[
             { texto:'Clasico', value: 'clasico'},
             { texto:'Informal', value: 'informal'},
@@ -67,14 +72,14 @@ const aromas = new Vue({
                 { texto: 'Trabajo', value:'trabajo'},
                 { texto: 'Ocasion Especial', value:'ocasionEsp'}
             ],
-           
+
         aspectos:[
             { texto: 'Libertad', value:'libertad'},
             { texto: 'Independiente', value:'independietne'},
             { texto: 'Creatividad', value:'creatividad'},
             { texto: 'Diversion', value:'diversion'}
         ],
-       
+
         familias:[
             { texto: 'Verde', value:'verde'},
             { texto: 'Cítrico', value:'citrico'},
@@ -97,3 +102,4 @@ const aromas = new Vue({
         }
     }
 });
+
