@@ -11,17 +11,17 @@
     <div class="container mgt-2">
         <div class="stage tarjeta muli">
             <!--Tipo de Formula-->
-            <p class="mx-auto" for="empresas" id="titulo" onload="modificarFormula()">
+            <p class="mx-auto pdt-1 pdl-1" for="empresas" id="titulo" onload="modificarFormula()">
                 <strong>Selecciona un tipo</strong>
             </p>
             <div>
             <div class="blocktext mgt-2">
                 <select id="formula" class="form-control sm" >
-                  <option disabled selected value="0"> -- Inicial un Criterio -- </option>
+                  <option disabled selected value="0"> -- Tipo de Formula -- </option>
                   <option value="inicial">Inicial</option>
                   <option value="renovacion">Renovacion</option>
                 </select>
-                <button type="button" class="btn btn-primary mgl-3" onclick="modificarFormula()">Selecionar</button>
+                <button type="button" class="btn btn-primary mgl-1" onclick="modificarFormula()">Selecionar</button>
             </div>
             <br>
             <div>
@@ -43,14 +43,14 @@
                 </table>              
               </div>
               <div class= "blocktext mgt-2">
-                <h3 class= "blocktext pr-4">Mínimo aprobatorio</h3>
+                <h4 class= "blocktext pr-4">Mínimo aprobatorio</h4>
                 <input type="text" class="form-control min-aprob" name="minApro" placeholder="Minimo Aprobatorio">
                 <span class="input-group-addon">%</span>
               </div>  
               <div class="blocktext row mgt-2">
                 <select id="criterios" class="form-control muli" >
                 </select>
-                <button type="button" class="btn btn-primary mgl-3" onclick="agregar()">Agregar Criterio</button>
+                <button type="button" class="btn btn-primary mgl-1" onclick="agregar()">Agregar Criterio</button>
               </div>
                 <!--Botones-->
                 
@@ -73,7 +73,7 @@
                   </div>
                   <div class="form-group col-md-4">
                     <div class="form-row">
-                      <button type="submit" class="btn btn-primary mgl-1">Registrar nueva escala y crear fórmula</button>
+                      <button type="submit" class="btn btn-primary mgl-1 mgt-2">Registrar nueva escala y crear fórmula</button>
                     <div>
                   </div>
                 </div>

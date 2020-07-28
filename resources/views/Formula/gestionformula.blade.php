@@ -11,15 +11,15 @@
         <div class="stage tarjeta muli">
             <!--Seleccionar la Empresa-->
             <div class="row blocktext">
-                <div class="dropdown mgl-1">
+                <div class="dropdown mgl-1 mgt-1">
                     <form class="form-inline form-group" action="{{route('formula.index')}}" method="GET">
-                        <label for="id_prod">Seleccione la empresa a gestionar sus formulas</label>
-                        <select class="form-control" name="id_prod" id="id_prod">
+                        <label for="id_prod">Seleccione la empresa a gestionar sus formulas:</label>
+                        <select class="form-control selecEmp" name="id_prod" id="id_prod">
                             @foreach ($productores as $productor)
                                 <option value="{{$productor->id_prod}}" {{$productor->id_prod == $id_prod? 'selected':''}}>{{$productor->nombre}}</option>
                             @endforeach
                         </select>
-                        <button type="submit" class="btn btn-primary">Cambiar productor</button>
+                        <button type="submit" class="btn btn-primary selecEmp">Cambiar productor</button>
                     </form>
                 </div>
             </div>

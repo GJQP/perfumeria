@@ -50504,8 +50504,123 @@ files.keys().map(function (key) {
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
 
-var app = new Vue({
-  el: '#app'
+var aromas = new Vue({
+  el: '#filtrosComp',
+  data: {
+    prueba: [],
+    valores: [],
+    generos: [{
+      texto: 'Femenino',
+      value: 'femenino'
+    }, {
+      texto: 'Masculino',
+      value: 'masculino'
+    }],
+    intensidades: [{
+      texto: 'Ligero',
+      value: 'ligero'
+    }, {
+      texto: 'Intermedio',
+      value: 'intermedio'
+    }, {
+      texto: 'Intenso',
+      value: 'intenso'
+    }],
+    caracteres: [{
+      texto: 'Clasico',
+      value: 'clasico'
+    }, {
+      texto: 'Informal',
+      value: 'informal'
+    }, {
+      texto: 'Moderno',
+      value: 'moderno'
+    }, {
+      texto: 'Natural',
+      value: 'natural'
+    }, {
+      texto: 'Seductor',
+      value: 'seductor'
+    }],
+    aromas: [{
+      texto: 'Floral',
+      value: 'floral'
+    }, {
+      texto: 'Frutal,',
+      value: 'frutal,'
+    }, {
+      texto: 'Verde',
+      value: 'verde'
+    }, {
+      texto: 'Herbal',
+      value: 'herbal'
+    }, {
+      texto: 'Cítrico',
+      value: 'citrico,'
+    }, {
+      texto: 'Herbal Aromático',
+      value: 'herbalaro'
+    }],
+    usos: [{
+      texto: 'Diario',
+      value: 'diario'
+    }, {
+      texto: 'Trabajo',
+      value: 'trabajo'
+    }, {
+      texto: 'Ocasion Especial',
+      value: 'ocasionEsp'
+    }],
+    aspectos: [{
+      texto: 'Libertad',
+      value: 'libertad'
+    }, {
+      texto: 'Independiente',
+      value: 'independietne'
+    }, {
+      texto: 'Creatividad',
+      value: 'creatividad'
+    }, {
+      texto: 'Diversion',
+      value: 'diversion'
+    }],
+    familias: [{
+      texto: 'Verde',
+      value: 'verde'
+    }, {
+      texto: 'Cítrico',
+      value: 'citrico'
+    }, {
+      texto: 'Flores',
+      value: 'flores'
+    }, {
+      texto: 'Frutas',
+      value: 'frutas'
+    }, {
+      texto: 'Aromáticos',
+      value: 'aromáticos'
+    }, {
+      texto: 'Helechos',
+      value: 'helechos'
+    }, {
+      texto: 'Chipre',
+      value: 'chipre'
+    }, {
+      texto: 'Maderas',
+      value: 'maderas'
+    }, {
+      texto: 'Orientales',
+      value: 'orientales'
+    }],
+    caracSelected: null,
+    caracInserted: []
+  },
+  methods: {
+    agregarCarac: function agregarCarac() {
+      this.inserted.push(this.caracteres[this.caractSelected]);
+      this.caracteres.splice(this.caracSelected, 1);
+    }
+  }
 });
 
 /***/ }),
@@ -50784,8 +50899,8 @@ __webpack_require__.r(__webpack_exports__);
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! D:\Programas\xampp\htdocs\perfumeria\resources\js\app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! D:\Programas\xampp\htdocs\perfumeria\resources\sass\app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! C:\wamp64\www\perfumeria\resources\js\app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! C:\wamp64\www\perfumeria\resources\sass\app.scss */"./resources/sass/app.scss");
 
 
 /***/ })
