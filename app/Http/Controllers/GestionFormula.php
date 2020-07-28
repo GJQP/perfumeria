@@ -17,6 +17,7 @@ class GestionFormula extends Controller
     {
         // Extraemos el id del productor
         $id = $request->id_prod;
+        
         // Buscamos
         $productores = "SELECT mem.id_prod, prod.nombre FROM rig_membresias mem, rig_productores prod WHERE fcha_fin IS NULL AND id_prod IS NOT NULL AND mem.id_prod = prod.id";
         $productores = DB::select("$productores");
@@ -28,7 +29,7 @@ class GestionFormula extends Controller
             $id = $productores[0]->id_prod;
 
         // Obtengo las variables
-        $variables = "SELECT rec.id_var, rec.fcha_reg, rec.tipo_eval, rec.peso, var.nombre FROM rig_evaluaciones_criterios rec INNER JOIN rig_variables var ON rec.id_var = var.id WHERE rec.id_prod=$id AND rec.fcha_fin IS NULL";
+        $variables = "SELECT rec.id_var, rec.fcha_reg, rec.tipo_eval, rec.peso, var.nombre FROM rig_evaluaciones_criterios rec INNER JOIN rig_variables var ON rec.id_var = var.id WHERE rec.id_prod=$id AND rec.fcha_fin IS NULL AND nombre != 'Exito'";
         $variables = DB::select("$variables");
 
         // Buscamos los valores de la formula inicial y de renovación
@@ -39,6 +40,7 @@ class GestionFormula extends Controller
                 $iniciales = array_merge($iniciales, [$variable]);
             else
                 $renovaciones = array_merge($renovaciones, [$variable]);
+
         // Buscamos la escala correspondiente
         $escala = "SELECT DATE(fcha_reg), rgo_ini, rgo_fin FROM rig_escalas WHERE id_prod = $id";
         $escala = DB::select("$escala");
@@ -76,7 +78,7 @@ class GestionFormula extends Controller
      */
     public function store(Request $request, int $id_prod)
     {
-        //dd($id_prod);
+        //dd($request->all());
         // Pedimo el valor del mínimo y del máximo
         $min = $request->min;
         $max = $request->max;
@@ -103,8 +105,6 @@ class GestionFormula extends Controller
             $pesoTotal += $request->p_ubic;
         if($request->p_alen != NULL)
             $pesoTotal += $request->p_alen;
-        if($request->p_prod != NULL)
-            $pesoTotal += $request->p_prod;
         if($request->p_pag != NULL)
             $pesoTotal += $request->p_pag;
         if($request->p_cen != NULL)
@@ -121,10 +121,8 @@ class GestionFormula extends Controller
             $vars = array_merge($vars , [['Ubicación geografica', $request->p_ubic]]);
         if($request->p_alen != NULL)
             $vars = array_merge($vars , [['Alternativas de envio', $request->p_alen]]);
-        if($request->p_prod != NULL)
-            $vars = array_merge($vars , [['Costos de los productos', $request->p_prod]]);
         if($request->p_pag != NULL)
-            $vars = array_merge($vars , [['Condiciones de pago', $request->p_pag]]);
+            $vars = array_merge($vars , [['Metodos de pago', $request->p_pag]]);
         if($request->p_cen != NULL)
             $vars = array_merge($vars , [['Cumplimiento de envios', $request->p_cen]]);
 
@@ -143,7 +141,7 @@ class GestionFormula extends Controller
         $tipoEval = 'INICIAL';
         if($request->p_cen != NULL)
             $tipoEval = 'RENOVACION';
-
+        //dd($variables);
         // Cancelamos la fórmula vieja
         DB::update("UPDATE rig_evaluaciones_criterios SET fcha_fin=current_date WHERE id_prod = $id_prod AND fcha_fin IS NULL AND tipo_eval = '$tipoEval'");
 
@@ -152,6 +150,8 @@ class GestionFormula extends Controller
             foreach($vars as $var)
                 if(strcmp($variable->nombre, $var[0]) == 0)
                     DB::insert("INSERT INTO rig_evaluaciones_criterios VALUES($id_prod, $variable->id, NOW() + INTERVAL '0 second', '$tipoEval', '$var[1]')");
+
+        DB::insert("INSERT INTO rig_evaluaciones_criterios VALUES($id_prod, 5, NOW() + INTERVAL '10 second', '$tipoEval', $minApro)");
 
         return  redirect()->route('formula.index')->with(['status' => 'Fórmula registrada exitosamente']);
     }

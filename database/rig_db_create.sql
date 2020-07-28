@@ -251,7 +251,7 @@ ALTER TABLE rig_otros_ingredientes ADD CONSTRAINT rig_otros_ingredientes_id_prov
 CREATE TABLE rig_presentaciones_otros_ingredientes (
 	cas_otr_ing BIGINT,
 	cod_present INTEGER,
-	precio NUMERIC (10,2) NOT NULL,
+	precio NUMERIC (10, 2) NOT NULL,
 	volumen NUMERIC (10, 2),
 	otra_pre VARCHAR (15),
 	des VARCHAR (50),
@@ -532,7 +532,8 @@ CREATE TABLE rig_detalles_pedidos (
 
 ALTER TABLE rig_detalles_pedidos ADD CONSTRAINT rig_detalles_pedidos_ck CHECK (cantidad > 0), --AK
 	ADD CONSTRAINT rig_detalles_pedidos_ing_fk FOREIGN KEY (id_prov_ing, id_ing, cod_pre_ing) REFERENCES rig_presentaciones_ingredientes (id_prov, id_ing, cod_present),
-	ADD CONSTRAINT rig_detalles_pedidos_otr_fk FOREIGN KEY (cas_otr_ing, cod_pre_otr) REFERENCES rig_presentaciones_otros_ingredientes (cas_otr_ing, cod_present);
+	ADD CONSTRAINT rig_detalles_pedidos_otr_fk FOREIGN KEY (cas_otr_ing, cod_pre_otr) REFERENCES rig_presentaciones_otros_ingredientes (cas_otr_ing, cod_present),
+	ADD CONSTRAINT rig_detalles_pedidos_id_ped_fk FOREIGN KEY (id_ped) REFERENCES rig_detalles_pedidos (id);
 
 CREATE TABle rig_pagos (
 	id_ped INTEGER,
@@ -1028,10 +1029,10 @@ INSERT INTO rig_condiciones_de_envio VALUES
 
 INSERT INTO rig_variables VALUES 
 	(DEFAULT, 'Ubicación geografica', 'Ubicación geográfica del proveedor'),
-	(DEFAULT, 'Costos de los productos', 'Precio de los productos y servicios ofrecidos por el productor'),
+	(DEFAULT, 'Metodos de pago', 'Metodos de pagos ofrecidos por el productor'),
 	(DEFAULT, 'Alternativas de envio', 'Cantidad de métodos que ofrece el proveedor'),
-	(DEFAULT, 'Condiciones de pago', 'Alternativas de pago ofrecidas por el proveedor'),
-	(DEFAULT, 'Cumplimiento de envios', 'Rendimiento del proveedor a lo largo del período');
+	(DEFAULT, 'Cumplimiento de envios', 'Rendimiento del proveedor a lo largo del período'),
+	(DEFAULT, 'Exito', 'Mínimo aprobatorio de la fórmula');
 
 -- rig_prohibidas (
 

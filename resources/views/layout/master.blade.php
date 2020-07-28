@@ -23,7 +23,7 @@
                         </div>
                         <!-- Agregar Validacion de Pagina, Si esta en la inicial, no muestra esto-->
                             <div class="inicio mgrn-5 mgrb-1">
-                                <h2> <a id="inicio" href="/inicio">Inicio</a></h2>
+                                <h3> <a id="inicio" href="/inicio">Inicio</a></h3>
                             </div>
                 </div>
             </div>

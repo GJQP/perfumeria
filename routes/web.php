@@ -44,12 +44,14 @@ Route::get ('/gestion-contratos/crear','Contratos@seleccionarProveedores')->name
 Route::get ('/gestion-contratos/crear/{id_prod}/{id_prov}','Contratos@crearContrato')->name('contrato.crear');
 Route::get ('/gestion-contratos/cancelar-contrato/{id_prod}/{id_prov}/{id_ctra}', 'Contratos@motivoCancelación')->name('contrato.cancelar');
 Route::post('/gestion-contratos/cancelar-contrato/fin/{id_prod}/{id_prov}/{id_ctra}', 'Contratos@cancelar')->name('contrato.fin');
-Route::get ('/gestion-contratos/renovar/{id_prod}/{id_prov}/{id_ctra}','Contratos@renovarContrato')->name('contrato.renovar');
+//Route::get ('/gestion-contratos/renovar/{id_prod}/{id_prov}/{id_ctra}','Contratos@renovarContrato')->name('contrato.renovar');
 Route::get ('gestion-contratos/cancelar/{id_cont}/{id_prov}','Contratos@renovarCreacion')->name('contrato.renovarPorCreacion');
 
 //Crear Contrato
-Route::get ('/gestion-contratos/{id}/crear/evaluacion-{proveedor}','Contratos@evaluacion');
-Route::post('/gestion-contratos/{id}/crear/evaluacion-{proveedor}','Contratos@vistacontrato');
+Route::get ('/gestion-contratos/evaluacion/{id_prod}/{id_prov}','Contratos@evaluacion')->name('evaluacion.nueva');
+Route::post ('/gestion-contratos/evaluacion/registrar/{id_prod}/{id_prov}','Contratos@registrarEvaluacion')->name('evaluacion.registrar');
+Route::post('/gestion-contratos/evaluacion_ren/renovar/{id_prod}/{id_prov}/{id}','Contratos@renovarContrato')->name('evaluacion.renregistrar');
+Route::get('/gestion-contratos/evaluacion_ren/{id_prod}/{id_prov}/{id_ctra}','Contratos@renovacionContrato');
 
 //Gestion Compras
 Route::get ('/gestion-compras','Compras@index')->name('compras.index');

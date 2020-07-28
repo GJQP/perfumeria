@@ -46,19 +46,9 @@ function agregar(){
                             '</tr>';
                             codigo.id ='alternativaEnvio'
                                 break;
-        case "costoProductos":
-                codigo.innerHTML='<tr id="costoProductos">'+
-                                '<td>Costo de productos</td>'+
-                                '<td id="porcentaje"> <div class="row arreglar"> <input type="number" min=1 max=100 id="p_prod" class="form-control porcentaje" name="p_prod" onblur="evaluacionPorcentaje()" onload="evaluacionPorcentaje()"  value="1" required />'+
-                                    '<span class="input-group-addon">%</span></div>'+
-                                '</td>'+
-                                '<td><div><a onclick="eliminar(event)">Remover</a></div></td>'+
-                            '</tr>';
-                            codigo.id ='costoProductos';
-                                break;
         case "alternativaPago":
                 codigo.innerHTML='<tr id="alternativaPago">'+
-                                '<td>Alternativas de Pago</td>'+
+                                '<td>Métodos de Pago</td>'+
                                 '<td id="porcentaje"> <div class="row arreglar"> <input type="number" min=1 max=100 id="p_pag" class="form-control porcentaje" name="p_pag" onblur="evaluacionPorcentaje()" onload="evaluacionPorcentaje()"  value="1"  required /> '+
                                     '<span class="input-group-addon">%</span></div>'+
                                 '</td>'+
@@ -108,9 +98,6 @@ function evaluacionPorcentaje(){
         porcentaje += parseInt($('#p_alen').val());
     }
 
-    if ($('#p_prod').length){
-        porcentaje += parseInt($('#p_prod').val());
-    }
     if ($('#p_pag').length){
         porcentaje += parseInt($('#p_pag').val());
     }
@@ -131,8 +118,9 @@ function guardarId(id, prov, prod){
     console.log(contRenovar);
 }
 
-function renovar(){
-    axios.get('/gestion-contratos/renovar/' + idprod + '/' + idprov + '/'+contRenovar).then(() => window.location.reload());
+function renovar()
+{
+    window.location = '/gestion-contratos/evaluacion_ren/' + idprod + '/' + idprov + '/' + contRenovar;
 }
 
 
@@ -200,7 +188,6 @@ function modificarFormula() {
             selc.innerHTML = '<option disabled selected value="0"> -- Seleccione un Criterio -- </option>'+
             '<option value="ubicacionGeografica">Ubicacion Geografica</option>' +
             '<option value="alternativaEnvio">Alternativas de Envío</option>' +
-            '<option value="costoProductos">Costo de productos</option>' +
             '<option value="alternativaPago">Alternativas de Pago</option>';
             titulo.innerHTML = '<strong>Creando fórmula inicial</strong>';
             $('#formula').val('inicial');
