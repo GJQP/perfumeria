@@ -19,10 +19,10 @@
             <div class="form-row">
                 <div class="form-group col-md-4">
                     <label for="min">Valor mínimo</label>
-                    <input type="number" class="form-control" id="min" name="min" placeholder="Valor mínimo">
+                    <input type="number" class="form-control" id="min" name="min" min="0" placeholder="Valor mínimo">
             	</div>
                 <div class="form-group col-md-4">
-                    <label for="max">Valor maximo</label>
+                    <label for="max">Valor máximo</label>
                     <input type="number" class="form-control" id="max" name="max" placeholder="Valor máximo">
                 </div>
                 <div class="form-group col-md-4">
