@@ -356,7 +356,7 @@ class Contratos extends Controller
 
         // Si no tiene escala
         if(empty($escala))
-            return redirect()->route('contratos.index')->with('error', 'El productor no escalas registradas');
+            return redirect()->route('contratos.index')->with('error', 'El productor no tiene escalas registradas');
 
         // Obtengo las variables
         $variables = "SELECT rec.id_var, rec.fcha_reg, rec.tipo_eval, rec.peso, var.nombre FROM rig_evaluaciones_criterios rec INNER JOIN rig_variables var ON rec.id_var = var.id WHERE rec.id_prod=$id_prod AND rec.fcha_fin IS NULL AND rec.tipo_eval = 'INICIAL'";
@@ -399,8 +399,7 @@ class Contratos extends Controller
         $form = "SELECT rec.id_var, rec.fcha_reg, rec.tipo_eval, rec.peso, var.nombre FROM rig_evaluaciones_criterios rec INNER JOIN rig_variables var ON rec.id_var = var.id WHERE rec.id_prod=$id_prod AND rec.fcha_fin IS NULL AND rec.tipo_eval = 'INICIAL' AND rec.id_var != 5";
         $form = DB::select("$form");
 
-        // Normalizo la escala
-        $max -= $min;
+       
 
         // Verifico que las calificaones esten dentro del rango esperado
         $total = 0;
@@ -410,7 +409,10 @@ class Contratos extends Controller
             else
                 foreach($form as $f)
                     if(strcmp($f->nombre, $name) == 0)
-                        $total += ($variable - $min)*($f->peso/$max);
+                        $total += ($variable - $min)*($f->peso/($max - $min));
+
+        // Normalizo la escala
+        $max -= $min;
 
         // Registramos el resultado
         DB::insert("INSERT INTO rig_resultados VALUES ($id_prod, $id_prov, NOW(), 'INICIAL', $total)");
