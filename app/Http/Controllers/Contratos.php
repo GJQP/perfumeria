@@ -351,12 +351,16 @@ class Contratos extends Controller
         $escala = "SELECT DATE(fcha_reg) as fcha_reg, rgo_ini, rgo_fin FROM rig_escalas WHERE id_prod = $id_prod AND fcha_fin IS NULL";
         $escala = DB::select("$escala");
 
+        // Si no tiene escala
         if(empty($escala))
-            return redirect()->route('contratos.index')->with('error', 'El productor no tiene fórmulas activas');
+            return redirect()->route('contratos.index')->with('error', 'El productor no escalas registradas');
 
         // Obtengo las variables
         $variables = "SELECT rec.id_var, rec.fcha_reg, rec.tipo_eval, rec.peso, var.nombre FROM rig_evaluaciones_criterios rec INNER JOIN rig_variables var ON rec.id_var = var.id WHERE rec.id_prod=$id_prod AND rec.fcha_fin IS NULL AND rec.tipo_eval = 'INICIAL' AND rec.id_var != 5";
         $variables = DB::select("$variables");
+
+        if(empty($variables))
+            return redirect()->route('contratos.index')->with('error', 'El productor no tiene fórmula de evaluación inical registrar');
 
         //Retornamos la vista del contrato
         return view('contratos.evaluacion')->with([
