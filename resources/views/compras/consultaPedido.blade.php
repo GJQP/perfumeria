@@ -85,25 +85,53 @@
                     </div>
 
                     <div id="pagar-part" class="content" role="tabpanel" aria-labelledby="pagar-part-trigger">
-                        @if(!empty($ingredientes))
+                        @if(!empty($pagos_com))
                             <div class="col-md-12">
-                                <h3>Ingredientes</h3>
+                                <h3>Pagos</h3>
                                 <table id="tabla" class="tablaDatos mgt-2">
                                     <tr>
-                                        <th>Producto</th>
-                                        <th>Precio</th>
-                                        <th>Cantidad</th>
+                                        <th>N° Pago</th>
+                                        <th>Monto</th>
+                                        <th>Fecha de Pago</th>
                                     </tr>
-                                    @foreach($ingredientes as $ingrediente)
+                                    @foreach($pagos_com as $key => $pago)
                                         <tr>
-                                            <td>{{$ingrediente->presentacion}}</td>
-                                            <td>{{$ingrediente->precio_txt}}</td>
+                                            <td>{{$key + 1}}</td>
+                                            <td>{{$pago->total}}</td>
                                             <td>
-                                                {{$ingrediente->cantidad}}
+                                                {{$pago->fcha_reg}}
                                             </td>
                                         </tr>
                                     @endforeach
                                 </table>
+                            </div>
+
+                        @else
+                            <div class="col-md-12">
+                                <h3>Pagos</h3>
+                                <table id="tabla" class="tablaDatos mgt-2">
+                                    <tr>
+                                        <th>N° Pago</th>
+                                        <th>Monto</th>
+                                        <th>Fecha de Pago</th>
+                                    </tr>
+                                    @php($total = 0)
+                                    @foreach($pagos_gen as $key => $pago)
+                                        <tr>
+                                            <td>{{$key + 1}}</td>
+                                            <td>$ {{round($pago['total'],2)}}</td>@php($total += round($pago['total'],2) )
+                                            <td>
+                                                Páguese antes del
+                                                {{Carbon\Carbon::now('America/Caracas')->addDays($pago['days'])->format('Y-m-d')}}
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                    <h3>Total a cancelar: $ {{$total}}</h3>
+                                </table>
+                                <form action="{{route('compras.pagar',['id_ctro'=>$id_cto,'id_ped'=>$id_ped])}}" method="POST">
+                                    @csrf
+                                    <button type="submit" class="btn btn-success offset-4 mgt-2">Generar Pagos</button>
+                                </form>
                             </div>
 
                         @endif
@@ -132,7 +160,7 @@
 
 
             );
-            stepper.to(4);
+            stepper.to(2);
         })
 
     </script>
