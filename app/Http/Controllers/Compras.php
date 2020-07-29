@@ -153,9 +153,8 @@ class Compras extends Controller
                 DB::insert('
                     INSERT INTO rig_detalles_pedidos
                     (id_ped,renglon, cantidad, cas_otr_ing, cod_pre_otr)
-                    VALUES (?,?,?,?,?)
+                    VALUES (currval(\'rig_pedidos_id_seq\'),?,?,?,?)
             ', [
-                    $id_ped,
                     $i++,
                     $ingrediente['cantidad'],
                     $ingrediente['cas'],
