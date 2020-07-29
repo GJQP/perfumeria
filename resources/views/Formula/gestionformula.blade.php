@@ -87,9 +87,9 @@
             @endif
             @if(!empty($escala))
             <div class="justify-content-center">
-            <table class="mgl-3"> 
-                <p class="mgt-1 text-center" for="empresas"><strong>Escala actual</strong><p>   
-                <div class="blocktext ">
+            <p class="mgt-1 text-center" for="empresas"><strong>Escala actual</strong><p>   
+            <div class="blocktext ">
+            <table > 
                     <tr>
                         <th id="criterio">Fecha de registro</th>
                         <th id="escala">Valor minimo</th>
