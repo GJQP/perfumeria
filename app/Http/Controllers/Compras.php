@@ -29,86 +29,97 @@ class Compras extends Controller
 
     public function index(Request $request)
     {
-        $idProductor = $request->id_prod ? : '1';
+        $idProductor = $request->id_prod ?: '1';
 
         return view('compras.gestionCompras')->with([
-            'id_prod'=>$idProductor,
-            'productores'=>$this->getProductores(),
-            'proveedores'=>$this->getProveedoresContrato($idProductor)
+            'id_prod' => $idProductor,
+            'productores' => $this->getProductores(),
+            'proveedores' => $this->getProveedoresContrato($idProductor)
         ]);
     }
 
-    public function contrato($id_prod,$id_prov,$id_contrato){
-        $detalle = $this->getDetallesContrato([$id_prod,$id_prov,$id_contrato]);
-        abort_if(empty($detalle),404);
+    public function contrato($id_prod, $id_prov, $id_contrato)
+    {
+        $detalle = $this->getDetallesContrato([$id_prod, $id_prov, $id_contrato]);
+        abort_if(empty($detalle), 404);
 
-        return view('compras.crearPedido')->with(['detalle'=>$detalle,'id_contrato'=>$id_contrato]);
+        $pedidos = DB::select('
+            SELECT p.fcha_reg, p.estatus, p.factura, p.id
+            FROM rig_pedidos p,
+                rig_condiciones_contratos ctr
+            WHERE
+                  p.id_ctra_cone = ctr.id
+                  AND
+                  ctr.id_prov = ? AND ctr.id_prod = ? AND ctr.id_ctra = ?
+            ORDER BY id DESC
+        ',[$id_prov,$id_prod,$id_contrato]);
+
+        //dd($pedidos);
+
+        return view('compras.crearPedido')->with(['detalle' => $detalle, 'id_contrato' => $id_contrato, 'pedidos'=>$pedidos]);
     }
 
-    public function pedido($id_cto, Request $request){
+    public function pedido($id_cto, Request $request)
+    {
 
         //ddd($this->getEnvio($id_cto));
         //abort si no puedo hacer un nuevo pedido o redirect al que tengo abierto
 
 
         return view('compras.detallePedido')->with([
-            'presentaciones'=>$this->getProductos($id_cto),
-            'Otrpresentaciones'=>$this->getOtrosProductos($id_cto),
-            'envios'=>$this->getEnvio($id_cto),
-            'pagos'=>$this->getPagos($id_cto),
-            'id_cto'=> $id_cto,
-            'selected'=> []
+            'presentaciones' => $this->getProductos($id_cto),
+            'Otrpresentaciones' => $this->getOtrosProductos($id_cto),
+            'envios' => $this->getEnvio($id_cto),
+            'pagos' => $this->getPagos($id_cto),
+            'id_cto' => $id_cto,
+            'selected' => []
         ]);
     }
 
-    public function pagos($id_cto, $id_ped){
+    public function pagos($id_cto, $id_ped)
+    {
+        //dd($this->getDetallePedido($id_ped));
 
-
-        return view('compras.detallePedido')->with([
-            'presentaciones'=>$this->getProductos($id_cto),
-            'Otrpresentaciones'=>$this->getOtrosProductos($id_cto),
-            'envios'=>$this->getEnvio($id_cto),
-            'pagos'=>$this->getPagos($id_cto),
-            'id_cto'=> $id_cto,
-            'selected'=> []
-        ]);
+        return view('compras.consultaPedido')->with($this->getDetallePedido($id_ped));
     }
 
-    public function setProductos(Request $request){
-
+    public function setProductos(Request $request)
+    {
+        //dd($request->ingredientes);
         DB::beginTransaction();
 
         $pedido = DB::insert('
             INSERT INTO rig_pedidos
-                (fcha_reg,estatus)
-                VALUES (current_date,?)
-        ',['NO ENVIADO']);
+                (fcha_reg,estatus, factura)
+                VALUES (current_date,?, NULL)
+        ', ['NO ENVIADO']);
 
         $id_ped = DB::select('SELECT currval(\'rig_pedidos_id_seq\') AS id_ped');
 
         $i = 1;
 
-        if (isset($request['ingredientes'])){
+        if (isset($request['ingredientes'])) {
             foreach ($request->ingredientes as $ingrediente)
                 DB::insert('
                     INSERT INTO rig_detalles_pedidos
-                    (id_ped, renglon, cantidad, id_prov_ing, id_ing)
-                    VALUES (currval(\'rig_pedidos_id_seq\'),?,?,?,?)
+                    (id_ped, renglon, cantidad, id_prov_ing, id_ing, cod_pre_ing)
+                    VALUES (currval(\'rig_pedidos_id_seq\'),?,?,?,?,?)
                 ', [
                     $i++,
                     $ingrediente['cantidad'],
                     $ingrediente['id_prov'],
-                    $ingrediente['id_ing']
+                    $ingrediente['id_ing'],
+                    $ingrediente['cod_present']
                 ]);
         }
 
-        if (isset($request['otros_ingredientes'])){
+        if (isset($request['otros_ingredientes'])) {
             foreach ($request->otros_ingredientes as $ingrediente)
                 DB::insert('
                     INSERT INTO rig_detalles_pedidos
                     (id_ped,renglon, cantidad, cas_otr_ing, cod_pre_otr)
                     VALUES (?,?,?,?,?)
-            ',[
+            ', [
                     $id_ped,
                     $i++,
                     $ingrediente['cantidad'],
@@ -123,11 +134,12 @@ class Compras extends Controller
 
     }
 
-    public function setCondEnv($id_cto, Request $request){
+    public function setCondEnv($id_cto, Request $request)
+    {
 
         //dd($request);
 
-        $pkContrato = DB::select('SELECT id_prod, id_prov FROM rig_contratos WHERE id = ?',[
+        $pkContrato = DB::select('SELECT id_prod, id_prov FROM rig_contratos WHERE id = ?', [
             $id_cto
         ]);
 
@@ -137,21 +149,22 @@ class Compras extends Controller
                        id_ctra_cone = ?,
                        id_cone = ?
                         WHERE id= ?
-        ',[
-                $pkContrato[0]->id_prod,
-                $pkContrato[0]->id_prov,
-                $id_cto,
-                $request->id_cone,
-                $request->id_ped
+        ', [
+            $pkContrato[0]->id_prod,
+            $pkContrato[0]->id_prov,
+            $id_cto,
+            $request->id_cone,
+            $request->id_ped
         ]);
 
     }
 
-    public function setCondPag($id_cto, Request $request){
+    public function setCondPag($id_cto, Request $request)
+    {
 
         //dd($request);
 
-        $pkContrato = DB::select('SELECT id_prod, id_prov FROM rig_contratos WHERE id = ?',[
+        $pkContrato = DB::select('SELECT id_prod, id_prov FROM rig_contratos WHERE id = ?', [
             $id_cto
         ]);
 
@@ -161,7 +174,7 @@ class Compras extends Controller
                        id_ctra_conp = ?,
                        id_conp = ?
                      WHERE id = ?
-        ',[
+        ', [
             $pkContrato[0]->id_prod,
             $pkContrato[0]->id_prov,
             $id_cto,
@@ -171,26 +184,50 @@ class Compras extends Controller
 
     }
 
-    public function setEstado(Request $request){
-        DB::update('
+    public function setEstado(Request $request)
+    {
+
+        if ($request->res){
+            DB::update('
             UPDATE rig_pedidos
-            SET estatus = ?
+            SET estatus = ?,
+                total = ?,
+                factura = DEFAULT
             WHERE id = ?
-        ',[
-            $request->res? 'ENVIADO':'RECHAZADO',
-            $request->id_ped
-        ]);
+            ', [
+                'ENVIADO',
+                $request->total,
+                $request->id_ped
+            ]);
+        }
+        else{
+            DB::update('
+            UPDATE rig_pedidos
+            SET estatus = ?,
+                total = ?,
+            WHERE id = ?
+            ', [
+                'RECHAZADO',
+                $request->total,
+                $request->id_ped
+            ]);
+        }
+
+
     }
 
-    private function findOrCreate($id_cto){
+    private function findOrCreate($id_cto)
+    {
         //
     }
 
-    private function getProductores(){
+    private function getProductores()
+    {
         return DB::select('SELECT id,nombre FROM rig_productores');
     }
 
-    private function getProveedoresContrato($idProductor){
+    private function getProveedoresContrato($idProductor)
+    {
 
         return DB::select('
             SELECT
@@ -217,11 +254,12 @@ class Compras extends Controller
 		    )
 	    )
 
-        ',[$idProductor]);
+        ', [$idProductor]);
 
     }
 
-    private function getDetallesContrato($pkContrato){
+    private function getDetallesContrato($pkContrato)
+    {
 
         $contrato = DB::select('
             SELECT * FROM rig_contratos c
@@ -237,7 +275,7 @@ class Compras extends Controller
                     AND
                     c.id_prod = r.id_prod AND c.id_prov = r.id_prov
                 )
-        ',$pkContrato);
+        ', $pkContrato);
 
         if (empty($contrato)) return [];
 
@@ -253,7 +291,7 @@ class Compras extends Controller
                         WHERE id_ubic=p.id
                     )e
             WHERE cond.id_prov = e.id_prov AND cond.id_ubic = e.id_ubic
-        ',$pkContrato);
+        ', $pkContrato);
 
         $pagos = DB::select('
             SELECT p.tipo, p.coutas, p.porcen_cuo, p.cant_meses
@@ -263,7 +301,7 @@ class Compras extends Controller
                     ) cond,
                     rig_condiciones_de_pago p
             WHERE cond.id_prov = p.id_prov AND cond.id_condpgo = p.id
-        ',$pkContrato);
+        ', $pkContrato);
 
         $productos = DB::select('
             SELECT prod.nombre || \' \' ||to_char(prod.cas, \'9999999-00-0\') nombre_cas ,
@@ -280,16 +318,16 @@ class Compras extends Controller
                     WHERE i.id_prov = p.id_prov AND i.id= p.id_ing
                 ) prod
             WHERE c.id_prov_ing = prod.id_prov AND c.id_ing = prod.id
-        ',$pkContrato);
+        ', $pkContrato);
 
-
-        return ['contrato'=>$contrato,
-            'envios'=>$envios,
-            'pagos'=>$pagos,
-            'productos'=>$productos];
+        return ['contrato' => $contrato,
+            'envios' => $envios,
+            'pagos' => $pagos,
+            'productos' => $productos];
     }
 
-    private function getProductos($id_cto){
+    private function getProductos($id_cto)
+    {
         return DB::select('
             SELECT prod.nombre || \' \' ||
 	        to_char(prod.medida,\'990.00\') || \' \' || prod.unidad presentacion,
@@ -309,10 +347,11 @@ class Compras extends Controller
                     WHERE i.id_prov = p.id_prov AND i.id= p.id_ing
                 ) prod
             WHERE c.id_prov_ing = prod.id_prov AND c.id_ing = prod.id
-        ',[$id_cto]);
+        ', [$id_cto]);
     }
 
-    private function getOtrosProductos($id_cto){
+    private function getOtrosProductos($id_cto)
+    {
         return DB::select('
             SELECT
                 o.nombre || \' \' ||
@@ -332,10 +371,11 @@ class Compras extends Controller
                     WHERE i.cas = p.cas_otr_ing
                 ) o
             WHERE c.cas_otr_ing = o.cas
-        ',[$id_cto]);
+        ', [$id_cto]);
     }
 
-    private function getEnvio($id_cto){
+    private function getEnvio($id_cto)
+    {
         return DB::select('
             SELECT
                    e.nombre || \' \' || e.medio || \' \' || \'a \' || p.nombre || \' \' || e.porce_serv || \'%\' AS desc,
@@ -356,11 +396,8 @@ class Compras extends Controller
         ', [$id_cto]);
     }
 
-    private function getMonto($id_cto){
-
-    }
-
-    private function getPagos($id_cto){
+    private function getPagos($id_cto)
+    {
         return DB::select('
             SELECT
                    p.coutas || \' cuota(s) de \' || p.cant_meses || \' meses al \' || p.porcen_cuo || \'%\' AS desc,
@@ -379,7 +416,92 @@ class Compras extends Controller
 
     }
 
-    private function generarPagos($id_pago){
+    private function getDetallePedido($id_ped)
+    {
+        $ingredientes = DB::select('
+            SELECT item.presentacion, d.cantidad,item.precio_txt
+                FROM
+                    (
+                        SELECT
+                            i.nombre || \' \' ||
+                            to_char(pres.medida,\'990.00\') || \' \' || pres.unidad presentacion,
+                            to_char(pres.precio,\'$ 999,999,990.00\') precio_txt,
+                            pres.cod_present,
+                            i.id as id_ing,
+                            i.id_prov
+                        FROM rig_ingredientes_esencias i,
+                             rig_presentaciones_ingredientes pres
+                        WHERE i.id = pres.id_ing AND i.id_prov = pres.id_prov
+                    ) item,
+                     rig_detalles_pedidos d
+                WHERE d.id_ped = ?
+                     AND item.id_prov = d.id_prov_ing  AND item.id_ing = d.id_ing AND item.cod_present = d.cod_pre_ing
+        ', [$id_ped]);
+
+        $otros_ing = DB::select('
+            SELECT item.cod_present, item.presentacion, item.precio
+            FROM (SELECT i.nombre || \' \' ||
+                       to_char(p.volumen,\'990.00 ml\') presentacion,
+                       to_char(p.precio,\'$ 999,999,990.00\') precio,
+                       i.cas,
+                       p.cod_present
+                FROM rig_otros_ingredientes i,
+                     rig_presentaciones_otros_ingredientes p
+                WHERE i.cas = p.cas_otr_ing) item,
+                    rig_detalles_pedidos d
+                WHERE
+                      d.cas_otr_ing = item.cas AND d.cod_pre_otr = item.cod_present
+                      AND d.id_ped = ?
+        ',[$id_ped]);
+
+        $cond_env = DB::select('
+            SELECT condiciones.desc, condiciones.id_cone FROM
+                    (SELECT cond.*, cont.id as id_cone FROM
+                                (SELECT
+                                e.nombre || \' \' || e.medio || \' \' || \'a \' || p.nombre || \' \' || e.porce_serv || \'%\' AS desc,
+                                e.id_prov,
+                                e.id_ubic
+                            FROM rig_condiciones_de_envio e,
+                                 rig_paises p
+                            WHERE e.id_ubic = p.id) cond,
+                    rig_condiciones_contratos cont
+                    WHERE cond.id_ubic = cont.id_ubic AND cond.id_prov = cont.id_prov) condiciones,
+                    rig_pedidos ped
+                WHERE condiciones.id_prov = ped.id_prov_cone AND condiciones.id_cone = ped.id_cone
+                  AND ped.id = ?
+        ',[$id_ped]);
+
+        $cond_pag = DB::select('
+            SELECT pagos.desc, ped.id as id_ped, pagos.id, pagos.id_prov
+            FROM (SELECT cond.*, cont.id as id_cont
+                FROM (SELECT
+                    p.coutas || \' cuota(s) de \' || p.cant_meses || \' meses al \' || p.porcen_cuo || \'%\' AS desc,
+                    p.id_prov,
+                    p.id
+                    FROM rig_condiciones_de_pago p) cond,
+                    rig_condiciones_contratos cont
+                    WHERE cond.id = cont.id_condpgo AND cond.id_prov = cont.id_prov) pagos,
+                 rig_pedidos ped
+            WHERE pagos.id_cont = ped.id_ctra_conp AND pagos.id_prov = ped.id_prov_conp AND ped.id = ?
+        ',[$id_ped]);
+
+        $pedido = DB::select('
+            SELECT * FROM rig_pedidos WHERE id = ?
+        ',[$id_ped]);
+
+        return [
+            'ingredientes'=>$ingredientes,
+            'otros_ing'=>$otros_ing,
+            'cond_env'=>$cond_env,
+            'cond_pag'=>$cond_pag,
+            'ped'=>$pedido[0]
+        ];
+
+
+    }
+
+    private function generarPagos($id_pago)
+    {
 
     }
 }

@@ -86,7 +86,7 @@
 				@foreach($ingredientes as $ingrediente)
 				<div class="form-check">
 					<tr>
-                        <td><a href="#">Ver</a></td>
+                        <td><a class="aN" href="#" data-toggle="modal" data-target="#presentacion">Ver</a></td>
 						<td>{{$ingrediente->cas}}</td>
 						<td>{{$ingrediente->nombre}}</td>
 					</tr>
@@ -200,35 +200,34 @@
 			</div>	
         </div>
 	</div>
-<!-- Popup para agregar descuento-->
-<!--div class="modal fade" id="descuento" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered" role="document">
-            <div class="modal-content">
-            <div class="modal-header">
-                <h3 class="modal-title">Agregar un Descuento</h3>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body" >
-				<div class="input-group mgb-1 ">
-                    <label>Ingrese el porcentaje del Descuento(opcional):</label>
-                    <input type="text" class="desc mgl-1" aria-label="porcentajeDesc" aria-describedby="basic-addon2" name="porcentajeDesc">
-                    <div class="input-group-append">
-                    <span class="input-group-text" id="basic-addon2">%</span>
-                    </div>
-                </div>
-                <div class="input-group">
-                    <label>Ingrese el porcentaje del Descuento(opcional):</label>
-                    <input type="date" class="form-control mgl-1" name="fechaDesc" aria-label="Fecha Culminacion" aria-describedby="basic-addon1">
-                </div>
-            </div>
-            <div class="modal-footer" id="botones">
-                <button type="button" class="btn btn-danger" data-dismiss="modal">Cancelar</button>
-				<button type="submit" class="btn btn-success">Aplicar</button>
-			</form>
-			</div>
+	<!-- Popup para ver presentacion-->
+	<div class="modal fade" id="presentacion" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+			<div class="modal-dialog modal-dialog-centered" role="document">
+				<div class="modal-content">
+				<div class="modal-header">
+					<h3 class="modal-title">Presentaciones</h3>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body" >
+					<div class="input-group mgb-1 blocktext">
+						<table>
+							<tr>
+								<th>Nombre</th>
+								<th>Precio</th>
+							</tr>
+							<tr>
+								<td id="">Gel</td>
+								<td>500$</td>
+							</tr>
+						</table>
+					</div>
+				</div>
+				<div class="modal-footer" id="botones">
+					<button type="button" class="btn btn-success" data-dismiss="modal">Aceptar</button>
+				</div>
 			</div>	
-        </div>
-	</div-->
+		</div>
+	</div>
 @endsection

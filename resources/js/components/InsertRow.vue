@@ -112,15 +112,17 @@
                         if (this.cantEnv == 0)
                             stepper.next();
                         else{
-                            guardarOpcionEnvio();
+                            guardarOpcionEnvio(false);
+                            stepper.next();
 
                             //console.log(nuevoPrecio);
                             if (this.cantPag == 0){
-                                stepper.to(3);
+                                stepper.next()
                             }
                             else {
-                                guardarPago();
-                                stepper.to(4);
+                                guardarPago(false);
+                                stepper.next()
+                                stepper.next()
                             }
 
                         }

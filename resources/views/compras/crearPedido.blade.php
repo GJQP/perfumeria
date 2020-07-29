@@ -13,7 +13,7 @@
             </div>
             <div class="blocktext mgtp-1 tablaDatos pdb-2 row">
                 <div id="accordion" class="col-sm-6">
-                    <h3>Condiciones del Contrato</h3>
+                    <h3 class="blocktext">Condiciones del Contrato</h3>
                     <div class="card" >
                         <div class="card-header" id="headingOne">
                             <h5 class="mb-0">
@@ -138,30 +138,40 @@
                     <h3>Pedidos</h3>
                 </div>
                 <div class="col-sm-12 text-center">
-                    <button class="btn btn-link btn-success row"><a href="{{route('compras.pedidos',$id_contrato)}}">Crear Pedido</button>
+                    <button class="btn btn-link btn-success row"><a href="{{route('compras.pedidos',$id_contrato)}}">Crear Pedido</a></button>
                 </div>
 
-                <div>
-                    @if(\Illuminate\Support\Arr::has($detalle,'pedidos'))
-                        <table class="tablaDatos mgt-2">
+                <div class=" mgtp-1 pdb-2">
+                    @if(isset($pedidos) && !empty($pedidos))
+                        <table class="tablaDatos">
                             <tr>
-                                <th>Nombre (CAS)</th>
-                                <th>Presentación</th>
-                                <th>Precio</th>
+                                <th>FECHA</th>
+                                <th>ESTADO</th>
+                                <th># FACTURA</th>
+                                <th><span class="col-2">ACCIÓN</span></th>
                             </tr>
-                            @foreach($detalle['productos'] as $condicion)
-                                <div class="form-check">
+                            @foreach($pedidos as $pedido)
+
                                     <tr>
-                                        <td>{{$condicion->nombre_cas}}</td>
-                                        <td>{{$condicion->presentacion}}</td>
-                                        <td>{{$condicion->precio_txt}}</td>
+                                        <td>{{$pedido->fcha_reg}}</td>
+                                        <td>{{$pedido->estatus}}</td>
+                                        <td>{{$pedido->factura? : 'NO APLICA'}}</td>
+                                        <td>
+                                            @if($pedido->estatus == 'ENVIADO')
+                                            <button class="btn btn-link btn-primary btn-sm row">
+                                                <a href="{{route('compras.detalle',['id_ctro'=>$id_contrato,'id_ped'=>$pedido->id])}}">Ver Pagos</a>
+                                            </button>
+                                            @else
+                                                -
+                                            @endif
+                                        </td>
                                     </tr>
-                                </div>
+
                             @endforeach
                         </table>
 
                     @else
-                        <p class="mgt-1"><strong>No hay productos disponibles</strong><p>
+                        <p class="mgt-1"><strong>No hay pedidos para este contrato.</strong><p>
                     @endif
 
                 </div>

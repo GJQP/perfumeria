@@ -15,7 +15,7 @@
                             <option value="{{$productor->id}}" {{$productor->id == $id_prod? 'selected':''}}>{{$productor->nombre}}</option>
                         @endforeach
                     </select>
-                    <button type="submit" class="btn btn-primary">Cambiar productor</button>
+                    <button type="submit" class="btn btn-primary mgl-1">Cambiar productor</button>
                 </form>
             </div>
         </div>

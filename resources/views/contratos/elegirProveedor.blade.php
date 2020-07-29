@@ -31,7 +31,7 @@
                     <tr>
                         <td>{{$proveedor->nombre}}</td>
                     </td>
-                        <td><a href="{{route('evaluacion.nueva', [$id_prod, $proveedor->id])}}">Iniciar evaluación</a></td>
+                        <td><a class="aN" href="{{route('evaluacion.nueva', [$id_prod, $proveedor->id])}}">Iniciar evaluación</a></td>
                     </tr>
                 @endforeach                
               </table>
