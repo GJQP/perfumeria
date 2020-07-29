@@ -82,7 +82,7 @@ class Contratos extends Controller
         //dd($id_prod, $id_prov, $id, $request->all());
         $variable = $request->variables['Cumplimiento de envios'];        
         
-        $escala = "SELECT DATE(fcha_reg) as fcha_reg, rgo_ini, rgo_fin FROM rig_escalas WHERE id_prod = $id_prod";
+        $escala = "SELECT DATE(fcha_reg) as fcha_reg, rgo_ini, rgo_fin FROM rig_escalas WHERE id_prod = $id_prod AND fcha_fin IS NULL";
         $escala = DB::select("$escala");
         
         // Obtengo los minimos y máximos de las escalas
