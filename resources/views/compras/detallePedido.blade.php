@@ -9,7 +9,7 @@
 
 @section('contenido')
     <div class="container mgt-2 mgrb-1" id="app">
-        <div class="stage tarjeta muli col-md-6 offset-3">
+        <div class="stage tarjeta muli off agran">
             <div class="bs-stepper">
                 <div class="bs-stepper-header" role="tablist">
                     <!-- your steps here -->

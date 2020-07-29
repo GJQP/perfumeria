@@ -1,11 +1,11 @@
 <template>
     <div>
-        <div class="form-inline" v-if="optionsIng.length > 0">
+        <div class="form-inline blocktext" v-if="optionsIng.length > 0">
             <label>Seleccione el producto:</label>
-            <select class="form-control" v-model="selectedIng">
+            <select class="form-control selecEmp" v-model="selectedIng">
                 <option v-for="(val, key) in optionsIng" :value="key" >{{val.presentacion}}</option>
             </select>
-            <button class="btn btn-primary" @click="agregarFila(true)">Agregar producto</button>
+            <button class="btn btn-primary selecEmp" @click="agregarFila(true)">Agregar producto</button>
         </div>
 
         <table id="tabla" class="tablaDatos mgt-2" v-if="insertedIng.length > 0">

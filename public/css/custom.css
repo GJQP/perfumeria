@@ -643,3 +643,12 @@ table{
 .aN:hover{
     color:black !important;
 }
+
+.agran{
+    width: 60%;
+    max-width: 80%;
+}
+
+.off{
+    margin-left: 22%;
+}

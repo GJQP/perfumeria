@@ -2244,6 +2244,315 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Recomendador.vue?vue&type=script&lang=js&":
+/*!***********************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/Recomendador.vue?vue&type=script&lang=js& ***!
+  \***********************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+/* harmony default export */ __webpack_exports__["default"] = ({
+  name: "Recomendador",
+  data: function data() {
+    return {
+      generos: [{
+        texto: 'Femenino'
+      }, {
+        texto: 'Masculino'
+      }, {
+        texto: 'Unisex'
+      }],
+      edades: [{
+        texto: 'Atemporal'
+      }, {
+        texto: 'Adulto'
+      }, {
+        texto: 'Joven'
+      }],
+      intensidades: [{
+        texto: 'Ligero',
+        value: ['EdC', 'EdS']
+      }, {
+        texto: 'Intermedio',
+        value: ['EdT']
+      }, {
+        texto: 'Intenso',
+        value: ['P', 'EdP']
+      }],
+      caracteres: [{
+        texto: 'Clasico'
+      }, {
+        texto: 'Informal'
+      }, {
+        texto: 'Moderno'
+      }, {
+        texto: 'Natural'
+      }, {
+        texto: 'Seductor'
+      }],
+      aromas: [{
+        texto: 'Floral'
+      }, {
+        texto: 'Frutal,'
+      }, {
+        texto: 'Verde'
+      }, {
+        texto: 'Herbal'
+      }, {
+        texto: 'Cítrico'
+      }, {
+        texto: 'Herbal Aromático'
+      }],
+      usos: [{
+        texto: 'Diario'
+      }, {
+        texto: 'Trabajo'
+      }, {
+        texto: 'Ocasion Especial'
+      }],
+      aspectos: [{
+        texto: 'Libertad'
+      }, {
+        texto: 'Independiente'
+      }, {
+        texto: 'Creatividad'
+      }, {
+        texto: 'Diversion'
+      }],
+      familias: [{
+        texto: 'Verde'
+      }, {
+        texto: 'Cítrico'
+      }, {
+        texto: 'Flores'
+      }, {
+        texto: 'Frutas'
+      }, {
+        texto: 'Aromáticos'
+      }, {
+        texto: 'Helechos'
+      }, {
+        texto: 'Chipre'
+      }, {
+        texto: 'Maderas'
+      }, {
+        texto: 'Orientales'
+      }],
+      genero: null,
+      edad: null,
+      preferencia: null,
+      intensidad: null,
+      caracter: null,
+      familia: null,
+      aroma: null,
+      aspecto: null,
+      caracterSelected: [],
+      familiaSelected: [],
+      aromaSelected: [],
+      aspectoSelected: []
+    };
+  },
+  methods: {
+    agregar: function agregar(inserted, options, select) {
+      if (select !== null && select + 1 <= options.length) {
+        //debugger
+        inserted.push(options[select]);
+        options.splice(select, 1);
+        select = null;
+      }
+    },
+    filtrar: function filtrar() {
+      axios.post('/', {
+        genero: this.genero,
+        edad: this.edad
+      });
+    }
+    /*
+    --UN PERFUME QUE TENGA POR LO MENOS
+    --* 1 EL GENERO
+    --* 2 EDAD
+    --* 3 TENGA LA PREFERENCIA
+    --* 4 TENGA LA INTENSIDAD
+    --* 5 TENGA ALGUN CARACTER (PALABRAS CLAVES)
+    --* 6 TENGA ALGUNA FAMILIA
+    --* 7 TENGA ALGUN AROMA
+    --* 8 TENGA ALGUN ASPECTO
+    */
+
+  }
+});
+
+/***/ }),
+
 /***/ "./node_modules/bootstrap/dist/js/bootstrap.js":
 /*!*****************************************************!*\
   !*** ./node_modules/bootstrap/dist/js/bootstrap.js ***!
@@ -38210,7 +38519,7 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c("div", [
     _vm.optionsIng.length > 0
-      ? _c("div", { staticClass: "form-inline" }, [
+      ? _c("div", { staticClass: "form-inline blocktext" }, [
           _c("label", [_vm._v("Seleccione el producto:")]),
           _vm._v(" "),
           _c(
@@ -38224,7 +38533,7 @@ var render = function() {
                   expression: "selectedIng"
                 }
               ],
-              staticClass: "form-control",
+              staticClass: "form-control selecEmp",
               on: {
                 change: function($event) {
                   var $$selectedVal = Array.prototype.filter
@@ -38252,7 +38561,7 @@ var render = function() {
           _c(
             "button",
             {
-              staticClass: "btn btn-primary",
+              staticClass: "btn btn-primary selecEmp",
               on: {
                 click: function($event) {
                   return _vm.agregarFila(true)
@@ -38472,6 +38781,711 @@ var staticRenderFns = [
       _c("th", [_vm._v("Cantidad")]),
       _vm._v(" "),
       _c("th", [_vm._v("Acción")])
+    ])
+  }
+]
+render._withStripped = true
+
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Recomendador.vue?vue&type=template&id=73b12e44&scoped=true&":
+/*!***************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/Recomendador.vue?vue&type=template&id=73b12e44&scoped=true& ***!
+  \***************************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", { staticClass: "container mgt-2 mgrb-1" }, [
+    _c("div", [
+      _c("div", { staticClass: "stage tarjeta muli pdb-2" }, [
+        _vm._m(0),
+        _vm._v(" "),
+        _c("div", { staticClass: "mgtp-1 pdb-1" }, [
+          _c("div", { staticClass: "row" }, [
+            _c("div", { staticClass: "offset-1 col-md-2" }, [
+              _c("label", { staticClass: "pdtp-1 mgr-1" }, [_vm._v("Género:")]),
+              _vm._v(" "),
+              _c(
+                "select",
+                {
+                  directives: [
+                    {
+                      name: "model",
+                      rawName: "v-model",
+                      value: _vm.genero,
+                      expression: "genero"
+                    }
+                  ],
+                  staticClass: "form-control",
+                  on: {
+                    change: function($event) {
+                      var $$selectedVal = Array.prototype.filter
+                        .call($event.target.options, function(o) {
+                          return o.selected
+                        })
+                        .map(function(o) {
+                          var val = "_value" in o ? o._value : o.value
+                          return val
+                        })
+                      _vm.genero = $event.target.multiple
+                        ? $$selectedVal
+                        : $$selectedVal[0]
+                    }
+                  }
+                },
+                [
+                  _c(
+                    "option",
+                    {
+                      attrs: { selected: "", disabled: "" },
+                      domProps: { value: null }
+                    },
+                    [_vm._v("--Genero--")]
+                  ),
+                  _vm._v(" "),
+                  _vm._l(_vm.generos, function(genero) {
+                    return _c("option", { domProps: { value: genero.texto } }, [
+                      _vm._v(
+                        _vm._s(genero.texto) +
+                          "\n                                "
+                      )
+                    ])
+                  })
+                ],
+                2
+              )
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "col-md-3" }, [
+              _c("label", { staticClass: "pdtp-1 mgr-1" }, [_vm._v("Edad:")]),
+              _vm._v(" "),
+              _c(
+                "select",
+                {
+                  directives: [
+                    {
+                      name: "model",
+                      rawName: "v-model",
+                      value: _vm.edad,
+                      expression: "edad"
+                    }
+                  ],
+                  staticClass: "form-control",
+                  on: {
+                    change: function($event) {
+                      var $$selectedVal = Array.prototype.filter
+                        .call($event.target.options, function(o) {
+                          return o.selected
+                        })
+                        .map(function(o) {
+                          var val = "_value" in o ? o._value : o.value
+                          return val
+                        })
+                      _vm.edad = $event.target.multiple
+                        ? $$selectedVal
+                        : $$selectedVal[0]
+                    }
+                  }
+                },
+                [
+                  _c(
+                    "option",
+                    {
+                      attrs: { selected: "", disabled: "" },
+                      domProps: { value: null }
+                    },
+                    [_vm._v("--Edad--")]
+                  ),
+                  _vm._v(" "),
+                  _vm._l(_vm.edades, function(edad) {
+                    return _c("option", { domProps: { value: edad.texto } }, [
+                      _vm._v(
+                        _vm._s(edad.texto) +
+                          "\n                                "
+                      )
+                    ])
+                  })
+                ],
+                2
+              )
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "col-md-3" }, [
+              _c("label", { staticClass: "pdtp-1 mgr-1" }, [
+                _vm._v("Intensidad:")
+              ]),
+              _vm._v(" "),
+              _c(
+                "select",
+                {
+                  directives: [
+                    {
+                      name: "model",
+                      rawName: "v-model",
+                      value: _vm.intensidad,
+                      expression: "intensidad"
+                    }
+                  ],
+                  staticClass: "form-control",
+                  on: {
+                    change: function($event) {
+                      var $$selectedVal = Array.prototype.filter
+                        .call($event.target.options, function(o) {
+                          return o.selected
+                        })
+                        .map(function(o) {
+                          var val = "_value" in o ? o._value : o.value
+                          return val
+                        })
+                      _vm.intensidad = $event.target.multiple
+                        ? $$selectedVal
+                        : $$selectedVal[0]
+                    }
+                  }
+                },
+                [
+                  _c(
+                    "option",
+                    {
+                      attrs: { selected: "", disabled: "" },
+                      domProps: { value: null }
+                    },
+                    [_vm._v("--Intensidad--")]
+                  ),
+                  _vm._v(" "),
+                  _vm._l(_vm.intensidades, function(intensidad) {
+                    return _c(
+                      "option",
+                      { domProps: { value: intensidad.value } },
+                      [
+                        _vm._v(
+                          "\n                                    " +
+                            _vm._s(intensidad.texto) +
+                            "\n                                "
+                        )
+                      ]
+                    )
+                  })
+                ],
+                2
+              )
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "col-md-2" }, [
+              _c("label", { staticClass: "pdtp-1 mgr-1" }, [
+                _vm._v("Preferencia de Uso:")
+              ]),
+              _vm._v(" "),
+              _c(
+                "select",
+                {
+                  directives: [
+                    {
+                      name: "model",
+                      rawName: "v-model",
+                      value: _vm.preferencia,
+                      expression: "preferencia"
+                    }
+                  ],
+                  staticClass: "form-control",
+                  on: {
+                    change: function($event) {
+                      var $$selectedVal = Array.prototype.filter
+                        .call($event.target.options, function(o) {
+                          return o.selected
+                        })
+                        .map(function(o) {
+                          var val = "_value" in o ? o._value : o.value
+                          return val
+                        })
+                      _vm.preferencia = $event.target.multiple
+                        ? $$selectedVal
+                        : $$selectedVal[0]
+                    }
+                  }
+                },
+                [
+                  _c(
+                    "option",
+                    {
+                      attrs: { selected: "", disabled: "" },
+                      domProps: { value: null }
+                    },
+                    [_vm._v("--Preferencia--")]
+                  ),
+                  _vm._v(" "),
+                  _vm._l(_vm.usos, function(uso) {
+                    return _c("option", { domProps: { value: uso.texto } }, [
+                      _vm._v(_vm._s(uso.texto))
+                    ])
+                  })
+                ],
+                2
+              )
+            ])
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "row mgt-1" }, [
+            _c(
+              "div",
+              { staticClass: "offset-1 col-md-2" },
+              [
+                _c("label", { staticClass: "pdtp-1 mgr-2 nombreFiltro" }, [
+                  _vm._v(
+                    "\n                                Caracter:\n                                "
+                  ),
+                  _vm.caracteres.length > 0
+                    ? _c("span", {
+                        staticClass: "circle plus",
+                        on: {
+                          click: function($event) {
+                            return _vm.agregar(
+                              _vm.caracterSelected,
+                              _vm.caracteres,
+                              _vm.caracter
+                            )
+                          }
+                        }
+                      })
+                    : _vm._e(),
+                  _vm._v(" "),
+                  _vm.caracterSelected.length > 0
+                    ? _c("span", {
+                        staticClass: "circle minus",
+                        on: {
+                          click: function($event) {
+                            return _vm.agregar(
+                              _vm.caracteres,
+                              _vm.caracterSelected,
+                              0
+                            )
+                          }
+                        }
+                      })
+                    : _vm._e()
+                ]),
+                _vm._v(" "),
+                _vm.caracteres.length > 0
+                  ? _c(
+                      "select",
+                      {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.caracter,
+                            expression: "caracter"
+                          }
+                        ],
+                        staticClass: "form-control caracter mglp-1",
+                        on: {
+                          change: function($event) {
+                            var $$selectedVal = Array.prototype.filter
+                              .call($event.target.options, function(o) {
+                                return o.selected
+                              })
+                              .map(function(o) {
+                                var val = "_value" in o ? o._value : o.value
+                                return val
+                              })
+                            _vm.caracter = $event.target.multiple
+                              ? $$selectedVal
+                              : $$selectedVal[0]
+                          }
+                        }
+                      },
+                      [
+                        _c(
+                          "option",
+                          {
+                            attrs: { selected: "", disabled: "" },
+                            domProps: { value: null }
+                          },
+                          [_vm._v("--Caracter--")]
+                        ),
+                        _vm._v(" "),
+                        _vm._l(_vm.caracteres, function(val, key) {
+                          return _c("option", { domProps: { value: key } }, [
+                            _vm._v(_vm._s(val.texto))
+                          ])
+                        })
+                      ],
+                      2
+                    )
+                  : _vm._e(),
+                _vm._v(" "),
+                _vm._l(_vm.caracterSelected, function(caracter) {
+                  return _c("p", [_vm._v(_vm._s(caracter.texto))])
+                })
+              ],
+              2
+            ),
+            _vm._v(" "),
+            _c(
+              "div",
+              { staticClass: "col-md-3" },
+              [
+                _c("label", { staticClass: "pdtp-1 mgr-1 nombreFiltro" }, [
+                  _vm._v(
+                    "\n                                Aspecto de Personalidad:\n                                "
+                  ),
+                  _vm.aspectos.length > 0
+                    ? _c("span", {
+                        staticClass: "circle plus",
+                        on: {
+                          click: function($event) {
+                            return _vm.agregar(
+                              _vm.aspectoSelected,
+                              _vm.aspectos,
+                              _vm.aspecto
+                            )
+                          }
+                        }
+                      })
+                    : _vm._e(),
+                  _vm._v(" "),
+                  _vm.aspectoSelected.length > 0
+                    ? _c("span", {
+                        staticClass: "circle minus",
+                        on: {
+                          click: function($event) {
+                            return _vm.agregar(
+                              _vm.aspectos,
+                              _vm.aspectoSelected,
+                              0
+                            )
+                          }
+                        }
+                      })
+                    : _vm._e()
+                ]),
+                _vm._v(" "),
+                _vm.aspectos.length > 0
+                  ? _c(
+                      "select",
+                      {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.aspecto,
+                            expression: "aspecto"
+                          }
+                        ],
+                        staticClass: "form-control caracter",
+                        on: {
+                          change: function($event) {
+                            var $$selectedVal = Array.prototype.filter
+                              .call($event.target.options, function(o) {
+                                return o.selected
+                              })
+                              .map(function(o) {
+                                var val = "_value" in o ? o._value : o.value
+                                return val
+                              })
+                            _vm.aspecto = $event.target.multiple
+                              ? $$selectedVal
+                              : $$selectedVal[0]
+                          }
+                        }
+                      },
+                      [
+                        _c(
+                          "option",
+                          {
+                            attrs: { selected: "", disabled: "" },
+                            domProps: { value: null }
+                          },
+                          [_vm._v("--Aspecto--")]
+                        ),
+                        _vm._v(" "),
+                        _vm._l(_vm.aspectos, function(val, key) {
+                          return _c("option", { domProps: { value: key } }, [
+                            _vm._v(_vm._s(val.texto))
+                          ])
+                        })
+                      ],
+                      2
+                    )
+                  : _vm._e(),
+                _vm._v(" "),
+                _vm._l(_vm.aspectoSelected, function(val) {
+                  return _c("p", [_vm._v(_vm._s(val.texto))])
+                })
+              ],
+              2
+            ),
+            _vm._v(" "),
+            _c(
+              "div",
+              { staticClass: "col-md-3" },
+              [
+                _c("label", { staticClass: "pdtp-1 mgr-1 nombreFiltro" }, [
+                  _vm._v(
+                    "\n                                Familia Olfativa:\n                                "
+                  ),
+                  _vm.familias.length > 0
+                    ? _c("span", {
+                        staticClass: "circle plus",
+                        on: {
+                          click: function($event) {
+                            return _vm.agregar(
+                              _vm.familiaSelected,
+                              _vm.familias,
+                              _vm.familia
+                            )
+                          }
+                        }
+                      })
+                    : _vm._e(),
+                  _vm._v(" "),
+                  _vm.familiaSelected.length > 0
+                    ? _c("span", {
+                        staticClass: "circle minus",
+                        on: {
+                          click: function($event) {
+                            return _vm.agregar(
+                              _vm.familias,
+                              _vm.familiaSelected,
+                              0
+                            )
+                          }
+                        }
+                      })
+                    : _vm._e()
+                ]),
+                _vm._v(" "),
+                _vm.familias.length > 0
+                  ? _c(
+                      "select",
+                      {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.familia,
+                            expression: "familia"
+                          }
+                        ],
+                        staticClass: "form-control caracter",
+                        on: {
+                          change: function($event) {
+                            var $$selectedVal = Array.prototype.filter
+                              .call($event.target.options, function(o) {
+                                return o.selected
+                              })
+                              .map(function(o) {
+                                var val = "_value" in o ? o._value : o.value
+                                return val
+                              })
+                            _vm.familia = $event.target.multiple
+                              ? $$selectedVal
+                              : $$selectedVal[0]
+                          }
+                        }
+                      },
+                      [
+                        _c(
+                          "option",
+                          {
+                            attrs: { selected: "", disabled: "" },
+                            domProps: { value: null }
+                          },
+                          [_vm._v("--Familias--")]
+                        ),
+                        _vm._v(" "),
+                        _vm._l(_vm.familias, function(val, key) {
+                          return _c("option", { domProps: { value: key } }, [
+                            _vm._v(_vm._s(val.texto))
+                          ])
+                        })
+                      ],
+                      2
+                    )
+                  : _vm._e(),
+                _vm._v(" "),
+                _vm._l(_vm.familiaSelected, function(val) {
+                  return _c("p", [_vm._v(_vm._s(val.texto))])
+                })
+              ],
+              2
+            ),
+            _vm._v(" "),
+            _c(
+              "div",
+              { staticClass: "col-md-3" },
+              [
+                _c("label", { staticClass: "pdtp-1 mgr-1 nombreFiltro" }, [
+                  _vm._v(
+                    "\n                                Aroma Prevaleciente:\n                                "
+                  ),
+                  _vm.aromas.length > 0
+                    ? _c("span", {
+                        staticClass: "circle plus",
+                        on: {
+                          click: function($event) {
+                            return _vm.agregar(
+                              _vm.aromaSelected,
+                              _vm.aromas,
+                              _vm.aroma
+                            )
+                          }
+                        }
+                      })
+                    : _vm._e(),
+                  _vm._v(" "),
+                  _vm.aromaSelected.length > 0
+                    ? _c("span", {
+                        staticClass: "circle minus",
+                        on: {
+                          click: function($event) {
+                            return _vm.agregar(_vm.aromas, _vm.aromaSelected, 0)
+                          }
+                        }
+                      })
+                    : _vm._e()
+                ]),
+                _vm._v(" "),
+                _vm.aromas.length > 0
+                  ? _c(
+                      "select",
+                      {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.aroma,
+                            expression: "aroma"
+                          }
+                        ],
+                        staticClass: "form-control caracter",
+                        on: {
+                          change: function($event) {
+                            var $$selectedVal = Array.prototype.filter
+                              .call($event.target.options, function(o) {
+                                return o.selected
+                              })
+                              .map(function(o) {
+                                var val = "_value" in o ? o._value : o.value
+                                return val
+                              })
+                            _vm.aroma = $event.target.multiple
+                              ? $$selectedVal
+                              : $$selectedVal[0]
+                          }
+                        }
+                      },
+                      [
+                        _c(
+                          "option",
+                          {
+                            attrs: { selected: "", disabled: "" },
+                            domProps: { value: null }
+                          },
+                          [_vm._v("--Aromas--")]
+                        ),
+                        _vm._v(" "),
+                        _vm._l(_vm.aromas, function(val, key) {
+                          return _c("option", { domProps: { value: key } }, [
+                            _vm._v(_vm._s(val.texto))
+                          ])
+                        })
+                      ],
+                      2
+                    )
+                  : _vm._e(),
+                _vm._v(" "),
+                _vm._l(_vm.aromaSelected, function(val) {
+                  return _c("p", [_vm._v(_vm._s(val.texto))])
+                })
+              ],
+              2
+            )
+          ]),
+          _vm._v(" "),
+          _vm._m(1)
+        ])
+      ])
+    ]),
+    _vm._v(" "),
+    _vm._m(2)
+  ])
+}
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "mgl-2 pdtp-1 mgb-1" }, [
+      _c("h4", [_c("u", [_c("strong", [_vm._v("Filtros")])])])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "div",
+      {
+        staticClass: "offset-10 mgt-1 row",
+        staticStyle: { "text-align": "right" }
+      },
+      [
+        _c(
+          "button",
+          { staticClass: "btn btn-primary", attrs: { type: "submit" } },
+          [_vm._v("Aplicar")]
+        )
+      ]
+    )
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "stage tarjeta muli mgt-1 pdb-2" }, [
+      _c("div", { staticClass: " mgl-2 row" }, [
+        _c("div", { staticClass: "rueda" }),
+        _vm._v(" "),
+        _c("div", { staticClass: "perfumes" }, [
+          _c("div", [
+            _c("img", {
+              staticClass: "blocktext",
+              attrs: { src: "", alt: "#" }
+            }),
+            _vm._v(" "),
+            _c("h4", { staticClass: "mgt-1 blocktext" }, [
+              _c("u", [_vm._v("Nombre del Perfume")])
+            ])
+          ]),
+          _vm._v(" "),
+          _c("div", [
+            _c("div", [
+              _c("h5", { staticClass: "blocktext" }, [
+                _vm._v("Distribuido por:")
+              ]),
+              _vm._v(" "),
+              _c("h5", { staticClass: "blocktext" }, [_vm._v("Creado por:")]),
+              _vm._v(" "),
+              _c(
+                "a",
+                { staticClass: "mgt-1 ficha blocktext", attrs: { href: "#" } },
+                [_c("u", [_vm._v("Ficha del Perfume")])]
+              )
+            ])
+          ])
+        ])
+      ])
     ])
   }
 ]
@@ -50653,7 +51667,8 @@ module.exports = function(module) {
 var map = {
 	"./components/ExampleComponent.vue": "./resources/js/components/ExampleComponent.vue",
 	"./components/Filtros.vue": "./resources/js/components/Filtros.vue",
-	"./components/InsertRow.vue": "./resources/js/components/InsertRow.vue"
+	"./components/InsertRow.vue": "./resources/js/components/InsertRow.vue",
+	"./components/Recomendador.vue": "./resources/js/components/Recomendador.vue"
 };
 
 
@@ -50717,124 +51732,6 @@ files.keys().map(function (key) {
 
 var app = new Vue({
   el: '#app'
-});
-var aromas = new Vue({
-  el: '#filtrosComp',
-  data: {
-    prueba: [],
-    valores: [],
-    generos: [{
-      texto: 'Femenino',
-      value: 'femenino'
-    }, {
-      texto: 'Masculino',
-      value: 'masculino'
-    }],
-    intensidades: [{
-      texto: 'Ligero',
-      value: 'ligero'
-    }, {
-      texto: 'Intermedio',
-      value: 'intermedio'
-    }, {
-      texto: 'Intenso',
-      value: 'intenso'
-    }],
-    caracteres: [{
-      texto: 'Clasico',
-      value: 'clasico'
-    }, {
-      texto: 'Informal',
-      value: 'informal'
-    }, {
-      texto: 'Moderno',
-      value: 'moderno'
-    }, {
-      texto: 'Natural',
-      value: 'natural'
-    }, {
-      texto: 'Seductor',
-      value: 'seductor'
-    }],
-    aromas: [{
-      texto: 'Floral',
-      value: 'floral'
-    }, {
-      texto: 'Frutal,',
-      value: 'frutal,'
-    }, {
-      texto: 'Verde',
-      value: 'verde'
-    }, {
-      texto: 'Herbal',
-      value: 'herbal'
-    }, {
-      texto: 'Cítrico',
-      value: 'citrico,'
-    }, {
-      texto: 'Herbal Aromático',
-      value: 'herbalaro'
-    }],
-    usos: [{
-      texto: 'Diario',
-      value: 'diario'
-    }, {
-      texto: 'Trabajo',
-      value: 'trabajo'
-    }, {
-      texto: 'Ocasion Especial',
-      value: 'ocasionEsp'
-    }],
-    aspectos: [{
-      texto: 'Libertad',
-      value: 'libertad'
-    }, {
-      texto: 'Independiente',
-      value: 'independietne'
-    }, {
-      texto: 'Creatividad',
-      value: 'creatividad'
-    }, {
-      texto: 'Diversion',
-      value: 'diversion'
-    }],
-    familias: [{
-      texto: 'Verde',
-      value: 'verde'
-    }, {
-      texto: 'Cítrico',
-      value: 'citrico'
-    }, {
-      texto: 'Flores',
-      value: 'flores'
-    }, {
-      texto: 'Frutas',
-      value: 'frutas'
-    }, {
-      texto: 'Aromáticos',
-      value: 'aromáticos'
-    }, {
-      texto: 'Helechos',
-      value: 'helechos'
-    }, {
-      texto: 'Chipre',
-      value: 'chipre'
-    }, {
-      texto: 'Maderas',
-      value: 'maderas'
-    }, {
-      texto: 'Orientales',
-      value: 'orientales'
-    }],
-    caracSelected: null,
-    caracInserted: []
-  },
-  methods: {
-    agregarCarac: function agregarCarac() {
-      this.inserted.push(this.caracteres[this.caractSelected]);
-      this.caracteres.splice(this.caracSelected, 1);
-    }
-  }
 });
 
 /***/ }),
@@ -51095,6 +51992,75 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./resources/js/components/Recomendador.vue":
+/*!**************************************************!*\
+  !*** ./resources/js/components/Recomendador.vue ***!
+  \**************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _Recomendador_vue_vue_type_template_id_73b12e44_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Recomendador.vue?vue&type=template&id=73b12e44&scoped=true& */ "./resources/js/components/Recomendador.vue?vue&type=template&id=73b12e44&scoped=true&");
+/* harmony import */ var _Recomendador_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Recomendador.vue?vue&type=script&lang=js& */ "./resources/js/components/Recomendador.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _Recomendador_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _Recomendador_vue_vue_type_template_id_73b12e44_scoped_true___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _Recomendador_vue_vue_type_template_id_73b12e44_scoped_true___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  "73b12e44",
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/Recomendador.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/components/Recomendador.vue?vue&type=script&lang=js&":
+/*!***************************************************************************!*\
+  !*** ./resources/js/components/Recomendador.vue?vue&type=script&lang=js& ***!
+  \***************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Recomendador_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/babel-loader/lib??ref--4-0!../../../node_modules/vue-loader/lib??vue-loader-options!./Recomendador.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Recomendador.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Recomendador_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/components/Recomendador.vue?vue&type=template&id=73b12e44&scoped=true&":
+/*!*********************************************************************************************!*\
+  !*** ./resources/js/components/Recomendador.vue?vue&type=template&id=73b12e44&scoped=true& ***!
+  \*********************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Recomendador_vue_vue_type_template_id_73b12e44_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../node_modules/vue-loader/lib??vue-loader-options!./Recomendador.vue?vue&type=template&id=73b12e44&scoped=true& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Recomendador.vue?vue&type=template&id=73b12e44&scoped=true&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Recomendador_vue_vue_type_template_id_73b12e44_scoped_true___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Recomendador_vue_vue_type_template_id_73b12e44_scoped_true___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
 /***/ "./resources/sass/app.scss":
 /*!*********************************!*\
   !*** ./resources/sass/app.scss ***!
@@ -51113,8 +52079,8 @@ __webpack_require__.r(__webpack_exports__);
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! D:\Programas\xampp\htdocs\perfumeria\resources\js\app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! D:\Programas\xampp\htdocs\perfumeria\resources\sass\app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! C:\wamp64\www\perfumeria\resources\js\app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! C:\wamp64\www\perfumeria\resources\sass\app.scss */"./resources/sass/app.scss");
 
 
 /***/ })
