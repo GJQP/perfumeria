@@ -348,7 +348,7 @@ class Contratos extends Controller
            return redirect()->back()->with('error', 'El proveedor selecionado no tiene productos disponibles');
         
         // Buscamos la escala correspondiente
-        $escala = "SELECT DATE(fcha_reg) as fcha_reg, rgo_ini, rgo_fin FROM rig_escalas WHERE id_prod = $id_prod";
+        $escala = "SELECT DATE(fcha_reg) as fcha_reg, rgo_ini, rgo_fin FROM rig_escalas WHERE id_prod = $id_prod AND fcha_fin IS NULL";
         $escala = DB::select("$escala");
 
         if(empty($escala))
