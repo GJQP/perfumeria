@@ -66,7 +66,7 @@
 				@foreach($ingredientes as $ingrediente)
 				<div class="form-check">
 					<tr>
-						<td><input  type="checkbox" value="{{$ingrediente->id}}" name="ingredientes[{{$i++}}]" id="for{{$ingrediente->id}}"></td>
+						<td><input  type="checkbox" value="{{$ingrediente->cas}}" name="ingredientes[{{$i++}}]" id="for{{$ingrediente->id}}"></td>
 						<td>{{$ingrediente->cas}}</td>
 						<td>{{$ingrediente->nombre}}</td>
 					</tr>
@@ -92,14 +92,22 @@
 		</div>
 		<div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionExample">
 		<div class="card-body">
+			<div class="blocktext">
+			<table>
+				<tr>
+					<th>Eleccion</th>
+					<th>CAS</th>
+					<th>Nombre</th>
+				</tr>
 		@foreach($otros_ingredientes as $ingrediente)
-		<div class="form-check">
-  			<input class="form-check-input" type="checkbox" value="{{$ingrediente->cas}}" name="otros_ingredientes[{{$j++}}]" id="for{{$ingrediente->cas}}">
-  			<label class="form-check-label" for="for{{$ingrediente->cas}}">
-			  {{$ingrediente->cas}} {{$ingrediente->nombre}}
-  			</label>
-		</div>	
+					<tr>
+						<td><input type="checkbox" value="{{$ingrediente->cas}}" name="otros_ingredientes[{{$j++}}]" id="for{{$ingrediente->cas}}"></td>
+						<td>{{$ingrediente->cas}}</td>
+						<td>{{$ingrediente->nombre}}</td>
+					</tr>
 		@endforeach	
+				</table>
+		</div>
 		</div>
 		</div>
 	</div>

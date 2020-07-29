@@ -108,14 +108,22 @@
 		</div>
 		<div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionExample">
 		<div class="card-body">
+			<div  class="blocktext">
+			<table>
+				<tr>
+					<th>Presentacion</th>
+					<th>CAS</th>
+					<th>Nombre</th>
+				</tr>
 		@foreach($otros_ingredientes as $ingrediente)
-		<div class="form-check">
-  			<input class="form-check-input" type="checkbox" value="{{$ingrediente->cas}}" name="otros_ingredientes[{{$j++}}]" id="for{{$ingrediente->cas}}">
-  			<label class="form-check-label" for="for{{$ingrediente->cas}}">
-			  {{$ingrediente->cas}} {{$ingrediente->nombre}}
-  			</label>
-		</div>	
+				<tr>
+					<td><a class="aN" href="#" data-toggle="modal" data-target="#presentacion">Ver</a></td>
+					<td>{{$ingrediente->cas}}</td>
+					<td>{{$ingrediente->nombre}}</td>
+				</tr>	
 		@endforeach	
+		</table>
+		</div>
 		</div>
 		</div>
 	</div>
