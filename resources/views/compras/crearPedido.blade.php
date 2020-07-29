@@ -68,9 +68,9 @@
                                     @if(\Illuminate\Support\Arr::has($detalle,'envios'))
                                         <table class="tablaDatos">
                                             <tr>
-                                                <th>Medio</th>
                                                 <th>Descripción</th>
                                                 <th>Comisión</th>
+                                                <th>Medio</th>
                                                 <th>País</th>
                                             </tr>
                                             @foreach($detalle['envios'] as $condicion)
@@ -110,14 +110,14 @@
                                             <tr>
                                                 <th>Tipo</th>
                                                 <th>Número de Cuotas</th>
-                                                <th>Plazo del Pago</th>
+                                                <th>Plazo para pagar</th>
                                             </tr>
                                             @foreach($detalle['pagos'] as $condicion)
                                                 <div class="form-check">
                                                     <tr>
                                                         <td>{{$condicion->tipo}}</td>
                                                         <td>{{$condicion->coutas}}</td>
-                                                        <td>{{$condicion->cant_meses}}</td>
+                                                        <td>{{$condicion->cant_meses}} meses</td>
                                                     </tr>
                                                 </div>
                                             @endforeach

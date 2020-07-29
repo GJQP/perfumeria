@@ -28,7 +28,7 @@
                         <th id="estado">Estado</th>
                         <th id="emisiónContrato">Fecha Emisión de Contrato</th>
                         <th id="accion">Acción</th>
-                    </tr
+                    </tr>
                     @foreach($proveedores as $proveedor)
                         <tr>
                             <td>{{$proveedor->nombre}}</td>
