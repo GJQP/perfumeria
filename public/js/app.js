@@ -2225,9 +2225,7 @@ __webpack_require__.r(__webpack_exports__);
             guardarOpcionEnvio(false);
             stepper.next(); //console.log(nuevoPrecio);
 
-            if (_this.cantPag == 0) {
-              stepper.next();
-            } else {
+            if (_this.cantPag != 0) {
               guardarPago(false);
               stepper.next();
               stepper.next();

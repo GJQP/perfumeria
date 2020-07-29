@@ -42,7 +42,7 @@ class GestionFormula extends Controller
                 $renovaciones = array_merge($renovaciones, [$variable]);
 
         // Buscamos la escala correspondiente
-        $escala = "SELECT DATE(fcha_reg), rgo_ini, rgo_fin FROM rig_escalas WHERE id_prod = $id";
+        $escala = "SELECT DATE(fcha_reg) AS fcha_reg, rgo_ini, rgo_fin FROM rig_escalas WHERE id_prod = $id AND fcha_fin IS NULL";
         $escala = DB::select("$escala");
         //dd($escala);
         return view('Formula.gestionformula')->with([

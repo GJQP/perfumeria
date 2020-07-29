@@ -85,6 +85,29 @@
             @if(empty($renovaciones) && empty($iniciales))
             <p class="mgt-1 text-center" for="empresas" aling="center"><strong>El productor selecionado no tiene fórmulas registradas</strong><p>
             @endif
+            @if(!empty($escala))
+            <div class="justify-content-center">
+            <table class="mgl-3"> 
+                <p class="mgt-1 text-center" for="empresas"><strong>Escala actual</strong><p>   
+                <div class="blocktext ">
+                    <tr>
+                        <th id="criterio">Fecha de registro</th>
+                        <th id="escala">Valor minimo</th>
+                        <th id="porcentaje">Valor máximo</th>
+                    </tr> 
+                    <tr>
+                        <td>{{$escala[0]->fcha_reg}}</td>
+                        <td id="escala"> {{$escala[0]->rgo_ini}}</td>
+                        <td> {{$escala[0]->rgo_fin}}</td>
+                    </tr>
+                </div>
+            </table>
+            </div>
+            @else
+            <div class="blocktext mgt-2 pdb-2 center">
+                <p>El productor consultado no tiene escalas definidas</p>
+            </div>
+            @endif
               <!--Botones-->
               <div class="blocktext mgt-2 pdb-2 row">
                 <a href="{{route('formula.crear',['id_prod' => $id_prod])}}" class="btn btn-primary btn-lg" role="button" aria-disabled="true"> Crear nueva fórmula </a>
