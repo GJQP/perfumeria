@@ -25,6 +25,7 @@
     },
     "dependencies": {
         "bs-stepper": "^1.7.0",
-        "vue-select": "^3.10.7"
+        "vue-select": "^3.10.7",
+        "vue-winwheel": "^1.0.0"
     }
 }

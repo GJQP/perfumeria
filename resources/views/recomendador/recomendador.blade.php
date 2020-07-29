@@ -5,5 +5,6 @@
 @section('contenido')
     <div id="app">
         <recomendador></recomendador>
+
     </div>
 @endsection

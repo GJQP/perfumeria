@@ -72,3 +72,5 @@ Route::post('/pedido/{id_ctro}/{id_ped}','Compras@pagar')->name('compras.pagar')
 
 //Recomendador de Perfumes
 Route::get ('/recomendador-perfumes', 'Recomendador@index');
+
+Route::get('/recomendar','Recomendador@recomendar');

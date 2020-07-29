@@ -1,5 +1,4 @@
-SELECT *
-FROM SELECT
+SELECT
         (CASE
              WHEN p.genero = 'M' THEN 1 --GENERO
              ELSE 0

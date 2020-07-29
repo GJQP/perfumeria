@@ -7,6 +7,7 @@
 require('./bootstrap');
 
 window.Stepper = require('bs-stepper/dist/js/bs-stepper.min');
+//window.WinWheel =
 
 window.Vue = require('vue');
 
@@ -23,6 +24,7 @@ files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(
 
 //Vue.component('filtros', require('./components/Filtros.vue').default);
 //Vue.component('insert-row', require('./components/InsertRow').default);
+Vue.component('win-wheel', require('vue-winwheel/vue-winwheel').default);
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application

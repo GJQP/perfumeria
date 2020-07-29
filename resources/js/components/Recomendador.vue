@@ -19,7 +19,7 @@
                             <div class="offset-1 col-md-2">
                                 <label class="pdtp-1 mgr-1">Género:</label>
                                 <select class="form-control" v-model="genero">
-                                    <option selected disabled :value="null">--Genero--</option>
+                                    <option selected  :value="null">--Genero--</option>
                                     <option v-for="genero in generos" v-bind:value="genero.texto">{{genero.texto}}
                                     </option>
                                 </select>
@@ -28,7 +28,7 @@
                             <div class="col-md-3">
                                 <label class="pdtp-1 mgr-1">Edad:</label>
                                 <select class="form-control"  v-model="edad">
-                                    <option selected disabled :value="null">--Edad--</option>
+                                    <option selected  :value="null">--Edad--</option>
                                     <option v-for="edad in edades" v-bind:value="edad.texto">{{edad.texto}}
                                     </option>
                                 </select>
@@ -37,7 +37,7 @@
                             <div class="col-md-3">
                                 <label class="pdtp-1 mgr-1">Intensidad:</label>
                                 <select class="form-control" v-model="intensidad">
-                                    <option selected disabled :value="null">--Intensidad--</option>
+                                    <option selected  :value="null">--Intensidad--</option>
                                     <option v-for="intensidad in intensidades" v-bind:value="intensidad.value">
                                         {{intensidad.texto}}
                                     </option>
@@ -47,7 +47,7 @@
                             <div class="col-md-2">
                                 <label class="pdtp-1 mgr-1">Preferencia de Uso:</label>
                                 <select class="form-control" v-model="preferencia">
-                                    <option selected disabled :value="null">--Preferencia--</option>
+                                    <option selected  :value="null">--Preferencia--</option>
                                     <option v-for="uso in usos" v-bind:value="uso.texto">{{uso.texto}}</option>
                                 </select>
                             </div>
@@ -68,7 +68,7 @@
                                     ></span>
                                 </label>
                                 <select class="form-control caracter mglp-1" v-model="caracter" v-if="caracteres.length > 0">
-                                    <option selected disabled :value="null">--Caracter--</option>
+                                    <option selected  :value="null">--Caracter--</option>
                                     <option v-for="(val, key) in caracteres" :value="key" >{{val.texto}}</option>
                                 </select>
                                 <p v-for="caracter in caracterSelected">{{caracter.texto}}</p>
@@ -87,7 +87,7 @@
                                     ></span>
                                 </label>
                                 <select class="form-control caracter" v-model="aspecto"  v-if="aspectos.length > 0">
-                                    <option selected disabled :value="null">--Aspecto--</option>
+                                    <option selected  :value="null">--Aspecto--</option>
                                     <option v-for="(val, key) in aspectos" :value="key" >{{val.texto}}</option>
                                 </select>
                                 <p v-for="val in aspectoSelected">{{val.texto}}</p>
@@ -107,7 +107,7 @@
                                     ></span>
                                 </label>
                                 <select class="form-control caracter" v-model="familia"  v-if="familias.length > 0">
-                                    <option selected disabled :value="null">--Familias--</option>
+                                    <option selected  :value="null">--Familias--</option>
                                     <option v-for="(val, key) in familias" :value="key" >{{val.texto}}</option>
                                 </select>
                                 <p v-for="val in familiaSelected">{{val.texto}}</p>
@@ -127,14 +127,19 @@
                                     ></span>
                                 </label>
                                 <select class="form-control caracter" v-model="aroma"  v-if="aromas.length > 0">
-                                    <option selected disabled :value="null">--Aromas--</option>
+                                    <option selected  :value="null">--Aromas--</option>
                                     <option v-for="(val, key) in aromas" :value="key" >{{val.texto}}</option>
                                 </select>
                                 <p v-for="val in aromaSelected">{{val.texto}}</p>
                             </div>
                         </div>
                         <div class="offset-10 mgt-1 row" style="text-align: right;">
-                            <button type="submit" class="btn btn-primary">Aplicar</button>
+                            <button type="submit" class="btn btn-primary">Buscar</button>
+
+                            <button class="btn btn-primary" type="button" disabled>
+                                <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                                <span class="sr-only">Loading...</span>
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -144,12 +149,11 @@
             <div class=" mgl-2 row">
                 <!--Lado izquierdo para la Rueda-->
                 <div class="rueda">
-
+                    <rueda/>
                 </div>
                 <!--Lado derecho para mostrar perfumes-->
                 <div class="perfumes">
                     <div>
-                        <img class="blocktext" src="" alt="#">
                         <h4 class="mgt-1 blocktext"><u>Nombre del Perfume</u></h4>
                     </div>
                     <div>
@@ -242,7 +246,20 @@
                 caracterSelected: [],
                 familiaSelected: [],
                 aromaSelected: [],
-                aspectoSelected: []
+                aspectoSelected: [],
+
+
+                perfumes: [
+                    "Acqua di Giò de Giorgio Armani",
+                    "Boss Bottled de Hugo Boss",
+                    "Romance de Ralph Lauren",
+                    "Joseph Abboud de Joseph Abboud",
+                    "Pistachio Brûlée de Urban Outfitters",
+                    "Paris, She Met Him In Secret de Fictions Perfume",
+                    "Exotic Musk",
+                    "Let you Love Me de Blumarine",
+                    "Gris Charnel de BDK Parfums",
+                ],
 
             }
         },
@@ -261,6 +278,28 @@
                     edad: this.edad,
 
                 })
+            },
+
+            buscar(){
+
+
+
+                let data = {};
+
+                if(this.genero)
+                    data['genero'] = this.genero;
+
+
+
+                console.log(data);
+
+
+
+
+            },
+
+            generarSegementos(){
+
             }
 
             /*
