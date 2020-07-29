@@ -95,14 +95,17 @@
     </div>
 
     <script type="text/javascript">
+
+        window.id_cto = {{$id_cto}}
+        window.id_ped = {{isset($id_ped)? : null }}
+
         document.addEventListener('DOMContentLoaded', function () {
 
-            window.id_cto = {{$id_cto}}
-            window.id_ped = {{isset($id_ped)? : null }}
+
 
             window.stepper = new Stepper(document.querySelector('.bs-stepper'), {
                     linear: true,
-                    animation: true,
+                    animation: false,
                     selectors: {
                         steps: '.step',
                         trigger: '.step-trigger',

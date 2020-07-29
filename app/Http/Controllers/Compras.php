@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
@@ -78,9 +79,43 @@ class Compras extends Controller
 
     public function pagos($id_cto, $id_ped)
     {
-        //dd($this->getDetallePedido($id_ped));
 
-        return view('compras.consultaPedido')->with($this->getDetallePedido($id_ped));
+        $data = $this->getDetallePedido($id_ped);
+
+        $data['id_cto']=$id_cto;
+        $data['id_ped']=$id_ped;
+
+        //dd($data);
+
+        return view('compras.consultaPedido')->with($data);
+    }
+
+    public function pagar($id_cto, $id_ped){
+
+        $data = $this->getDetallePedido($id_ped);
+        $data['id_cto']=$id_cto;
+        $data['id_ped']=$id_ped;
+
+        $i = 1;
+
+        foreach ($data['pagos_gen'] as $pago){
+
+            $fecha = Carbon::now('America/Caracas')->addDays(rand(round($pago['days']/4,0),$pago['days']))->format('Y-m-d');
+
+            DB::insert('
+                INSERT INTO rig_pagos (id_ped, id_ord, fcha_reg, total)
+                VALUES (?,?,?,?)
+            ',[
+                $pago['id_ped'],
+                $i++,
+                $fecha ,
+                $pago['total']
+            ]);
+        }
+
+
+
+        return redirect()->route('compras.detalle',['id_ctro'=>$id_cto,'id_ped'=>$id_ped]);
     }
 
     public function setProductos(Request $request)
@@ -472,12 +507,15 @@ class Compras extends Controller
         ',[$id_ped]);
 
         $cond_pag = DB::select('
-            SELECT pagos.desc, ped.id as id_ped, pagos.id, pagos.id_prov
+            SELECT pagos.desc, ped.id as id_ped, pagos.*
             FROM (SELECT cond.*, cont.id as id_cont
                 FROM (SELECT
                     p.coutas || \' cuota(s) de \' || p.cant_meses || \' meses al \' || p.porcen_cuo || \'%\' AS desc,
                     p.id_prov,
-                    p.id
+                    p.id,
+                    p.coutas,
+                    p.cant_meses,
+                    p.porcen_cuo
                     FROM rig_condiciones_de_pago p) cond,
                     rig_condiciones_contratos cont
                     WHERE cond.id = cont.id_condpgo AND cond.id_prov = cont.id_prov) pagos,
@@ -494,14 +532,28 @@ class Compras extends Controller
             'otros_ing'=>$otros_ing,
             'cond_env'=>$cond_env,
             'cond_pag'=>$cond_pag,
-            'ped'=>$pedido[0]
+            'ped'=>$pedido[0],
+            'pagos_gen'=>$this->generarPagos($cond_pag[0]->coutas,$cond_pag[0]->cant_meses, (float) $cond_pag[0]->porcen_cuo, (float) $pedido[0]->total, $pedido[0]->id ),
+            'pagos_com'=>DB::select('SELECT * FROM rig_pagos WHERE id_ped=?',[$id_ped])
         ];
 
 
     }
 
-    private function generarPagos($id_pago)
+    private function generarPagos($cuota, $plazo, $interes, $total, $id_ped)
     {
+        $pago = [];
+
+        for($i = 0; $i < $cuota; $i++){
+            $pago[] = [
+                    'id_ped'=>$id_ped,
+                    'days'=>$plazo * 30 * $i,
+                    'total'=>$total/$cuota * (1 + $interes / 100)
+                ];
+
+        }
+
+        return $pago;
 
     }
 }

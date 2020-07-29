@@ -116,13 +116,12 @@
                             stepper.next();
 
                             //console.log(nuevoPrecio);
-                            if (this.cantPag == 0){
-                                stepper.next()
-                            }
-                            else {
-                                guardarPago(false);
-                                stepper.next()
-                                stepper.next()
+                            if (this.cantPag != 0){
+
+                                    guardarPago(false);
+                                    stepper.next()
+                                    stepper.next()
+
                             }
 
                         }
