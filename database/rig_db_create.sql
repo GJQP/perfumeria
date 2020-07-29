@@ -243,7 +243,7 @@ CREATE TABLE rig_otros_ingredientes (
 	id_prov SMALLINT,
 	cas BIGINT,
 	nombre VARCHAR (20) NOT NULL,
-	des VARCHAR (50) NOT NULL,
+	des VARCHAR (150) NOT NULL,
 	PRIMARY KEY (cas)
 );
 
@@ -254,8 +254,9 @@ CREATE TABLE rig_presentaciones_otros_ingredientes (
 	cod_present INTEGER,
 	precio NUMERIC (10, 2) NOT NULL,
 	volumen NUMERIC (10, 2),
+	unidad VARCHAR(3),
 	otra_pre VARCHAR (15),
-	des VARCHAR (50),
+	des VARCHAR (150),
 	PRIMARY KEY (cas_otr_ing, cod_present)
 );
 
@@ -267,9 +268,8 @@ ALTER TABLE rig_presentaciones_otros_ingredientes ADD CONSTRAINT rig_presentacio
 CREATE TABLE rig_ingredientes_extras (
 	id_prov_ing SMALLINT,
 	id_ing BIGINT,
-	id_prov_otr SMALLINT,
 	cas_otr_ing BIGINT,
-	PRIMARY KEY (id_prov_ing, id_ing, id_prov_otr, cas_otr_ing)
+	PRIMARY KEY (id_prov_ing, id_ing, cas_otr_ing)
 );
 
 ALTER TABLE rig_ingredientes_extras ADD CONSTRAINT rig_ingredientes_extras_ing_ese_fk FOREIGN KEY (id_prov_ing, id_ing) REFERENCES rig_ingredientes_esencias (id_prov, id),
@@ -366,24 +366,21 @@ ALTER TABLE rig_palabras_familias ADD CONSTRAINT rig_palabras_familias_id_pal_fk
 	ADD CONSTRAINT  rig_palabras_familias_id_fao_fk FOREIGN KEY (id_fao) REFERENCES rig_familias_olfativas;
 
 CREATE TABLE rig_familias_perfumes (
-	id_fao SMALLINT,
 	id_perf INTEGER,
-	PRIMARY KEY (id_fao, id_perf)
+	id_fao SMALLINT,
+	PRIMARY KEY (id_perf, id_fao)
 );
 
 ALTER TABLE rig_familias_perfumes ADD CONSTRAINT rig_familias_perfumes_id_perf_fk FOREIGN KEY (id_perf) REFERENCES rig_perfumes,
 	ADD CONSTRAINT rig_familias_perfumes_id_fao_fk FOREIGN KEY (id_fao) REFERENCES rig_familias_olfativas;
 
 CREATE TABLE rig_esencias_perfumes (
-	id INTEGER PRIMARY KEY,
-	cas VARCHAR (30) NOT NULL UNIQUE,
+	cas BIGINT PRIMARY KEY,
 	nombre VARCHAR(20) NOT NULL UNIQUE,
 	tipo VARCHAR(10)
 );
 
-CREATE SEQUENCE rig_esencias_perfumes_id_seq AS INTEGER OWNED BY rig_esencias_perfumes.id;
-ALTER TABLE rig_esencias_perfumes ADD CONSTRAINT rig_esencias_perfumes_ck CHECK (tipo IN ('NATURAL', 'SINTETICO')),
-	ALTER COLUMN id SET DEFAULT nextval('rig_esencias_perfumes_id_seq');
+ALTER TABLE rig_esencias_perfumes ADD CONSTRAINT rig_esencias_perfumes_ck CHECK (tipo IN ('NATURAL', 'SINTETICO'));
 
 CREATE TABLE rig_ingredientes_familias (
 	id_prov SMALLINT,
@@ -398,18 +395,18 @@ ALTER TABLE rig_ingredientes_familias ADD CONSTRAINT rig_ingredientes_familias_i
 
 CREATE TABLE rig_notas (
 	id_perf INTEGER,
-	id_esenp INTEGER,
+	id_esenp BIGINT,
 	tipo VARCHAR(10),
 	PRIMARY KEY (id_perf, id_esenp)
 );
 
 ALTER TABLE rig_notas ADD CONSTRAINT rig_notas_id_perf_fk FOREIGN KEY (id_perf) REFERENCES rig_perfumes,
 	ADD CONSTRAINT rig_notas_id_esenp_fk FOREIGN KEY (id_esenp) REFERENCES rig_esencias_perfumes,
-	ADD CONSTRAINT rig_notas_ck CHECK (tipo IN ('NOTA', 'SALIDA', 'FONDO'));
+	ADD CONSTRAINT rig_notas_ck CHECK (tipo IN ('SALIDA', 'CORAZON', 'FONDO'));
 
 CREATE TABLE rig_monoliticos (
 	id_perf INTEGER,
-	id_esenp INTEGER,
+	id_esenp BIGINT,
 	PRIMARY KEY (id_perf, id_esenp)
 );
 
@@ -418,7 +415,7 @@ ALTER TABLE rig_monoliticos ADD CONSTRAINT rig_monoliticos_id_perf_fk FOREIGN KE
 
 CREATE TABLE rig_esencias (
 	id_fao SMALLINT,
-	id_esenp INTEGER,
+	id_esenp BIGINT,
 	PRIMARY KEY (id_fao, id_esenp)
 );
 
@@ -1244,9 +1241,9 @@ INSERT INTO rig_presentaciones_ingredientes VALUES
 --rig_perfumes
 
 INSERT INTO rig_perfumes VALUES 
-	(DEFAULT, 1,'Acqua di Giò', 'M', 'FASES', 'ADULTO', 1996, 'Acqua di Giò no es solo agua. Es una fragancia de la vida, una oda voluptuosa a la naturaleza y su perfección, a un hombre que ama la libertad y seguro de sí mismo, que se convierte en uno con el mar.'),
-	(DEFAULT, 1,'Boss Bottled', 'M', 'FASES', 'ADULTO', 2008, 'Boss Bottled Intense reveals the Man of Today and his strength of character. The fragrance is laden with more woods, spices and a powerful concentration of precious oils. Bright apple is tempered by a calmer and more composed green orange blossom. The effect is a fragrance that is less sweet, yet more luxurious, and emphatically, unapologetically masculine.'),
-	(DEFAULT, 1,'Romance', 'F', 'FASES', 'ADULTO', 1999, 'Es un aroma de amor romántico y momentos íntimos llenos de alegría y felicidad, con un aura infinitamente positiva. Al comienzo de la composición, las notas de rosa se mezclan con aceites cítricos y reciben una melodía inusual y única.'),
+	(DEFAULT, 1,'Acqua di Giò de Giorgio Armani', 'M', 'FASES', 'ADULTO', 1996, 'Acqua di Giò no es solo agua. Es una fragancia de la vida, una oda voluptuosa a la naturaleza y su perfección, a un hombre que ama la libertad y seguro de sí mismo, que se convierte en uno con el mar.'),
+	(DEFAULT, 1,'Boss Bottled de Hugo Boss', 'M', 'FASES', 'ADULTO', 2008, 'Boss Bottled Intense reveals the Man of Today and his strength of character. The fragrance is laden with more woods, spices and a powerful concentration of precious oils. Bright apple is tempered by a calmer and more composed green orange blossom. The effect is a fragrance that is less sweet, yet more luxurious, and emphatically, unapologetically masculine.'),
+	(DEFAULT, 1,'Romance de Ralph Lauren', 'F', 'FASES', 'ADULTO', 1999, 'Es un aroma de amor romántico y momentos íntimos llenos de alegría y felicidad, con un aura infinitamente positiva. Al comienzo de la composición, las notas de rosa se mezclan con aceites cítricos y reciben una melodía inusual y única.'),
 	(DEFAULT, 2,'Joseph Abboud de Joseph Abboud', 'M', 'FASES', 'ADULTO', 2016, 'Un aroma masculino refrescante, el índigo descolorido de Joseph Abboud se basa en aromas amaderados aromáticos con notas medias marinas refrescantes. Las notas altas de limón picante completan este fino aroma, ideal para el uso diario y en ocasiones especiales.'),
 	(DEFAULT, 2,'Pistachio Brûlée de Urban Outfitters', 'F', 'MONO', 'ADULTO', 2014, 'Pistachio Brulee Eau De Parfum para mujer. Pistachio Brulee: mousse de vainilla con leche, pistacho y vainilla. Las fragancias sin crueldad le permiten optar por algo fresco, femenino o dulce, todo dependiendo de su estado de ánimo. días de verano con elegantes flores frescas o la fresca brisa del mar, estos son elementos imprescindibles sin los que no podemos vivir'),
 	(DEFAULT, 2,'Paris, She Met Him In Secret de Fictions Perfume', 'F', 'MONO', 'ADULTO', 2019, 'Paris: She Met Him in Secret is an exploration of unauthorized love. This Fictions perfume is classified as a floral chypre fragrance, characterized by a contrast between fresh floral notes and a deep, sensual dry down. '),
@@ -1306,10 +1303,7 @@ INSERT INTO rig_presentaciones_perfumes VALUES
 	(9, 9, DEFAULT, 25, 'ml'),	(9, 9, DEFAULT, 40, 'ml'),	(9, 9, DEFAULT, 85, 'ml'),	(9, 9, DEFAULT, 115, 'ml');
 
 
---CREATE TABLE rig_palabras_claves (
---	id SMALLINT PRIMARY KEY,
---	palabra VARCHAR(20) NOT NULL UNIQUE
---);
+-- rig_palabras_claves  
 
 INSERT INTO rig_palabras_claves VALUES 
 	-- Verde
@@ -1368,6 +1362,8 @@ INSERT INTO rig_palabras_claves VALUES
 	--Otros
 	(DEFAULT, 'otros'); --45
 
+-- rig_familias_olfativas
+
 INSERT INTO rig_familias_olfativas VALUES 
 	(DEFAULT, 'Verde'),	--1
 	(DEFAULT, 'Citrico'), --2
@@ -1380,11 +1376,7 @@ INSERT INTO rig_familias_olfativas VALUES
 	(DEFAULT, 'Orientales'), --9
 	(DEFAULT, 'Otros'); --10
 
---CREATE TABLE rig_palabras_familias (
---	id_pal SMALLINT,
---	id_fao SMALLINT,
---	PRIMARY KEY (id_pal, id_fao)
---);
+-- rig_palabras_familias
 
 INSERT INTO rig_palabras_familias VALUES 
 	-- Verde
@@ -1407,6 +1399,8 @@ INSERT INTO rig_palabras_familias VALUES
 	(40,9), (41,9), (42,9), (43,9), (44,9), (37,9), (38,9),
 	-- Otros
 	(45,10);
+
+-- rig_ingredientes_familias
 
 INSERT INTO rig_ingredientes_familias VALUES 
 	(3, 1, 2),
@@ -1433,5 +1427,201 @@ INSERT INTO rig_ingredientes_familias VALUES
 	(6, 18, 8);
 
 
+-- rig_familias_perfumes 
+
+INSERT INTO rig_familias_perfumes VALUES 
+	(1, 2), (1, 5), (1, 7), (1, 9),
+	(2, 2), (2, 8),
+	(3, 3), (3, 8), (3, 2),
+	(4, 5), (4, 9), (4 ,2),
+	(5, 8), (5, 9), (5, 10),
+	(6, 3), (6, 10),
+	(7, 5), (7, 9),
+	(8, 5), (8, 8), (8, 9),
+	(9, 5), (9, 8), (9, 9);
+
+-- rig_familias_perfumes 
+
+INSERT INTO rig_esencias_perfumes VALUES 
+	(8007758 , 'Bergamota', 'NATURAL'),
+	(8008319, 'Mandarina', 'NATURAL'),
+	(8000257, 'Romero', 'NATURAL'),
+	(8014093, 'Patchouli', 'NATURAL'),
+	(81152, 'Musk', 'SINTETICO'),
+	(84929317, 'Limón', 'NATURAL'),
+	(2408200, 'Manzana', 'NATURAL'),
+	(977000660, 'Canela', 'NATURAL' ),
+	(117933898, 'Caoba', 'NATURAL'),
+	(929625081, 'Cedro', 'NATURAL'),
+	(68916018 , 'Sándalo', 'NATURAL'),  
+	(93914, 'Vainilla', 'NATURAL'),
+	(84649810, 'Rosa', 'NATURAL'),
+	(89958292, 'Clavel', 'NATURAL'),
+	(55066494, 'Lirio', 'NATURAL'),
+	(91771334, 'Bamboo', 'NATURAL'),
+	(8000280, 'Lavanda', 'NATURAL'),
+	(102227, 'Geranio', 'NATURAL'),
+	(84649990, 'Lacteos', 'NATURAL'),
+	(15679126, 'Pistacho', 'NATURAL'),
+	(8053336, 'Violeta', 'NATURAL'),
+	(133186, 'Iris', 'NATURAL'),
+	(91612, 'Cuero', 'SINTETICO'), 
+	(531599, 'Semillas de tonka', 'NATURAL'),
+	(977051629, 'Pimienta negra', 'NATURAL'),
+	(59558235, 'Ylang', 'NATURAL'),
+	(52789738, 'Higo', 'NATURAL'),
+	(84650602, 'Te negro', 'NATURAL');
+
+-- rig_notas 
+
+INSERT INTO rig_notas VALUES
+	(1, 8007758, 'SALIDA'), -- Bergamota -- Gio
+	(1, 8008319, 'SALIDA'), -- Mandarina
+	(1, 8000280, 'CORAZON'), -- Lavanda
+	(1, 8000257, 'CORAZON'), -- Romero
+	(1, 8014093, 'FONDO'), -- Patchouli
+	(1, 81152, 'FONDO'), --Musk
+	(2, 84929317, 'SALIDA'), --Limón -- BOSS BOTTLE
+	(2, 2408200, 'SALIDA'), -- Manzana
+	(2, 977000660, 'CORAZON' ), --Canela
+	(2, 117933898, 'CORAZON'), --Caoba
+	(2, 89958292, 'CORAZON'), -- Clavel
+	(2, 929625081, 'FONDO'), -- Cedro
+	(2, 68916018, 'FONDO'), -- Sándalo
+	(2, 93914, 'FONDO'), -- Vainilla
+	(3, 84929317, 'SALIDA'), -- Limón -- Romance
+	(3, 84649810, 'SALIDA'), -- Rosa
+	(3, 89958292, 'CORAZON'), -- Clavel
+	(3, 55066494, 'CORAZON'), -- Lirio
+	(3, 81152, 'FONDO'), -- Musk
+	(3, 8014093, 'FONDO'), -- Patchouli
+	(4, 84929317, 'SALIDA'), -- Limón -- Jhosep Abboud
+	(4, 91771334, 'SALIDA'), -- Bamboo
+	(4, 8000280, 'CORAZON'), -- Lavanda
+	(4, 102227, 'CORAZON'), --Geranio
+	(4, 117933898, 'FONDO'), -- Caoba
+	(4, 929625081, 'FONDO'), -- Cedro
+	(6, 8053336, 'SALIDA'), -- Violeta
+	(6, 133186, 'CORAZON'), -- Iris
+	(6, 91612, 'FONDO'), -- Cuero
+	(8, 8008319, 'SALIDA'), -- Lavanda -- You Let Love Me
+	(8, 977051629, 'SALIDA'), -- Pimienta negra
+	(8, 59558235, 'SALIDA'), -- Ylang
+	(8, 102227, 'CORAZON'), -- Geranio
+	(8, 93914, 'FONDO'), -- Vainilla
+	(8, 8014093, 'FONDO'), -- Patchouli
+	(9, 52789738, 'SALIDA'), --  Higo -- Chanel 
+	(9, 84650602, 'SALIDA'), -- Te Negro
+	(9, 133186, 'CORAZON'), -- Iris
+	(9, 68916018, 'FONDO'), -- Sándalo
+	(9, 531599, 'FONDO'); -- Tonka
+
+-- rig_monoliticos 
+
+INSERT INTO rig_monoliticos VALUES
+	(5, 84649990), --Lacteos -- Pistacho Brulé
+	(5, 15679126),	-- Pistacho
+	(5, 93914), -- Vainilla
+	(7, 81152), -- Musk -- Exotic Musk
+	(7, 531599); -- Semillas de Tonka
+
+-- rig_esencias 
+
+INSERT INTO rig_esencias VALUES 
+	(2, 8007758), (5, 8007758), -- Bergamota
+	(2, 8008319), --Mandarina
+	(5, 8000280), (6, 8000280), -- Lavanda
+	(5, 8000257), -- Romero
+	(5, 8014093), -- Patchouli
+	(9, 81152), -- Musk
+	(2, 84929317), -- Limón
+	(4, 2408200), -- Manzana
+	(9, 977000660), -- Canela
+	(8, 117933898), -- Caoba
+	(8, 929625081), -- Cedro
+	(8, 68916018), -- Sándalo
+	(9, 93914), (8, 93914), -- Vainilla
+	(3, 84649810), -- Rosa
+	(3, 89958292), -- Clavel
+	(3, 55066494), (8, 55066494), -- Lirio
+	(8, 91771334), (9, 91771334), -- Bamboo
+	(4, 102227), (5, 102227), -- Geranio
+	(10, 84649990), -- Lacteos
+	(8, 15679126), (10, 15679126), -- Pistacho
+	(3, 8053336), -- Violeta
+	(3, 133186), (4, 133186), -- Iris
+	(10, 91612), -- Cuero
+	(9, 531599), -- Semillas de Tonka
+	(9, 977051629), -- Pimienta negra
+	(4 , 59558235), -- Ylang
+	(4,  52789738), -- Higo
+	(3,  84650602); -- Te negro
 
 
+-- rig_otros_ingredientes 
+INSERT INTO rig_otros_ingredientes VALUES 
+	(1, 14314422, 'Agua', 'Agua, solvente universal e indispensable para la vida'),
+	(1, 120514, 'Benzoato de bencilo','El benzoato de bencilo es el éster bencílico del ácido benzoico. Es un compuesto orgánico de fórmula C6H5CH2O2CC6H5'),
+	(2, 100516, 'Alcohol bencílico', 'El alcohol bencílico es un compuesto orgánico cuya fórmula es C6H5CH2OH'),
+	(NULL, 97530, 'Eugenol', 'Eugenol (C10H12O2) es guaiacol con una cadena alil sustituda'),
+	(NULL, 4548532, 'Rojo 4', 'FD&C red No. 4 es un colorante artificial ampliamente utilizado' ),
+	(3, 4430186,  'Violeta 2' , 'Violeta 2 es un colorante artificial ampliamente utilizado'),
+	(3, 1934210, 'Amarillo 5', 'El amarillo 5 es conocido también como tartracina ó E102'),
+	(NULL, 61734,'Azul de metileno', 'El azul de metileno, también llamado cloruro de metiltionina, es un colorante orgánico'),
+	(NULL, 60177391, 'Amberita','Es una resina incolora o amarillenta');
+
+-- rig_presentaciones_otros_ingredientes
+
+INSERT INTO rig_presentaciones_otros_ingredientes VALUES 
+	(14314422, DEFAULT, 23.3, 100, 'L', NULL, 'Bidón de 100 litros'),
+	(14314422, DEFAULT, 40.23, 200, 'L', NULL, 'Bidón de 200 litros'),
+	(14314422, DEFAULT, 59.99, 500, 'L', NULL, 'Bidón de 500 litros'),
+	(120514, DEFAULT, 20, 20, 'ml', NULL, 'Frasco de vidrio'),
+	(120514, DEFAULT, 38, 40, 'ml', NULL, 'Frasco sellado para larga duración'),
+	(120514, DEFAULT, 8, 20, 'ml', NULL, 'Envase de plástico'),
+	(120514, DEFAULT, 15, 40, 'ml', NULL, 'Envase de plástico'),
+	(4430186, DEFAULT, 3, 1, 'Kg', NULL, 'Empaque de aluminio con protección de humedad'),
+	(4430186, DEFAULT, 100, 25, 'Kg', NULL, 'Barril de 25 Kg con protección de humedad'),
+	(1934210, DEFAULT, 2, 1, 'Kg', NULL, 'Empaque de aluminio con protección de humedad'),
+	(1934210, DEFAULT, 93.56, 25, 'Kg', NULL, 'Barril de 25 Kg con protección de humedad');
+
+-- rig_componentes_funcionales
+
+INSERT INTO rig_componentes_funcionales VALUES
+	(14314422, 1),
+	(14314422, 2),
+	(14314422, 3),
+	(14314422, 4),
+	(14314422, 5),
+	(14314422, 6),
+	(14314422, 7),
+	(14314422, 8),
+	(14314422, 9),
+	(120514, 1),
+	(120514, 2),
+	(120514, 3),
+	(120514, 5),
+	(120514, 6),
+	(120514, 7),
+	(1934210, 1),
+	(1934210, 2),
+	(1934210, 3),
+	(4548532, 4),
+	(4430186, 7),
+	(61734, 7),
+	(97530, 8),
+	(4430186, 9),
+	(61734, 9);
+
+-- rig_ingredientes_extras 
+
+INSERT INTO rig_ingredientes_extras VALUES
+	(3, 2, 14314422),
+	(3, 1, 14314422),
+	(6, 16, 14314422),
+	(6, 17, 14314422),
+	(6, 18, 14314422),
+	(2, 8, 14314422),
+	(1, 4, 100516),
+	(5, 15, 100516),
+	(3, 3, 100516);
