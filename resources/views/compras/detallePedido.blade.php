@@ -58,8 +58,7 @@
                                 <input type="radio" name="envio" value="{{$envio->id}}" {{$key == 0? 'checked' : ''}}>
                                 <label for="envio">{{$envio->desc}}</label><br>
                             @endforeach
-                            <button class="btn btn-primary" onclick="guardarOpcionEnvio(
-                                {{collect($pagos)->count() == 1? $pagos[0]->id : ''}})">Next 2</button>
+                            <button class="btn btn-primary" onclick="guardarOpcionEnvio()">Next 2</button>
                         </div>
 
                     </div>
@@ -71,7 +70,7 @@
                                 <input type="radio" name="pago" value="{{$pago->id}}" {{$key == 0? 'checked' : ''}}>
                                 <label for="envio">{{$pago->desc}}</label><br>
                             @endforeach
-                            <button class="btn btn-primary" onclick="guardarPago(true)">Next 3</button>
+                            <button class="btn btn-primary" onclick="guardarPago()">Next 3</button>
                         </div>
                     </div>
 
@@ -126,11 +125,6 @@
 
                     totalPago = nuevoPrecio.toFixed(2)
 
-                    if (idPag){
-                        guardarPago();
-                        stepper.next();
-                    }
-
                 stepper.next()
             };
 
@@ -139,7 +133,7 @@
                 data = {id_conp: id, id_ped}
                 axios.post(`/pedido/${id_cto}/pago`, data)
 
-                if(next)
+
                     stepper.next()
 
             }

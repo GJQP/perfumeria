@@ -508,7 +508,7 @@ class Compras extends Controller
 
         $cond_pag = DB::select('
             SELECT pagos.desc, ped.id as id_ped, pagos.*
-            FROM (SELECT cond.*, cont.id as id_cont
+            FROM (SELECT cond.*, cont.id_ctra as id_cont
                 FROM (SELECT
                     p.coutas || \' cuota(s) de \' || p.cant_meses || \' meses al \' || p.porcen_cuo || \'%\' AS desc,
                     p.id_prov,

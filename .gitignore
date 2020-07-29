@@ -14,3 +14,6 @@ yarn-error.log
 # para evitar conflictos#
 composer.lock
 package-lock.json
+
+/.idea
+public/images

@@ -25,9 +25,9 @@
             </tr>
         </table>
 
-        <div class="form-inline" v-if="optionsOtrIng.length > 0">
+        <div class="form-inline blocktext" v-if="optionsOtrIng.length > 0">
             <label>Seleccione el producto:</label>
-            <select class="form-control" v-model="selectedOtrIng">
+            <select class="form-control selecEmp" v-model="selectedOtrIng">
                 <option v-for="(val, key) in optionsOtrIng" :value="key" >{{val.presentacion}}</option>
             </select>
             <button class="btn btn-primary" @click="agregarFila(false)">Agregar producto</button>
@@ -109,22 +109,9 @@
                         this.insertedIng.map(item => { totalPago += (item.cantidad * item.precio)  });
                         this.insertedOtrIng.map(item => { totalPago += (item.cantidad * item.precio)  });
                         document.getElementById('total').innerHTML ="$ " + totalPago.toFixed(2);
-                        if (this.cantEnv == 0)
-                            stepper.next();
-                        else{
-                            guardarOpcionEnvio(false);
-                            stepper.next();
 
-                            //console.log(nuevoPrecio);
-                            if (this.cantPag != 0){
 
-                                    guardarPago(false);
-                                    stepper.next()
-                                    stepper.next()
-
-                            }
-
-                        }
+                        stepper.next();
 
                     })
 
