@@ -113,14 +113,16 @@
                             stepper.next();
                         else{
                             guardarOpcionEnvio(false);
+                            stepper.next();
 
                             //console.log(nuevoPrecio);
                             if (this.cantPag == 0){
-                                stepper.to(3);
+                                stepper.next()
                             }
                             else {
                                 guardarPago(false);
-                                stepper.to(4);
+                                stepper.next()
+                                stepper.next()
                             }
 
                         }

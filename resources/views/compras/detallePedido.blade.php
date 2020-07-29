@@ -9,7 +9,7 @@
 
 @section('contenido')
     <div class="container mgt-2 mgrb-1" id="app">
-        <div class="stage tarjeta muli">
+        <div class="stage tarjeta muli col-md-6 offset-3">
             <div class="bs-stepper">
                 <div class="bs-stepper-header" role="tablist">
                     <!-- your steps here -->
@@ -38,13 +38,6 @@
                         <button type="button" class="step-trigger" role="tab" aria-controls="monto-part" id="monto-part-trigger">
                             <span class="bs-stepper-circle">4</span>
                             <span class="bs-stepper-label">Confirmación</span>
-                        </button>
-                    </div>
-                    <div class="line"></div>
-                    <div class="step" data-target="#pagar-part">
-                        <button type="button" class="step-trigger" role="tab" aria-controls="pagar-part" id="pagar-part-trigger">
-                            <span class="bs-stepper-circle">5</span>
-                            <span class="bs-stepper-label">Pagos</span>
                         </button>
                     </div>
                 </div>
@@ -94,10 +87,6 @@
 
                     </div>
 
-                    <div id="pagar-part" class="content" role="tabpanel" aria-labelledby="pagar-part-trigger">
-                        <button class="btn btn-primary" onclick="stepper.next()">Next 5</button>
-                    </div>
-
 
 
                 </div>
@@ -133,14 +122,18 @@
 
                     document.getElementById('total').innerHTML ="$ " + (nuevoPrecio).toFixed(2);
 
-                    if (idPag)
+                    totalPago = nuevoPrecio.toFixed(2)
+
+                    if (idPag){
                         guardarPago();
-                    else
-                        stepper.next()
+                        stepper.next();
+                    }
+
+
+                stepper.next()
             };
 
             window.guardarPago = function (next) {
-
                 let id = document.querySelector('input[name="pago"]:checked').value;
                 data = {id_conp: id, id_ped}
                 axios.post(`/pedido/${id_cto}/pago`, data)
@@ -152,9 +145,9 @@
 
             window.cambiarEstado = function (aprobado){
 
-                data = {res: aprobado, id_ped}
+                data = {res: aprobado, id_ped, total: totalPago}
 
-                axios.post(`/pedido/${id_cto}/respuesta`, data).then( () => aprobado? stepper.next():window.location = '/' )
+                axios.post(`/pedido/${id_cto}/respuesta`, data).then( () => aprobado? window.location = `/pedido/${id_cto}/${id_ped}`:stepper.to(1) )
             }
 
             window.totalPago = {!! 00.00 !!};
