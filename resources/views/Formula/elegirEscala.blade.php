@@ -27,15 +27,15 @@
                 </div>
                 <div class="form-group col-md-4">
                     <div class="form-row">
-                      <button type="submit" class="btn btn-primary mgl-1 mgt-2">Registrar nueva escala y crear fórmula</button>
-                    <div>
+                      <button type="submit" class="btn btn-primary mgl-1 mgt-2">Registrar nueva escala</button>
+                    </div>
                 </div>
             </div>
         </div>
         @if(!empty($escala))
-        <table class="mgl-3 "> 
-            <p class="mgt-1 text-center" for="empresas"><strong>Escala actual</strong><p>   
-            <div class="blocktext">
+        <p class="mgt-1 blocktext" for="empresas"><strong>Escala actual</strong><p>   
+       <div class="blocktext pdb-2">
+        <table> 
                 <tr>
                     <th id="criterio">Fecha de registro</th>
                     <th id="escala">Valor minimo</th>
@@ -46,8 +46,9 @@
                     <td id="escala"> {{$escala[0]->rgo_ini}}</td>
                     <td> {{$escala[0]->rgo_fin}}</td>
                 </tr>
-			</div>
-        </table>
+			
+            </table>
+       </div>
         </div> 	
         <div class="blocktext mgt-2 pdb-2 ">  
             <div class="blocktext mgt-2 pdb-2 ">
