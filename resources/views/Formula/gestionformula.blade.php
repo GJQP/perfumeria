@@ -33,13 +33,23 @@
                     <th id="escala">Escala</th>
                     <th id="porcentaje">Peso</th>
                 </tr> 
+            @if(!empty($escala))
+                @foreach($iniciales as $variable)    
+                    <tr>
+                        <td>{{$variable->nombre}}</td>
+                        <td id="escala">{{$escala[0]->rgo_ini}} a {{$escala[0]->rgo_fin}}</td>
+                        <td>{{$variable->peso}}%</td>
+                    </tr>
+                @endforeach
+            @else
             @foreach($iniciales as $variable)    
-                <tr>
-                    <td>{{$variable->nombre}}</td>
-                    <td id="escala">{{$escala[0]->rgo_ini}} a {{$escala[0]->rgo_fin}}</td>
-                    <td>{{$variable->peso}}%</td>
-                </tr>
-            @endforeach
+                    <tr>
+                        <td>{{$variable->nombre}}</td>
+                        <td id="escala">No registrada</td>
+                        <td>{{$variable->peso}}%</td>
+                    </tr>
+                @endforeach
+            @endif
             </table>
             </div>
             @endif
@@ -52,13 +62,23 @@
                     <th id="escala">Escala</th>
                     <th id="porcentaje">Peso</th>
                 </tr> 
-            @foreach($renovaciones as $variable)    
+            @if(!empty($escala))
+                @foreach($renovaciones as $variable)    
                 <tr>
                     <td>{{$variable->nombre}}</td>
                     <td id="escala">{{$escala[0]->rgo_ini}} a {{$escala[0]->rgo_fin}}</td>
                     <td>{{$variable->peso}}%</td>
                 </tr>
-            @endforeach
+                @endforeach
+            @else
+                @foreach($renovaciones as $variable)    
+                    <tr>
+                        <td>{{$variable->nombre}}</td>
+                        <td id="escala">No registrada</td>
+                        <td>{{$variable->peso}}%</td>
+                    </tr>
+                @endforeach
+            @endif
             </table>
             </div>
             @endif
@@ -68,6 +88,7 @@
               <!--Botones-->
               <div class="blocktext mgt-2 pdb-2 row">
                 <a href="{{route('formula.crear',['id_prod' => $id_prod])}}" class="btn btn-primary btn-lg" role="button" aria-disabled="true"> Crear nueva fórmula </a>
+                <a href="{{route('escala.crear',['id_prod' => $id_prod])}}" class="btn btn-primary btn-lg ml-4" role="button" aria-disabled="true"> Crear nueva escala </a>
               </div>
         </div>
     </div>

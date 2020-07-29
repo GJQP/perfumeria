@@ -34,7 +34,8 @@ Route::get ('/gestion-formula/{id_prod?}','GestionFormula@index')->name('formula
 //Crear Formula
 Route::get ('/gestion-formula/crear/{id_prod}','GestionFormula@create')->name('formula.crear');
 Route::post ('/gestion-formula/crear/{id_prod}/registrar','GestionFormula@store')->name('formula.registrar');
-
+Route::get ('/gestion-formula/crear/{id_prod}/escalaCrear', 'GestionFormula@escalaCrear')->name('escala.crear');
+Route::post('/gestion-formula/crear/{id_prod}/escalarRegistrar', 'GestionFormula@escalaRegistrar')->name('escala.registrar');
 
 
 //Gestion de contratos

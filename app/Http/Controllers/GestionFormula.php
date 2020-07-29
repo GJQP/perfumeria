@@ -44,7 +44,7 @@ class GestionFormula extends Controller
         // Buscamos la escala correspondiente
         $escala = "SELECT DATE(fcha_reg), rgo_ini, rgo_fin FROM rig_escalas WHERE id_prod = $id";
         $escala = DB::select("$escala");
-
+        //dd($escala);
         return view('Formula.gestionformula')->with([
             "productores" => $productores,
             "iniciales" => $iniciales,
@@ -80,21 +80,11 @@ class GestionFormula extends Controller
     {
         //dd($request->all());
         // Pedimo el valor del mínimo y del máximo
-        $min = $request->min;
-        $max = $request->max;
         $minApro = $request->minApro;
-
-        // Verificamos ambas sean nulas o no lo sean
-        if($min == NULL && $max != NULL || $max == NULL && $min != NULL)
-            return redirect()->back()->with(['error' => 'Debes especificar ambos rangos de la formula']);
 
         // Verificamos que se seleciona un parámetro
         if($request->p_ubic == NULL && $request->p_alen == NULL && $request->p_prod == NULL && $request->p_pag == NULL && $request->p_cen == NULL)
             return redirect()->back()->with(['error' => 'Debes selecionar almenos una variable']);
-
-        // Verificamos que el minimo sea menor al máximo
-        if($min >= $max && $min != NULL && $max != NULL)
-            return  redirect()->back()->with(['error' => 'El máximo tiene que se mayor que el menor']);
 
         if($minApro < 1 || $minApro >= 100)
             return redirect()->back()->with(['error' => 'El minimo aprobatorio debe estar en el rango de la escala']);
@@ -109,7 +99,7 @@ class GestionFormula extends Controller
             $pesoTotal += $request->p_pag;
         if($request->p_cen != NULL)
             $pesoTotal += $request->p_cen;
-
+  
         // Si el peso no es de 100% me retorno
         //dd($pesoTotal);
         if($pesoTotal != 100)
@@ -125,13 +115,6 @@ class GestionFormula extends Controller
             $vars = array_merge($vars , [['Metodos de pago', $request->p_pag]]);
         if($request->p_cen != NULL)
             $vars = array_merge($vars , [['Cumplimiento de envios', $request->p_cen]]);
-
-        // Verificamos que se encuentre en el rango de el mínimo aprobatorio
-        if($min != NULL && $max != NULL)
-        {
-            DB::update("UPDATE rig_escalas SET fcha_fin=current_date WHERE id_prod = $id_prod AND fcha_fin IS NULL");
-            DB::insert("INSERT INTO rig_escalas (id_prod, fcha_reg, rgo_ini, rgo_fin) VALUES ($id_prod, NOW(), $min, $max) RETURNING *");
-        }
 
         // Buscamos las variables
         $variables = "SELECT nombre, id FROM rig_variables";
@@ -157,12 +140,33 @@ class GestionFormula extends Controller
     }
 
 
-    public function escala($id_prod)
+    public function escalaCrear($id_prod)
     {
         $escala = DB::select("SELECT id_prod, DATE(fcha_reg) AS fcha_reg, rgo_ini, rgo_fin, fcha_fin FROM rig_escalas WHERE id_prod = $id_prod AND fcha_fin IS NULL");
         return view('Formula.elegirEscala')->with(['escala' => $escala, 'id_prod' => $id_prod]);
     }
 
+    public function escalaRegistrar(Request $request, $id_prod)
+    {
+        $min = $request->min;
+        $max = $request->max;
+
+        // Verificamos que el minimo sea menor al máximo
+        if($min >= $max && $min != NULL && $max != NULL)
+            return  redirect()->back()->with(['error' => 'El máximo tiene que se mayor que el menor']);
+
+        // Verificamos ambas sean nulas o no lo sean
+        if($min == NULL && $max != NULL || $max == NULL && $min != NULL)
+            return redirect()->back()->with(['error' => 'Debes especificar ambos rangos de la formula']);
+    
+        // Verificamos que se encuentre en el rango de el mínimo aprobatorio
+        if($min != NULL && $max != NULL)
+        {
+            DB::update("UPDATE rig_escalas SET fcha_fin=current_date WHERE id_prod = $id_prod AND fcha_fin IS NULL");
+            DB::insert("INSERT INTO rig_escalas (id_prod, fcha_reg, rgo_ini, rgo_fin) VALUES ($id_prod, NOW(), $min, $max) RETURNING *");
+        }
+        return redirect()->route('formula.index')->with(['id_prod' => $id_prod, 'status', 'Escala registrada exitosamente']);
+    }
     /**
      * Display the specified resource.
      *
