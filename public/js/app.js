@@ -2221,16 +2221,7 @@ __webpack_require__.r(__webpack_exports__);
           });
 
           document.getElementById('total').innerHTML = "$ " + totalPago.toFixed(2);
-          if (_this.cantEnv == 0) stepper.next();else {
-            guardarOpcionEnvio(false);
-            stepper.next(); //console.log(nuevoPrecio);
-
-            if (_this.cantPag != 0) {
-              guardarPago(false);
-              stepper.next();
-              stepper.next();
-            }
-          }
+          stepper.next();
         });
       } else alert('Debe ingresar cantidad validas');
     }
@@ -48405,7 +48396,7 @@ var render = function() {
       : _vm._e(),
     _vm._v(" "),
     _vm.optionsOtrIng.length > 0
-      ? _c("div", { staticClass: "form-inline" }, [
+      ? _c("div", { staticClass: "form-inline blocktext" }, [
           _c("label", [_vm._v("Seleccione el producto:")]),
           _vm._v(" "),
           _c(
@@ -48419,7 +48410,7 @@ var render = function() {
                   expression: "selectedOtrIng"
                 }
               ],
-              staticClass: "form-control",
+              staticClass: "form-control selecEmp",
               on: {
                 change: function($event) {
                   var $$selectedVal = Array.prototype.filter
