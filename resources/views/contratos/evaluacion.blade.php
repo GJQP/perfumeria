@@ -46,22 +46,34 @@
                 <table id="tabla" class="mgl-3">              
                     <tr>
                         <th id="">Criterio de Evaluacion</th>
+						<th id=""> Peso de la evaluación </th>
                         <th id="porcentaje">Resultado obtenido</th>
                     </tr>       
                     @foreach($variables as $var)  
+						@if(strcmp($var->nombre, 'Exito') != 0)
                         <tr>
                             <td>{{$var->nombre}}</td>
+							<td>{{$var->peso}}%</td>
                             <td id="total"><input class="form-control form-control-sm" name="variables[{{$var->nombre}}]" type="number" placeholder="Valoración"> </td>
                         </tr>
+						@else
+						<tr>
+							<td  class="font-weight-bold">{{$var->nombre}}</td>
+                            <td>{{$var->peso}}%</td>
+							<td class="vacioac"></td>
+                        </tr>
+						@endif
                     @endforeach   
                 </table>              
               </div>
               <br>
+			  <br>
               <div>
-                <button type="submit" class="btn btn-primary">Evaluar proveedor</button>
+                <button type="submit" class="btn btn-primary btn-lg">Evaluar proveedor</button>
              </div>
         </form>
     </div>
+	<br>
 	<div class="blockquote text-center">
 	<h3 aling="centered">Información del proveedor</h3>
 	</div>
@@ -86,7 +98,7 @@
 				@foreach($ingredientes as $ingrediente)
 				<div class="form-check">
 					<tr>
-                        <td><a class="aN" href="#" data-toggle="modal" data-target="#presentacion">Ver</a></td>
+                        <td><a class="aN" href="#" data-toggle="modal" data-target="#presentacion" onclick="modalaPre({{$id_prov}}, {{$ingrediente->id}})">Ver</a></td>
 						<td>{{$ingrediente->cas}}</td>
 						<td>{{$ingrediente->nombre}}</td>
 					</tr>
@@ -115,13 +127,13 @@
 					<th>CAS</th>
 					<th>Nombre</th>
 				</tr>
-		@foreach($otros_ingredientes as $ingrediente)
+			@foreach($otros_ingredientes as $ingrediente)
 				<tr>
-					<td><a class="aN" href="#" data-toggle="modal" data-target="#presentacion">Ver</a></td>
+					<td><a class="aN" href="#" data-toggle="modal" data-target="#presentacion" onclick="modalaPre(null , {{$ingrediente->cas}})">Ver</a></td>
 					<td>{{$ingrediente->cas}}</td>
 					<td>{{$ingrediente->nombre}}</td>
 				</tr>	
-		@endforeach	
+			@endforeach	
 		</table>
 		</div>
 		</div>
@@ -219,10 +231,10 @@
 					</button>
 				</div>
 				<div class="modal-body" >
-					<div class="input-group mgb-1 blocktext">
-						<table>
+					<div class="input-group mgb-1 blocktext" id="Nomio">
+						<table id="mio">
 							<tr>
-								<th>Nombre</th>
+								<th>Capacidad</th>
 								<th>Precio</th>
 							</tr>
 							<tr>

@@ -27,6 +27,7 @@ class Contratos extends Controller
         $contratosR = "SELECT con.id_prod, con.id_prov, con.id, MAX(date(ren.fcha_reg + interval '1 year')) AS fcha_cul, pv.nombre AS nombre_prov, pd.nombre AS nombre_prod FROM rig_contratos con, rig_proveedores pv, rig_productores pd, rig_renovaciones ren WHERE (ren.fcha_reg + interval '1 year'>= current_date AND ren.id_ctra = con.id )AND con.fcha_fin IS NULL AND con.id_prov = pv.id AND con.id_prod = pd.id GROUP BY con.id_prod, con.id_prov, con.id, pv.nombre, pd.nombre";
         $contratosR = DB::select("$contratosR");
 
+        //dd($contratosI, $contratosR);
         // Creamos el array de contratos a devolver
         $contratos = array();
 
@@ -90,7 +91,7 @@ class Contratos extends Controller
         $max = $escala[0]->rgo_fin;
 
         // Búsco el mínimo aprobatorio
-        $minApro = "SELECT peso FROM rig_evaluaciones_criterios WHERE id_prod=$id_prod AND id_var=5 AND fcha_fin IS NULL AND tipo_eval='INICIAL'";
+        $minApro = "SELECT peso FROM rig_evaluaciones_criterios WHERE id_prod=$id_prod AND id_var=5 AND fcha_fin IS NULL AND tipo_eval='RENOVACION'";
         $minApro = DB::select("$minApro");
 
         // Verifico que las calificaones esten dentro del rango esperado
@@ -98,18 +99,22 @@ class Contratos extends Controller
         if($variable < $min || $variable > $max)
             return redirect()->back()->with('error', 'Debes colocar calificaciones válidas');
         else
-                //dd($variable);
             $total += $variable;
-
+        
+        // Normalizo
+        $total -= $min;
+        $max -= $min;
+        
         // Calculamos el porcentaje obtenido
         $total = ($total/$max)*100;
-
-        // Verifico si el productor pasa la evaluación
-        if($total < $minApro[0]->peso)
-            return redirect()->back()->with('error', 'Todas las calificaciones tienen que ser válidas');
+        //dd($total, $max, $min, $escala, $minApro[0]->peso);
 
         // Registramos el resultado
         DB::insert("INSERT INTO rig_resultados VALUES ($id_prod, $id_prov, NOW(), 'INICIAL', $total)");        
+        
+        // Verifico si el productor pasa la evaluación
+        if($total < $minApro[0]->peso)
+            return redirect()->route('contratos.index')->with('error', 'El proveedor no pasó la evaluación');
         
         // Solicitamos el contrato a renovar
         $contrato = "SELECT id, date(fcha_reg + interval '1 year') AS fcha FROM rig_contratos WHERE id_prod = $id_prod AND id_prov = $id_prov AND id = $id AND fcha_fin IS NULL";
@@ -152,13 +157,10 @@ class Contratos extends Controller
         ]);
     }
 
-    public function renovarCreacion($id_cont, $id_prov){
-        $query = "SELECT nombre FROM rig_productores WHERE id = $id_prov";
-        $array = DB::select($query);
-        $nombre = $array[0]->nombre;
-        //$nombre = 'Renovacion';
-        $queryUpdate ="UPDATE rig_contratos SET fcha_fin = current_date, mot_fin = 'Renovacion', cancelante = '$nombre' WHERE id = $id_cont";
+    public function renovarCreacion($id_prod, $id_prov, $id_cont){
+        $queryUpdate ="UPDATE rig_contratos SET fcha_fin = current_date, mot_fin = 'Se genera otro nuevo', cancelante = 'Ambas partes' WHERE id = $id_cont AND id_prod = $id_prod AND id_prov = $id_prov AND fcha_fin IS NULL";
         DB::update($queryUpdate);
+        return redirect()->route('evaluacion.nueva',['id_prod' => $id_prod, 'id_prov' => $id_prov]);
     }
 
     public function crearContrato(int $id_prod, int $id_prov) 
@@ -171,14 +173,14 @@ class Contratos extends Controller
         if(!empty($contratosActivos))
            return redirect()->back()->with('error', 'El proveedor selecionado ya tiene un contrato activo con el productor');
         
-           // Consulto por todos los ingrendientes/esencias exclusivas del proveedor 
+        // Consulto por todos los ingrendientes/esencias exclusivas del proveedor 
         $ingredientesExc = "SELECT id_ing FROM rig_productos_contratados WHERE id_prov=$id_prov AND id_ctra = ANY(SELECT con.id FROM rig_contratos con WHERE id_prov = $id_prov AND con.fcha_fin IS NULL AND exc ='SI' AND (con.fcha_reg + interval '1 year'>= current_date OR con.id = ANY (SELECT id_ctra FROM rig_renovaciones WHERE id_prov = $id_prov AND fcha_reg + interval '1 year' >= current_date GROUP BY id_ctra)) GROUP BY con.id) AND id_ing IS NOT NULL GROUP BY id_ing";        
         $ingredientesExc = DB::select($ingredientesExc);
         
         // Consulto por todos los ingredientes_esencias que vende el proveedor
         $ingredientesProv = "SELECT id, cas, nombre FROM rig_ingredientes_esencias WHERE id_prov = $id_prov";
         $ingredientesProv = DB::select($ingredientesProv);
-        
+
         // Creo mi lista de ingredientes_esencias
         $ingredientes = [];
         foreach($ingredientesProv as $ingrediente)
@@ -192,9 +194,9 @@ class Contratos extends Controller
         }
         
         // Consulto por todos los otros_ingredientes exclusivos que vende el proveedor           
-        $otrosIngredientesExc = "SELECT cas_otr_ing FROM rig_productos_contratados WHERE id_prod=$id_prod AND id_prov=$id_prov AND id_ctra = ANY(SELECT con.id FROM rig_contratos con WHERE id_prov = $id_prov AND con.fcha_fin IS NULL AND exc ='SI' AND (con.fcha_reg + interval '1 year'>= current_date OR con.id = ANY (SELECT id_ctra FROM rig_renovaciones WHERE  id_prov = $id_prov AND fcha_reg + interval '1 year' >= current_date GROUP BY id_ctra)) GROUP BY con.id) AND cas_otr_ing IS NOT NULL GROUP BY cas_otr_ing";        
+        $otrosIngredientesExc = "SELECT cas_otr_ing FROM rig_productos_contratados WHERE id_prov=$id_prov AND id_ctra = ANY(SELECT con.id FROM rig_contratos con WHERE con.id_prov = $id_prov AND con.fcha_fin IS NULL AND con.exc ='SI' AND (con.fcha_reg + interval '1 year'>= current_date OR con.id = ANY (SELECT ren.id_ctra FROM rig_renovaciones ren WHERE  ren.id_prov = $id_prov AND ren.fcha_reg + interval '1 year' >= current_date GROUP BY ren.id_ctra)) GROUP BY con.id) AND cas_otr_ing IS NOT NULL GROUP BY cas_otr_ing";        
         $otrosIngredientesExc = DB::select($otrosIngredientesExc);
-        
+        //dd($otrosIngredientesExc, 'ri');
         // Consulto por todos los otros ingredientes del proveedor
         $otrosIngredientesProv = "SELECT cas, nombre FROM rig_otros_ingredientes WHERE id_prov = $id_prov";
         $otrosIngredientesProv = DB::select($otrosIngredientesProv);
@@ -219,9 +221,9 @@ class Contratos extends Controller
         $condicionesPago = "SELECT * FROM rig_condiciones_de_pago WHERE id_prov = $id_prov";
         $condicionesPago = DB::select($condicionesPago);
         
-        // Si el proveedor no tiene almenos un igrediente disponible aborto la creación del contrato
+        // Si el proveedor no tiene almenos un ingrediente disponible aborto la creación del contrato
         if(empty($ingredientes) && empty($otros_ingredientes))
-           return redirect()->back()->with('error', 'El proveedor selecionado no tiene productos disponibles');
+           return redirect()->route('contratos.index')->with('error', 'El proveedor selecionado no tiene productos disponibles');
         
         
         //Retornamos la vista del contrato
@@ -248,7 +250,8 @@ class Contratos extends Controller
         $temp = DB::select("INSERT INTO rig_contratos (id_prod, id_prov, id, fcha_reg, exc) VALUES ($id_prod, $id_prov, DEFAULT, current_date, '$exc') RETURNING id");
         $id_ctra = DB::getPdo()->lastInsertId();
         $cont = 1;
-        //Insertamos los ingredientes 
+        // dd($request);
+        // Insertamos los ingredientes 
         if($request->ingredientes != null)
             foreach($request->ingredientes as $ingrediente)
             {
@@ -316,7 +319,7 @@ class Contratos extends Controller
         }
         
         // Consulto por todos los otros_ingredientes exclusivos que vende el proveedor           
-        $otrosIngredientesExc = "SELECT cas_otr_ing FROM rig_productos_contratados WHERE id_prod=$id_prod AND id_prov=$id_prov AND id_ctra = ANY(SELECT con.id FROM rig_contratos con WHERE id_prov = $id_prov AND con.fcha_fin IS NULL AND exc ='SI' AND (con.fcha_reg + interval '1 year'>= current_date OR con.id = ANY (SELECT id_ctra FROM rig_renovaciones WHERE  id_prov = $id_prov AND fcha_reg + interval '1 year' >= current_date GROUP BY id_ctra)) GROUP BY con.id) AND cas_otr_ing IS NOT NULL GROUP BY cas_otr_ing";        
+        $otrosIngredientesExc = "SELECT cas_otr_ing FROM rig_productos_contratados WHERE id_prov=$id_prov AND id_ctra = ANY(SELECT con.id FROM rig_contratos con WHERE id_prov = $id_prov AND con.fcha_fin IS NULL AND exc ='SI' AND (con.fcha_reg + interval '1 year'>= current_date OR con.id = ANY (SELECT id_ctra FROM rig_renovaciones WHERE  id_prov = $id_prov AND fcha_reg + interval '1 year' >= current_date GROUP BY id_ctra)) GROUP BY con.id) AND cas_otr_ing IS NOT NULL GROUP BY cas_otr_ing";        
         $otrosIngredientesExc = DB::select($otrosIngredientesExc);
         
         // Consulto por todos los otros ingredientes del proveedor
@@ -356,12 +359,12 @@ class Contratos extends Controller
             return redirect()->route('contratos.index')->with('error', 'El productor no escalas registradas');
 
         // Obtengo las variables
-        $variables = "SELECT rec.id_var, rec.fcha_reg, rec.tipo_eval, rec.peso, var.nombre FROM rig_evaluaciones_criterios rec INNER JOIN rig_variables var ON rec.id_var = var.id WHERE rec.id_prod=$id_prod AND rec.fcha_fin IS NULL AND rec.tipo_eval = 'INICIAL' AND rec.id_var != 5";
+        $variables = "SELECT rec.id_var, rec.fcha_reg, rec.tipo_eval, rec.peso, var.nombre FROM rig_evaluaciones_criterios rec INNER JOIN rig_variables var ON rec.id_var = var.id WHERE rec.id_prod=$id_prod AND rec.fcha_fin IS NULL AND rec.tipo_eval = 'INICIAL'";
         $variables = DB::select("$variables");
 
         if(empty($variables))
             return redirect()->route('contratos.index')->with('error', 'El productor no tiene fórmula de evaluación inical registrar');
-
+          //  dd($variables);
         //Retornamos la vista del contrato
         return view('contratos.evaluacion')->with([
             'ingredientes' => $ingredientes, 
@@ -379,8 +382,9 @@ class Contratos extends Controller
     {
         // Obtenemos las calificaciones
         $variables = $request->all()["variables"];
+
         // Buscamos la escala correspondiente
-        $escala = "SELECT DATE(fcha_reg) as fcha_reg, rgo_ini, rgo_fin FROM rig_escalas WHERE id_prod = $id_prod";
+        $escala = "SELECT DATE(fcha_reg) as fcha_reg, rgo_ini, rgo_fin FROM rig_escalas WHERE id_prod = $id_prod AND fcha_fin IS NULL";
         $escala = DB::select("$escala");
         
         // Obtengo los minimos y máximos de las escalas
@@ -391,25 +395,31 @@ class Contratos extends Controller
         $minApro = "SELECT peso FROM rig_evaluaciones_criterios WHERE id_prod=$id_prod AND id_var=5 AND fcha_fin IS NULL AND tipo_eval='INICIAL'";
         $minApro = DB::select("$minApro");
 
+        // Obtengo las variables
+        $form = "SELECT rec.id_var, rec.fcha_reg, rec.tipo_eval, rec.peso, var.nombre FROM rig_evaluaciones_criterios rec INNER JOIN rig_variables var ON rec.id_var = var.id WHERE rec.id_prod=$id_prod AND rec.fcha_fin IS NULL AND rec.tipo_eval = 'INICIAL' AND rec.id_var != 5";
+        $form = DB::select("$form");
+
+        // Normalizo la escala
+        $max -= $min;
+
         // Verifico que las calificaones esten dentro del rango esperado
         $total = 0;
-        foreach($variables as $variable)
+        foreach($variables as  $name =>$variable)
             if($variable < $min || $variable > $max)
-                return redirect()->back()->with('error', 'Debes cololar una calificaciones válidas');
+                return redirect()->back()->with('error', 'Debes cololar calificaciones válidas');
             else
-                //dd($variable);
-                $total += $variable;
-
-        // Calculamos el porcentaje obtenido
-        $total = ($total/$max)*100;
-
-        // Verifico si el productor pasa la evaluación
-        if($total < $minApro[0]->peso)
-            return redirect()->route('contratos.index')->with('error', 'Todas las calificaciones tienen que ser válidas');
+                foreach($form as $f)
+                    if(strcmp($f->nombre, $name) == 0)
+                        $total += ($variable - $min)*($f->peso/$max);
 
         // Registramos el resultado
         DB::insert("INSERT INTO rig_resultados VALUES ($id_prod, $id_prov, NOW(), 'INICIAL', $total)");
         
+        // Verifico si el productor pasa la evaluación
+        if($total < $minApro[0]->peso)
+          return redirect()->route('contratos.index')->with('error', 'El proveedor no pasó la evaluación');
+
+
         // Continuamos con el proceso de creación
         return redirect()->route('contrato.crear',['id_prod' => $id_prod, 'id_prov' => $id_prov])->with('status', 'Evaluación registrada exitosamente');
     }
@@ -417,22 +427,22 @@ class Contratos extends Controller
     public function renovacionContrato($id_prod, $id_prov, $id)
     {
         //dd($id_prod, $id_prov, $id, '23');
-        $vinculantes = "SELECT id FROM rig_membresias (id_prod = $id_prod OR id_prov = $id_prov) AND fcha_fin IS NULL";
-        $vinculantes = DB::select("$vinculantes");
+        $vinculantes = "SELECT fcha_reg FROM rig_membresias WHERE (id_prod = $id_prod OR id_prov = $id_prov) AND fcha_fin IS NULL";
+        $vinculantes = DB::select($vinculantes);
 
         // Verificamos que ambos tengan su membresía activa en IFRA
         if(sizeof($vinculantes) != 2)
             return redirect()->route('contratos.index')->with('error', 'Ambas partes deben tener su membresía activa');
 
         // Buscamos la escala correspondiente
-        $escala = "SELECT DATE(fcha_reg) as fcha_reg, rgo_ini, rgo_fin FROM rig_escalas WHERE id_prod = $id_prod";
+        $escala = "SELECT DATE(fcha_reg) as fcha_reg, rgo_ini, rgo_fin FROM rig_escalas WHERE id_prod = $id_prod AND fcha_fin IS NULL";
         $escala = DB::select("$escala");
 
         if(empty($escala))
             return redirect()->route('contratos.index')->with('error', 'El productor no tiene fórmulas activas');
 
         // Obtengo las variables
-        $variables = "SELECT rec.id_var, rec.fcha_reg, rec.tipo_eval, rec.peso, var.nombre FROM rig_evaluaciones_criterios rec INNER JOIN rig_variables var ON rec.id_var = var.id WHERE rec.id_prod=$id_prod AND rec.fcha_fin IS NULL AND rec.tipo_eval = 'RENOVACION' AND rec.id_var != 5";
+        $variables = "SELECT rec.id_var, rec.fcha_reg, rec.tipo_eval, rec.peso, var.nombre FROM rig_evaluaciones_criterios rec INNER JOIN rig_variables var ON rec.id_var = var.id WHERE rec.id_prod=$id_prod AND rec.fcha_fin IS NULL AND rec.tipo_eval = 'RENOVACION'";
         $variables = DB::select("$variables");
 
         if(empty($variables))
@@ -513,5 +523,21 @@ class Contratos extends Controller
     {
         $query = "SELECT prod.id, prod.nombre FROM rig_productores prod, rig_membresias mem WHERE prod.id = mem.id_prod AND mem.fcha_fin IS NULL";
         return DB::select("$query");
+    }
+
+    public function getPresentaciones($id_prov = null, $id_ing) {
+        // Selecciono el ingrediente
+        $id_prov = intval($id_prov);
+        $query = 0;
+        if($id_prov > 0)
+            $query = "SELECT * FROM rig_presentaciones_ingredientes WHERE id_prov = $id_prov AND id_ing = $id_ing";
+        else
+            $query = "SELECT * FROM rig_presentaciones_otros_ingredientes WHERE cas_otr_ing = $id_ing";
+          
+        // Hago el query
+        $query = DB::select($query);
+        
+        // Retorno la respuesta
+        return response()->json(['presentaciones' => $query]);
     }
 }

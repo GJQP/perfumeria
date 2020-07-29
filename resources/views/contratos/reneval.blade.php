@@ -45,14 +45,24 @@
             <div class="blocktext mgln-4">            
                 <table id="tabla" class="mgl-3">              
                     <tr>
-                        <th id="">Criterio de Evaluacion</th>
+                        <th id="">Criterio de evaluación</th>
+						<th id=""> Peso del criterio</th>
                         <th id="porcentaje">Resultado obtenido</th>
                     </tr>       
-                    @foreach($variables as $var)  
+                    @foreach($variables as $var) 
+                    @if(strcmp($var->nombre, 'Exito') != 0)
                         <tr>
                             <td>{{$var->nombre}}</td>
+                            <td>{{$var->peso}}%</td>
                             <td id="total"><input class="form-control form-control-sm" name="variables[{{$var->nombre}}]" type="number" placeholder="Valoración"> </td>
                         </tr>
+                    @else
+                        <tr>
+                            <td class="font-weight-bold">{{$var->nombre}}</td>
+                            <td>{{$var->peso}}%</td>
+							<td class="vacioac"></td>
+                        </tr>
+                    @endif
                     @endforeach   
                 </table>              
               </div>

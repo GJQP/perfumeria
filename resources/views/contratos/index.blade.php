@@ -22,6 +22,7 @@
         </div>
         <!--Seleccionar la Empresa-->
         <div class=" blocktext mgt-1 tablaDatos pdb-2">
+            @if(!empty($contratos))
             <table>
                 <tr>
                     <th class="nombre_prod">Nombre del proveedor</th>
@@ -29,15 +30,6 @@
                     <th class="fcha_fin">Vigente hasta</th>
                     <th class="aciones">Acción</th>
                 </tr>
-                @if(!$contratos)
-                <!--Tr por default cuando no se pasen parametros-->
-                <tr class="default">
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                </tr>
-                @endif
                 @foreach ($contratos as $contrato)
                 <tr>
                     <td>{{$contrato->nombre_prod}}</td>
@@ -52,6 +44,9 @@
                 </tr>
                 @endforeach
             </table>
+            @else
+                <p class="mgt-1 text-center" for="empresas" aling="center"><strong>No hay contratos activos</strong><p>
+            @endif
         </div>
     </div>
 </div>

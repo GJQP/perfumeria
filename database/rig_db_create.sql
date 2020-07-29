@@ -1559,6 +1559,7 @@ INSERT INTO rig_esencias VALUES
 
 
 -- rig_otros_ingredientes 
+
 INSERT INTO rig_otros_ingredientes VALUES 
 	(1, 14314422, 'Agua', 'Agua, solvente universal e indispensable para la vida'),
 	(1, 120514, 'Benzoato de bencilo','El benzoato de bencilo es el éster bencílico del ácido benzoico. Es un compuesto orgánico de fórmula C6H5CH2O2CC6H5'),
@@ -1578,8 +1579,8 @@ INSERT INTO rig_presentaciones_otros_ingredientes VALUES
 	(14314422, DEFAULT, 59.99, 500, 'L', NULL, 'Bidón de 500 litros'),
 	(120514, DEFAULT, 20, 20, 'ml', NULL, 'Frasco de vidrio'),
 	(120514, DEFAULT, 38, 40, 'ml', NULL, 'Frasco sellado para larga duración'),
-	(120514, DEFAULT, 8, 20, 'ml', NULL, 'Envase de plástico'),
-	(120514, DEFAULT, 15, 40, 'ml', NULL, 'Envase de plástico'),
+	(100516, DEFAULT, 8, 20, 'ml', NULL, 'Envase de plástico'),
+	(100516, DEFAULT, 15, 40, 'ml', NULL, 'Envase de plástico'),
 	(4430186, DEFAULT, 3, 1, 'Kg', NULL, 'Empaque de aluminio con protección de humedad'),
 	(4430186, DEFAULT, 100, 25, 'Kg', NULL, 'Barril de 25 Kg con protección de humedad'),
 	(1934210, DEFAULT, 2, 1, 'Kg', NULL, 'Empaque de aluminio con protección de humedad'),

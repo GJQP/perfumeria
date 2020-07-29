@@ -35,19 +35,35 @@
                 </tr> 
             @if(!empty($escala))
                 @foreach($iniciales as $variable)    
+                    @if(strcmp($variable->nombre, 'Exito') != 0)
                     <tr>
                         <td>{{$variable->nombre}}</td>
                         <td id="escala">{{$escala[0]->rgo_ini}} a {{$escala[0]->rgo_fin}}</td>
                         <td>{{$variable->peso}}%</td>
                     </tr>
+                    @else
+                    <tr>
+                        <td class="vacio"></td>
+                        <td class="font-weight-bold">Minimo Aprobatorio</td>
+                        <td>{{$variable->peso}}%</td>
+                    </tr>
+                    @endif
                 @endforeach
             @else
-            @foreach($iniciales as $variable)    
+            @foreach($iniciales as $variable)  
+                @if(strcmp($variable->nombre, 'Exito') != 0)  
                     <tr>
                         <td>{{$variable->nombre}}</td>
                         <td id="escala">No registrada</td>
                         <td>{{$variable->peso}}%</td>
                     </tr>
+                @else
+                    <tr>
+                        <td class="vacio"></td>
+                        <td class="font-weight-bold">Minimo Aprobatorio</td>
+                        <td>{{$variable->peso}}%</td>
+                    </tr>
+                @endif
                 @endforeach
             @endif
             </table>
@@ -63,20 +79,36 @@
                     <th id="porcentaje">Peso</th>
                 </tr> 
             @if(!empty($escala))
-                @foreach($renovaciones as $variable)    
-                <tr>
-                    <td>{{$variable->nombre}}</td>
-                    <td id="escala">{{$escala[0]->rgo_ini}} a {{$escala[0]->rgo_fin}}</td>
-                    <td>{{$variable->peso}}%</td>
-                </tr>
+                @foreach($renovaciones as $variable) 
+                    @if(strcmp($variable->nombre, 'Exito') != 0)     
+                    <tr>
+                        <td>{{$variable->nombre}}</td>
+                        <td id="escala">{{$escala[0]->rgo_ini}} a {{$escala[0]->rgo_fin}}</td>
+                        <td>{{$variable->peso}}%</td>
+                    </tr>
+                    @else
+                        <tr>
+                            <td class="vacio"></td>
+                            <td class="font-weight-bold">Minimo Aprobatorio</td>
+                            <td>{{$variable->peso}}%</td>
+                        </tr>
+                    @endif
                 @endforeach
             @else
-                @foreach($renovaciones as $variable)    
+                @foreach($renovaciones as $variable)   
+                    @if(strcmp($variable->nombre, 'Exito') != 0)   
                     <tr>
                         <td>{{$variable->nombre}}</td>
                         <td id="escala">No registrada</td>
                         <td>{{$variable->peso}}%</td>
                     </tr>
+                    @else
+                    <tr>
+                        <td class="vacio"></td>
+                        <td class="font-weight-bold">Minimo Aprobatorio</td>
+                        <td>{{$variable->peso}}%</td>
+                    </tr>
+                    @endif
                 @endforeach
             @endif
             </table>

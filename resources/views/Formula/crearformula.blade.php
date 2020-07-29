@@ -55,7 +55,7 @@
               <div class="blocktext mgt-2 pdb-2 ">
                     <div class="blocktext mgt-2 pdb-2 row">
                       <a href="{{route('formula.index')}}" class="btn btn-danger" role="button" aria-pressed="true">Cancelar</a>
-                      <button type="submit" class="btn btn-primary mgl-1" >Usar escala actual y crear formula</button>
+                      <button type="submit" class="btn btn-primary mgl-1" >Crear formula</button>
                     </div>
               </div> 
         </form>

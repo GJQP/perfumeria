@@ -128,7 +128,7 @@ function preguntar(){
     console.log('hola');
     let cuerpo = '¿Qué acción desea realizar?'
     let boton = '<button type="button" class="btn btn-danger" data-dismiss="modal">Cancelar</button>'+
-                '<button type="button" class="btn btn-success"><a onclick="cancelarContrato()" href="/gestion-contratos/crear/'+idprod+'/'+ idprov +'">Crear Nuevo Contrato</a></button>'+
+                '<button type="button" class="btn btn-success"><a onclick="cancelarContrato()" >Crear Nuevo Contrato</a></button>'+
                 '<button type="button" class="btn btn-primary" onclick="renovar()">Renovar actual</button>';
     $('#cuerpo').text(cuerpo);
     $('#botones').html(boton);
@@ -136,8 +136,8 @@ function preguntar(){
 
 
 function cancelarContrato(){
-    console.log('hola');
-    axios.get('gestion-contratos/cancelar/' + contRenovar + '/' + idprod,{_method: 'delete'} );
+    console.log('Paso');
+    window.location = 'gestion-contratos/cancelar/' + idprod + '/' + idprov + '/' + contRenovar;
 }
 
 function descuento(){
@@ -206,4 +206,26 @@ function cambiarProveedorForm() {
     let idprod = document.getElementById('formis').value;
     console.log(idprod);
     axios.get('/gestion-formula/' + idprod ).then(() => window.location.reload());
+}
+
+
+function modalaPre(id_prov, id_ing) 
+{
+    if(id_prov == null)
+        id_prov = -1;
+    let modal = document.getElementById('mio');
+    while (modal.firstChild)
+        modal.removeChild(modal.firstChild); // medida unidad y precio
+    modal.innerHTML = '<tr> <th>Medida</th> <th>Unidad</th> <th>Precio</th> </tr>';
+    axios.get('/gestion-contratos/getProvedores/' + id_prov + '/' + id_ing).then(function (res){
+        a = res.data.presentaciones;
+        if(id_prov != -1)
+        a.forEach(e => {
+                modal.innerHTML += '<tr> <td>' + e.medida + '</td> <td>'+ e.unidad +'</td> <td>' + e.precio + '$</td></tr>';
+             });
+        else
+            a.forEach(e => {
+                modal.innerHTML += '<tr> <td>' + e.volumen + '</td> <td>'+ e.unidad +'</td> <td>' + e.precio + '$</td></tr>';
+            });
+    });   
 }

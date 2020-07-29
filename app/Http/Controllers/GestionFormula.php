@@ -29,7 +29,7 @@ class GestionFormula extends Controller
             $id = $productores[0]->id_prod;
 
         // Obtengo las variables
-        $variables = "SELECT rec.id_var, rec.fcha_reg, rec.tipo_eval, rec.peso, var.nombre FROM rig_evaluaciones_criterios rec INNER JOIN rig_variables var ON rec.id_var = var.id WHERE rec.id_prod=$id AND rec.fcha_fin IS NULL AND nombre != 'Exito'";
+        $variables = "SELECT rec.id_var, rec.fcha_reg, rec.tipo_eval, rec.peso, var.nombre FROM rig_evaluaciones_criterios rec INNER JOIN rig_variables var ON rec.id_var = var.id WHERE rec.id_prod=$id AND rec.fcha_fin IS NULL";
         $variables = DB::select("$variables");
 
         // Buscamos los valores de la formula inicial y de renovación
@@ -44,7 +44,7 @@ class GestionFormula extends Controller
         // Buscamos la escala correspondiente
         $escala = "SELECT DATE(fcha_reg) AS fcha_reg, rgo_ini, rgo_fin FROM rig_escalas WHERE id_prod = $id AND fcha_fin IS NULL";
         $escala = DB::select("$escala");
-        //dd($escala);
+
         return view('Formula.gestionformula')->with([
             "productores" => $productores,
             "iniciales" => $iniciales,

@@ -47,6 +47,7 @@
 		</div>
 		</div>
 	</div>
+	@if(!empty($ingredientes))
 	<div class="card">
 		<div class="card-header" id="headingOne">
 		<h2 class="mb-0">
@@ -66,7 +67,7 @@
 				@foreach($ingredientes as $ingrediente)
 				<div class="form-check">
 					<tr>
-						<td><input  type="checkbox" value="{{$ingrediente->cas}}" name="ingredientes[{{$i++}}]" id="for{{$ingrediente->id}}"></td>
+						<td><input  type="checkbox" value="{{$ingrediente->id}}" name="ingredientes[{{$i++}}]" id="for{{$ingrediente->id}}"></td>
 						<td>{{$ingrediente->cas}}</td>
 						<td>{{$ingrediente->nombre}}</td>
 					</tr>
@@ -82,6 +83,8 @@
 		</div>
 		</div>
 	</div>
+	@endif
+	@if(!empty($otros_ingredientes))
 	<div class="card">
 		<div class="card-header" id="headingTwo">
 		<h2 class="mb-0">
@@ -111,6 +114,8 @@
 		</div>
 		</div>
 	</div>
+	@endif
+	@if(!empty($condicionesEnvio))
 	<div class="card">
 		<div class="card-header" id="headingThree">
 		<h2 class="mb-0">
@@ -139,17 +144,14 @@
 					<td>{{$condicion->pais}}</td>
 
 				</tr>
-				<!--
-				<input class="form-check-input" type="checkbox" value="{{$condicion->id_ubic}}" name="condicionesEnvio[{{$w++}}]" id="for{{$condicion->id_ubic}}">
-				<label class="form-check-label" for="for{{$condicion->id_ubic}}">
-				{{$condicion->nombre}} Recargo: {{$condicion->porce_serv}} Medio: {{$condicion->medio}} Para: {{$condicion->pais}}
-				</label>-->
 			</div>	
 			@endforeach	
 		</table>
 		</div>
 		</div>
 	</div>
+	@endif
+	@if(!empty($condicionesPago))
 	<div class="card">
 		<div class="card-header" id="headingThree">
 		<h2 class="mb-0">
@@ -175,18 +177,13 @@
 					<td>{{$condicion->coutas}}</td>
 					<td>{{$condicion->cant_meses}}</td>
 				</tr>
-				<!--
-				<input class="form-check-input" type="checkbox" value="{{$condicion->id}}" name="condicionesPago[{{$k++}}]" id="for{{$condicion->id}}">
-				<label class="form-check-label" for="for{{$condicion->id}}">
-				{{$condicion->tipo}} Número de cuotas: {{$condicion->coutas}} a pagar en {{$condicion->cant_meses}} meses
-				</label>
-			-->
 			</div>	
 			@endforeach	
 		</table>
 		</div>
 		</div>
 	</div>
+	@endif
 	</div>
 	</div>
 	<div class="blocktext">
@@ -205,38 +202,7 @@
 				</div>
 			</form>
 			</div>
-			</div>	
-        </div>
-	</div>
-<!-- Popup para agregar descuento-->
-<!--div class="modal fade" id="descuento" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered" role="document">
-            <div class="modal-content">
-            <div class="modal-header">
-                <h3 class="modal-title">Agregar un Descuento</h3>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body" >
-				<div class="input-group mgb-1 ">
-                    <label>Ingrese el porcentaje del Descuento(opcional):</label>
-                    <input type="text" class="desc mgl-1" aria-label="porcentajeDesc" aria-describedby="basic-addon2" name="porcentajeDesc">
-                    <div class="input-group-append">
-                    <span class="input-group-text" id="basic-addon2">%</span>
-                    </div>
-                </div>
-                <div class="input-group">
-                    <label>Ingrese el porcentaje del Descuento(opcional):</label>
-                    <input type="date" class="form-control mgl-1" name="fechaDesc" aria-label="Fecha Culminacion" aria-describedby="basic-addon1">
-                </div>
-            </div>
-            <div class="modal-footer" id="botones">
-                <button type="button" class="btn btn-danger" data-dismiss="modal">Cancelar</button>
-				<button type="submit" class="btn btn-success">Aplicar</button>
-			</form>
-			</div>
-			</div>	
-        </div>
-	</div-->
+		</div>	
+    </div>
+</div>
 @endsection
