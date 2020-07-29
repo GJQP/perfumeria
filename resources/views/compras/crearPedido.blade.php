@@ -126,7 +126,6 @@
                                     @else
                                         <p class="mgt-1"><strong>No hay condiciones de pagos</strong><p>
                                     @endif
-
                                 </div>
                             </div>
                         </div>
