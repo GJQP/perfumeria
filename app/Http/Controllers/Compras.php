@@ -100,7 +100,7 @@ class Compras extends Controller
 
         foreach ($data['pagos_gen'] as $pago){
 
-            $fecha = Carbon::now('America/Caracas')->addDays(rand(round($pago['days']/4,0),$pago['days']))->format('Y-m-d');
+            $fecha = Carbon::now('America/Caracas')->addDays(rand($pago['days']-15,$pago['days']))->format('Y-m-d');
 
             DB::insert('
                 INSERT INTO rig_pagos (id_ped, id_ord, fcha_reg, total)
