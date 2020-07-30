@@ -151,11 +151,11 @@
             </div>
             <div class=" mgl-2 row">
                 <!--Lado izquierdo para la Rueda-->
-                <div class="col-md-5" v-show="segmentos.length > 0">
+                <div class="col-md-4" v-show="segmentos.length > 0">
                     <rueda :segments="segmentos" :cb="getNombre"/>
                 </div>
                 <!--Lado derecho para mostrar perfumes-->
-                <div class="perfumes" v-if="perfumes.length > 0">
+                <div class="col-md-7" v-if="perfumes.length > 0">
                     <div>
                         <h4 class="mgt-1 blocktext"><u>Perfumes</u></h4>
                     </div>
@@ -192,6 +192,9 @@
                                 </th>
                                 <th v-if="perfumes[0].Aspecto !== undefined">
                                     Personalidad
+                                </th>
+                                <th>
+                                    Ficha
                                 </th>
 
 
@@ -233,6 +236,11 @@
                                         <span class="mi mi-check" v-if="perfume.Aspecto"></span>
                                         <span class="mi mi-close" v-else></span>
                                     </td>
+                                    <td>
+                                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#presentacion" @click="getPresentacion(perfume)">
+                                            Ver Ficha
+                                        </button>
+                                    </td>
                                 </tr>
                             </tbody>
                         </table>
@@ -240,6 +248,81 @@
                 </div>
             </div>
         </div>
+
+        <div class="modal fade" id="presentacion" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h3 class="modal-title">Presentaciones</h3>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                            <p v-if="ficha && ficha.hasOwnProperty('perfumista')">
+                                Perfumistas: {{ficha.perfumista.map( ({nombre}) => nombre).toString()}}
+                            </p>
+                            <p v-if="ficha && ficha.hasOwnProperty('notas')">
+                                Notas: {{ficha.notas.map( ({nombre}) => " "+nombre).toString()}}
+                            </p>
+                            <p v-if="ficha && ficha.hasOwnProperty('perfume')">
+                                Datos del perfume:
+                                <ul>
+
+
+    <!--                                <span>ID: </span>{{ficha.perfume.id}}-->
+    <!--                                <span>ID: </span>{{ficha.perfume.id}}-->
+                                    <li>Nombre: </li>{{ficha.perfume[0].nombre}}
+                                    <li>Género: </li>{{
+                                        ficha.perfume[0].genero === 'M'? 'Masculino':
+                                        ficha.perfume[0].genero === 'F'? 'Femenino': 'Unisex'
+                                    }}
+                                    <li>Tipo: </li>{{ficha.perfume[0].tipo}}
+                                    <li>Edad: </li>{{ficha.perfume[0].edad}}
+                                    <li>Fecha de Creación: </li>{{ficha.perfume[0].fcha_crea}}
+                                    <li>Descripción: </li>{{ficha.perfume[0].des}}
+                                </ul>
+                            </p>
+                            <p v-if="ficha && ficha.hasOwnProperty('ingredientes')">
+                                Ingredientes: {{ficha.ingredientes.map( ({nombre}) => " "+nombre).toString()}}
+                            </p>
+                            <p v-if="ficha && ficha.hasOwnProperty('aromas')">
+                                Aromas: {{ficha.aromas.map( ({nombre}) => " "+nombre).toString()}}
+                            </p>
+                            <p v-if="ficha && ficha.hasOwnProperty('intensidades')">
+                                Intensidades: {{ficha.intensidades.map( ({tipo}) => " "+tipo).toString()}}
+                            </p>
+                            <p v-if="ficha && ficha.hasOwnProperty('presentaciones')">
+                                Presentaciones: {{ficha.presentaciones.map( ({vol, unidad}) => ` ${vol}${unidad}`).toString()}}
+                            </p>
+
+                       <!-- <p>
+                            {{ficha.notas.toString()}}
+                        </p>
+                        <p>
+                            {{ficha.perfume.toString()}}
+                        </p>
+                        <p>
+                            {{ficha.ingredientes.toString()}}
+                        </p>
+                        <p>
+                            {{ficha.aromas.toString()}}
+                        </p>
+                        <p>
+                            {{ficha.intensidades.toString()}}
+                        </p>
+                        <p>
+                            {{ficha.presentaciones.toString()}}
+                        </p>-->
+                    </div>
+                    <div class="modal-footer" id="botones">
+                        <button type="button" class="btn btn-success" data-dismiss="modal">Aceptar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
     </div>
 </template>
 
@@ -338,6 +421,8 @@
 
                 perfumes: [],
                 segmentos: [],
+
+                ficha: null,
 
                 filtro: 1
 
@@ -463,6 +548,14 @@
             },
             getNombre(index){
                 return this.perfumes[index].nombre;
+            },
+            getPresentacion({id}){
+
+                this.ficha = null;
+                axios.get(`/perfume/${id}`).then( ({data}) => {
+                    this.ficha = data;
+                    console.log(data);
+                })
             }
 
 

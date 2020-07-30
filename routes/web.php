@@ -76,3 +76,6 @@ Route::get ('/recomendador-perfumes', 'Recomendador@index');
 
 Route::get('/recomendar','Recomendador@recomendar');
 Route::post('/recomendar','Recomendador@recomendar');
+
+//PERFUME
+Route::get('/perfume/{id_perf}','Recomendador@getDatosPerfume');

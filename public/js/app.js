@@ -2496,6 +2496,89 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "Recomendador",
   data: function data() {
@@ -2669,6 +2752,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       aspectoSelected: [],
       perfumes: [],
       segmentos: [],
+      ficha: null,
       filtro: 1
     };
   },
@@ -2777,6 +2861,17 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     },
     getNombre: function getNombre(index) {
       return this.perfumes[index].nombre;
+    },
+    getPresentacion: function getPresentacion(_ref2) {
+      var _this2 = this;
+
+      var id = _ref2.id;
+      this.ficha = null;
+      axios.get("/perfume/".concat(id)).then(function (_ref3) {
+        var data = _ref3.data;
+        _this2.ficha = data;
+        console.log(data);
+      });
     }
     /*
     --UN PERFUME QUE TENGA POR LO MENOS
@@ -7467,7 +7562,7 @@ exports = module.exports = __webpack_require__(/*! ../../../node_modules/css-loa
 
 
 // module
-exports.push([module.i, "\n.vue-winwheel[data-v-3c9b60b8] {\n    text-align: center;\n    background-image: url('/static/img/obstacle-run/bg-spinner-mobile.svg');\n    background-size: cover;\n    background-position: center bottom;\n    background-repeat: no-repeat;\n}\n.vue-winwheel h1[data-v-3c9b60b8] {\n    color: #b32656;\n    font-family: 'Avenir', Helvetica, Arial, sans-serif;\n    font-size: 24px;\n    line-height: 90px;\n    letter-spacing: 0px;\n    margin: 0;\n}\n.vue-winwheel h2[data-v-3c9b60b8] {\n    margin: 0;\n}\n.vue-winwheel #modalSpinwheel.custom-modal .content-wrapper .content[data-v-3c9b60b8] {\n    width: calc(100vw - 30px);\n    padding-top: 52px;\n}\n.vue-winwheel #modalSpinwheel.custom-modal .content-wrapper .content h2[data-v-3c9b60b8] {\n    text-transform: uppercase;\n    color: #b32656;\n    margin-bottom: 16px;\n    margin-top: 0;\n    font-family: 'Avenir', Helvetica, Arial, sans-serif;\n    font-size: 18px;\n    letter-spacing: 1.1px;\n    margin: 0;\n}\n.vue-winwheel #modalSpinwheel.custom-modal .content-wrapper .content p[data-v-3c9b60b8] {\n    font-family: 'Avenir', Helvetica, Arial, sans-serif;\n    font-size: 14px;\n    color: black;\n    text-align: center;\n    line-height: 25px;\n}\n.vue-winwheel #modalSpinwheel.custom-modal .content-wrapper .content p strong[data-v-3c9b60b8] {\n    font-family: 'Avenir', Helvetica, Arial, sans-serif;\n}\n.vue-winwheel #modalSpinwheel.custom-modal .content-wrapper .content .modal-dismiss[data-v-3c9b60b8] {\n    top: 12px;\n    right: 12px;\n}\n.vue-winwheel #modalSpinwheel.custom-modal .content-wrapper .content .modal-dismiss i.icon_close[data-v-3c9b60b8] {\n    font-size: 30px;\n    color: #da2a52;\n}\n.vue-winwheel canvas#canvas[data-v-3c9b60b8] {\n    position: relative;\n}\n.vue-winwheel .canvas-wrapper[data-v-3c9b60b8] {\n    position: relative;\n}\n.vue-winwheel .canvas-wrapper[data-v-3c9b60b8]:after {\n    content: '';\n    display: block;\n    width: 42px;\n    background: #c4376f;\n    height: 42px;\n    position: absolute;\n    left: calc(50% - 25px);\n    margin: auto;\n    border-radius: 100%;\n    top: calc(50% - 29px);\n    border: 5px solid white;\n    box-sizing: content-box;\n}\n.vue-winwheel .canvas-wrapper[data-v-3c9b60b8]:before {\n    content: '';\n    display: block;\n    width: 310px;\n    background: #0f0f0f;\n    height: 310px;\n    position: absolute;\n    left: 0;\n    right: 0;\n    margin: 0 auto;\n    border-radius: 100%;\n    top: 0;\n}\n.vue-winwheel .wheel-wrapper[data-v-3c9b60b8] {\n    position: relative;\n}\n.vue-winwheel .wheel-wrapper[data-v-3c9b60b8]:before {\n    content: '';\n    width: 62px;\n    height: 47px;\n    position: absolute;\n    top: -10px;\n    left: calc(50% - 31px);\n    right: 0;\n    display: block;\n    z-index: 99999;\n    background-image: url(" + escape(__webpack_require__(/*! vue-winwheel/spinner-marker.svg */ "./node_modules/vue-winwheel/spinner-marker.svg")) + ");\n    background-repeat: no-repeat;\n    background-size: contain;\n    background-position: center;\n}\n.vue-winwheel .wheel-wrapper .button-wrapper[data-v-3c9b60b8] {\n    margin: 0 auto;\n    display: flex;\n    flex-direction: column;\n    align-items: center;\n    justify-content: center;\n    width: 231px;\n    height: 118px;\n}\n.vue-winwheel .wheel-wrapper .btn.btn-play[data-v-3c9b60b8] {\n    padding: 0 58px !important;\n    background: #c4376f;\n    height: 40px;\n    line-height: 40px;\n    color: white;\n    font-weight: bold;\n    text-decoration: none;\n    border-radius: 2px;\n    font-family: 'Avenir', Helvetica, Arial, sans-serif;\n    letter-spacing: 2px;\n}\n", ""]);
+exports.push([module.i, "\n.vue-winwheel[data-v-3c9b60b8] {\n    text-align: center;\n    background-image: url('/static/img/obstacle-run/bg-spinner-mobile.svg');\n    background-size: cover;\n    background-position: center bottom;\n    background-repeat: no-repeat;\n}\n.vue-winwheel h1[data-v-3c9b60b8] {\n    color: #b32656;\n    font-family: 'Avenir', Helvetica, Arial, sans-serif;\n    font-size: 24px;\n    line-height: 90px;\n    letter-spacing: 0px;\n    margin: 0;\n}\n.vue-winwheel h2[data-v-3c9b60b8] {\n    margin: 0;\n}\n.vue-winwheel #modalSpinwheel.custom-modal .content-wrapper .content[data-v-3c9b60b8] {\n    width: calc(100vw - 30px);\n    padding-top: 52px;\n}\n.vue-winwheel #modalSpinwheel.custom-modal .content-wrapper .content h2[data-v-3c9b60b8] {\n    text-transform: uppercase;\n    color: #b32656;\n    margin-bottom: 16px;\n    margin-top: 0;\n    font-family: 'Avenir', Helvetica, Arial, sans-serif;\n    font-size: 18px;\n    letter-spacing: 1.1px;\n    margin: 0;\n}\n.vue-winwheel #modalSpinwheel.custom-modal .content-wrapper .content p[data-v-3c9b60b8] {\n    font-family: 'Avenir', Helvetica, Arial, sans-serif;\n    font-size: 14px;\n    color: black;\n    text-align: center;\n    line-height: 25px;\n}\n.vue-winwheel #modalSpinwheel.custom-modal .content-wrapper .content p strong[data-v-3c9b60b8] {\n    font-family: 'Avenir', Helvetica, Arial, sans-serif;\n}\n.vue-winwheel #modalSpinwheel.custom-modal .content-wrapper .content .modal-dismiss[data-v-3c9b60b8] {\n    top: 12px;\n    right: 12px;\n}\n.vue-winwheel #modalSpinwheel.custom-modal .content-wrapper .content .modal-dismiss i.icon_close[data-v-3c9b60b8] {\n    font-size: 30px;\n    color: #da2a52;\n}\n.vue-winwheel canvas#canvas[data-v-3c9b60b8] {\n    position: relative;\n}\n.vue-winwheel .canvas-wrapper[data-v-3c9b60b8] {\n    position: relative;\n}\n.vue-winwheel .canvas-wrapper[data-v-3c9b60b8]:after {\n    content: '';\n    display: block;\n    width: 42px;\n    background: #c4376f;\n    height: 42px;\n    position: absolute;\n    left: calc(50% - 25px);\n    margin: auto;\n    border-radius: 100%;\n    top: calc(50% - 29px);\n    border: 5px solid white;\n    box-sizing: content-box;\n}\n.vue-winwheel .canvas-wrapper[data-v-3c9b60b8]:before {\n    content: '';\n    display: block;\n    width: 310px;\n    background: #0f0f0f;\n    height: 310px;\n    position: absolute;\n    left: 0;\n    right: 0;\n    margin: 0 auto;\n    border-radius: 100%;\n    top: 0;\n}\n.vue-winwheel .wheel-wrapper[data-v-3c9b60b8] {\n    position: relative;\n}\n.vue-winwheel .wheel-wrapper[data-v-3c9b60b8]:before {\n    content: '';\n    width: 62px;\n    height: 47px;\n    position: absolute;\n    top: -10px;\n    left: calc(50% - 31px);\n    right: 0;\n    display: block;\n    z-index: 100;\n    background-image: url(" + escape(__webpack_require__(/*! vue-winwheel/spinner-marker.svg */ "./node_modules/vue-winwheel/spinner-marker.svg")) + ");\n    background-repeat: no-repeat;\n    background-size: contain;\n    background-position: center;\n}\n.vue-winwheel .wheel-wrapper .button-wrapper[data-v-3c9b60b8] {\n    margin: 0 auto;\n    display: flex;\n    flex-direction: column;\n    align-items: center;\n    justify-content: center;\n    width: 231px;\n    height: 118px;\n}\n.vue-winwheel .wheel-wrapper .btn.btn-play[data-v-3c9b60b8] {\n    padding: 0 58px !important;\n    background: #c4376f;\n    height: 40px;\n    line-height: 40px;\n    color: white;\n    font-weight: bold;\n    text-decoration: none;\n    border-radius: 2px;\n    font-family: 'Avenir', Helvetica, Arial, sans-serif;\n    letter-spacing: 2px;\n}\n", ""]);
 
 // exports
 
@@ -49535,7 +49630,7 @@ var render = function() {
                     expression: "segmentos.length > 0"
                   }
                 ],
-                staticClass: "col-md-5"
+                staticClass: "col-md-4"
               },
               [
                 _c("rueda", {
@@ -49546,7 +49641,7 @@ var render = function() {
             ),
             _vm._v(" "),
             _vm.perfumes.length > 0
-              ? _c("div", { staticClass: "perfumes" }, [
+              ? _c("div", { staticClass: "col-md-7" }, [
                   _vm._m(2),
                   _vm._v(" "),
                   _c("div", [
@@ -49627,7 +49722,13 @@ var render = function() {
                                   "\n                                Personalidad\n                            "
                                 )
                               ])
-                            : _vm._e()
+                            : _vm._e(),
+                          _vm._v(" "),
+                          _c("th", [
+                            _vm._v(
+                              "\n                                Ficha\n                            "
+                            )
+                          ])
                         ])
                       ]),
                       _vm._v(" "),
@@ -49701,7 +49802,31 @@ var render = function() {
                                     ? _c("span", { staticClass: "mi mi-check" })
                                     : _c("span", { staticClass: "mi mi-close" })
                                 ])
-                              : _vm._e()
+                              : _vm._e(),
+                            _vm._v(" "),
+                            _c("td", [
+                              _c(
+                                "button",
+                                {
+                                  staticClass: "btn btn-primary",
+                                  attrs: {
+                                    type: "button",
+                                    "data-toggle": "modal",
+                                    "data-target": "#presentacion"
+                                  },
+                                  on: {
+                                    click: function($event) {
+                                      return _vm.getPresentacion(perfume)
+                                    }
+                                  }
+                                },
+                                [
+                                  _vm._v(
+                                    "\n                                        Ver Ficha\n                                    "
+                                  )
+                                ]
+                              )
+                            ])
                           ])
                         }),
                         0
@@ -49712,7 +49837,193 @@ var render = function() {
               : _vm._e()
           ])
         ])
-      : _vm._e()
+      : _vm._e(),
+    _vm._v(" "),
+    _c(
+      "div",
+      {
+        staticClass: "modal fade",
+        attrs: {
+          id: "presentacion",
+          tabindex: "-1",
+          role: "dialog",
+          "aria-labelledby": "exampleModalCenterTitle",
+          "aria-hidden": "true"
+        }
+      },
+      [
+        _c(
+          "div",
+          {
+            staticClass: "modal-dialog modal-dialog-centered modal-lg",
+            attrs: { role: "document" }
+          },
+          [
+            _c("div", { staticClass: "modal-content" }, [
+              _vm._m(3),
+              _vm._v(" "),
+              _c("div", { staticClass: "modal-body" }, [
+                _vm.ficha && _vm.ficha.hasOwnProperty("perfumista")
+                  ? _c("p", [
+                      _vm._v(
+                        "\n                            Perfumistas: " +
+                          _vm._s(
+                            _vm.ficha.perfumista
+                              .map(function(ref) {
+                                var nombre = ref.nombre
+
+                                return nombre
+                              })
+                              .toString()
+                          ) +
+                          "\n                        "
+                      )
+                    ])
+                  : _vm._e(),
+                _vm._v(" "),
+                _vm.ficha && _vm.ficha.hasOwnProperty("notas")
+                  ? _c("p", [
+                      _vm._v(
+                        "\n                            Notas: " +
+                          _vm._s(
+                            _vm.ficha.notas
+                              .map(function(ref) {
+                                var nombre = ref.nombre
+
+                                return " " + nombre
+                              })
+                              .toString()
+                          ) +
+                          "\n                        "
+                      )
+                    ])
+                  : _vm._e(),
+                _vm._v(" "),
+                _vm.ficha && _vm.ficha.hasOwnProperty("perfume")
+                  ? _c("p", [
+                      _vm._v(
+                        "\n                            Datos del perfume:\n                            "
+                      ),
+                      _c("ul", [
+                        _c("li", [_vm._v("Nombre: ")]),
+                        _vm._v(
+                          _vm._s(_vm.ficha.perfume[0].nombre) +
+                            "\n                                "
+                        ),
+                        _c("li", [_vm._v("Género: ")]),
+                        _vm._v(
+                          _vm._s(
+                            _vm.ficha.perfume[0].genero === "M"
+                              ? "Masculino"
+                              : _vm.ficha.perfume[0].genero === "F"
+                              ? "Femenino"
+                              : "Unisex"
+                          ) + "\n                                "
+                        ),
+                        _c("li", [_vm._v("Tipo: ")]),
+                        _vm._v(
+                          _vm._s(_vm.ficha.perfume[0].tipo) +
+                            "\n                                "
+                        ),
+                        _c("li", [_vm._v("Edad: ")]),
+                        _vm._v(
+                          _vm._s(_vm.ficha.perfume[0].edad) +
+                            "\n                                "
+                        ),
+                        _c("li", [_vm._v("Fecha de Creación: ")]),
+                        _vm._v(
+                          _vm._s(_vm.ficha.perfume[0].fcha_crea) +
+                            "\n                                "
+                        ),
+                        _c("li", [_vm._v("Descripción: ")]),
+                        _vm._v(
+                          _vm._s(_vm.ficha.perfume[0].des) +
+                            "\n                            "
+                        )
+                      ])
+                    ])
+                  : _vm._e(),
+                _vm._v(" "),
+                _vm.ficha && _vm.ficha.hasOwnProperty("ingredientes")
+                  ? _c("p", [
+                      _vm._v(
+                        "\n                            Ingredientes: " +
+                          _vm._s(
+                            _vm.ficha.ingredientes
+                              .map(function(ref) {
+                                var nombre = ref.nombre
+
+                                return " " + nombre
+                              })
+                              .toString()
+                          ) +
+                          "\n                        "
+                      )
+                    ])
+                  : _vm._e(),
+                _vm._v(" "),
+                _vm.ficha && _vm.ficha.hasOwnProperty("aromas")
+                  ? _c("p", [
+                      _vm._v(
+                        "\n                            Aromas: " +
+                          _vm._s(
+                            _vm.ficha.aromas
+                              .map(function(ref) {
+                                var nombre = ref.nombre
+
+                                return " " + nombre
+                              })
+                              .toString()
+                          ) +
+                          "\n                        "
+                      )
+                    ])
+                  : _vm._e(),
+                _vm._v(" "),
+                _vm.ficha && _vm.ficha.hasOwnProperty("intensidades")
+                  ? _c("p", [
+                      _vm._v(
+                        "\n                            Intensidades: " +
+                          _vm._s(
+                            _vm.ficha.intensidades
+                              .map(function(ref) {
+                                var tipo = ref.tipo
+
+                                return " " + tipo
+                              })
+                              .toString()
+                          ) +
+                          "\n                        "
+                      )
+                    ])
+                  : _vm._e(),
+                _vm._v(" "),
+                _vm.ficha && _vm.ficha.hasOwnProperty("presentaciones")
+                  ? _c("p", [
+                      _vm._v(
+                        "\n                            Presentaciones: " +
+                          _vm._s(
+                            _vm.ficha.presentaciones
+                              .map(function(ref) {
+                                var vol = ref.vol
+                                var unidad = ref.unidad
+
+                                return " " + vol + unidad
+                              })
+                              .toString()
+                          ) +
+                          "\n                        "
+                      )
+                    ])
+                  : _vm._e()
+              ]),
+              _vm._v(" "),
+              _vm._m(4)
+            ])
+          ]
+        )
+      ]
+    )
   ])
 }
 var staticRenderFns = [
@@ -49741,6 +50052,46 @@ var staticRenderFns = [
         _c("u", [_vm._v("Perfumes")])
       ])
     ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "modal-header" }, [
+      _c("h3", { staticClass: "modal-title" }, [_vm._v("Presentaciones")]),
+      _vm._v(" "),
+      _c(
+        "button",
+        {
+          staticClass: "close",
+          attrs: {
+            type: "button",
+            "data-dismiss": "modal",
+            "aria-label": "Close"
+          }
+        },
+        [_c("span", { attrs: { "aria-hidden": "true" } }, [_vm._v("×")])]
+      )
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "div",
+      { staticClass: "modal-footer", attrs: { id: "botones" } },
+      [
+        _c(
+          "button",
+          {
+            staticClass: "btn btn-success",
+            attrs: { type: "button", "data-dismiss": "modal" }
+          },
+          [_vm._v("Aceptar")]
+        )
+      ]
+    )
   }
 ]
 render._withStripped = true

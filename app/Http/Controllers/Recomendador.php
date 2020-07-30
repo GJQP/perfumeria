@@ -19,7 +19,7 @@ class Recomendador extends Controller
 
    public function recomendar(Request $request){
         $col = 0;
-        $columnas = "p.nombre";
+        $columnas = "p.id, p.nombre";
         //GENERO
         if( isset($request->genero) && $request->genero){
             $columnas .= ",
@@ -187,7 +187,7 @@ class Recomendador extends Controller
        foreach ($result as $key => $item){
            $cumplimiento = 0;
            foreach ($item as $k => $val){
-               if($k !== "nombre")
+               if($k !== "nombre" && $k !== "id")
                    $cumplimiento += $val;
            }
            //dd($cumplimiento);
@@ -215,7 +215,7 @@ class Recomendador extends Controller
         $notas = DB::select($notas);
 
         $perfume = "SELECT * FROM rig_perfumes WHERE id = $id_perf";
-        $perfume = DB::select($notas);
+        $perfume = DB::select($perfume);
 
         $otros = "SELECT nombre FROM rig_otros_ingredientes ot, rig_componentes_funcionales cp WHERE cp.id_perf = $id_perf AND cp.cas_otr_ing = ot.cas";
         $otros = DB::select($otros);
@@ -229,8 +229,8 @@ class Recomendador extends Controller
         $presentaciones_perfumes = "SELECT vol, unidad FROM rig_presentaciones_perfumes WHERE id_perf = $id_perf";
         $presentaciones_perfumes = DB::select($presentaciones_perfumes);
 
-        return request()->json([
-            'pefumista' => $perfumista, 
+        return request()->json('data',[
+            'perfumista' => $perfumista,
             'notas' => $notas,
             'perfume' => $perfume,
             'ingredientes' => $otros,
