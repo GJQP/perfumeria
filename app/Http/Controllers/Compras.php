@@ -453,7 +453,7 @@ class Compras extends Controller
     private function getDetallePedido($id_ped)
     {
         $ingredientes = DB::select('
-            SELECT item.presentacion, d.cantidad,item.precio_txt
+            SELECT item.presentacion, d.cantidad, item.precio_txt
                 FROM
                     (
                         SELECT
@@ -473,7 +473,7 @@ class Compras extends Controller
         ', [$id_ped]);
 
         $otros_ing = DB::select('
-            SELECT item.cod_present, item.presentacion, item.precio
+            SELECT item.cod_present, item.presentacion, item.precio, d.cantidad
             FROM (SELECT i.nombre || \' \' ||
                        to_char(p.volumen,\'990.00 ml\') presentacion,
                        to_char(p.precio,\'$ 999,999,990.00\') precio,

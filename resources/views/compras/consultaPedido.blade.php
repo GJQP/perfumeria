@@ -73,7 +73,7 @@
                                     @foreach($otros_ing as $ingrediente)
                                         <tr>
                                             <td>{{$ingrediente->presentacion}}</td>
-                                            <td>{{$ingrediente->precio_txt}}</td>
+                                            <td>{{$ingrediente->precio}}</td>
                                             <td>
                                                 {{$ingrediente->cantidad}}
                                             </td>
