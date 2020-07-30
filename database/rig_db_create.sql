@@ -119,7 +119,7 @@ CREATE TABLE rig_condiciones_de_pago (
 	tipo VARCHAR (15) NOT NULL,
 	coutas SMALLINT,
 	porcen_cuo NUMERIC (5,2),
-	cant_meses SMALLINT,
+	cant_meses NUMERIC (5,2),
 	PRIMARY KEY (id_prov, id)
 );
 
@@ -842,7 +842,6 @@ INSERT INTO rig_membresias (fcha_reg, tipo_m, id_prov) VALUES
 	(NOW() + '6 second', 'REGIONAL', 4),
 	(NOW() + '7 second', 'REGIONAL', 5),
 	(NOW() + '8 second', 'REGIONAL', 6);
-
 
 --rig_condiciones_de_pago
 
@@ -1603,5 +1602,141 @@ INSERT INTO rig_ingredientes_extras VALUES
 	(5, 15, 100516),
 	(3, 3, 100516);
 
--- Datos para la aplicación
+-- #################################################################################################
+-- Datos para la aplicación 
+-- #################################################################################################
+
+INSERT INTO rig_escalas VALUES
+	(1,	NOW() + '3000 second', 0, 10, '2019-03-29'),
+	(2,	NOW() + '2000 second', 1, 5, '2020-02-4'),
+	(2,	NOW() + '1500 second', 1, 13, '2020-02-15'),
+	(3,	NOW() + '1000 second', 3, 12, '2020-04-29'),
+	(2,	NOW() + '500 second', 5, 15, '2020-05-15'),
+	(2,	NOW() + '240 second', 0, 100, NULL),
+	(1,	NOW() + '120 second', 0, 12, '2020-07-29'),
+	(1,	NOW() + '60 second', 0,	50,	NULL),
+	(3,	NOW() + '20 second', 0,	30,	'2020-07-29'),
+	(3,	NOW() + '0 second', 0, 20, NULL);
+
+INSERT INTO rig_evaluaciones_criterios VALUES
+(1,	1,	'2020-07-29 22:56:31.670247',	'INICIAL',	80.00,	NULL),
+(1,	3,	'2020-07-29 22:56:31.676913',	'INICIAL',	20.00,	NULL),
+(1,	5,	'2020-07-29 22:56:41.6922',		'INICIAL',	45.00,	NULL),
+(1,	4,	'2020-07-29 22:56:51.588084',	'RENOVACION',	100.00,	NULL),
+(1,	5,	'2020-07-29 22:57:01.593551',	'RENOVACION',	80.00,	NULL),
+(2,	1,	'2020-07-29 22:59:17.939359',	'INICIAL',	30.00,	NULL),
+(2,	2,	'2020-07-29 22:59:17.943735',	'INICIAL',	50.00,	NULL),
+(2,	3,	'2020-07-29 22:59:17.945251',	'INICIAL',	20.00,	NULL),
+(2,	5,	'2020-07-29 22:59:27.958889',	'INICIAL',	50.00,	NUll),
+(2,	4,	'2020-07-29 22:59:42.635246',	'RENOVACION',	100.00,	NULl),
+(2,	5,	'2020-07-29 22:59:52.63838',	'RENOVACION',	60.00,	NULL),
+(3,	2,	'2020-07-29 23:00:06.838431',	'INICIAL',	40.00, NULL),
+(3,	3,	'2020-07-29 23:00:06.843343',	'INICIAL',	60.00, NULL),
+(3,	5,	'2020-07-29 23:00:16.844742',	'INICIAL',	50.00, NULL);
+
+INSERT INTO rig_contratos (id_prod, id_prov, id, fcha_reg, exc, cancelante, fcha_fin, mot_fin) VALUES
+(3,	2,	3,	'2019-08-25',	'SI',	NULL,	NULL,	NULL),
+(3,	6,	4,	'2019-07-30',	'SI',	'MANE',	'2020-07-30',	'El productor no desea continuar con el contrato'),
+(2,	3,	2,	'2020-03-30',	'SI',	'BASF',	'2020-07-30',	'El proveedor no despacha'),
+(1,	6,	5,	'2019-07-30',	'NO',	NULL,	NULL,	NULL),
+(1,	1,	1,	'2020-01-29',	'SI',	'Firmenich',	'2020-07-30',	'El productor no desea continuar con el contrato'),
+(2,	5,	7,	'2017-06-30',	'SI',	NULL,	NULL,	NULL),
+(1,	4,	8,	'2018-07-30',	'NO',	'Firmenich',	'2020-07-30', NULL),	
+(2,	3,	6,	'2019-07-30',	'NO',	'Ambas partes',	'2020-07-30',	'Se genera otro nuevo'),
+(2,	3,	9,	'2020-07-30',	'NO',	NULL,	NULL,	NULL);
+
+INSERT INTO rig_renovaciones VALUES
+(1,	6,	5,	1, '2020-07-30');
+
+INSERT INTO rig_resultados (id_prod, id_prov, fcha_reg, tipo_eval, res) VALUES
+(1,	1,	'2020-07-29 23:59:24.153163',	'INICIAL',	52.00),
+(2,	3,	'2020-07-30 00:00:06.136399',	'INICIAL',	39.00),
+(2,	3,	'2020-07-30 00:01:28.966127',	'INICIAL',	50.00),
+(3,	2,	'2020-07-30 00:02:07.847685',	'INICIAL',	70.00),
+(3,	6,	'2020-07-30 00:02:56.391847',	'INICIAL',	55.00),
+(1,	6,	'2020-07-30 00:03:53.756266',	'INICIAL',	81.20),
+(2,	4,	'2020-07-30 00:04:46.57213',	'INICIAL',	37.30),
+(1,	6,	'2020-07-30 00:25:49.044502',	'INICIAL',	80.00),
+(2,	3,	'2020-07-30 00:30:47.525939',	'INICIAL',	54.00),
+(2,	5,	'2020-07-30 00:31:37.058843',	'INICIAL',	50.00),
+(2,	1,	'2020-07-30 00:32:28.129877',	'INICIAL',	46.50),
+(1,	4,	'2020-07-30 00:32:54.957484',	'INICIAL',	60.00),
+(2,	3,	'2020-07-30 00:40:10.686514',	'INICIAL',	51.40);
+
+INSERT INTO rig_productos_contratados (id_prod, id_prov, id_ctra, id, id_prov_ing, id_ing, cas_otr_ing) VALUES
+(1,	1,	1,	1,	1,	4,	NULL),
+(1,	1,	1,	2,	1,	5,	NULL),
+(1,	1,	1,	3,	1,	6,	NULL),
+(1,	1,	1,	4,	NULL,	NULL,	14314422),
+(1,	1,	1,	5,	NULL,	NULL,	120514),
+(2,	3,	2,	1,	3,	2,	NULL),
+(2,	3,	2,	2,	3,	3,	NULL),
+(3,	2,	3,	1,	2,	7,	NULL),
+(3,	2,	3,	2,	2,	9,	NULL),
+(3,	6,	4,	1,	6,	18,	NULL),
+(1,	6,	5,	1,	6,	16,	NULL),
+(1,	6,	5,	2,	6,	17,	NULL),
+(2,	3,	6,	1,	3,	1,	NULL),
+(2,	3,	6,	2,	3,	2,	NULL),
+(2,	3,	6,	3,	3,	3,	NULL),
+(2,	3,	6,	4,	NULL,	NULL,	4430186),
+(2,	3,	6,	5,	NULL,	NULL,	1934210),
+(2,	5,	7,	1,	5,	14,	NULL),
+(1,	4,	8,	1,	4,	11,	NULL),
+(1,	4,	8,	2,	4,	12,	NULL),
+(2,	3,	9,	1,	3,	1,	NULL),
+(2,	3,	9,	2,	3,	2,	NULL),
+(2,	3,	9,	3,	3,	3,	NULL);
+
+
+
+INSERT INTO rig_condiciones_contratos (id_prod, id_prov, id_ctra, id, id_prov_ce, id_ubic, id_prov_cp, id_condpgo) VALUES
+(1,	1,	1,	1,	1,	1,	NULL,	NULL),
+(1,	1,	1,	2,	1,	2,	NULL,	NULL),
+(1,	1,	1,	3,	1,	5,	NULL,	NULL),
+(1,	1,	1,	4,	1,	9,	NULL,	NULL),
+(1,	1,	1,	5,	1,	13,	NULL,	NULL),
+(1,	1,	1,	6,	1,	82,	NULL,	NULL),
+(1,	1,	1,	7,	1,	92,	NULL,	NULL),
+(1,	1,	1,	8,	1,	115,	NULL,	NULL),
+(1,	1,	1,	9,	1,	139,	NULL,	NULL),
+(1,	1,	1,	10,	NULL,	NULL,	1,	1),
+(1,	1,	1,	11,	NULL,	NULL,	1,	2),
+(1,	1,	1,	12,	NULL,	NULL,	1,	3),
+(2,	3,	2,	1,	3,	55,	NULL,	NULL),
+(2,	3,	2,	2,	NULL,	NULL,	3,	5),
+(3,	2,	3,	1,	2,	13,	NULL,	NULL),
+(3,	2,	3,	2,	2,	18,	NULL,	NULL),
+(3,	2,	3,	3,	2,	28,	NULL,	NULL),
+(3,	2,	3,	4,	2,	139,	NULL,	NULL),
+(3,	2,	3,	5,	NULL,	NULL,	2,	4),
+(3,	6,	4,	1,	6,	50,	NULL,	NULL),
+(3,	6,	4,	2,	NULL,	NULL,	6,	12),
+(1,	6,	5,	1,	6,	1,	NULL,	NULL),
+(1,	6,	5,	2,	6,	2,	NULL,	NULL),
+(1,	6,	5,	3,	6,	5,	NULL,	NULL),
+(1,	6,	5,	4,	NULL,	NULL,	6,	12),
+(2,	3,	6,	1,	3,	55,	NULL,	NULL),
+(2,	3,	6,	2,	NULL,	NULL,	3,	5),
+(2,	3,	6,	3,	NULL,	NULL,	3,	6),
+(2,	5,	7,	1,	5,	55,	NULL,	NULL),
+(2,	5,	7,	2,	NULL,	NULL,	5,	10),
+(2,	5,	7,	3,	NULL,	NULL,	5,	11),
+(1,	4,	8,	1,	4,	1,	NULL,	NULL),
+(1,	4,	8,	2,	4,	2,	NULL,	NULL),
+(1,	4,	8,	3,	4,	5,	NULL,	NULL),
+(1,	4,	8,	4,	4,	9,	NULL,	NULL),
+(1,	4,	8,	5,	4,	13,	NULL,	NULL),
+(1,	4,	8,	6,	4,	64,	NULL,	NULL),
+(1,	4,	8,	7,	4,	74,	NULL,	NULL),
+(1,	4,	8,	8,	4,	82,	NULL,	NULL),
+(1,	4,	8,	9,	4,	92,	NULL,	NULL),
+(1,	4,	8,	10,	4,	115,	NULL,	NULL),
+(1,	4,	8,	11,	4,	139,	NULL,	NULL),
+(1,	4,	8,	12,	NULL,	NULL,	4,	7),
+(1,	4,	8,	13,	NULL,	NULL,	4,	8),
+(2,	3,	9,	1,	3,	55,	NULL,	NULL),
+(2,	3,	9,	2,	NULL,	NULL,	3,	5),
+(2,	3,	9,	3,	NULL,	NULL,	3,	6);
+
 

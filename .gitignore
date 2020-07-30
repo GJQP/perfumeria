@@ -17,3 +17,4 @@ package-lock.json
 
 /.idea
 public/images
+database/filif.sql
