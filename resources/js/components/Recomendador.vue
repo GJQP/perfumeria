@@ -277,17 +277,17 @@
                 ],
 
                 aromas: [
-                    {text: "Frutal",value: "'frutal'"},
-                    {text: "Floral",value: "'floral'"},
-                    {text: "Verde",value: "'verde'"},
-                    {text: "Herbal",value: "'herbal'"},
-                    {text: "Cítrico",value: "'citrico'"},
-                    {text: "Herbal",value: "'herbal'"},
-                    {text: "Café",value: "'cafe'"},
-                    {text: "Chocolate",value: "'chocolate'"},
-                    {text: "Vainilla",value: "'vainilla'"},
-                    {text: "Especias",value: "'especias'"},
-                    {text: "Tabaco",value: "'tabaco'"},
+                    {texto: "Frutal",value: "'frutal'"},
+                    {texto: "Floral",value: "'floral'"},
+                    {texto: "Verde",value: "'verde'"},
+                    {texto: "Herbal",value: "'herbal'"},
+                    {texto: "Cítrico",value: "'citrico'"},
+                    {texto: "Herbal",value: "'herbal'"},
+                    {texto: "Café",value: "'cafe'"},
+                    {texto: "Chocolate",value: "'chocolate'"},
+                    {texto: "Vainilla",value: "'vainilla'"},
+                    {texto: "Especias",value: "'especias'"},
+                    {texto: "Tabaco",value: "'tabaco'"},
                 ],
 
                 usos: [
