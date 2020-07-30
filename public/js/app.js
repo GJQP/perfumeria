@@ -2204,7 +2204,8 @@ __webpack_require__.r(__webpack_exports__);
       }).length === 0) {
         var data = {
           ingredientes: this.insertedIng,
-          otros_ingredientes: this.insertedOtrIng
+          otros_ingredientes: this.insertedOtrIng,
+          id_cto: id_cto
         };
         if (id_ped) data['id_ped'] = id_ped;
         axios.post("/pedido/".concat(id_cto, "/detalles"), data).then(function (_ref) {
