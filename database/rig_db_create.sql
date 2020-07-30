@@ -847,18 +847,18 @@ INSERT INTO rig_membresias (fcha_reg, tipo_m, id_prov) VALUES
 --rig_condiciones_de_pago
 
 INSERT INTO rig_condiciones_de_pago VALUES 
-	(1, DEFAULT, 'CONTADO', 1, 100, 6),
-	(1, DEFAULT, 'PARCIAL', 4, 25, 6),
-	(1, DEFAULT, 'PARCIAL', 10, 10, 8),
+	(1, DEFAULT, 'CONTADO', 1, 100, 0.4),
+	(1, DEFAULT, 'PARCIAL', 4, 25, 0.9),
+	(1, DEFAULT, 'PARCIAL', 10, 10, 1),
 	(2, DEFAULT, 'PARCIAL', 5, 20, 4),
 	(3, DEFAULT, 'PARCIAL', 2, 50, 10),
-	(3, DEFAULT, 'CONTADO', 1, 100, 3),
-	(4, DEFAULT, 'CONTADO', 1, 100, 4),
-	(4, DEFAULT, 'PARCIAL', 4, 25, 4),
-	(5, DEFAULT, 'CONTADO', 1, 100, 5),
-	(5, DEFAULT, 'PARCIAL', 3, 33, 5),
-	(5, DEFAULT, 'PARCIAL', 2, 50, 6),
-	(6, DEFAULT, 'PARCIAL', 2, 50, 6);
+	(3, DEFAULT, 'CONTADO', 1, 100, 0.3),
+	(4, DEFAULT, 'CONTADO', 1, 100, 0.1),
+	(4, DEFAULT, 'PARCIAL', 4, 25, 1.5),
+	(5, DEFAULT, 'CONTADO', 1, 100, 0.3),
+	(5, DEFAULT, 'PARCIAL', 3, 33, 1.25),
+	(5, DEFAULT, 'PARCIAL', 2, 50, 1),
+	(6, DEFAULT, 'PARCIAL', 2, 50, 1.3);
 
 --rig_condiciones_de_envio
 
@@ -1306,61 +1306,37 @@ INSERT INTO rig_presentaciones_perfumes VALUES
 -- rig_palabras_claves  
 
 INSERT INTO rig_palabras_claves VALUES 
-	-- Verde
-	(DEFAULT, 'verde'), --1
-	(DEFAULT, 'fresca'),--2
-	(DEFAULT, 'optimista'),--3
-	(DEFAULT, 'natural'), --4
-	(DEFAULT, 'libre'), --5
-	(DEFAULT, 'deshinibida'), --6
-	-- Cítrico
-	(DEFAULT, 'cítrico'),--7
-	(DEFAULT, 'juvenil'),--8
-	(DEFAULT, 'efímero'), --9
-	(DEFAULT, 'volatil'), --10
-	(DEFAULT, 'estimulante'),--11
-	(DEFAULT, 'olor fuerte'),--12
-	(DEFAULT, 'placer'),--13
-	(DEFAULT, 'verano'),--14
-	(DEFAULT, 'refrescante'),--15
-	-- Flores
-	(DEFAULT, 'floral'),--16
-	(DEFAULT, 'fresco'),--17
-	(DEFAULT, 'tranquilidad'),--18
-	(DEFAULT, 'relajante'),--19
-	(DEFAULT, 'alegre'),--20
-	(DEFAULT, 'vivo'),--21
-	-- Frutas
-	(DEFAULT, 'frutal'),--22
-	(DEFAULT, 'tropical'),--23
-	(DEFAULT, 'felicidad'), --24
-	(DEFAULT, 'ganas de vivir'),--25
-	--Aromáticos
-	(DEFAULT, 'aromático'), --26
-	(DEFAULT, 'vital'), --27
-	(DEFAULT, 'asertivo'), --28
-	(DEFAULT, 'tenaz'), --29
-	(DEFAULT, 'lucidez'), --30
-	(DEFAULT, 'vigor'), --31
-	(DEFAULT, 'familiaridad'), --32
-	--Helechos
-	(DEFAULT, 'profundidad'), --33
-	(DEFAULT, 'energía'), --34
-	(DEFAULT, 'confianza'),--35
-	(DEFAULT, 'atemporal'), --36
-	--Chipre
-	(DEFAULT, 'cálido'),--37
-	(DEFAULT, 'seco'),--38
-	--Maderas
-	(DEFAULT, 'amaderado'),--39
-	--Orientales
-	(DEFAULT, 'almizclado'), --40
-	(DEFAULT, 'sensual'), --41
-	(DEFAULT, 'intensos'), --42
-	(DEFAULT, 'oriental'), --43
-	(DEFAULT, 'empolvados'), --44
-	--Otros
-	(DEFAULT, 'otros'); --45
+	-- Caracter
+	(DEFAULT, 'informal'), -- 1
+	(DEFAULT, 'natural'), -- 2
+	(DEFAULT, 'clasico'), -- 3
+	(DEFAULT, 'seductor'), -- 4
+	(DEFAULT, 'moderno'), -- 5
+	-- Aromas
+	(DEFAULT, 'frutal'), -- 6
+	(DEFAULT, 'floral'), -- 7
+	(DEFAULT, 'verde'), -- 8
+	(DEFAULT, 'herbal'), -- 9
+	(DEFAULT, 'citrico'), -- 10
+	(DEFAULT, 'herbal aromático'), -- 11
+	(DEFAULT, 'cafe'), -- 12
+	(DEFAULT, 'chocolate'), -- 13
+	(DEFAULT, 'vainilla'), -- 14
+	(DEFAULT, 'especias'), -- 15
+	(DEFAULT, 'tabaco'), -- 16
+	-- Aspectos de la personalidad
+	(DEFAULT, 'libertad'), -- 17
+	(DEFAULT, 'indepencia'), -- 18
+	(DEFAULT, 'creatividad'), -- 19
+	(DEFAULT, 'deshinibida'), -- 20
+	(DEFAULT, 'tranquilidad'), -- 21
+	(DEFAULT, 'sensualidad'), -- 22
+	(DEFAULT, 'alegría'), -- 23
+	(DEFAULT, 'lucidez'), -- 24
+	(DEFAULT, 'calidez'), -- 25
+	(DEFAULT, 'optimismo'), -- 26
+	(DEFAULT, 'tenaz'), -- 27
+	(DEFAULT, 'vigor'); -- 28
 
 -- rig_familias_olfativas
 
@@ -1380,25 +1356,25 @@ INSERT INTO rig_familias_olfativas VALUES
 
 INSERT INTO rig_palabras_familias VALUES 
 	-- Verde
-	(1,1), (2,1), (3,1), (4,1), (5,1), (6,1),
+	(2,1), (3,1), (8,1), (17,1), (21,1), (24,1), (9,1),
 	-- Cítrico
-	(7,2), (8,2), (9,2), (10,2), (11,2), (12,2), (13,2), (14,2), (15,2),
+	(1,2), (2,2), (10,2), (22,2), (25,2), (26,2), (18,2), (6,2),
 	-- Flores
-	(16,3), (17,3), (18,3), (19,3), (20,3), (21,3),(15,3), (30,3),
+	(3,3), (2,3), (7,3), (19,3), (20,3), (23,3), (24,3), (26,3),
 	-- Frutas
-	(22,4), (23,4), (24,4), (25,4), (15,4), (14,4),
+	(1,4), (5,4), (2,4), (6,4), (17,4), (18,4), (20,4), (25,4), (26,4),
 	-- Aromáticos
-	(26,5), (27,5), (28,5), (29,5), (30,5), (31,5), (32,5),
+	(11,5), (9,5), (5,5), (2,5), (19,5), (20,5), (24,5), (27,5), (28,5),
 	-- Helechos
-	(33,6), (34,6), (35,6), (36,6),
+	(8,6), (9,6), (2,6), (3,6), (20,6), (18,6), (25,6), (24,6), (28,6),
 	-- Chipre
-	(37,7), (38,7),
+	(3,7), (8,7), (9,7), (11,7), (25,7), (26,7), (27,7),
 	-- Maderas
-	(39,8), (37,8), (38,8),
+	(4,8), (5,8), (2,8), (11,8), (18,8), (26,8), (27,8), (28,8), (22,8),
 	-- Orientales
-	(40,9), (41,9), (42,9), (43,9), (44,9), (37,9), (38,9),
+	(4,9), (5,9), (1,9), (11,9), (22,9), (25,9), (28,9),
 	-- Otros
-	(45,10);
+	(25,10), (17,10), (18,10), (19,10), (12,10), (13,10), (14,10), (15,10), (16,10), (5,10);
 
 -- rig_ingredientes_familias
 
@@ -1626,3 +1602,6 @@ INSERT INTO rig_ingredientes_extras VALUES
 	(1, 4, 100516),
 	(5, 15, 100516),
 	(3, 3, 100516);
+
+-- Datos para la aplicación
+
