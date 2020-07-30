@@ -282,7 +282,7 @@
         left: calc(50% - 31px);
         right: 0;
         display: block;
-        z-index: 99999;
+        z-index: 100;
         background-image: url('~vue-winwheel/spinner-marker.svg');
         background-repeat: no-repeat;
         background-size: contain;
