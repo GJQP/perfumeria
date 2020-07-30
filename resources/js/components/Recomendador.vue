@@ -135,7 +135,7 @@
                         </div>
                         <div class="offset-10 mgt-1 row" style="text-align: right;" v-if="filtro < 9">
                             <button type="submit" class="btn btn-primary" @click="buscar">Buscar</button>
-
+                            <button type="submit" class="btn btn-danger float-right" @click="reiniAll">Reiniciar búsqueda</button>
                             <!--<button class="btn btn-primary" type="button" disabled>
                                 <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
                                 <span class="sr-only">Loading...</span>
@@ -147,7 +147,7 @@
         <!--Rueda con la informacion-->
         <div class="stage tarjeta muli mgt-1 pdb-2" v-if="perfumes.length > 0">
             <div class="mgl-2 pdtp-1 mgb-1">
-                <h4><u><strong>Resultados</strong></u></h4>
+                <h4><u><strong>Rueda de la fortuna</strong></u></h4>
             </div>
             <div class=" mgl-2 row">
                 <!--Lado izquierdo para la Rueda-->
@@ -426,6 +426,10 @@
 
             },
 
+            reiniAll (){
+                this.filtro = 1;
+            },
+
             generarSegementos(data){
                 let i = 0;
                 let par = ((data.length-1) % 2);
@@ -434,15 +438,15 @@
                     let opciones = [
                             {
                                 textFillStyle: '#fff',
-                                fillStyle: '#000',
-                            },
-                            {
-                                textFillStyle: '#000',
-                                fillStyle: '#fadede',
+                                fillStyle: '#b32656',
                             },
                             {
                                 textFillStyle: '#fff',
-                                fillStyle: '#4ca4a0',
+                                fillStyle: '#000000',
+                            },
+                            {
+                                textFillStyle: '#000',
+                                fillStyle: '#ffffff',
                             }
                     ];
 
