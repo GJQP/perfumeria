@@ -69,6 +69,7 @@ Route::post('/pedido/{id_ctro}/respuesta', 'Compras@setEstado');
 Route::get('/pedido/{id_ctro}/{id_ped}','Compras@pagos')->name('compras.detalle');
 //POST CREAR PAGO
 Route::post('/pedido/{id_ctro}/{id_ped}','Compras@pagar')->name('compras.pagar');
+Route::get('/pedido/eliminar/elimanacion/{id_ped}', 'Compras@eliminar')->name('compras.elimanar');
 
 //Recomendador de Perfumes
 Route::get ('/recomendador-perfumes', 'Recomendador@index');

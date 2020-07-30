@@ -166,9 +166,9 @@
                                                 <button class="btn btn-link btn-primary btn-sm ">
                                                     <a href="{{route('compras.pedidos',['id_cto'=>$id_contrato,'id_ped'=>$pedido->id])}}">Continuar Pedido</a>
                                                 </button>
-                                                {{--<button class="btn btn-link btn-danger btn-sm">
-                                                    <a href="{{route('compras.pedidos',['id_cto'=>$id_contrato,'id_ped'=>$pedido->id])}}">Eliminar Pedido</a>
-                                                </button>--}}
+                                                <button class="btn btn-link btn-danger btn-sm">
+                                                    <a href="{{route('compras.elimanar',['id_cto'=>$id_contrato,'id_ped'=>$pedido->id])}}">Eliminar Pedido</a>
+                                                </button>
                                             @else
                                                 -
                                             @endif

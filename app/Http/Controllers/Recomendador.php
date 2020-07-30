@@ -226,7 +226,7 @@ class Recomendador extends Controller
         $intensidades = "SELECT tipo FROM rig_intensidades WHERE id_perf = $id_perf";
         $intensidades = DB::select($intensidades);
 
-        $presentaciones_perfumes = "SELECT vol, unidad FROM rig_presentaciones_perfumes WHERE id_perf = 1";
+        $presentaciones_perfumes = "SELECT vol, unidad FROM rig_presentaciones_perfumes WHERE id_perf = $id_perf";
         $presentaciones_perfumes = DB::select($presentaciones_perfumes);
 
         return request()->json([

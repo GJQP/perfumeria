@@ -45,19 +45,13 @@ class Compras extends Controller
         abort_if(empty($detalle), 404);
 
         $pedidos = DB::select('
-            SELECT p.fcha_reg, p.estatus, p.factura, p.id
-            FROM rig_pedidos p,
-                rig_condiciones_contratos ctr
-            WHERE
-                  (
-                      p.id_ctra_cone = ctr.id
-                      OR
-                      p.id_ctra_conp = ctr.id
-                    )
-                  AND
-                  ctr.id_prov = ? AND ctr.id_prod = ? AND ctr.id_ctra = ?
-            ORDER BY id DESC
-        ',[$id_prov,$id_prod,$id_contrato]);
+            SELECT * FROM rig_pedidos p 
+            WHERE 
+                p.id_prod_conp = ? AND 
+                p.id_prov_conp = ? AND 
+                p.id_ctra_conp = ? 
+            ORDER BY fcha_reg
+        ',[$id_prod,$id_prov,$id_contrato]);
 
         //dd($pedidos);
 
@@ -648,5 +642,14 @@ class Compras extends Controller
                 WHERE condiciones.id_prov = ped.id_prov_cone AND condiciones.id_cone = ped.id_cone
                   AND ped.id = ?
         ',[$id_ped]);
+    }
+
+    public function eliminar($id_ped)
+    {
+        $detalles = "DELETE FROM rig_detalles_pedidos WHERE id_ped = $id_ped";
+        DB::delete($detalles);
+        $pedido = "DELETE FROM rig_pedidos WHERE id = $id_ped";
+        DB::delete($pedido);
+        return redirect()->route('compras.index')->with(['status' => "Pedido cancelado exitosamente"]);
     }
 }

@@ -119,7 +119,7 @@ CREATE TABLE rig_condiciones_de_pago (
 	tipo VARCHAR (15) NOT NULL,
 	coutas SMALLINT,
 	porcen_cuo NUMERIC (5,2),
-	cant_meses NUMERIC (5,2),
+	cant_meses SMALLINT,
 	PRIMARY KEY (id_prov, id)
 );
 
@@ -844,20 +844,30 @@ INSERT INTO rig_membresias (fcha_reg, tipo_m, id_prov) VALUES
 	(NOW() + '8 second', 'REGIONAL', 6);
 
 --rig_condiciones_de_pago
+--CREATE TABLE rig_condiciones_de_pago (
+--	id_prov SMALLINT,
+--	id INTEGER,
+--	tipo VARCHAR (15) NOT NULL,
+---	coutas SMALLINT,
+--	porcen_cuo NUMERIC (5,2),
+--	cant_meses NUMERIC (5,2),
+--	PRIMARY KEY (id_prov, id)
+--);
+
 
 INSERT INTO rig_condiciones_de_pago VALUES 
-	(1, DEFAULT, 'CONTADO', 1, 100, 0.4),
-	(1, DEFAULT, 'PARCIAL', 4, 25, 0.9),
-	(1, DEFAULT, 'PARCIAL', 10, 10, 1),
-	(2, DEFAULT, 'PARCIAL', 5, 20, 4),
-	(3, DEFAULT, 'PARCIAL', 2, 50, 10),
-	(3, DEFAULT, 'CONTADO', 1, 100, 0.3),
-	(4, DEFAULT, 'CONTADO', 1, 100, 0.1),
-	(4, DEFAULT, 'PARCIAL', 4, 25, 1.5),
-	(5, DEFAULT, 'CONTADO', 1, 100, 0.3),
-	(5, DEFAULT, 'PARCIAL', 3, 33, 1.25),
-	(5, DEFAULT, 'PARCIAL', 2, 50, 1),
-	(6, DEFAULT, 'PARCIAL', 2, 50, 1.3);
+	(1, DEFAULT, 'CONTADO', 1, 0.4, 6),
+	(1, DEFAULT, 'PARCIAL', 4, 1.3, 5),
+	(1, DEFAULT, 'PARCIAL', 10, 5, 10),
+	(2, DEFAULT, 'PARCIAL', 5, 3.2, 7),
+	(3, DEFAULT, 'PARCIAL', 2, 2, 9),
+	(3, DEFAULT, 'CONTADO', 1, 0.8, 9),
+	(4, DEFAULT, 'CONTADO', 1, 0.3, 5),
+	(4, DEFAULT, 'PARCIAL', 4, 2.4, 7),
+	(5, DEFAULT, 'CONTADO', 1, 3, 8),
+	(5, DEFAULT, 'PARCIAL', 3, 4, 9),
+	(5, DEFAULT, 'PARCIAL', 2, 3, 5),
+	(6, DEFAULT, 'PARCIAL', 2, 2, 8);
 
 --rig_condiciones_de_envio
 
