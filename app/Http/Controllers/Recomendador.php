@@ -35,7 +35,7 @@ class Recomendador extends Controller
        if( isset($request->edad) && $request->edad){
            $columnas .= ",
                 (CASE
-                    WHEN p.edad = '".$request->genero."' THEN 1 --EDAD
+                    WHEN p.edad = '".$request->edad."' THEN 1 --EDAD
                     ELSE 0
                 END) AS \"Edad\"
            ";
@@ -85,7 +85,7 @@ class Recomendador extends Controller
        }
 
        //CARACTER
-       if( isset($request->caracter) && $request->caracter) {
+       if( isset($request->caracteres) && $request->caracteres) {
            $columnas .= ",
                    (CASE
                      WHEN p.id = ANY(
@@ -97,7 +97,7 @@ class Recomendador extends Controller
                               ) pp,
                               rig_palabras_claves pa
                          WHERE pp.id_pal = pa.id
-                           AND pa.palabra IN(".$request->caracter.") -- ASPECTO / PREFERENCIA / CARACTER
+                           AND pa.palabra IN(".$request->caracteres.") -- ASPECTO / PREFERENCIA / CARACTER
                      ) THEN 1
                      ELSE 0
                     END) AS \"Caracter\"
@@ -114,7 +114,7 @@ class Recomendador extends Controller
                          FROM rig_perfumes p,
                               rig_intensidades i
                          WHERE p.id = i.id_perf
-                           AND i.tipo = '".$request->intensidad."' -- TIPO
+                           AND i.tipo IN(".$request->intensidad.") -- TIPO
                      ) THEN 1
                      ELSE 0
                     END) AS \"Intensidad\"
@@ -140,17 +140,17 @@ class Recomendador extends Controller
        }
 
        //ESENCIAS
-       if( isset($request->esencia) && $request->esencia) {
+       if( isset($request->aromas) && $request->aromas) {
            $columnas .= ",
                 (CASE
                      WHEN p.id = ANY(
-                         SELECT esenp.id_perf,f.nombre
+                         SELECT esenp.id_perf
                          FROM
                              (SELECT fam.nombre,es.id_esenp as id_esenp_fam
                               FROM rig_familias_olfativas fam,
                                    rig_esencias es
                               WHERE fam.id = es.id_fao
-                                AND fam.nombre IN ('".$request->esencia."') --ESENCIAS
+                                AND fam.nombre IN (".$request->aromas.") --ESENCIAS
                              ) f,
                              (SELECT n.id_perf, id_esenp as id_esenp_per
                               FROM rig_notas n
@@ -188,13 +188,11 @@ class Recomendador extends Controller
 
        $collection = collect($result);
 
-       $filtrado = $collection->sortByDesc('cumplimiento')->filter(function ($value, $key) {
+       $filtrado = $collection->filter(function ($value, $key) {
            return $value->cumplimiento > 0;
-       });
+       })->sortByDesc('cumplimiento');
 
-       //dd($collection->sortByDesc('cumplimiento'));
-
-       return response()->json($filtrado);
+       return response()->json($filtrado->values()->all());
    }
 
 }

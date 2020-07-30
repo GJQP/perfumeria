@@ -25,6 +25,7 @@
     },
     "dependencies": {
         "bs-stepper": "^1.7.0",
+        "material-icons": "^0.3.1",
         "vue-select": "^3.10.7",
         "vue-winwheel": "^1.0.0"
     }

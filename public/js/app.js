@@ -2244,6 +2244,94 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -2420,87 +2508,135 @@ __webpack_require__.r(__webpack_exports__);
   data: function data() {
     return {
       generos: [{
-        texto: 'Femenino'
+        texto: 'Femenino',
+        value: 'F'
       }, {
-        texto: 'Masculino'
+        texto: 'Masculino',
+        value: 'M'
       }, {
-        texto: 'Unisex'
+        texto: 'Unisex',
+        value: 'U'
       }],
       edades: [{
-        texto: 'Atemporal'
+        texto: 'Atemporal',
+        value: 'ATEMPORAL'
       }, {
-        texto: 'Adulto'
+        texto: 'Adulto',
+        value: 'ADULTO'
       }, {
-        texto: 'Joven'
+        texto: 'Joven',
+        value: 'JOVEN'
       }],
       intensidades: [{
         texto: 'Ligero',
-        value: ['EdC', 'EdS']
+        value: ["'EdC'", "'EdS'"].toString()
       }, {
         texto: 'Intermedio',
-        value: ['EdT']
+        value: ["'EdT'"].toString()
       }, {
         texto: 'Intenso',
-        value: ['P', 'EdP']
+        value: ["'P'", "'EdP'"].toString()
       }],
       caracteres: [{
-        texto: 'Clasico'
+        texto: 'Clasico',
+        value: "'Clasico'"
       }, {
-        texto: 'Informal'
+        texto: 'Informal',
+        value: "'Informal'"
       }, {
-        texto: 'Moderno'
+        texto: 'Moderno',
+        value: "'Moderno'"
       }, {
-        texto: 'Natural'
+        texto: 'Natural',
+        value: "'Natural'"
       }, {
-        texto: 'Seductor'
+        texto: 'Seductor',
+        value: "'Seductor'"
       }],
       aromas: [{
-        texto: 'Floral'
+        texto: 'Verde',
+        value: "'Verde'"
       }, {
-        texto: 'Frutal,'
+        texto: 'Cítrico',
+        value: "'Citrico'"
       }, {
-        texto: 'Verde'
+        texto: 'Flores',
+        value: "'Flores'"
       }, {
-        texto: 'Herbal'
+        texto: 'Frutas',
+        value: "'Frutas'"
       }, {
-        texto: 'Cítrico'
+        texto: 'Aromáticos',
+        value: "'Aromáticos'"
       }, {
-        texto: 'Herbal Aromático'
+        texto: 'Helechos',
+        value: "'Helechos'"
+      }, {
+        texto: 'Chipre',
+        value: "'Chipre'"
+      }, {
+        texto: 'Maderas',
+        value: "'Maderas'"
+      }, {
+        texto: 'Orientales',
+        value: "'Orientales'"
+      }, {
+        texto: 'Otros',
+        value: "'Otros'"
       }],
       usos: [{
-        texto: 'Diario'
+        texto: 'Diario',
+        value: "'Diario'"
       }, {
-        texto: 'Trabajo'
+        texto: 'Trabajo',
+        value: "'Trabajo'"
       }, {
-        texto: 'Ocasion Especial'
+        texto: 'Ocasion Especial',
+        value: "'Ocasion Especial'"
       }],
       aspectos: [{
-        texto: 'Libertad'
+        texto: 'Libertad',
+        value: "'Libertad'"
       }, {
-        texto: 'Independiente'
+        texto: 'Independiente',
+        value: "'Independiente'"
       }, {
-        texto: 'Creatividad'
+        texto: 'Creatividad',
+        value: "'Creatividad'"
       }, {
-        texto: 'Diversion'
+        texto: 'Diversion',
+        value: "'Diversion'"
       }],
       familias: [{
-        texto: 'Verde'
+        texto: 'Verde',
+        value: "'Verde'"
       }, {
-        texto: 'Cítrico'
+        texto: 'Cítrico',
+        value: "'Citrico'"
       }, {
-        texto: 'Flores'
+        texto: 'Flores',
+        value: "'Flores'"
       }, {
-        texto: 'Frutas'
+        texto: 'Frutas',
+        value: "'Frutas'"
       }, {
-        texto: 'Aromáticos'
+        texto: 'Aromáticos',
+        value: "'Aromáticos'"
       }, {
-        texto: 'Helechos'
+        texto: 'Helechos',
+        value: "'Helechos'"
       }, {
-        texto: 'Chipre'
+        texto: 'Chipre',
+        value: "'Chipre'"
       }, {
-        texto: 'Maderas'
+        texto: 'Maderas',
+        value: "'Maderas'"
       }, {
-        texto: 'Orientales'
+        texto: 'Orientales',
+        value: "'Orientales'"
+      }, {
+        texto: 'Otros',
+        value: "'Otros'"
       }],
       genero: null,
       edad: null,
@@ -2514,7 +2650,23 @@ __webpack_require__.r(__webpack_exports__);
       familiaSelected: [],
       aromaSelected: [],
       aspectoSelected: [],
-      perfumes: ["Acqua di Giò de Giorgio Armani", "Boss Bottled de Hugo Boss", "Romance de Ralph Lauren", "Joseph Abboud de Joseph Abboud", "Pistachio Brûlée de Urban Outfitters", "Paris, She Met Him In Secret de Fictions Perfume", "Exotic Musk", "Let you Love Me de Blumarine", "Gris Charnel de BDK Parfums"]
+      perfumes: [],
+      segmentos: [],
+
+      /*
+        [
+        "Acqua di Giò de Giorgio Armani",
+        "Boss Bottled de Hugo Boss",
+        "Romance de Ralph Lauren",
+        "Joseph Abboud de Joseph Abboud",
+        "Pistachio Brûlée de Urban Outfitters",
+        "Paris, She Met Him In Secret de Fictions Perfume",
+        "Exotic Musk",
+        "Let you Love Me de Blumarine",
+        "Gris Charnel de BDK Parfums",
+      ],
+       */
+      filtro: 1
     };
   },
   methods: {
@@ -2533,11 +2685,94 @@ __webpack_require__.r(__webpack_exports__);
       });
     },
     buscar: function buscar() {
-      var data = {};
-      if (this.genero) data['genero'] = this.genero;
-      console.log(data);
+      var _this = this;
+
+      var datos = {};
+
+      if (this.genero) {
+        this.filtro = 2;
+        datos['genero'] = this.genero;
+      }
+
+      if (this.edad) {
+        this.filtro = 3;
+        datos['edad'] = this.edad;
+      }
+
+      if (this.intensidad) {
+        this.filtro = 4;
+        datos['intensidad'] = this.intensidad;
+      }
+
+      if (this.preferencia) {
+        this.filtro = 5;
+        datos['preferencia'] = this.preferencia;
+      }
+
+      if (this.caracterSelected.length > 0) {
+        this.filtro = 6;
+        datos['caracteres'] = this.caracterSelected.map(function (item) {
+          return item.value;
+        }).toString();
+      }
+
+      if (this.aromaSelected.length > 0) {
+        this.filtro = 7;
+        datos['aromas'] = this.aromaSelected.map(function (item) {
+          return item.value;
+        }).toString();
+      }
+
+      if (this.aspectoSelected.length > 0) {
+        this.filtro = 8;
+        datos['aspecto'] = this.aspectoSelected.map(function (item) {
+          return item.value;
+        }).toString();
+      }
+
+      if (this.familiaSelected.length > 0) {
+        this.filtro = 9;
+        datos['familia'] = this.familiaSelected.map(function (item) {
+          return item.value;
+        }).toString();
+      }
+
+      console.log(datos); //console.log(this.aromaSelected);
+
+      if (Object.keys(datos).length !== 0) {
+        axios.post('/recomendar', datos).then(function (_ref) {
+          var data = _ref.data;
+          console.log("RESULTADOS", data);
+          _this.perfumes = data;
+          _this.segmentos = _this.generarSegementos(data);
+          debugger;
+        });
+      }
     },
-    generarSegementos: function generarSegementos() {}
+    generarSegementos: function generarSegementos(data) {
+      var i = 0;
+      var par = (data.length - 1) % 2;
+      return data.map(function (item, index) {
+        var opciones = [{
+          textFillStyle: '#fff',
+          fillStyle: '#000'
+        }, {
+          textFillStyle: '#000',
+          fillStyle: '#fadede'
+        }, {
+          textFillStyle: '#fff',
+          fillStyle: '#4ca4a0'
+        }];
+        if (par) return _objectSpread(_objectSpread({}, opciones[i++ % 2]), {}, {
+          text: "Perfume ".concat(index + 1)
+        });else return _objectSpread(_objectSpread({}, opciones[i++ % 3]), {}, {
+          text: "Perfume ".concat(index + 1)
+        });
+      });
+    },
+    getNombre: function getNombre(index) {
+      return this.perfumes[index].nombre;
+    }
     /*
     --UN PERFUME QUE TENGA POR LO MENOS
     --* 1 EL GENERO
@@ -2652,7 +2887,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
           text: 'Prize 8'
         }];
       }
-    }
+    },
+    cb: null
   },
   data: function data() {
     return {
@@ -2734,7 +2970,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     }
   },
   computed: {},
-  updated: function updated() {},
+  updated: function updated() {//this.initSpin()
+  },
   mounted: function mounted() {
     this.initSpin(); // this.resetWheel()
   },
@@ -26815,7 +27052,7 @@ return jQuery;
   var undefined;
 
   /** Used as the semantic version number. */
-  var VERSION = '4.17.19';
+  var VERSION = '4.17.15';
 
   /** Used as the size to enable large array optimizations. */
   var LARGE_ARRAY_SIZE = 200;
@@ -30522,21 +30759,8 @@ return jQuery;
      * @returns {Array} Returns the new sorted array.
      */
     function baseOrderBy(collection, iteratees, orders) {
-      if (iteratees.length) {
-        iteratees = arrayMap(iteratees, function(iteratee) {
-          if (isArray(iteratee)) {
-            return function(value) {
-              return baseGet(value, iteratee.length === 1 ? iteratee[0] : iteratee);
-            }
-          }
-          return iteratee;
-        });
-      } else {
-        iteratees = [identity];
-      }
-
       var index = -1;
-      iteratees = arrayMap(iteratees, baseUnary(getIteratee()));
+      iteratees = arrayMap(iteratees.length ? iteratees : [identity], baseUnary(getIteratee()));
 
       var result = baseMap(collection, function(value, key, collection) {
         var criteria = arrayMap(iteratees, function(iteratee) {
@@ -30793,10 +31017,6 @@ return jQuery;
         var key = toKey(path[index]),
             newValue = value;
 
-        if (key === '__proto__' || key === 'constructor' || key === 'prototype') {
-          return object;
-        }
-
         if (index != lastIndex) {
           var objValue = nested[key];
           newValue = customizer ? customizer(objValue, key, nested) : undefined;
@@ -30949,14 +31169,11 @@ return jQuery;
      *  into `array`.
      */
     function baseSortedIndexBy(array, value, iteratee, retHighest) {
-      var low = 0,
-          high = array == null ? 0 : array.length;
-      if (high === 0) {
-        return 0;
-      }
-
       value = iteratee(value);
-      var valIsNaN = value !== value,
+
+      var low = 0,
+          high = array == null ? 0 : array.length,
+          valIsNaN = value !== value,
           valIsNull = value === null,
           valIsSymbol = isSymbol(value),
           valIsUndefined = value === undefined;
@@ -32441,11 +32658,10 @@ return jQuery;
       if (arrLength != othLength && !(isPartial && othLength > arrLength)) {
         return false;
       }
-      // Check that cyclic values are equal.
-      var arrStacked = stack.get(array);
-      var othStacked = stack.get(other);
-      if (arrStacked && othStacked) {
-        return arrStacked == other && othStacked == array;
+      // Assume cyclic values are equal.
+      var stacked = stack.get(array);
+      if (stacked && stack.get(other)) {
+        return stacked == other;
       }
       var index = -1,
           result = true,
@@ -32607,11 +32823,10 @@ return jQuery;
           return false;
         }
       }
-      // Check that cyclic values are equal.
-      var objStacked = stack.get(object);
-      var othStacked = stack.get(other);
-      if (objStacked && othStacked) {
-        return objStacked == other && othStacked == object;
+      // Assume cyclic values are equal.
+      var stacked = stack.get(object);
+      if (stacked && stack.get(other)) {
+        return stacked == other;
       }
       var result = true;
       stack.set(object, other);
@@ -35992,10 +36207,6 @@ return jQuery;
      * // The `_.property` iteratee shorthand.
      * _.filter(users, 'active');
      * // => objects for ['barney']
-     *
-     * // Combining several predicates using `_.overEvery` or `_.overSome`.
-     * _.filter(users, _.overSome([{ 'age': 36 }, ['age', 40]]));
-     * // => objects for ['fred', 'barney']
      */
     function filter(collection, predicate) {
       var func = isArray(collection) ? arrayFilter : baseFilter;
@@ -36745,15 +36956,15 @@ return jQuery;
      * var users = [
      *   { 'user': 'fred',   'age': 48 },
      *   { 'user': 'barney', 'age': 36 },
-     *   { 'user': 'fred',   'age': 30 },
+     *   { 'user': 'fred',   'age': 40 },
      *   { 'user': 'barney', 'age': 34 }
      * ];
      *
      * _.sortBy(users, [function(o) { return o.user; }]);
-     * // => objects for [['barney', 36], ['barney', 34], ['fred', 48], ['fred', 30]]
+     * // => objects for [['barney', 36], ['barney', 34], ['fred', 48], ['fred', 40]]
      *
      * _.sortBy(users, ['user', 'age']);
-     * // => objects for [['barney', 34], ['barney', 36], ['fred', 30], ['fred', 48]]
+     * // => objects for [['barney', 34], ['barney', 36], ['fred', 40], ['fred', 48]]
      */
     var sortBy = baseRest(function(collection, iteratees) {
       if (collection == null) {
@@ -41628,11 +41839,11 @@ return jQuery;
 
       // Use a sourceURL for easier debugging.
       // The sourceURL gets injected into the source that's eval-ed, so be careful
-      // to normalize all kinds of whitespace, so e.g. newlines (and unicode versions of it) can't sneak in
-      // and escape the comment, thus injecting code that gets evaled.
+      // with lookup (in case of e.g. prototype pollution), and strip newlines if any.
+      // A newline wouldn't be a valid sourceURL anyway, and it'd enable code injection.
       var sourceURL = '//# sourceURL=' +
         (hasOwnProperty.call(options, 'sourceURL')
-          ? (options.sourceURL + '').replace(/\s/g, ' ')
+          ? (options.sourceURL + '').replace(/[\r\n]/g, ' ')
           : ('lodash.templateSources[' + (++templateCounter) + ']')
         ) + '\n';
 
@@ -41665,6 +41876,8 @@ return jQuery;
 
       // If `variable` is not specified wrap a with-statement around the generated
       // code to add the data object to the top of the scope chain.
+      // Like with sourceURL, we take care to not check the option's prototype,
+      // as this configuration is a code injection vector.
       var variable = hasOwnProperty.call(options, 'variable') && options.variable;
       if (!variable) {
         source = 'with (obj) {\n' + source + '\n}\n';
@@ -42371,9 +42584,6 @@ return jQuery;
      * values against any array or object value, respectively. See `_.isEqual`
      * for a list of supported value comparisons.
      *
-     * **Note:** Multiple values can be checked by combining several matchers
-     * using `_.overSome`
-     *
      * @static
      * @memberOf _
      * @since 3.0.0
@@ -42389,10 +42599,6 @@ return jQuery;
      *
      * _.filter(objects, _.matches({ 'a': 4, 'c': 6 }));
      * // => [{ 'a': 4, 'b': 5, 'c': 6 }]
-     *
-     * // Checking for several possible values
-     * _.filter(users, _.overSome([_.matches({ 'a': 1 }), _.matches({ 'a': 4 })]));
-     * // => [{ 'a': 1, 'b': 2, 'c': 3 }, { 'a': 4, 'b': 5, 'c': 6 }]
      */
     function matches(source) {
       return baseMatches(baseClone(source, CLONE_DEEP_FLAG));
@@ -42406,9 +42612,6 @@ return jQuery;
      * **Note:** Partial comparisons will match empty array and empty object
      * `srcValue` values against any array or object value, respectively. See
      * `_.isEqual` for a list of supported value comparisons.
-     *
-     * **Note:** Multiple values can be checked by combining several matchers
-     * using `_.overSome`
      *
      * @static
      * @memberOf _
@@ -42426,10 +42629,6 @@ return jQuery;
      *
      * _.find(objects, _.matchesProperty('a', 4));
      * // => { 'a': 4, 'b': 5, 'c': 6 }
-     *
-     * // Checking for several possible values
-     * _.filter(users, _.overSome([_.matchesProperty('a', 1), _.matchesProperty('a', 4)]));
-     * // => [{ 'a': 1, 'b': 2, 'c': 3 }, { 'a': 4, 'b': 5, 'c': 6 }]
      */
     function matchesProperty(path, srcValue) {
       return baseMatchesProperty(path, baseClone(srcValue, CLONE_DEEP_FLAG));
@@ -42653,10 +42852,6 @@ return jQuery;
      * Creates a function that checks if **all** of the `predicates` return
      * truthy when invoked with the arguments it receives.
      *
-     * Following shorthands are possible for providing predicates.
-     * Pass an `Object` and it will be used as an parameter for `_.matches` to create the predicate.
-     * Pass an `Array` of parameters for `_.matchesProperty` and the predicate will be created using them.
-     *
      * @static
      * @memberOf _
      * @since 4.0.0
@@ -42683,10 +42878,6 @@ return jQuery;
      * Creates a function that checks if **any** of the `predicates` return
      * truthy when invoked with the arguments it receives.
      *
-     * Following shorthands are possible for providing predicates.
-     * Pass an `Object` and it will be used as an parameter for `_.matches` to create the predicate.
-     * Pass an `Array` of parameters for `_.matchesProperty` and the predicate will be created using them.
-     *
      * @static
      * @memberOf _
      * @since 4.0.0
@@ -42706,9 +42897,6 @@ return jQuery;
      *
      * func(NaN);
      * // => false
-     *
-     * var matchesFunc = _.overSome([{ 'a': 1 }, { 'a': 2 }])
-     * var matchesPropertyFunc = _.overSome([['a', 1], ['a', 2]])
      */
     var overSome = createOver(arraySome);
 
@@ -48571,613 +48759,895 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", { staticClass: "container mgt-2 mgrb-1" }, [
-    _c("div", [
-      _c("div", { staticClass: "stage tarjeta muli pdb-2" }, [
-        _vm._m(0),
-        _vm._v(" "),
-        _c("div", { staticClass: "mgtp-1 pdb-1" }, [
-          _c("div", { staticClass: "row" }, [
-            _c("div", { staticClass: "offset-1 col-md-2" }, [
-              _c("label", { staticClass: "pdtp-1 mgr-1" }, [_vm._v("Género:")]),
-              _vm._v(" "),
-              _c(
-                "select",
-                {
-                  directives: [
-                    {
-                      name: "model",
-                      rawName: "v-model",
-                      value: _vm.genero,
-                      expression: "genero"
-                    }
-                  ],
-                  staticClass: "form-control",
-                  on: {
-                    change: function($event) {
-                      var $$selectedVal = Array.prototype.filter
-                        .call($event.target.options, function(o) {
-                          return o.selected
-                        })
-                        .map(function(o) {
-                          var val = "_value" in o ? o._value : o.value
-                          return val
-                        })
-                      _vm.genero = $event.target.multiple
-                        ? $$selectedVal
-                        : $$selectedVal[0]
-                    }
-                  }
-                },
-                [
-                  _c(
-                    "option",
-                    { attrs: { selected: "" }, domProps: { value: null } },
-                    [_vm._v("--Genero--")]
-                  ),
-                  _vm._v(" "),
-                  _vm._l(_vm.generos, function(genero) {
-                    return _c("option", { domProps: { value: genero.texto } }, [
-                      _vm._v(
-                        _vm._s(genero.texto) +
-                          "\n                                "
+    _vm.filtro < 8
+      ? _c("div", [
+          _c("div", { staticClass: "stage tarjeta muli pdb-2" }, [
+            _vm._m(0),
+            _vm._v(" "),
+            _c("div", { staticClass: "mgtp-1 pdb-1" }, [
+              _c("div", { staticClass: "row" }, [
+                _vm.filtro === 1
+                  ? _c("div", { staticClass: "offset-1 col-md-2" }, [
+                      _c("label", { staticClass: "pdtp-1 mgr-1" }, [
+                        _vm._v("Género:")
+                      ]),
+                      _vm._v(" "),
+                      _c(
+                        "select",
+                        {
+                          directives: [
+                            {
+                              name: "model",
+                              rawName: "v-model",
+                              value: _vm.genero,
+                              expression: "genero"
+                            }
+                          ],
+                          staticClass: "form-control",
+                          on: {
+                            change: function($event) {
+                              var $$selectedVal = Array.prototype.filter
+                                .call($event.target.options, function(o) {
+                                  return o.selected
+                                })
+                                .map(function(o) {
+                                  var val = "_value" in o ? o._value : o.value
+                                  return val
+                                })
+                              _vm.genero = $event.target.multiple
+                                ? $$selectedVal
+                                : $$selectedVal[0]
+                            }
+                          }
+                        },
+                        [
+                          _c(
+                            "option",
+                            {
+                              attrs: { selected: "" },
+                              domProps: { value: null }
+                            },
+                            [_vm._v("--Genero--")]
+                          ),
+                          _vm._v(" "),
+                          _vm._l(_vm.generos, function(genero) {
+                            return _c(
+                              "option",
+                              { domProps: { value: genero.value } },
+                              [
+                                _vm._v(
+                                  _vm._s(genero.texto) +
+                                    "\n                                "
+                                )
+                              ]
+                            )
+                          })
+                        ],
+                        2
                       )
                     ])
-                  })
-                ],
-                2
-              )
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "col-md-3" }, [
-              _c("label", { staticClass: "pdtp-1 mgr-1" }, [_vm._v("Edad:")]),
-              _vm._v(" "),
-              _c(
-                "select",
-                {
-                  directives: [
-                    {
-                      name: "model",
-                      rawName: "v-model",
-                      value: _vm.edad,
-                      expression: "edad"
-                    }
-                  ],
-                  staticClass: "form-control",
-                  on: {
-                    change: function($event) {
-                      var $$selectedVal = Array.prototype.filter
-                        .call($event.target.options, function(o) {
-                          return o.selected
-                        })
-                        .map(function(o) {
-                          var val = "_value" in o ? o._value : o.value
-                          return val
-                        })
-                      _vm.edad = $event.target.multiple
-                        ? $$selectedVal
-                        : $$selectedVal[0]
-                    }
-                  }
-                },
-                [
-                  _c(
-                    "option",
-                    { attrs: { selected: "" }, domProps: { value: null } },
-                    [_vm._v("--Edad--")]
-                  ),
-                  _vm._v(" "),
-                  _vm._l(_vm.edades, function(edad) {
-                    return _c("option", { domProps: { value: edad.texto } }, [
-                      _vm._v(
-                        _vm._s(edad.texto) +
-                          "\n                                "
+                  : _vm._e(),
+                _vm._v(" "),
+                _vm.filtro === 2
+                  ? _c("div", { staticClass: "offset-1 col-md-2" }, [
+                      _c("label", { staticClass: "pdtp-1 mgr-1" }, [
+                        _vm._v("Edad:")
+                      ]),
+                      _vm._v(" "),
+                      _c(
+                        "select",
+                        {
+                          directives: [
+                            {
+                              name: "model",
+                              rawName: "v-model",
+                              value: _vm.edad,
+                              expression: "edad"
+                            }
+                          ],
+                          staticClass: "form-control",
+                          on: {
+                            change: function($event) {
+                              var $$selectedVal = Array.prototype.filter
+                                .call($event.target.options, function(o) {
+                                  return o.selected
+                                })
+                                .map(function(o) {
+                                  var val = "_value" in o ? o._value : o.value
+                                  return val
+                                })
+                              _vm.edad = $event.target.multiple
+                                ? $$selectedVal
+                                : $$selectedVal[0]
+                            }
+                          }
+                        },
+                        [
+                          _c(
+                            "option",
+                            {
+                              attrs: { selected: "" },
+                              domProps: { value: null }
+                            },
+                            [_vm._v("--Edad--")]
+                          ),
+                          _vm._v(" "),
+                          _vm._l(_vm.edades, function(edad) {
+                            return _c(
+                              "option",
+                              { domProps: { value: edad.value } },
+                              [
+                                _vm._v(
+                                  _vm._s(edad.texto) +
+                                    "\n                                "
+                                )
+                              ]
+                            )
+                          })
+                        ],
+                        2
                       )
                     ])
-                  })
-                ],
-                2
-              )
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "col-md-3" }, [
-              _c("label", { staticClass: "pdtp-1 mgr-1" }, [
-                _vm._v("Intensidad:")
+                  : _vm._e(),
+                _vm._v(" "),
+                _vm.filtro === 3
+                  ? _c("div", { staticClass: "offset-1 col-md-2" }, [
+                      _c("label", { staticClass: "pdtp-1 mgr-1" }, [
+                        _vm._v("Intensidad:")
+                      ]),
+                      _vm._v(" "),
+                      _c(
+                        "select",
+                        {
+                          directives: [
+                            {
+                              name: "model",
+                              rawName: "v-model",
+                              value: _vm.intensidad,
+                              expression: "intensidad"
+                            }
+                          ],
+                          staticClass: "form-control",
+                          on: {
+                            change: function($event) {
+                              var $$selectedVal = Array.prototype.filter
+                                .call($event.target.options, function(o) {
+                                  return o.selected
+                                })
+                                .map(function(o) {
+                                  var val = "_value" in o ? o._value : o.value
+                                  return val
+                                })
+                              _vm.intensidad = $event.target.multiple
+                                ? $$selectedVal
+                                : $$selectedVal[0]
+                            }
+                          }
+                        },
+                        [
+                          _c(
+                            "option",
+                            {
+                              attrs: { selected: "" },
+                              domProps: { value: null }
+                            },
+                            [_vm._v("--Intensidad--")]
+                          ),
+                          _vm._v(" "),
+                          _vm._l(_vm.intensidades, function(intensidad) {
+                            return _c(
+                              "option",
+                              { domProps: { value: intensidad.value } },
+                              [
+                                _vm._v(
+                                  "\n                                    " +
+                                    _vm._s(intensidad.texto) +
+                                    "\n                                "
+                                )
+                              ]
+                            )
+                          })
+                        ],
+                        2
+                      )
+                    ])
+                  : _vm._e(),
+                _vm._v(" "),
+                _vm.filtro === 4
+                  ? _c("div", { staticClass: "offset-1 col-md-2" }, [
+                      _c("label", { staticClass: "pdtp-1 mgr-1" }, [
+                        _vm._v("Preferencia de Uso:")
+                      ]),
+                      _vm._v(" "),
+                      _c(
+                        "select",
+                        {
+                          directives: [
+                            {
+                              name: "model",
+                              rawName: "v-model",
+                              value: _vm.preferencia,
+                              expression: "preferencia"
+                            }
+                          ],
+                          staticClass: "form-control",
+                          on: {
+                            change: function($event) {
+                              var $$selectedVal = Array.prototype.filter
+                                .call($event.target.options, function(o) {
+                                  return o.selected
+                                })
+                                .map(function(o) {
+                                  var val = "_value" in o ? o._value : o.value
+                                  return val
+                                })
+                              _vm.preferencia = $event.target.multiple
+                                ? $$selectedVal
+                                : $$selectedVal[0]
+                            }
+                          }
+                        },
+                        [
+                          _c(
+                            "option",
+                            {
+                              attrs: { selected: "" },
+                              domProps: { value: null }
+                            },
+                            [_vm._v("--Preferencia--")]
+                          ),
+                          _vm._v(" "),
+                          _vm._l(_vm.usos, function(uso) {
+                            return _c(
+                              "option",
+                              { domProps: { value: uso.texto } },
+                              [_vm._v(_vm._s(uso.texto))]
+                            )
+                          })
+                        ],
+                        2
+                      )
+                    ])
+                  : _vm._e()
               ]),
               _vm._v(" "),
-              _c(
-                "select",
-                {
-                  directives: [
-                    {
-                      name: "model",
-                      rawName: "v-model",
-                      value: _vm.intensidad,
-                      expression: "intensidad"
-                    }
-                  ],
-                  staticClass: "form-control",
-                  on: {
-                    change: function($event) {
-                      var $$selectedVal = Array.prototype.filter
-                        .call($event.target.options, function(o) {
-                          return o.selected
-                        })
-                        .map(function(o) {
-                          var val = "_value" in o ? o._value : o.value
-                          return val
-                        })
-                      _vm.intensidad = $event.target.multiple
-                        ? $$selectedVal
-                        : $$selectedVal[0]
-                    }
-                  }
-                },
-                [
-                  _c(
-                    "option",
-                    { attrs: { selected: "" }, domProps: { value: null } },
-                    [_vm._v("--Intensidad--")]
-                  ),
-                  _vm._v(" "),
-                  _vm._l(_vm.intensidades, function(intensidad) {
-                    return _c(
-                      "option",
-                      { domProps: { value: intensidad.value } },
+              _c("div", { staticClass: "row mgt-1" }, [
+                _vm.filtro === 5
+                  ? _c(
+                      "div",
+                      { staticClass: "offset-1 col-md-2" },
                       [
-                        _vm._v(
-                          "\n                                    " +
-                            _vm._s(intensidad.texto) +
-                            "\n                                "
-                        )
-                      ]
+                        _c(
+                          "label",
+                          { staticClass: "pdtp-1 mgr-2 nombreFiltro" },
+                          [
+                            _vm._v(
+                              "\n                                Caracter:\n                                "
+                            ),
+                            _vm.caracteres.length > 0
+                              ? _c("span", {
+                                  staticClass: "circle plus",
+                                  on: {
+                                    click: function($event) {
+                                      return _vm.agregar(
+                                        _vm.caracterSelected,
+                                        _vm.caracteres,
+                                        _vm.caracter
+                                      )
+                                    }
+                                  }
+                                })
+                              : _vm._e(),
+                            _vm._v(" "),
+                            _vm.caracterSelected.length > 0
+                              ? _c("span", {
+                                  staticClass: "circle minus",
+                                  on: {
+                                    click: function($event) {
+                                      return _vm.agregar(
+                                        _vm.caracteres,
+                                        _vm.caracterSelected,
+                                        0
+                                      )
+                                    }
+                                  }
+                                })
+                              : _vm._e()
+                          ]
+                        ),
+                        _vm._v(" "),
+                        _vm.caracteres.length > 0
+                          ? _c(
+                              "select",
+                              {
+                                directives: [
+                                  {
+                                    name: "model",
+                                    rawName: "v-model",
+                                    value: _vm.caracter,
+                                    expression: "caracter"
+                                  }
+                                ],
+                                staticClass: "form-control caracter mglp-1",
+                                on: {
+                                  change: function($event) {
+                                    var $$selectedVal = Array.prototype.filter
+                                      .call($event.target.options, function(o) {
+                                        return o.selected
+                                      })
+                                      .map(function(o) {
+                                        var val =
+                                          "_value" in o ? o._value : o.value
+                                        return val
+                                      })
+                                    _vm.caracter = $event.target.multiple
+                                      ? $$selectedVal
+                                      : $$selectedVal[0]
+                                  }
+                                }
+                              },
+                              [
+                                _c(
+                                  "option",
+                                  {
+                                    attrs: { selected: "" },
+                                    domProps: { value: null }
+                                  },
+                                  [_vm._v("--Caracter--")]
+                                ),
+                                _vm._v(" "),
+                                _vm._l(_vm.caracteres, function(val, key) {
+                                  return _c(
+                                    "option",
+                                    { domProps: { value: key } },
+                                    [_vm._v(_vm._s(val.texto))]
+                                  )
+                                })
+                              ],
+                              2
+                            )
+                          : _vm._e(),
+                        _vm._v(" "),
+                        _vm._l(_vm.caracterSelected, function(caracter) {
+                          return _c("p", [_vm._v(_vm._s(caracter.texto))])
+                        })
+                      ],
+                      2
                     )
-                  })
-                ],
-                2
-              )
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "col-md-2" }, [
-              _c("label", { staticClass: "pdtp-1 mgr-1" }, [
-                _vm._v("Preferencia de Uso:")
+                  : _vm._e(),
+                _vm._v(" "),
+                _vm.filtro === 6
+                  ? _c(
+                      "div",
+                      { staticClass: "offset-1 col-md-2" },
+                      [
+                        _c(
+                          "label",
+                          { staticClass: "pdtp-1 mgr-1 nombreFiltro" },
+                          [
+                            _vm._v(
+                              "\n                                Aspecto de Personalidad:\n                                "
+                            ),
+                            _vm.aspectos.length > 0
+                              ? _c("span", {
+                                  staticClass: "circle plus",
+                                  on: {
+                                    click: function($event) {
+                                      return _vm.agregar(
+                                        _vm.aspectoSelected,
+                                        _vm.aspectos,
+                                        _vm.aspecto
+                                      )
+                                    }
+                                  }
+                                })
+                              : _vm._e(),
+                            _vm._v(" "),
+                            _vm.aspectoSelected.length > 0
+                              ? _c("span", {
+                                  staticClass: "circle minus",
+                                  on: {
+                                    click: function($event) {
+                                      return _vm.agregar(
+                                        _vm.aspectos,
+                                        _vm.aspectoSelected,
+                                        0
+                                      )
+                                    }
+                                  }
+                                })
+                              : _vm._e()
+                          ]
+                        ),
+                        _vm._v(" "),
+                        _vm.aspectos.length > 0
+                          ? _c(
+                              "select",
+                              {
+                                directives: [
+                                  {
+                                    name: "model",
+                                    rawName: "v-model",
+                                    value: _vm.aspecto,
+                                    expression: "aspecto"
+                                  }
+                                ],
+                                staticClass: "form-control caracter",
+                                on: {
+                                  change: function($event) {
+                                    var $$selectedVal = Array.prototype.filter
+                                      .call($event.target.options, function(o) {
+                                        return o.selected
+                                      })
+                                      .map(function(o) {
+                                        var val =
+                                          "_value" in o ? o._value : o.value
+                                        return val
+                                      })
+                                    _vm.aspecto = $event.target.multiple
+                                      ? $$selectedVal
+                                      : $$selectedVal[0]
+                                  }
+                                }
+                              },
+                              [
+                                _c(
+                                  "option",
+                                  {
+                                    attrs: { selected: "" },
+                                    domProps: { value: null }
+                                  },
+                                  [_vm._v("--Aspecto--")]
+                                ),
+                                _vm._v(" "),
+                                _vm._l(_vm.aspectos, function(val, key) {
+                                  return _c(
+                                    "option",
+                                    { domProps: { value: key } },
+                                    [_vm._v(_vm._s(val.texto))]
+                                  )
+                                })
+                              ],
+                              2
+                            )
+                          : _vm._e(),
+                        _vm._v(" "),
+                        _vm._l(_vm.aspectoSelected, function(val) {
+                          return _c("p", [_vm._v(_vm._s(val.texto))])
+                        })
+                      ],
+                      2
+                    )
+                  : _vm._e(),
+                _vm._v(" "),
+                _vm.filtro === 7
+                  ? _c(
+                      "div",
+                      { staticClass: "offset-1 col-md-2" },
+                      [
+                        _c(
+                          "label",
+                          { staticClass: "pdtp-1 mgr-1 nombreFiltro" },
+                          [
+                            _vm._v(
+                              "\n                                Familia Olfativa:\n                                "
+                            ),
+                            _vm.familias.length > 0
+                              ? _c("span", {
+                                  staticClass: "circle plus",
+                                  on: {
+                                    click: function($event) {
+                                      return _vm.agregar(
+                                        _vm.familiaSelected,
+                                        _vm.familias,
+                                        _vm.familia
+                                      )
+                                    }
+                                  }
+                                })
+                              : _vm._e(),
+                            _vm._v(" "),
+                            _vm.familiaSelected.length > 0
+                              ? _c("span", {
+                                  staticClass: "circle minus",
+                                  on: {
+                                    click: function($event) {
+                                      return _vm.agregar(
+                                        _vm.familias,
+                                        _vm.familiaSelected,
+                                        0
+                                      )
+                                    }
+                                  }
+                                })
+                              : _vm._e()
+                          ]
+                        ),
+                        _vm._v(" "),
+                        _vm.familias.length > 0
+                          ? _c(
+                              "select",
+                              {
+                                directives: [
+                                  {
+                                    name: "model",
+                                    rawName: "v-model",
+                                    value: _vm.familia,
+                                    expression: "familia"
+                                  }
+                                ],
+                                staticClass: "form-control caracter",
+                                on: {
+                                  change: function($event) {
+                                    var $$selectedVal = Array.prototype.filter
+                                      .call($event.target.options, function(o) {
+                                        return o.selected
+                                      })
+                                      .map(function(o) {
+                                        var val =
+                                          "_value" in o ? o._value : o.value
+                                        return val
+                                      })
+                                    _vm.familia = $event.target.multiple
+                                      ? $$selectedVal
+                                      : $$selectedVal[0]
+                                  }
+                                }
+                              },
+                              [
+                                _c(
+                                  "option",
+                                  {
+                                    attrs: { selected: "" },
+                                    domProps: { value: null }
+                                  },
+                                  [_vm._v("--Familias--")]
+                                ),
+                                _vm._v(" "),
+                                _vm._l(_vm.familias, function(val, key) {
+                                  return _c(
+                                    "option",
+                                    { domProps: { value: key } },
+                                    [_vm._v(_vm._s(val.texto))]
+                                  )
+                                })
+                              ],
+                              2
+                            )
+                          : _vm._e(),
+                        _vm._v(" "),
+                        _vm._l(_vm.familiaSelected, function(val) {
+                          return _c("p", [_vm._v(_vm._s(val.texto))])
+                        })
+                      ],
+                      2
+                    )
+                  : _vm._e(),
+                _vm._v(" "),
+                _vm.filtro === 8
+                  ? _c(
+                      "div",
+                      { staticClass: "offset-1 col-md-2" },
+                      [
+                        _c(
+                          "label",
+                          { staticClass: "pdtp-1 mgr-1 nombreFiltro" },
+                          [
+                            _vm._v(
+                              "\n                                Aroma Prevaleciente:\n                                "
+                            ),
+                            _vm.aromas.length > 0
+                              ? _c("span", {
+                                  staticClass: "circle plus",
+                                  on: {
+                                    click: function($event) {
+                                      return _vm.agregar(
+                                        _vm.aromaSelected,
+                                        _vm.aromas,
+                                        _vm.aroma
+                                      )
+                                    }
+                                  }
+                                })
+                              : _vm._e(),
+                            _vm._v(" "),
+                            _vm.aromaSelected.length > 0
+                              ? _c("span", {
+                                  staticClass: "circle minus",
+                                  on: {
+                                    click: function($event) {
+                                      return _vm.agregar(
+                                        _vm.aromas,
+                                        _vm.aromaSelected,
+                                        0
+                                      )
+                                    }
+                                  }
+                                })
+                              : _vm._e()
+                          ]
+                        ),
+                        _vm._v(" "),
+                        _vm.aromas.length > 0
+                          ? _c(
+                              "select",
+                              {
+                                directives: [
+                                  {
+                                    name: "model",
+                                    rawName: "v-model",
+                                    value: _vm.aroma,
+                                    expression: "aroma"
+                                  }
+                                ],
+                                staticClass: "form-control caracter",
+                                on: {
+                                  change: function($event) {
+                                    var $$selectedVal = Array.prototype.filter
+                                      .call($event.target.options, function(o) {
+                                        return o.selected
+                                      })
+                                      .map(function(o) {
+                                        var val =
+                                          "_value" in o ? o._value : o.value
+                                        return val
+                                      })
+                                    _vm.aroma = $event.target.multiple
+                                      ? $$selectedVal
+                                      : $$selectedVal[0]
+                                  }
+                                }
+                              },
+                              [
+                                _c(
+                                  "option",
+                                  {
+                                    attrs: { selected: "" },
+                                    domProps: { value: null }
+                                  },
+                                  [_vm._v("--Aromas--")]
+                                ),
+                                _vm._v(" "),
+                                _vm._l(_vm.aromas, function(val, key) {
+                                  return _c(
+                                    "option",
+                                    { domProps: { value: key } },
+                                    [_vm._v(_vm._s(val.texto))]
+                                  )
+                                })
+                              ],
+                              2
+                            )
+                          : _vm._e(),
+                        _vm._v(" "),
+                        _vm._l(_vm.aromaSelected, function(val) {
+                          return _c("p", [_vm._v(_vm._s(val.texto))])
+                        })
+                      ],
+                      2
+                    )
+                  : _vm._e()
               ]),
               _vm._v(" "),
-              _c(
-                "select",
-                {
-                  directives: [
+              _vm.filtro < 8
+                ? _c(
+                    "div",
                     {
-                      name: "model",
-                      rawName: "v-model",
-                      value: _vm.preferencia,
-                      expression: "preferencia"
-                    }
-                  ],
-                  staticClass: "form-control",
-                  on: {
-                    change: function($event) {
-                      var $$selectedVal = Array.prototype.filter
-                        .call($event.target.options, function(o) {
-                          return o.selected
-                        })
-                        .map(function(o) {
-                          var val = "_value" in o ? o._value : o.value
-                          return val
-                        })
-                      _vm.preferencia = $event.target.multiple
-                        ? $$selectedVal
-                        : $$selectedVal[0]
-                    }
-                  }
-                },
-                [
-                  _c(
-                    "option",
-                    { attrs: { selected: "" }, domProps: { value: null } },
-                    [_vm._v("--Preferencia--")]
-                  ),
-                  _vm._v(" "),
-                  _vm._l(_vm.usos, function(uso) {
-                    return _c("option", { domProps: { value: uso.texto } }, [
-                      _vm._v(_vm._s(uso.texto))
-                    ])
-                  })
-                ],
-                2
-              )
+                      staticClass: "offset-10 mgt-1 row",
+                      staticStyle: { "text-align": "right" }
+                    },
+                    [
+                      _c(
+                        "button",
+                        {
+                          staticClass: "btn btn-primary",
+                          attrs: { type: "submit" },
+                          on: { click: _vm.buscar }
+                        },
+                        [_vm._v("Buscar")]
+                      )
+                    ]
+                  )
+                : _vm._e()
             ])
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "row mgt-1" }, [
-            _c(
-              "div",
-              { staticClass: "offset-1 col-md-2" },
-              [
-                _c("label", { staticClass: "pdtp-1 mgr-2 nombreFiltro" }, [
-                  _vm._v(
-                    "\n                                Caracter:\n                                "
-                  ),
-                  _vm.caracteres.length > 0
-                    ? _c("span", {
-                        staticClass: "circle plus",
-                        on: {
-                          click: function($event) {
-                            return _vm.agregar(
-                              _vm.caracterSelected,
-                              _vm.caracteres,
-                              _vm.caracter
-                            )
-                          }
-                        }
-                      })
-                    : _vm._e(),
-                  _vm._v(" "),
-                  _vm.caracterSelected.length > 0
-                    ? _c("span", {
-                        staticClass: "circle minus",
-                        on: {
-                          click: function($event) {
-                            return _vm.agregar(
-                              _vm.caracteres,
-                              _vm.caracterSelected,
-                              0
-                            )
-                          }
-                        }
-                      })
-                    : _vm._e()
-                ]),
-                _vm._v(" "),
-                _vm.caracteres.length > 0
-                  ? _c(
-                      "select",
-                      {
-                        directives: [
-                          {
-                            name: "model",
-                            rawName: "v-model",
-                            value: _vm.caracter,
-                            expression: "caracter"
-                          }
-                        ],
-                        staticClass: "form-control caracter mglp-1",
-                        on: {
-                          change: function($event) {
-                            var $$selectedVal = Array.prototype.filter
-                              .call($event.target.options, function(o) {
-                                return o.selected
-                              })
-                              .map(function(o) {
-                                var val = "_value" in o ? o._value : o.value
-                                return val
-                              })
-                            _vm.caracter = $event.target.multiple
-                              ? $$selectedVal
-                              : $$selectedVal[0]
-                          }
-                        }
-                      },
-                      [
-                        _c(
-                          "option",
-                          {
-                            attrs: { selected: "" },
-                            domProps: { value: null }
-                          },
-                          [_vm._v("--Caracter--")]
-                        ),
-                        _vm._v(" "),
-                        _vm._l(_vm.caracteres, function(val, key) {
-                          return _c("option", { domProps: { value: key } }, [
-                            _vm._v(_vm._s(val.texto))
-                          ])
-                        })
-                      ],
-                      2
-                    )
-                  : _vm._e(),
-                _vm._v(" "),
-                _vm._l(_vm.caracterSelected, function(caracter) {
-                  return _c("p", [_vm._v(_vm._s(caracter.texto))])
-                })
-              ],
-              2
-            ),
-            _vm._v(" "),
-            _c(
-              "div",
-              { staticClass: "col-md-3" },
-              [
-                _c("label", { staticClass: "pdtp-1 mgr-1 nombreFiltro" }, [
-                  _vm._v(
-                    "\n                                Aspecto de Personalidad:\n                                "
-                  ),
-                  _vm.aspectos.length > 0
-                    ? _c("span", {
-                        staticClass: "circle plus",
-                        on: {
-                          click: function($event) {
-                            return _vm.agregar(
-                              _vm.aspectoSelected,
-                              _vm.aspectos,
-                              _vm.aspecto
-                            )
-                          }
-                        }
-                      })
-                    : _vm._e(),
-                  _vm._v(" "),
-                  _vm.aspectoSelected.length > 0
-                    ? _c("span", {
-                        staticClass: "circle minus",
-                        on: {
-                          click: function($event) {
-                            return _vm.agregar(
-                              _vm.aspectos,
-                              _vm.aspectoSelected,
-                              0
-                            )
-                          }
-                        }
-                      })
-                    : _vm._e()
-                ]),
-                _vm._v(" "),
-                _vm.aspectos.length > 0
-                  ? _c(
-                      "select",
-                      {
-                        directives: [
-                          {
-                            name: "model",
-                            rawName: "v-model",
-                            value: _vm.aspecto,
-                            expression: "aspecto"
-                          }
-                        ],
-                        staticClass: "form-control caracter",
-                        on: {
-                          change: function($event) {
-                            var $$selectedVal = Array.prototype.filter
-                              .call($event.target.options, function(o) {
-                                return o.selected
-                              })
-                              .map(function(o) {
-                                var val = "_value" in o ? o._value : o.value
-                                return val
-                              })
-                            _vm.aspecto = $event.target.multiple
-                              ? $$selectedVal
-                              : $$selectedVal[0]
-                          }
-                        }
-                      },
-                      [
-                        _c(
-                          "option",
-                          {
-                            attrs: { selected: "" },
-                            domProps: { value: null }
-                          },
-                          [_vm._v("--Aspecto--")]
-                        ),
-                        _vm._v(" "),
-                        _vm._l(_vm.aspectos, function(val, key) {
-                          return _c("option", { domProps: { value: key } }, [
-                            _vm._v(_vm._s(val.texto))
-                          ])
-                        })
-                      ],
-                      2
-                    )
-                  : _vm._e(),
-                _vm._v(" "),
-                _vm._l(_vm.aspectoSelected, function(val) {
-                  return _c("p", [_vm._v(_vm._s(val.texto))])
-                })
-              ],
-              2
-            ),
-            _vm._v(" "),
-            _c(
-              "div",
-              { staticClass: "col-md-3" },
-              [
-                _c("label", { staticClass: "pdtp-1 mgr-1 nombreFiltro" }, [
-                  _vm._v(
-                    "\n                                Familia Olfativa:\n                                "
-                  ),
-                  _vm.familias.length > 0
-                    ? _c("span", {
-                        staticClass: "circle plus",
-                        on: {
-                          click: function($event) {
-                            return _vm.agregar(
-                              _vm.familiaSelected,
-                              _vm.familias,
-                              _vm.familia
-                            )
-                          }
-                        }
-                      })
-                    : _vm._e(),
-                  _vm._v(" "),
-                  _vm.familiaSelected.length > 0
-                    ? _c("span", {
-                        staticClass: "circle minus",
-                        on: {
-                          click: function($event) {
-                            return _vm.agregar(
-                              _vm.familias,
-                              _vm.familiaSelected,
-                              0
-                            )
-                          }
-                        }
-                      })
-                    : _vm._e()
-                ]),
-                _vm._v(" "),
-                _vm.familias.length > 0
-                  ? _c(
-                      "select",
-                      {
-                        directives: [
-                          {
-                            name: "model",
-                            rawName: "v-model",
-                            value: _vm.familia,
-                            expression: "familia"
-                          }
-                        ],
-                        staticClass: "form-control caracter",
-                        on: {
-                          change: function($event) {
-                            var $$selectedVal = Array.prototype.filter
-                              .call($event.target.options, function(o) {
-                                return o.selected
-                              })
-                              .map(function(o) {
-                                var val = "_value" in o ? o._value : o.value
-                                return val
-                              })
-                            _vm.familia = $event.target.multiple
-                              ? $$selectedVal
-                              : $$selectedVal[0]
-                          }
-                        }
-                      },
-                      [
-                        _c(
-                          "option",
-                          {
-                            attrs: { selected: "" },
-                            domProps: { value: null }
-                          },
-                          [_vm._v("--Familias--")]
-                        ),
-                        _vm._v(" "),
-                        _vm._l(_vm.familias, function(val, key) {
-                          return _c("option", { domProps: { value: key } }, [
-                            _vm._v(_vm._s(val.texto))
-                          ])
-                        })
-                      ],
-                      2
-                    )
-                  : _vm._e(),
-                _vm._v(" "),
-                _vm._l(_vm.familiaSelected, function(val) {
-                  return _c("p", [_vm._v(_vm._s(val.texto))])
-                })
-              ],
-              2
-            ),
-            _vm._v(" "),
-            _c(
-              "div",
-              { staticClass: "col-md-3" },
-              [
-                _c("label", { staticClass: "pdtp-1 mgr-1 nombreFiltro" }, [
-                  _vm._v(
-                    "\n                                Aroma Prevaleciente:\n                                "
-                  ),
-                  _vm.aromas.length > 0
-                    ? _c("span", {
-                        staticClass: "circle plus",
-                        on: {
-                          click: function($event) {
-                            return _vm.agregar(
-                              _vm.aromaSelected,
-                              _vm.aromas,
-                              _vm.aroma
-                            )
-                          }
-                        }
-                      })
-                    : _vm._e(),
-                  _vm._v(" "),
-                  _vm.aromaSelected.length > 0
-                    ? _c("span", {
-                        staticClass: "circle minus",
-                        on: {
-                          click: function($event) {
-                            return _vm.agregar(_vm.aromas, _vm.aromaSelected, 0)
-                          }
-                        }
-                      })
-                    : _vm._e()
-                ]),
-                _vm._v(" "),
-                _vm.aromas.length > 0
-                  ? _c(
-                      "select",
-                      {
-                        directives: [
-                          {
-                            name: "model",
-                            rawName: "v-model",
-                            value: _vm.aroma,
-                            expression: "aroma"
-                          }
-                        ],
-                        staticClass: "form-control caracter",
-                        on: {
-                          change: function($event) {
-                            var $$selectedVal = Array.prototype.filter
-                              .call($event.target.options, function(o) {
-                                return o.selected
-                              })
-                              .map(function(o) {
-                                var val = "_value" in o ? o._value : o.value
-                                return val
-                              })
-                            _vm.aroma = $event.target.multiple
-                              ? $$selectedVal
-                              : $$selectedVal[0]
-                          }
-                        }
-                      },
-                      [
-                        _c(
-                          "option",
-                          {
-                            attrs: { selected: "" },
-                            domProps: { value: null }
-                          },
-                          [_vm._v("--Aromas--")]
-                        ),
-                        _vm._v(" "),
-                        _vm._l(_vm.aromas, function(val, key) {
-                          return _c("option", { domProps: { value: key } }, [
-                            _vm._v(_vm._s(val.texto))
-                          ])
-                        })
-                      ],
-                      2
-                    )
-                  : _vm._e(),
-                _vm._v(" "),
-                _vm._l(_vm.aromaSelected, function(val) {
-                  return _c("p", [_vm._v(_vm._s(val.texto))])
-                })
-              ],
-              2
-            )
-          ]),
-          _vm._v(" "),
-          _vm._m(1)
+          ])
         ])
-      ])
-    ]),
+      : _vm._e(),
     _vm._v(" "),
-    _c("div", { staticClass: "stage tarjeta muli mgt-1 pdb-2" }, [
-      _c("div", { staticClass: " mgl-2 row" }, [
-        _c("div", { staticClass: "rueda" }, [_c("rueda")], 1),
-        _vm._v(" "),
-        _vm._m(2)
-      ])
-    ])
+    _vm.perfumes.length > 0
+      ? _c("div", { staticClass: "stage tarjeta muli mgt-1 pdb-2" }, [
+          _vm._m(1),
+          _vm._v(" "),
+          _c("div", { staticClass: " mgl-2 row" }, [
+            _c(
+              "div",
+              {
+                directives: [
+                  {
+                    name: "show",
+                    rawName: "v-show",
+                    value: _vm.segmentos.length > 0,
+                    expression: "segmentos.length > 0"
+                  }
+                ],
+                staticClass: "col-md-5"
+              },
+              [
+                _c("rueda", {
+                  attrs: { segments: _vm.segmentos, cb: _vm.getNombre }
+                })
+              ],
+              1
+            ),
+            _vm._v(" "),
+            _vm.perfumes.length > 0
+              ? _c("div", { staticClass: "perfumes" }, [
+                  _vm._m(2),
+                  _vm._v(" "),
+                  _c("div", [
+                    _c("table", { staticClass: "col-md-11" }, [
+                      _c("thead", [
+                        _c("tr", [
+                          _c("th", [
+                            _vm._v(
+                              "\n                                N°\n                            "
+                            )
+                          ]),
+                          _vm._v(" "),
+                          _c("th", [
+                            _vm._v(
+                              "\n                                Nombre del perfume\n                            "
+                            )
+                          ]),
+                          _vm._v(" "),
+                          _vm.perfumes[0].Genero !== undefined
+                            ? _c("th", [
+                                _vm._v(
+                                  "\n                                Género\n                            "
+                                )
+                              ])
+                            : _vm._e(),
+                          _vm._v(" "),
+                          _vm.perfumes[0].Edad !== undefined
+                            ? _c("th", [
+                                _vm._v(
+                                  "\n                                Edad\n                            "
+                                )
+                              ])
+                            : _vm._e(),
+                          _vm._v(" "),
+                          _vm.perfumes[0].Intensidad !== undefined
+                            ? _c("th", [
+                                _vm._v(
+                                  "\n                                Intensidad\n                            "
+                                )
+                              ])
+                            : _vm._e(),
+                          _vm._v(" "),
+                          _vm.perfumes[0].Preferencia !== undefined
+                            ? _c("th", [
+                                _vm._v(
+                                  "\n                                Preferencia de uso\n                            "
+                                )
+                              ])
+                            : _vm._e(),
+                          _vm._v(" "),
+                          _vm.perfumes[0].Caracter !== undefined
+                            ? _c("th", [
+                                _vm._v(
+                                  "\n                                Caracter\n                            "
+                                )
+                              ])
+                            : _vm._e(),
+                          _vm._v(" "),
+                          _vm.perfumes[0].Aspecto !== undefined
+                            ? _c("th", [
+                                _vm._v(
+                                  "\n                                Personalidad\n                            "
+                                )
+                              ])
+                            : _vm._e(),
+                          _vm._v(" "),
+                          _vm.perfumes[0].Familia !== undefined
+                            ? _c("th", [
+                                _vm._v(
+                                  "\n                                Familia Olfativa\n                            "
+                                )
+                              ])
+                            : _vm._e(),
+                          _vm._v(" "),
+                          _vm.perfumes[0].Esencia !== undefined
+                            ? _c("th", [
+                                _vm._v(
+                                  "\n                                Aroma\n                            "
+                                )
+                              ])
+                            : _vm._e()
+                        ])
+                      ]),
+                      _vm._v(" "),
+                      _c(
+                        "tbody",
+                        _vm._l(_vm.perfumes, function(perfume, key) {
+                          return _c("tr", [
+                            _c("td", [_vm._v(_vm._s(key + 1))]),
+                            _vm._v(" "),
+                            _c("td", [_vm._v(_vm._s(perfume.nombre))]),
+                            _vm._v(" "),
+                            perfume.Genero !== undefined
+                              ? _c("td", [
+                                  perfume.Genero
+                                    ? _c("span", { staticClass: "mi mi-check" })
+                                    : _c("span", { staticClass: "mi mi-close" })
+                                ])
+                              : _vm._e(),
+                            _vm._v(" "),
+                            perfume.Edad !== undefined
+                              ? _c("td", [
+                                  perfume.Edad
+                                    ? _c("span", { staticClass: "mi mi-check" })
+                                    : _c("span", { staticClass: "mi mi-close" })
+                                ])
+                              : _vm._e(),
+                            _vm._v(" "),
+                            perfume.Intensidad !== undefined
+                              ? _c("td", [
+                                  perfume.Intensidad
+                                    ? _c("span", { staticClass: "mi mi-check" })
+                                    : _c("span", { staticClass: "mi mi-close" })
+                                ])
+                              : _vm._e(),
+                            _vm._v(" "),
+                            perfume.Preferencia !== undefined
+                              ? _c("td", [
+                                  perfume.Preferencia
+                                    ? _c("span", { staticClass: "mi mi-check" })
+                                    : _c("span", { staticClass: "mi mi-close" })
+                                ])
+                              : _vm._e(),
+                            _vm._v(" "),
+                            perfume.Caracter !== undefined
+                              ? _c("td", [
+                                  perfume.Caracter
+                                    ? _c("span", { staticClass: "mi mi-check" })
+                                    : _c("span", { staticClass: "mi mi-close" })
+                                ])
+                              : _vm._e(),
+                            _vm._v(" "),
+                            perfume.Aspecto !== undefined
+                              ? _c("td", [
+                                  perfume.Aspecto
+                                    ? _c("span", { staticClass: "mi mi-check" })
+                                    : _c("span", { staticClass: "mi mi-close" })
+                                ])
+                              : _vm._e(),
+                            _vm._v(" "),
+                            perfume.Familia !== undefined
+                              ? _c("td", [
+                                  perfume.Familia
+                                    ? _c("span", { staticClass: "mi mi-check" })
+                                    : _c("span", { staticClass: "mi mi-close" })
+                                ])
+                              : _vm._e(),
+                            _vm._v(" "),
+                            perfume.Esencia !== undefined
+                              ? _c("td", [
+                                  perfume.Esencia
+                                    ? _c("span", { staticClass: "mi mi-check" })
+                                    : _c("span", { staticClass: "mi mi-close" })
+                                ])
+                              : _vm._e()
+                          ])
+                        }),
+                        0
+                      )
+                    ])
+                  ])
+                ])
+              : _vm._e()
+          ])
+        ])
+      : _vm._e()
   ])
 }
 var staticRenderFns = [
@@ -49193,60 +49663,17 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c(
-      "div",
-      {
-        staticClass: "offset-10 mgt-1 row",
-        staticStyle: { "text-align": "right" }
-      },
-      [
-        _c(
-          "button",
-          { staticClass: "btn btn-primary", attrs: { type: "submit" } },
-          [_vm._v("Buscar")]
-        ),
-        _vm._v(" "),
-        _c(
-          "button",
-          {
-            staticClass: "btn btn-primary",
-            attrs: { type: "button", disabled: "" }
-          },
-          [
-            _c("span", {
-              staticClass: "spinner-border spinner-border-sm",
-              attrs: { role: "status", "aria-hidden": "true" }
-            }),
-            _vm._v(" "),
-            _c("span", { staticClass: "sr-only" }, [_vm._v("Loading...")])
-          ]
-        )
-      ]
-    )
+    return _c("div", { staticClass: "mgl-2 pdtp-1 mgb-1" }, [
+      _c("h4", [_c("u", [_c("strong", [_vm._v("Resultados")])])])
+    ])
   },
   function() {
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "perfumes" }, [
-      _c("div", [
-        _c("h4", { staticClass: "mgt-1 blocktext" }, [
-          _c("u", [_vm._v("Nombre del Perfume")])
-        ])
-      ]),
-      _vm._v(" "),
-      _c("div", [
-        _c("div", [
-          _c("h5", { staticClass: "blocktext" }, [_vm._v("Distribuido por:")]),
-          _vm._v(" "),
-          _c("h5", { staticClass: "blocktext" }, [_vm._v("Creado por:")]),
-          _vm._v(" "),
-          _c(
-            "a",
-            { staticClass: "mgt-1 ficha blocktext", attrs: { href: "#" } },
-            [_c("u", [_vm._v("Ficha del Perfume")])]
-          )
-        ])
+    return _c("div", [
+      _c("h4", { staticClass: "mgt-1 blocktext" }, [
+        _c("u", [_vm._v("Perfumes")])
       ])
     ])
   }
@@ -49275,7 +49702,9 @@ var render = function() {
   return _c("section", { staticClass: "vue-winwheel" }, [
     _c("div", { staticClass: "mobile-container" }, [
       _c("div", { staticClass: "wheel-wrapper" }, [
-        _vm._m(0),
+        _vm.segments.length > 0
+          ? _c("div", { staticClass: "canvas-wrapper" }, [_vm._m(0)])
+          : _vm._e(),
         _vm._v(" "),
         _c("div", { staticClass: "button-wrapper" }, [
           !_vm.loadingPrize && !_vm.wheelSpinning
@@ -49326,7 +49755,11 @@ var render = function() {
                 _vm._v("\n                ¡Su Perfume!\n            ")
               ]),
               _vm._v(" "),
-              _c("h1", [_vm._v(" " + _vm._s(_vm.prizeName))]),
+              _c("h1", [
+                _vm._v(
+                  " " + _vm._s(this.cb(_vm.prizeName.split(" ").pop() - 1))
+                )
+              ]),
               _vm._v(" "),
               _vm._m(1)
             ])
@@ -49340,8 +49773,10 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "canvas-wrapper" }, [
-      _c("canvas", { attrs: { id: "canvas", width: "310", height: "310" } }, [
+    return _c(
+      "canvas",
+      { attrs: { id: "canvas", width: "310", height: "310" } },
+      [
         _c(
           "p",
           { staticStyle: { "{color": "white}" }, attrs: { align: "center" } },
@@ -49351,8 +49786,8 @@ var staticRenderFns = [
             )
           ]
         )
-      ])
-    ])
+      ]
+    )
   },
   function() {
     var _vm = this
@@ -49362,20 +49797,6 @@ var staticRenderFns = [
       _c("div", [
         _c("h4", { staticClass: "mgt-1 blocktext" }, [
           _c("u", [_vm._v("Nombre del Perfume")])
-        ])
-      ]),
-      _vm._v(" "),
-      _c("div", [
-        _c("div", [
-          _c("h5", { staticClass: "blocktext" }, [_vm._v("Distribuido por:")]),
-          _vm._v(" "),
-          _c("h5", { staticClass: "blocktext" }, [_vm._v("Creado por:")]),
-          _vm._v(" "),
-          _c(
-            "a",
-            { staticClass: "mgt-1 ficha blocktext", attrs: { href: "#" } },
-            [_c("u", [_vm._v("Ficha del Perfume")])]
-          )
         ])
       ])
     ])
@@ -64362,8 +64783,8 @@ __webpack_require__.r(__webpack_exports__);
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! D:\Programas\xampp\htdocs\perfumeria\resources\js\app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! D:\Programas\xampp\htdocs\perfumeria\resources\sass\app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! /var/www/html/perfumeria/resources/js/app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! /var/www/html/perfumeria/resources/sass/app.scss */"./resources/sass/app.scss");
 
 
 /***/ })

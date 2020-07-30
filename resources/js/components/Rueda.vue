@@ -2,7 +2,7 @@
     <section class="vue-winwheel">
         <div class="mobile-container">
             <div class="wheel-wrapper">
-                <div class="canvas-wrapper">
+                <div class="canvas-wrapper" v-if="segments.length > 0">
                     <canvas id="canvas" width="310" height="310">
                         <p style="{color: white}" align="center">Sorry, your browser doesn't support canvas. Please try Google Chrome.</p>
                     </canvas>
@@ -20,18 +20,18 @@
                 <h2>
                     ¡Su Perfume!
                 </h2>
-                <h1> {{prizeName}}</h1>
+                <h1> {{this.cb(prizeName.split(' ').pop() - 1)}}</h1>
                 <div class="perfumes">
                     <div>
                         <h4 class="mgt-1 blocktext"><u>Nombre del Perfume</u></h4>
                     </div>
-                    <div>
+                    <!--<div>
                         <div>
                             <h5 class="blocktext">Distribuido por:</h5>
                             <h5 class="blocktext">Creado por:</h5>
                             <a href="#" class="mgt-1 ficha blocktext"><u>Ficha del Perfume</u></a>
                         </div>
-                    </div>
+                    </div>-->
                 </div>
             </div>
         </div>
@@ -90,7 +90,8 @@
                         }
                     ]
                 }
-            }
+            },
+            cb: null
         },
         data () {
             return {
@@ -109,7 +110,7 @@
                         type: 'spinOngoing',
                         duration: 0.5
                     }
-                }
+                },
             }
         },
         methods: {
@@ -172,7 +173,9 @@
             }
         },
         computed: {},
-        updated () {},
+        updated () {
+            //this.initSpin()
+        },
         mounted () {
             this.initSpin()
             // this.resetWheel()
