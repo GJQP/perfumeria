@@ -2548,37 +2548,37 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         value: "'seductor'"
       }],
       aromas: [{
-        text: "Frutal",
+        texto: "Frutal",
         value: "'frutal'"
       }, {
-        text: "Floral",
+        texto: "Floral",
         value: "'floral'"
       }, {
-        text: "Verde",
+        texto: "Verde",
         value: "'verde'"
       }, {
-        text: "Herbal",
+        texto: "Herbal",
         value: "'herbal'"
       }, {
-        text: "Cítrico",
+        texto: "Cítrico",
         value: "'citrico'"
       }, {
-        text: "Herbal",
+        texto: "Herbal",
         value: "'herbal'"
       }, {
-        text: "Café",
+        texto: "Café",
         value: "'cafe'"
       }, {
-        text: "Chocolate",
+        texto: "Chocolate",
         value: "'chocolate'"
       }, {
-        text: "Vainilla",
+        texto: "Vainilla",
         value: "'vainilla'"
       }, {
-        text: "Especias",
+        texto: "Especias",
         value: "'especias'"
       }, {
-        text: "Tabaco",
+        texto: "Tabaco",
         value: "'tabaco'"
       }],
       usos: [{
