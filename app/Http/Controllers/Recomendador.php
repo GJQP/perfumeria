@@ -35,7 +35,7 @@ class Recomendador extends Controller
        if( isset($request->edad) && $request->edad){
            $columnas .= ",
                 (CASE
-                    WHEN p.edad = '".$request->genero."' THEN 1 --EDAD
+                    WHEN p.edad = '".$request->edad."' THEN 1 --EDAD
                     ELSE 0
                 END) AS \"Edad\"
            ";
@@ -46,19 +46,23 @@ class Recomendador extends Controller
        if( isset($request->preferencia) && $request->preferencia) {
            $columnas .= ",
                 (CASE
-                     WHEN p.id = ANY(
-                         SELECT pp.id_perf--, pa.palabra
-                         FROM (SELECT *
-                               FROM rig_palabras_familias pc,
-                                    rig_familias_perfumes pf
-                               WHERE pc.id_fao = pf.id_fao
-                              ) pp,
-                              rig_palabras_claves pa
-                         WHERE pp.id_pal = pa.id
-                           AND pa.palabra = '".$request->preferencia."' -- ASPECTO / PREFERENCIA / CARACTER
-                     ) THEN 1
-                     ELSE 0
-                    END) AS \"Preferencia\"
+                   WHEN p.id = ANY(
+                       SELECT p.id
+                       FROM rig_perfumes p,
+                            (
+                                SELECT i.id_perf,
+                                       (CASE
+                                            WHEN i.tipo = 'EdS' THEN 'diario'
+                                            WHEN i.tipo IN ('P','EdP') THEN 'ocasion especial'
+                                            ELSE 'trabajo'
+                                           END) as uso
+                                FROM rig_intensidades i
+                            ) i
+                       WHERE p.id = i.id_perf
+                         AND uso = '".$request->preferencia."'
+                    ) THEN 1
+                    ELSE 0
+                END) AS \"Preferencia\"
            ";
            $col += 1;
        }
@@ -85,7 +89,7 @@ class Recomendador extends Controller
        }
 
        //CARACTER
-       if( isset($request->caracter) && $request->caracter) {
+       if( isset($request->caracteres) && $request->caracteres) {
            $columnas .= ",
                    (CASE
                      WHEN p.id = ANY(
@@ -97,7 +101,7 @@ class Recomendador extends Controller
                               ) pp,
                               rig_palabras_claves pa
                          WHERE pp.id_pal = pa.id
-                           AND pa.palabra IN(".$request->caracter.") -- ASPECTO / PREFERENCIA / CARACTER
+                           AND pa.palabra IN(".$request->caracteres.") -- ASPECTO / PREFERENCIA / CARACTER
                      ) THEN 1
                      ELSE 0
                     END) AS \"Caracter\"
@@ -114,7 +118,7 @@ class Recomendador extends Controller
                          FROM rig_perfumes p,
                               rig_intensidades i
                          WHERE p.id = i.id_perf
-                           AND i.tipo = '".$request->intensidad."' -- TIPO
+                           AND i.tipo IN(".$request->intensidad.") -- TIPO
                      ) THEN 1
                      ELSE 0
                     END) AS \"Intensidad\"
@@ -140,29 +144,33 @@ class Recomendador extends Controller
        }
 
        //ESENCIAS
-       if( isset($request->esencia) && $request->esencia) {
+       if( isset($request->aromas) && $request->aromas) {
            $columnas .= ",
                 (CASE
-                     WHEN p.id = ANY(
-                         SELECT esenp.id_perf,f.nombre
-                         FROM
-                             (SELECT fam.nombre,es.id_esenp as id_esenp_fam
-                              FROM rig_familias_olfativas fam,
-                                   rig_esencias es
-                              WHERE fam.id = es.id_fao
-                                AND fam.nombre IN ('".$request->esencia."') --ESENCIAS
-                             ) f,
-                             (SELECT n.id_perf, id_esenp as id_esenp_per
-                              FROM rig_notas n
-                              WHERE n.tipo = 'FONDO'
-                              UNION
-                              SELECT m.id_perf, m.id_esenp
-                              FROM rig_monoliticos m
-                             ) esenp
-                         WHERE f.id_esenp_fam = esenp.id_esenp_per
-                     ) THEN 1
-                     ELSE 0
-                    END) AS \"Esencia\"
+                WHEN p.id = ANY(
+                    SELECT DISTINCT esenp.id_perf
+                    FROM
+                        (SELECT es.id_esenp as id_esenp_fam
+                         FROM (SELECT pf.id_fao
+                                FROM rig_palabras_claves pc,
+                                     rig_palabras_familias pf
+                                WHERE pc.id = pf.id_pal
+                                    AND pc.palabra IN (".$request->aromas.") --ESENCIAS
+                             ) fam,
+                              rig_esencias es
+                         WHERE fam.id_fao = es.id_fao
+                        ) f,
+                        (SELECT n.id_perf, id_esenp as id_esenp_per
+                         FROM rig_notas n
+                         WHERE n.tipo = 'FONDO'
+                         UNION
+                         SELECT m.id_perf, m.id_esenp
+                         FROM rig_monoliticos m
+                        ) esenp
+                    WHERE f.id_esenp_fam = esenp.id_esenp_per
+                    ) THEN 1
+                ELSE 0
+            END) AS \"Esencia\"
            ";
            $col += 1;
        }
@@ -188,13 +196,11 @@ class Recomendador extends Controller
 
        $collection = collect($result);
 
-       $filtrado = $collection->sortByDesc('cumplimiento')->filter(function ($value, $key) {
+       $filtrado = $collection->filter(function ($value, $key) {
            return $value->cumplimiento > 0;
-       });
+       })->sortByDesc('cumplimiento');
 
-       //dd($collection->sortByDesc('cumplimiento'));
-
-       return response()->json($filtrado);
+       return response()->json($filtrado->values()->all());
    }
 
 }
