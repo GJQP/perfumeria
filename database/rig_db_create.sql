@@ -1616,6 +1616,8 @@ INSERT INTO rig_ingredientes_extras VALUES
 -- Datos para la aplicación 
 -- #################################################################################################
 
+-- rig_escalas
+
 INSERT INTO rig_escalas VALUES
 	(1,	NOW() + '3000 second', 0, 10, '2019-03-29'),
 	(2,	NOW() + '2000 second', 1, 5, '2020-02-4'),
@@ -1627,6 +1629,8 @@ INSERT INTO rig_escalas VALUES
 	(1,	NOW() + '60 second', 0,	50,	NULL),
 	(3,	NOW() + '20 second', 0,	30,	'2020-07-29'),
 	(3,	NOW() + '0 second', 0, 20, NULL);
+
+-- rig_evaluaciones_criterios
 
 INSERT INTO rig_evaluaciones_criterios VALUES
 (1,	1,	'2020-07-29 22:56:31.670247',	'INICIAL',	80.00,	NULL),
@@ -1644,19 +1648,33 @@ INSERT INTO rig_evaluaciones_criterios VALUES
 (3,	3,	'2020-07-29 23:00:06.843343',	'INICIAL',	60.00, NULL),
 (3,	5,	'2020-07-29 23:00:16.844742',	'INICIAL',	50.00, NULL);
 
+-- rig_contratos
+
 INSERT INTO rig_contratos (id_prod, id_prov, id, fcha_reg, exc, cancelante, fcha_fin, mot_fin) VALUES
-(3,	2,	3,	'2019-08-25',	'SI',	NULL,	NULL,	NULL),
-(3,	6,	4,	'2019-07-30',	'SI',	'MANE',	'2020-07-30',	'El productor no desea continuar con el contrato'),
-(2,	3,	2,	'2020-03-30',	'SI',	'BASF',	'2020-07-30',	'El proveedor no despacha'),
-(1,	6,	5,	'2019-07-30',	'NO',	NULL,	NULL,	NULL),
-(1,	1,	1,	'2020-01-29',	'SI',	'Firmenich',	'2020-07-30',	'El productor no desea continuar con el contrato'),
-(2,	5,	7,	'2017-06-30',	'SI',	NULL,	NULL,	NULL),
-(1,	4,	8,	'2018-07-30',	'NO',	'Firmenich',	'2020-07-30', NULL),	
-(2,	3,	6,	'2019-07-30',	'NO',	'Ambas partes',	'2020-07-30',	'Se genera otro nuevo'),
-(2,	3,	9,	'2020-07-30',	'NO',	NULL,	NULL,	NULL);
+(1,	1,	DEFAULT,	'2019-07-30',	'SI',	'Firmenich',	'2020-07-30',	'El productor no desea continuar con el contrato'),
+(2,	3,	DEFAULT,	'2014-03-30',	'SI',	'BASF',	'2020-07-30',	'El proveedor no desea matener la exclusividad'),
+(3,	2,	DEFAULT,	'2019-08-25',	'SI',	NULL,	NULL,	NULL),
+(3,	6,	DEFAULT,	'2019-07-30',	'SI',	'MANE',	'2020-07-30',	'El productor no desea continuar con el contrato'),
+(1,	6,	DEFAULT,	'2018-07-30',	'NO',	NULL,	NULL,	NULL),
+(2,	3,	DEFAULT,	'2016-07-30',	'NO',	'Ambas partes',	'2020-07-30',	'Se genera otro nuevo'),
+(2,	5,	DEFAULT,	'2017-06-30',	'SI',	NULL,	NULL,	NULL),
+(1,	4,	DEFAULT,	'2018-07-30',	'NO',	'Firmenich',	'2020-07-30', NULL),	
+(2,	3,	DEFAULT,	'2020-07-30',	'NO',	NULL,	NULL,	NULL);
 
 INSERT INTO rig_renovaciones VALUES
-(1,	6,	5,	1, '2020-07-30');
+(1,	6,	5,	DEFAULT, '2020-07-15'),
+(2,	3,	2,	DEFAULT, '2015-07-30'),
+(2,	3,	2,	DEFAULT, '2016-07-30'),
+(2,	3,	2,	DEFAULT, '2017-07-30'),
+(2,	3,	2,	DEFAULT, '2018-07-30'),
+(2,	3,	2,	DEFAULT, '2019-07-30'),
+(2,	3,	6,	DEFAULT, '2017-07-30'),
+(2,	3,	6,	DEFAULT, '2018-07-30'),
+(2,	3,	6,	DEFAULT, '2019-07-30'),
+(1,	4,	8,	DEFAULT, '2019-07-30'),
+(2,	3,	9,	DEFAULT, '2020-07-30');
+
+-- rig_resultados
 
 INSERT INTO rig_resultados (id_prod, id_prov, fcha_reg, tipo_eval, res) VALUES
 (1,	1,	'2020-07-29 23:59:24.153163',	'INICIAL',	52.00),
@@ -1672,6 +1690,8 @@ INSERT INTO rig_resultados (id_prod, id_prov, fcha_reg, tipo_eval, res) VALUES
 (2,	1,	'2020-07-30 00:32:28.129877',	'INICIAL',	46.50),
 (1,	4,	'2020-07-30 00:32:54.957484',	'INICIAL',	60.00),
 (2,	3,	'2020-07-30 00:40:10.686514',	'INICIAL',	51.40);
+
+-- rig_productos_contratados
 
 INSERT INTO rig_productos_contratados (id_prod, id_prov, id_ctra, id, id_prov_ing, id_ing, cas_otr_ing) VALUES
 (1,	1,	1,	1,	1,	4,	NULL),
@@ -1698,7 +1718,7 @@ INSERT INTO rig_productos_contratados (id_prod, id_prov, id_ctra, id, id_prov_in
 (2,	3,	9,	2,	3,	2,	NULL),
 (2,	3,	9,	3,	3,	3,	NULL);
 
-
+-- rig_condiciones_contratos
 
 INSERT INTO rig_condiciones_contratos (id_prod, id_prov, id_ctra, id, id_prov_ce, id_ubic, id_prov_cp, id_condpgo) VALUES
 (1,	1,	1,	1,	1,	1,	NULL,	NULL),
@@ -1749,4 +1769,70 @@ INSERT INTO rig_condiciones_contratos (id_prod, id_prov, id_ctra, id, id_prov_ce
 (2,	3,	9,	2,	NULL,	NULL,	3,	5),
 (2,	3,	9,	3,	NULL,	NULL,	3,	6);
 
+-- rig_pedidos
+
+INSERT INTO rig_pedidos  (id, fcha_reg, estatus, factura, total, id_prod_conp, id_prov_conp, id_ctra_conp, id_conp, id_prod_cone, id_prov_cone, id_ctra_cone, id_cone) VALUES
+(DEFAULT,	'2020-07-30',	'ENVIADO',	1,	150.75,	1,	6,	5,	4,	1,	6,	5,	2),
+(DEFAULT,	'2020-07-30',	'ENVIADO',	2,	325.08,	1,	6,	5,	4,	1,	6,	5,	3),
+(DEFAULT,	'2020-07-30',	'ENVIADO',	3,	113.40,	1,	6,	5,	4,	1,	6,	5,	1),
+(DEFAULT,	'2020-07-30',	'ENVIADO',	4,	280.70,	2,	3,	9,	3,	2,	3,	9,	1),
+(DEFAULT,	'2020-07-30',	'ENVIADO',	5,	1545.24,2,	3,	9,	2,	2,	3,	9,	1),
+(DEFAULT,	'2020-07-30',	'ENVIADO',	6,	283.22,	2,	3,	9,	2,	2,	3,	9,	1),
+(DEFAULT,	'2020-07-30',	'ENVIADO',	7,	976.86,	3,	2,	3,	5,	3,	2,	3,	1),
+(DEFAULT,	'2020-07-30',	'ENVIADO',	8,	364.81,	3,	2,	3,	5,	3,	2,	3,	3),
+(DEFAULT,	'2020-07-30',	'ENVIADO',	9,	301.50,	3,	2,	3,	5,	3,	2,	3,	2);
+
+-- rig_detalles_pedidos
+
+INSERT INTO rig_detalles_pedidos (id_ped, renglon, cantidad, id_prov_ing, id_ing, cod_pre_ing, cas_otr_ing, cod_pre_otr) VALUES
+(1,	1,	50,	6,	16,	75,	NULL,	NULL),
+(2,	1,	12,	6,	17,	78,	NULL,	NULL),
+(2,	2,	15,	6,	17,	77,	NULL,	NULL),
+(2,	3,	22,	6,	17,	76,	NULL,	NULL),
+(3,	1,	15,	6,	17,	77,	NULL,	NULL),
+(4,	1,	23,	3,	1,	3,	NULL,	NULL),
+(4,	2,	21,	3,	3,	13,	NULL,	NULL),
+(4,	3,	12,	3,	2,	9,	NULL,	NULL),
+(5,	1,	34,	3,	1,	3,	NULL,	NULL),
+(5,	2,	23,	3,	2,	12,	NULL,	NULL),
+(5,	3,	42,	3,	3,	15,	NULL,	NULL),
+(5,	4,	43,	3,	2,	9,	NULL,	NULL),
+(6,	1,	45,	3,	1,	3,	NULL,	NULL),
+(7,	1,	45,	2,	7,	38,	NULL,	NULL),
+(7,	2,	78,	2,	9,	50,	NULL,	NULL),
+(8,	1,	13,	2,	7,	38,	NULL,	NULL),
+(8,	2,	12,	2,	7,	39,	NULL,	NULL),
+(8,	3,	11,	2,	9,	48,	NULL,	NULL),
+(8,	4,	12,	2,	9,	51,	NULL,	NULL),
+(9,	1,	100,2,	9,	48,	NULL,	NULL);
+
+-- rig_pagos
+
+INSERT INTO rig_pagos (id_ped, id_ord, fcha_reg, total) VALUES
+(1,	1,	'2020-07-26',	76.88),
+(1,	2,	'2021-03-21',	76.88),
+(2,	1,	'2020-07-27',	165.79),
+(2,	2,	'2021-03-17',	165.79),
+(3,	1,	'2020-07-28',	57.83),
+(3,	2,	'2021-03-20',	57.83),
+(4,	1,	'2020-07-28',	282.95),
+(5,	1,	'2020-07-23',	788.07),
+(5,	2,	'2021-04-18',	788.07),
+(6,	1,	'2020-07-17',	144.44),
+(6,	2,	'2021-04-19',	144.44),
+(7,	1,	'2020-07-28',	201.62),
+(7,	2,	'2021-02-25',	201.62),
+(7,	3,	'2021-09-22',	201.62),
+(7,	4,	'2022-04-07',	201.62),
+(7,	5,	'2022-11-17',	201.62),
+(8,	1,	'2020-07-15',	75.30),
+(8,	2,	'2021-02-13',	75.30),
+(8,	3,	'2021-09-22',	75.30),
+(8,	4,	'2022-04-14',	75.30),
+(8,	5,	'2022-11-17',	75.30),
+(9,	1,	'2020-07-30',	62.23),
+(9,	2,	'2021-02-19',	62.23),
+(9,	3,	'2021-09-23',	62.23),
+(9,	4,	'2022-04-08',	62.23),
+(9,	5,	'2022-11-05',	62.23);
 
