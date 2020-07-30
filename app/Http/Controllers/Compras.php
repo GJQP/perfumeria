@@ -100,7 +100,7 @@ class Compras extends Controller
 
         foreach ($data['pagos_gen'] as $pago){
 
-            $fecha = Carbon::now('America/Caracas')->addDays(rand(round($pago['days']/4,0),$pago['days']))->format('Y-m-d');
+            $fecha = Carbon::now('America/Caracas')->addDays(rand($pago['days']-15,$pago['days']))->format('Y-m-d');
 
             DB::insert('
                 INSERT INTO rig_pagos (id_ped, id_ord, fcha_reg, total)
@@ -238,7 +238,7 @@ class Compras extends Controller
             DB::update('
             UPDATE rig_pedidos
             SET estatus = ?,
-                total = ?,
+                total = ?
             WHERE id = ?
             ', [
                 'RECHAZADO',
@@ -246,6 +246,8 @@ class Compras extends Controller
                 $request->id_ped
             ]);
         }
+
+        return response()->json('success');
 
 
     }
@@ -389,7 +391,7 @@ class Compras extends Controller
         return DB::select('
             SELECT
                 o.nombre || \' \' ||
-                to_char(o.volumen,\'990.00 ml\') presentacion,
+                to_char(o.volumen,\'990.00\') || \'ml\' as presentacion,
                 to_char(o.precio,\'$ 999,999,990.00\') precio,
                 o.precio,
                 o.cas,
@@ -506,20 +508,20 @@ class Compras extends Controller
         ',[$id_ped]);
 
         $cond_pag = DB::select('
-            SELECT pagos.desc, ped.id as id_ped, pagos.*
-            FROM (SELECT cond.*, cont.id_ctra as id_cont
-                FROM (SELECT
-                    p.coutas || \' cuota(s) de \' || p.cant_meses || \' meses al \' || p.porcen_cuo || \'%\' AS desc,
-                    p.id_prov,
-                    p.id,
-                    p.coutas,
-                    p.cant_meses,
-                    p.porcen_cuo
-                    FROM rig_condiciones_de_pago p) cond,
-                    rig_condiciones_contratos cont
-                    WHERE cond.id = cont.id_condpgo AND cond.id_prov = cont.id_prov) pagos,
+            SELECT
+                c_pag.coutas || \' cuota(s) de \' || c_pag.cant_meses || \' meses al \' || c_pag.porcen_cuo || \'% de interés por pago\' AS desc,
+                c_pag.*
+            FROM (SELECT pago.*, c_con.id_prov as id_prov_con, c_con.id_prod, c_con.id as id_conp, c_con.id_ctra as id_cont
+                    FROM rig_condiciones_de_pago pago,
+                     rig_condiciones_contratos c_con
+                    WHERE pago.id = c_con.id_condpgo AND pago.id_prov = c_con.id_prov
+                ) c_pag,
                  rig_pedidos ped
-            WHERE pagos.id_cont = ped.id_ctra_conp AND pagos.id_prov = ped.id_prov_conp AND ped.id = ?
+            WHERE c_pag.id_prod = ped.id_prod_conp
+                    AND c_pag.id_prov = ped.id_prov_conp
+                    AND c_pag.id_cont = ped.id_ctra_conp
+                    AND c_pag.id_conp = ped.id_conp
+                    AND ped.id = ?
         ',[$id_ped]);
 
         $pedido = DB::select('

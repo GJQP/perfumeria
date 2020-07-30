@@ -2175,10 +2175,10 @@ __webpack_require__.r(__webpack_exports__);
   },
   methods: {
     agregarFila: function agregarFila(esIng) {
-      if (esIng && this.selectedIng !== null) {
+      if (esIng && this.selectedIng !== null && this.selectedIng + 1 <= this.optionsIng.length) {
         this.insertedIng.push(this.optionsIng[this.selectedIng]);
         this.optionsIng.splice(this.selectedIng, 1);
-      } else if (!esIng && this.selectedOtrIng !== null) {
+      } else if (!esIng && this.selectedOtrIng !== null && this.selectedOtrIng + 1 <= this.optionsOtrIng.length) {
         this.insertedOtrIng.push(this.optionsOtrIng[this.selectedOtrIng]);
         this.optionsOtrIng.splice(this.selectedOtrIng, 1);
       } //console.log(this.inserted)
