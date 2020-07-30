@@ -86,8 +86,8 @@ class GestionFormula extends Controller
         if($request->p_ubic == NULL && $request->p_alen == NULL && $request->p_prod == NULL && $request->p_pag == NULL && $request->p_cen == NULL)
             return redirect()->back()->with(['error' => 'Debes selecionar almenos una variable']);
 
-        if($minApro < 1 || $minApro >= 100)
-            return redirect()->back()->with(['error' => 'El minimo aprobatorio debe estar en el rango de la escala']);
+        if($minApro < 1 || $minApro > 100)
+            return redirect()->back()->with(['error' => 'El minimo aprobatorio debe estar en el rango de de 1 a 100']);
 
         $pesoTotal = 0;
         // Preparo las variables

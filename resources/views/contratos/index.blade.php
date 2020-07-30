@@ -36,7 +36,7 @@
                     <td>{{$contrato->nombre_prov}}</td>
                     <td>{{$contrato->fcha_cul}}</td>
                     <td>
-                        @if(Carbon\Carbon::create($contrato->fcha_cul)->subMonth()->betweenIncluded(Carbon\Carbon::now()->subMonth(), Carbon\Carbon::now()))
+                        @if(Carbon\Carbon::create($contrato->fcha_cul)->subMonth()->startOfDay()   ->betweenIncluded(Carbon\Carbon::now()->subMonth()->startOfDay(), Carbon\Carbon::now()->startOfDay()))
                             <a href="#"  class="btn btn-info text-light" data-toggle="modal" data-target="#renovar" onclick="guardarId({{$contrato->id}},{{$contrato->id_prov}},{{$contrato->id_prod}})">Renovar contrato </a>
                         @endif
                         <a href="{{route('contrato.cancelar', [$contrato->id_prod, $contrato->id_prov, $contrato->id])}}" class="btn btn-danger text-light">Cancelar contrato</a>
