@@ -47,11 +47,9 @@ class Compras extends Controller
         $pedidos = DB::select('
             SELECT * FROM rig_pedidos p
             WHERE
-                p.id_prod_conp = ? AND
-                p.id_prov_conp = ? AND
-                p.id_ctra_conp = ?
+                p.id_ctra_cone = ?
             ORDER BY fcha_reg
-        ',[$id_prod,$id_prov,$id_contrato]);
+        ',[$id_contrato]);
 
         //dd($pedidos);
 
