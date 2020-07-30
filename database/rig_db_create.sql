@@ -1655,7 +1655,7 @@ INSERT INTO rig_contratos (id_prod, id_prov, id, fcha_reg, exc, cancelante, fcha
 (2,	3,	DEFAULT,	'2014-03-30',	'SI',	'BASF',	'2020-07-30',	'El proveedor no desea matener la exclusividad'),
 (3,	2,	DEFAULT,	'2019-08-25',	'SI',	NULL,	NULL,	NULL),
 (3,	6,	DEFAULT,	'2019-07-30',	'SI',	'MANE',	'2020-07-30',	'El productor no desea continuar con el contrato'),
-(1,	6,	DEFAULT,	'2018-07-30',	'NO',	NULL,	NULL,	NULL),
+(1,	6,	DEFAULT,	'2019-07-30',	'NO',	NULL,	NULL,	NULL),
 (2,	3,	DEFAULT,	'2016-07-30',	'NO',	'Ambas partes',	'2020-07-30',	'Se genera otro nuevo'),
 (2,	5,	DEFAULT,	'2017-06-30',	'SI',	NULL,	NULL,	NULL),
 (1,	4,	DEFAULT,	'2018-07-30',	'NO',	'Firmenich',	'2020-07-30', NULL),	
