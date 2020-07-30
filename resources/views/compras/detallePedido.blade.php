@@ -44,11 +44,13 @@
                 <div class="bs-stepper-content">
                     <!-- your steps content here -->
                     <div id="detalle-part" class="content" role="tabpanel" aria-labelledby="detalle-part-trigger">
-                        <insert-row opciones-ing="{{json_encode($presentaciones)}}"
-                                    opciones-otr-ing="{{json_encode($Otrpresentaciones)}}"
-                                    cant-env="{{collect($envios)->count() == 1? $envios[0]->id : 0}}"
-                                    cant-pag="{{collect($pagos)->count() == 1? $pagos[0]->id : 0}}"
-                        ></insert-row>
+                        @if(!isset($paso))
+                            <insert-row opciones-ing="{{isset($presentaciones)? json_encode($presentaciones): '[]'}}"
+                                        opciones-otr-ing="{{isset($presentaciones)? json_encode($Otrpresentaciones): '[]'}}"
+                                        cant-env="{{collect($envios)->count() == 1? $envios[0]->id : 0}}"
+                                        cant-pag="{{collect($pagos)->count() == 1? $pagos[0]->id : 0}}"
+                            ></insert-row>
+                        @endif
                     </div>
 
                     <div id="envio-part" class="content" role="tabpanel" aria-labelledby="envio-part-trigger">
@@ -96,7 +98,9 @@
     <script type="text/javascript">
 
         window.id_cto = {{$id_cto}}
-        window.id_ped = {{isset($id_ped)? : null }}
+        window.id_ped = {{isset($id_ped)? $id_ped : null }}
+        window.totalPago = {{isset($total)? $total: 0.00}};
+        window.retomar = {{isset($paso)? $paso : 0}}
 
         document.addEventListener('DOMContentLoaded', function () {
 
@@ -110,6 +114,8 @@
                         stepper: '.bs-stepper'
                     }
             });
+
+            {!! isset($paso)? 'stepper.to('.$paso.')' : 0 !!}
 
             window.guardarOpcionEnvio = function (idPag) {
 
@@ -142,10 +148,8 @@
 
                 data = {res: aprobado, id_ped, total: totalPago}
 
-                axios.post(`/pedido/${id_cto}/respuesta`, data).then( () => aprobado? window.location = `/pedido/${id_cto}/${id_ped}`:stepper.to(1) )
+                axios.post(`/pedido/${id_cto}/respuesta`, data).then( () => aprobado? window.location = `/pedido/${id_cto}/${id_ped}`: '/gestion-compras' )
             }
-
-            window.totalPago = {!! 00.00 !!};
 
 
 

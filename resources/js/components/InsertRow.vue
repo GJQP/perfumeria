@@ -98,7 +98,7 @@
                     &&
                     this.insertedOtrIng.filter( item => !item.hasOwnProperty('cantidad') ).length === 0
                 ){
-                    let data = {ingredientes: this.insertedIng, otros_ingredientes: this.insertedOtrIng};
+                    let data = {ingredientes: this.insertedIng, otros_ingredientes: this.insertedOtrIng, id_cto: id_cto};
                     if (id_ped)
                         data['id_ped'] = id_ped;
                     axios.post(`/pedido/${id_cto}/detalles`, data).then( ({data}) => {

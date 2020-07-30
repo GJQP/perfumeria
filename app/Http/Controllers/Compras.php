@@ -49,7 +49,11 @@ class Compras extends Controller
             FROM rig_pedidos p,
                 rig_condiciones_contratos ctr
             WHERE
-                  p.id_ctra_cone = ctr.id
+                  (
+                      p.id_ctra_cone = ctr.id
+                      OR
+                      p.id_ctra_conp = ctr.id
+                    )
                   AND
                   ctr.id_prov = ? AND ctr.id_prod = ? AND ctr.id_ctra = ?
             ORDER BY id DESC
@@ -65,6 +69,82 @@ class Compras extends Controller
 
         //ddd($this->getEnvio($id_cto));
         //abort si no puedo hacer un nuevo pedido o redirect al que tengo abierto
+
+        if ($request->id_ped){
+            $pedido = DB::select('SELECT * FROM rig_pedidos WHERE id = ?',[$request->id_ped]);
+            abort_if( empty($pedido),404);
+            $pedido = $pedido[0];
+
+            $precioProd = 0;
+            $porcentajeEnv = 0;
+
+            $ing = $this->getTodosIngredientesPedido($request->id_ped);
+            if (!empty($ing[0]))
+                foreach ($ing[0] as $ingrediente)
+                    $precioProd += $ingrediente->precio * $ingrediente->cantidad;
+            if(!empty($ing[1]))
+                foreach ($ing[1] as $otro_ingrediente)
+                    $precioProd += $otro_ingrediente->precio_num * $otro_ingrediente->cantidad;
+
+            $env = $this->getCondEnvPedido($request->id_ped);
+
+            if (!empty($env) && !empty($env[0]))
+                $porcentajeEnv = $env[0]->porce_serv;
+
+            if ($pedido->id_cone == null){
+                $paso = 2; //LE FALTA ENVIO
+
+                return view('compras.detallePedido')->with([
+                    //'presentaciones' => $this->getProductos($id_cto),
+                    //'Otrpresentaciones' => $this->getOtrosProductos($id_cto),
+                    'envios' => $this->getEnvio($id_cto),
+                    'pagos' => $this->getPagos($id_cto),
+                    'id_cto' => $id_cto,
+                    'id_ped'=>$request->id_ped,
+                    'paso'=>$paso,
+                    'total' => $precioProd,
+                    'selected' => []
+                ]);
+            }
+            else if ($pedido->id_conp == null) {
+                $paso = 3; //LE FALTA PAGO
+
+
+
+                return view('compras.detallePedido')->with([
+                    //'presentaciones' => $this->getProductos($id_cto),
+                    //'Otrpresentaciones' => $this->getOtrosProductos($id_cto),
+                    'envios' => $this->getEnvio($id_cto),
+                    'pagos' => $this->getPagos($id_cto),
+                    'id_cto' => $id_cto,
+                    'id_ped'=>$request->id_ped,
+                    'total' => round($precioProd * (1 + $porcentajeEnv/100),2),
+                    'paso'=>$paso,
+                    'selected' => []
+                ]);
+
+            }
+            else{
+                abort_if($pedido->estatus == 'ENVIADO' || $pedido->estatus == 'RECHAZADO',404);
+                $paso = 4; //LE FALTA CONFIRMAR
+
+                //$ped = ($this->getDetallePedido($request->id_ped));
+
+                return view('compras.detallePedido')->with([
+                    //'presentaciones' => $this->getProductos($id_cto),
+                    //'Otrpresentaciones' => $this->getOtrosProductos($id_cto),
+                    'envios' => $this->getEnvio($id_cto),
+                    'pagos' => $this->getPagos($id_cto),
+                    'id_cto' => $id_cto,
+                    'id_ped'=>$request->id_ped,
+                    'total'=> round($precioProd * (1 + $porcentajeEnv/100) /* (1 + $ped['cond_pag'][0]->porcen_cuo/100)*/,2),
+                    'paso'=>$paso,
+                    'selected' => []
+                ]);
+            }
+
+
+        }
 
 
         return view('compras.detallePedido')->with([
@@ -125,9 +205,9 @@ class Compras extends Controller
 
         $pedido = DB::insert('
             INSERT INTO rig_pedidos
-                (fcha_reg,estatus, factura)
-                VALUES (current_date,?, NULL)
-        ', ['NO ENVIADO']);
+                (fcha_reg,estatus, factura,id_ctra_conp,id_ctra_cone)
+                VALUES (current_date,?, NULL, ?, ?)
+        ', ['NO ENVIADO',$request->id_cto,$request->id_cto]);
 
         $id_ped = DB::select('SELECT currval(\'rig_pedidos_id_seq\') AS id_ped');
 
@@ -454,58 +534,7 @@ class Compras extends Controller
 
     private function getDetallePedido($id_ped)
     {
-        $ingredientes = DB::select('
-            SELECT item.presentacion, d.cantidad, item.precio_txt
-                FROM
-                    (
-                        SELECT
-                            i.nombre || \' \' ||
-                            to_char(pres.medida,\'990.00\') || \' \' || pres.unidad presentacion,
-                            to_char(pres.precio,\'$ 999,999,990.00\') precio_txt,
-                            pres.cod_present,
-                            i.id as id_ing,
-                            i.id_prov
-                        FROM rig_ingredientes_esencias i,
-                             rig_presentaciones_ingredientes pres
-                        WHERE i.id = pres.id_ing AND i.id_prov = pres.id_prov
-                    ) item,
-                     rig_detalles_pedidos d
-                WHERE d.id_ped = ?
-                     AND item.id_prov = d.id_prov_ing  AND item.id_ing = d.id_ing AND item.cod_present = d.cod_pre_ing
-        ', [$id_ped]);
-
-        $otros_ing = DB::select('
-            SELECT item.cod_present, item.presentacion, item.precio, d.cantidad
-            FROM (SELECT i.nombre || \' \' ||
-                       to_char(p.volumen,\'990.00 ml\') presentacion,
-                       to_char(p.precio,\'$ 999,999,990.00\') precio,
-                       i.cas,
-                       p.cod_present
-                FROM rig_otros_ingredientes i,
-                     rig_presentaciones_otros_ingredientes p
-                WHERE i.cas = p.cas_otr_ing) item,
-                    rig_detalles_pedidos d
-                WHERE
-                      d.cas_otr_ing = item.cas AND d.cod_pre_otr = item.cod_present
-                      AND d.id_ped = ?
-        ',[$id_ped]);
-
-        $cond_env = DB::select('
-            SELECT condiciones.desc, condiciones.id_cone FROM
-                    (SELECT cond.*, cont.id as id_cone FROM
-                                (SELECT
-                                e.nombre || \' \' || e.medio || \' \' || \'a \' || p.nombre || \' \' || e.porce_serv || \'%\' AS desc,
-                                e.id_prov,
-                                e.id_ubic
-                            FROM rig_condiciones_de_envio e,
-                                 rig_paises p
-                            WHERE e.id_ubic = p.id) cond,
-                    rig_condiciones_contratos cont
-                    WHERE cond.id_ubic = cont.id_ubic AND cond.id_prov = cont.id_prov) condiciones,
-                    rig_pedidos ped
-                WHERE condiciones.id_prov = ped.id_prov_cone AND condiciones.id_cone = ped.id_cone
-                  AND ped.id = ?
-        ',[$id_ped]);
+        $cond_env = $this->getCondEnvPedido($id_ped);
 
         $cond_pag = DB::select('
             SELECT
@@ -528,9 +557,10 @@ class Compras extends Controller
             SELECT * FROM rig_pedidos WHERE id = ?
         ',[$id_ped]);
 
+        $ing = $this->getTodosIngredientesPedido($id_ped);
         return [
-            'ingredientes'=>$ingredientes,
-            'otros_ing'=>$otros_ing,
+            'ingredientes'=>$ing[0],
+            'otros_ing'=>$ing[1],
             'cond_env'=>$cond_env,
             'cond_pag'=>$cond_pag,
             'ped'=>$pedido[0],
@@ -556,5 +586,67 @@ class Compras extends Controller
 
         return $pago;
 
+    }
+
+    private function getTodosIngredientesPedido($id_ped){
+        $ingredientes = DB::select('
+            SELECT item.presentacion, d.cantidad, item.precio_txt,item.precio
+                FROM
+                    (
+                        SELECT
+                            i.nombre || \' \' ||
+                            to_char(pres.medida,\'990.00\') || \' \' || pres.unidad presentacion,
+                            to_char(pres.precio,\'$ 999,999,990.00\') precio_txt,
+                            pres.cod_present,
+                            i.id as id_ing,
+                            i.id_prov,
+                            pres.precio
+                        FROM rig_ingredientes_esencias i,
+                             rig_presentaciones_ingredientes pres
+                        WHERE i.id = pres.id_ing AND i.id_prov = pres.id_prov
+                    ) item,
+                     rig_detalles_pedidos d
+                WHERE d.id_ped = ?
+                     AND item.id_prov = d.id_prov_ing  AND item.id_ing = d.id_ing AND item.cod_present = d.cod_pre_ing
+        ', [$id_ped]);
+
+        $otros_ing = DB::select('
+            SELECT item.cod_present, item.presentacion, item.precio, d.cantidad, item.precio_num
+            FROM (SELECT i.nombre || \' \' ||
+                       to_char(p.volumen,\'990.00 ml\') presentacion,
+                       to_char(p.precio,\'$ 999,999,990.00\') precio,
+                       i.cas,
+                       p.cod_present,
+                        p.precio as precio_num
+                FROM rig_otros_ingredientes i,
+                     rig_presentaciones_otros_ingredientes p
+                WHERE i.cas = p.cas_otr_ing) item,
+                    rig_detalles_pedidos d
+                WHERE
+                      d.cas_otr_ing = item.cas AND d.cod_pre_otr = item.cod_present
+                      AND d.id_ped = ?
+        ',[$id_ped]);
+
+        return [$ingredientes,$otros_ing];
+    }
+
+    private function getCondEnvPedido($id_ped){
+        return DB::select('
+            SELECT condiciones.desc, condiciones.id_cone, condiciones.porce_serv FROM
+                    (SELECT cond.*, cont.id as id_cone FROM
+                                (SELECT
+                                e.nombre || \' \' || e.medio || \' \' || \'a \' || p.nombre || \' \' || e.porce_serv || \'%\' AS desc,
+                                e.id_prov,
+                                e.id_ubic,
+                                e.porce_serv
+                            FROM rig_condiciones_de_envio e,
+                                 rig_paises p
+                            WHERE e.id_ubic = p.id) cond,
+                    rig_condiciones_contratos cont
+                    WHERE cond.id_ubic = cont.id_ubic AND cond.id_prov = cont.id_prov) condiciones,
+                    rig_pedidos ped
+                WHERE condiciones.id_prov = ped.id_prov_cone AND condiciones.id_cone = ped.id_cone
+                  AND ped.id = ?
+        ',[$id_ped]);
     }
 }

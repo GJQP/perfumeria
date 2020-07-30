@@ -140,10 +140,11 @@
                     <button class="btn btn-link btn-success row"><a href="{{route('compras.pedidos',$id_contrato)}}">Crear Pedido</a></button>
                 </div>
 
-                <div class=" mgtp-1 pdb-2">
+                <div class=" mgtp-1 pdb-2 col-md-6">
                     @if(isset($pedidos) && !empty($pedidos))
                         <table class="tablaDatos">
                             <tr>
+                                <th>ID</th>
                                 <th>FECHA</th>
                                 <th>ESTADO</th>
                                 <th># FACTURA</th>
@@ -152,14 +153,22 @@
                             @foreach($pedidos as $pedido)
 
                                     <tr>
+                                        <td>{{$pedido->id}}</td>
                                         <td>{{$pedido->fcha_reg}}</td>
                                         <td>{{$pedido->estatus}}</td>
                                         <td>{{$pedido->factura? : 'NO APLICA'}}</td>
                                         <td>
                                             @if($pedido->estatus == 'ENVIADO')
-                                            <button class="btn btn-link btn-primary btn-sm row">
+                                            <button class="btn btn-link btn-success btn-sm ">
                                                 <a href="{{route('compras.detalle',['id_ctro'=>$id_contrato,'id_ped'=>$pedido->id])}}">Ver Pagos</a>
                                             </button>
+                                            @elseif($pedido->estatus == 'NO ENVIADO')
+                                                <button class="btn btn-link btn-primary btn-sm ">
+                                                    <a href="{{route('compras.pedidos',['id_cto'=>$id_contrato,'id_ped'=>$pedido->id])}}">Continuar Pedido</a>
+                                                </button>
+                                                {{--<button class="btn btn-link btn-danger btn-sm">
+                                                    <a href="{{route('compras.pedidos',['id_cto'=>$id_contrato,'id_ped'=>$pedido->id])}}">Eliminar Pedido</a>
+                                                </button>--}}
                                             @else
                                                 -
                                             @endif
