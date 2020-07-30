@@ -45,11 +45,11 @@ class Compras extends Controller
         abort_if(empty($detalle), 404);
 
         $pedidos = DB::select('
-            SELECT * FROM rig_pedidos p 
-            WHERE 
-                p.id_prod_conp = ? AND 
-                p.id_prov_conp = ? AND 
-                p.id_ctra_conp = ? 
+            SELECT * FROM rig_pedidos p
+            WHERE
+                p.id_prod_conp = ? AND
+                p.id_prov_conp = ? AND
+                p.id_ctra_conp = ?
             ORDER BY fcha_reg
         ',[$id_prod,$id_prov,$id_contrato]);
 
@@ -384,6 +384,8 @@ class Compras extends Controller
                     r.fcha_reg + interval \'1 year\' >= current_date
                     AND
                     c.id_prod = r.id_prod AND c.id_prov = r.id_prov
+                    ORDER BY r.fcha_reg DESC
+                    LIMIT 1
                 )
         ', $pkContrato);
 
