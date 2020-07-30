@@ -203,4 +203,40 @@ class Recomendador extends Controller
        return response()->json($filtrado->values()->all());
    }
 
+
+   public function getDatosPerfume($id_perf)
+   {
+        // Buscamos el perfumista
+        $perfumista = "SELECT perf.nombre FROM rig_perfumistas perf, rig_perfumes_perfumistas inter WHERE inter.id_perf = $id_perf AND inter.id_prefta = perf.id";
+        $perfumista = DB::select($perfumista);
+
+        // Buscamos las notas del perfume
+        $notas = "SELECT esen.nombre FROM rig_monoliticos mono, rig_notas nota, rig_esencias_perfumes esen WHERE (mono.id_perf = $id_perf AND mono.id_esenp = esen.cas) OR (nota.id_perf = $id_perf AND nota.id_esenp = esen.cas) GROUP BY esen.nombre";
+        $notas = DB::select($notas);
+
+        $perfume = "SELECT * FROM rig_perfumes WHERE id = $id_perf";
+        $perfume = DB::select($notas);
+
+        $otros = "SELECT nombre FROM rig_otros_ingredientes ot, rig_componentes_funcionales cp WHERE cp.id_perf = $id_perf AND cp.cas_otr_ing = ot.cas";
+        $otros = DB::select($otros);
+
+        $aromas = "SELECT nombre FROM rig_familias_olfativas fao, rig_familias_perfumes inter WHERE fao.id = inter.id_fao AND inter.id_perf = $id_perf";
+        $aromas = DB::select($aromas);
+
+        $intensidades = "SELECT tipo FROM rig_intensidades WHERE id_perf = $id_perf";
+        $intensidades = DB::select($intensidades);
+
+        $presentaciones_perfumes = "SELECT vol, unidad FROM rig_presentaciones_perfumes WHERE id_perf = 1";
+        $presentaciones_perfumes = DB::select($presentaciones_perfumes);
+
+        return request()->json([
+            'pefumista' => $perfumista, 
+            'notas' => $notas,
+            'perfume' => $perfume,
+            'ingredientes' => $otros,
+            'aromas' => $aromas,
+            'intensidades' => $intensidades,
+            'presentaciones' => $presentaciones_perfumes
+        ]);
+   }
 }

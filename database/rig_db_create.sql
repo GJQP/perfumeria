@@ -1405,7 +1405,7 @@ INSERT INTO rig_ingredientes_familias VALUES
 -- rig_familias_perfumes 
 
 INSERT INTO rig_familias_perfumes VALUES 
-	(1, 2), (1, 5), (1, 7), (1, 9),
+	(1, 2), (1, 5), (1, 7),
 	(2, 2), (2, 8),
 	(3, 3), (3, 8), (3, 2),
 	(4, 5), (4, 9), (4 ,2),

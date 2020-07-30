@@ -233,8 +233,6 @@
                                         <span class="mi mi-check" v-if="perfume.Aspecto"></span>
                                         <span class="mi mi-close" v-else></span>
                                     </td>
-
-
                                 </tr>
                             </tbody>
                         </table>
