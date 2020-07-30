@@ -7,7 +7,7 @@
                 <Filtros id="app"></Filtros>
             </div>
         -->
-            <div v-if="filtro < 8">
+            <div v-if="filtro < 9">
                 <div class="stage tarjeta muli pdb-2">
                     <div class="mgl-2 pdtp-1 mgb-1">
                         <h4><u><strong>Filtros</strong></u></h4>
@@ -16,7 +16,7 @@
                         <!--Contenedor de los Filtros Superiores-->
                         <div class="row">
                             <!--Genero-->
-                            <div class="offset-1 col-md-2" v-if="filtro === 1">
+                            <div class="offset-1 col-md-3" v-if="filtro === 1">
                                 <label class="pdtp-1 mgr-1">Género:</label>
                                 <select class="form-control" v-model="genero">
                                     <option selected :value="null">--Genero--</option>
@@ -25,7 +25,7 @@
                                 </select>
                             </div>
                             <!--edad-->
-                            <div class="offset-1 col-md-2" v-if="filtro === 2">
+                            <div class="offset-1 col-md-3" v-if="filtro === 2">
                                 <label class="pdtp-1 mgr-1">Edad:</label>
                                 <select class="form-control"  v-model="edad">
                                     <option selected  :value="null">--Edad--</option>
@@ -34,7 +34,7 @@
                                 </select>
                             </div>
                             <!--Intensidad-->
-                            <div class="offset-1 col-md-2" v-if="filtro === 3">
+                            <div class="offset-1 col-md-3" v-if="filtro === 3">
                                 <label class="pdtp-1 mgr-1">Intensidad:</label>
                                 <select class="form-control" v-model="intensidad">
                                     <option selected  :value="null">--Intensidad--</option>
@@ -44,18 +44,18 @@
                                 </select>
                             </div>
                             <!--Preferencia de Uso-->
-                            <div class="offset-1 col-md-2" v-if="filtro === 4">
+                            <div class="offset-1 col-md-3" v-if="filtro === 7">
                                 <label class="pdtp-1 mgr-1">Preferencia de Uso:</label>
                                 <select class="form-control" v-model="preferencia">
                                     <option selected  :value="null">--Preferencia--</option>
-                                    <option v-for="uso in usos" v-bind:value="uso.texto">{{uso.texto}}</option>
+                                    <option v-for="uso in usos" v-bind:value="uso.value">{{uso.texto}}</option>
                                 </select>
                             </div>
                         </div>
                         <!--Contenedor de los Filtros Inferior-->
                         <div class="row mgt-1">
                             <!--Caracter-->
-                            <div class="offset-1 col-md-2" v-if="filtro === 5">
+                            <div class="offset-1 col-md-3" v-if="filtro === 4">
                                 <label class="pdtp-1 mgr-2 nombreFiltro">
                                     Caracter:
                                     <span @click="agregar(caracterSelected,caracteres,caracter)"
@@ -74,7 +74,7 @@
                                 <p v-for="caracter in caracterSelected">{{caracter.texto}}</p>
                             </div>
                             <!--Aspecto Personalidad-->
-                            <div class="offset-1 col-md-2" v-if="filtro === 6">
+                            <div class="offset-1 col-md-3" v-if="filtro === 8">
                                 <label class="pdtp-1 mgr-1 nombreFiltro">
                                     Aspecto de Personalidad:
                                     <span @click="agregar(aspectoSelected, aspectos, aspecto)"
@@ -93,7 +93,7 @@
                                 <p v-for="val in aspectoSelected">{{val.texto}}</p>
                             </div>
                             <!--Familia Olfativa-->
-                            <div class="offset-1 col-md-2" v-if="filtro === 7">
+                            <div class="offset-1 col-md-3" v-if="filtro === 5">
                                 <label class="pdtp-1 mgr-1 nombreFiltro">
                                     Familia Olfativa:
                                     <span @click="agregar(familiaSelected,familias,familia)"
@@ -113,7 +113,7 @@
                                 <p v-for="val in familiaSelected">{{val.texto}}</p>
                             </div>
                             <!--Aroma Prevalenciente-->
-                            <div class="offset-1 col-md-2" v-if="filtro === 8">
+                            <div class="offset-1 col-md-3" v-if="filtro === 6">
                                 <label class="pdtp-1 mgr-1 nombreFiltro">
                                     Aroma Prevaleciente:
                                     <span @click="agregar(aromaSelected,aromas,aroma)"
@@ -133,7 +133,7 @@
                                 <p v-for="val in aromaSelected">{{val.texto}}</p>
                             </div>
                         </div>
-                        <div class="offset-10 mgt-1 row" style="text-align: right;" v-if="filtro < 8">
+                        <div class="offset-10 mgt-1 row" style="text-align: right;" v-if="filtro < 9">
                             <button type="submit" class="btn btn-primary" @click="buscar">Buscar</button>
 
                             <!--<button class="btn btn-primary" type="button" disabled>
@@ -178,14 +178,8 @@
                                 <th v-if="perfumes[0].Intensidad !== undefined">
                                     Intensidad
                                 </th>
-                                <th v-if="perfumes[0].Preferencia !== undefined">
-                                    Preferencia de uso
-                                </th>
                                 <th v-if="perfumes[0].Caracter !== undefined">
                                     Caracter
-                                </th>
-                                <th v-if="perfumes[0].Aspecto !== undefined">
-                                    Personalidad
                                 </th>
                                 <th v-if="perfumes[0].Familia !== undefined">
                                     Familia Olfativa
@@ -193,19 +187,17 @@
                                 <th v-if="perfumes[0].Esencia !== undefined">
                                     Aroma
                                 </th>
+                                <th v-if="perfumes[0].Preferencia !== undefined">
+                                    Preferencia de uso
+                                </th>
+                                <th v-if="perfumes[0].Aspecto !== undefined">
+                                    Personalidad
+                                </th>
+
+
                             </tr>
                             </thead>
                             <tbody>
-                            <!-- Aspecto: (...)
-                                Caracter: (...)
-                                Edad: (...)
-                                Esencia: (...)
-                                Familia: (...)
-                                Genero: (...)
-                                Intensidad: (...)
-                                cumplimiento: (...)
-                                nombre: (...)
-                                -->
                                 <tr v-for="(perfume, key) in perfumes">
                                     <td>{{key + 1}}</td>
                                     <td>{{perfume.nombre}}</td>
@@ -221,16 +213,8 @@
                                         <span class="mi mi-check" v-if="perfume.Intensidad"></span>
                                         <span class="mi mi-close" v-else></span>
                                     </td>
-                                    <td v-if="perfume.Preferencia !== undefined">
-                                        <span class="mi mi-check" v-if="perfume.Preferencia"></span>
-                                        <span class="mi mi-close" v-else></span>
-                                    </td>
                                     <td v-if="perfume.Caracter !== undefined">
                                         <span class="mi mi-check" v-if="perfume.Caracter"></span>
-                                        <span class="mi mi-close" v-else></span>
-                                    </td>
-                                    <td v-if="perfume.Aspecto !== undefined">
-                                        <span class="mi mi-check" v-if="perfume.Aspecto"></span>
                                         <span class="mi mi-close" v-else></span>
                                     </td>
                                     <td v-if="perfume.Familia !== undefined">
@@ -241,6 +225,16 @@
                                         <span class="mi mi-check" v-if="perfume.Esencia"></span>
                                         <span class="mi mi-close" v-else></span>
                                     </td>
+                                    <td v-if="perfume.Preferencia !== undefined">
+                                        <span class="mi mi-check" v-if="perfume.Preferencia"></span>
+                                        <span class="mi mi-close" v-else></span>
+                                    </td>
+                                    <td v-if="perfume.Aspecto !== undefined">
+                                        <span class="mi mi-check" v-if="perfume.Aspecto"></span>
+                                        <span class="mi mi-close" v-else></span>
+                                    </td>
+
+
                                 </tr>
                             </tbody>
                         </table>
@@ -275,37 +269,45 @@
                 ],
 
                 caracteres: [
-                    {texto: 'Clasico', value: "'Clasico'" },
-                    {texto: 'Informal', value: "'Informal'" },
-                    {texto: 'Moderno', value: "'Moderno'" },
-                    {texto: 'Natural', value: "'Natural'" },
-                    {texto: 'Seductor', value: "'Seductor'" },
+                    {texto: 'Clasico', value: "'clasico'" },
+                    {texto: 'Informal', value: "'informal'" },
+                    {texto: 'Moderno', value: "'moderno'" },
+                    {texto: 'Natural', value: "'natural'" },
+                    {texto: 'Seductor', value: "'seductor'" },
                 ],
 
                 aromas: [
-                    {texto: 'Verde', value:"'Verde'"},
-                    {texto: 'Cítrico', value:"'Citrico'"},
-                    {texto: 'Flores', value:"'Flores'"},
-                    {texto: 'Frutas', value:"'Frutas'"},
-                    {texto: 'Aromáticos', value:"'Aromáticos'"},
-                    {texto: 'Helechos', value:"'Helechos'"},
-                    {texto: 'Chipre', value:"'Chipre'"},
-                    {texto: 'Maderas', value:"'Maderas'"},
-                    {texto: 'Orientales', value:"'Orientales'"},
-                    {texto: 'Otros', value:"'Otros'"},
+                    {text: "Frutal",value: "'frutal'"},
+                    {text: "Floral",value: "'floral'"},
+                    {text: "Verde",value: "'verde'"},
+                    {text: "Herbal",value: "'herbal'"},
+                    {text: "Cítrico",value: "'citrico'"},
+                    {text: "Herbal",value: "'herbal'"},
+                    {text: "Café",value: "'cafe'"},
+                    {text: "Chocolate",value: "'chocolate'"},
+                    {text: "Vainilla",value: "'vainilla'"},
+                    {text: "Especias",value: "'especias'"},
+                    {text: "Tabaco",value: "'tabaco'"},
                 ],
 
                 usos: [
-                    {texto: 'Diario', value:"'Diario'"},
-                    {texto: 'Trabajo', value:"'Trabajo'"},
-                    {texto: 'Ocasion Especial', value:"'Ocasion Especial'"},
+                    {texto: 'Diario', value:"diario"},
+                    {texto: 'Trabajo', value:"trabajo"},
+                    {texto: 'Ocasion Especial', value:"ocasion especial"},
                 ],
 
                 aspectos: [
-                    {texto: 'Libertad', value:"'Libertad'"},
-                    {texto: 'Independiente', value:"'Independiente'"},
-                    {texto: 'Creatividad', value:"'Creatividad'"},
-                    {texto: 'Diversion', value:"'Diversion'"},
+                    {texto: 'Libertad', value:"'libertad'"},
+                    {texto: 'Independiente', value:"'indepencia'"},
+                    {texto: 'Creatividad', value:"'creatividad'"},
+                    {texto: 'Diversion', value:"'diversion'"},
+                    {texto: 'Deshinibida', value: "'deshinibida'"},
+                    {texto: 'Tranquilidad', value: "'tranquilidad'"},
+                    {texto: 'Sensualidad', value: "'sensualidad'"},
+                    {texto: 'Alegría', value: "'alegría'"},
+                    {texto: 'Lucidez', value: "'lucidez'"},
+                    {texto: 'Calidez', value: "'calidez'"},
+                    {texto: 'Optimismo', value: "'optimismo'"},
                 ],
 
                 familias: [
@@ -338,19 +340,6 @@
 
                 perfumes: [],
                 segmentos: [],
-                  /*
-                    [
-                    "Acqua di Giò de Giorgio Armani",
-                    "Boss Bottled de Hugo Boss",
-                    "Romance de Ralph Lauren",
-                    "Joseph Abboud de Joseph Abboud",
-                    "Pistachio Brûlée de Urban Outfitters",
-                    "Paris, She Met Him In Secret de Fictions Perfume",
-                    "Exotic Musk",
-                    "Let you Love Me de Blumarine",
-                    "Gris Charnel de BDK Parfums",
-                ],
-                   */
 
                 filtro: 1
 
@@ -392,15 +381,15 @@
                     datos['intensidad'] = this.intensidad
                 }
 
-                if(this.preferencia){
-                    this.filtro = 5;
-                    datos['preferencia']= this.preferencia
-                }
-
                 if(this.caracterSelected.length > 0){
-                    this.filtro = 6;
+                    this.filtro = 5;
                     datos['caracteres'] = this.caracterSelected.map(item => item.value).toString()
 
+                }
+
+                if(this.familiaSelected.length > 0){
+                    this.filtro = 6;
+                    datos['familia']=this.familiaSelected.map(item => item.value).toString()
                 }
 
                 if(this.aromaSelected.length > 0){
@@ -408,15 +397,17 @@
                     datos['aromas']= this.aromaSelected.map(item => item.value).toString()
                 }
 
-                if(this.aspectoSelected.length > 0){
+                if(this.preferencia){
                     this.filtro = 8;
+                    datos['preferencia']= this.preferencia
+                }
+
+                if(this.aspectoSelected.length > 0){
+                    this.filtro = 9;
                     datos['aspecto']=this.aspectoSelected.map(item => item.value).toString()
                 }
 
-                if(this.familiaSelected.length > 0){
-                    this.filtro = 9;
-                    datos['familia']=this.familiaSelected.map(item => item.value).toString()
-                }
+
 
 
                 console.log(datos);
@@ -429,7 +420,7 @@
 
                         this.perfumes = data
                         this.segmentos = this.generarSegementos(data);
-                        debugger;
+                        //debugger;
                     });
                 }
 

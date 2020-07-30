@@ -1,97 +1,113 @@
 SELECT
-        (CASE
-             WHEN p.genero = 'M' THEN 1 --GENERO
-             ELSE 0
-            END) AS "Criterio Genero",
-        (CASE
-             WHEN p.edad = 'ADULTO' THEN 1 --EDAD
-             ELSE 0
-            END) AS "Criterio Edad",
-        (CASE
-             WHEN p.id = ANY(
-                 SELECT pp.id_perf--, pa.palabra
-                 FROM (SELECT *
-                       FROM rig_palabras_familias pc,
-                            rig_familias_perfumes pf
-                       WHERE pc.id_fao = pf.id_fao
-                      ) pp,
-                      rig_palabras_claves pa
-                 WHERE pp.id_pal = pa.id
-                   AND pa.palabra = 'DIARIO' -- ASPECTO / PREFERENCIA / CARACTER
-             ) THEN 1
-             ELSE 0
-            END) AS "Criterio Preferencia de uso",
-        (CASE
-             WHEN p.id = ANY(
-                 SELECT pp.id_perf--, pa.palabra
-                 FROM (SELECT *
-                       FROM rig_palabras_familias pc,
-                            rig_familias_perfumes pf
-                       WHERE pc.id_fao = pf.id_fao
-                      ) pp,
-                      rig_palabras_claves pa
-                 WHERE pp.id_pal = pa.id
-                   AND pa.palabra IN('verano','placer') -- ASPECTO / PREFERENCIA / CARACTER
-             ) THEN 1
-             ELSE 0
-            END) AS "Criterio Aspecto",
-        (CASE
-             WHEN p.id = ANY(
-                 SELECT pp.id_perf--, pa.palabra
-                 FROM (SELECT *
-                       FROM rig_palabras_familias pc,
-                            rig_familias_perfumes pf
-                       WHERE pc.id_fao = pf.id_fao
-                      ) pp,
-                      rig_palabras_claves pa
-                 WHERE pp.id_pal = pa.id
-                   AND pa.palabra IN('verano','placer') -- ASPECTO / PREFERENCIA / CARACTER
-             ) THEN 1
-             ELSE 0
-            END) AS "Criterio Caracter",
-        (CASE
-             WHEN p.id = ANY(
-                 SELECT p.id
-                 FROM rig_perfumes p,
-                      rig_intensidades i
-                 WHERE p.id = i.id_perf
-                   AND i.tipo = 'EdT' -- TIPO
-             ) THEN 1
-             ELSE 0
-            END) AS "Criterio Intensidad",
-        (CASE
-             WHEN p.id = ANY(
-                 SELECT fp.id_perf
-                 FROM  rig_familias_perfumes fp,
-                       rig_familias_olfativas f
-                 WHERE fp.id_fao = f.id
-                   AND f.nombre IN('Citrico') --FAMILIAS
-             ) THEN 1
-             ELSE 0
-            END) AS "Criterio Familias",
-        (CASE
-             WHEN p.id = ANY(
-                 SELECT esenp.id_perf,f.nombre
-                 FROM
-                     (SELECT fam.nombre,es.id_esenp as id_esenp_fam
-                      FROM rig_familias_olfativas fam,
-                           rig_esencias es
-                      WHERE fam.id = es.id_fao
-                        AND fam.nombre IN ('Orientales','Otros') --ESENCIAS
-                     ) f,
-                     (SELECT n.id_perf, id_esenp as id_esenp_per
-                      FROM rig_notas n
-                      WHERE n.tipo = 'FONDO'
-                      UNION
-                      SELECT m.id_perf, m.id_esenp
-                      FROM rig_monoliticos m
-                     ) esenp
-                 WHERE f.id_esenp_fam = esenp.id_esenp_per
-             ) THEN 1
-             ELSE 0
-            END) AS "Criterio Esencias",
-        p.nombre
-    FROM rig_perfumes p
+    (CASE
+         WHEN p.genero = 'M' THEN 1 --GENERO
+         ELSE 0
+        END) AS "Criterio Genero",
+    (CASE
+         WHEN p.edad = 'ADULTO' THEN 1 --EDAD
+         ELSE 0
+        END) AS "Criterio Edad",
+    (CASE
+         WHEN p.id = ANY(
+             SELECT p.id
+             FROM rig_perfumes p,
+                  (
+                      SELECT i.id_perf,
+                             (CASE
+                                  WHEN i.tipo = 'EdS' THEN 'diario'
+                                  WHEN i.tipo IN ('P','EdP') THEN 'ocasion especial'
+                                  ELSE 'trabajo'
+                                 END) as uso
+                      FROM rig_intensidades i
+                  ) i
+             WHERE p.id = i.id_perf
+               AND uso = 'ocasion especial' -- TIPO
+         ) THEN 1
+         ELSE 0
+        END) AS "Criterio Preferencia de uso",
+    (CASE
+         WHEN p.id = ANY(
+             SELECT pp.id_perf--, pa.palabra
+             FROM (SELECT *
+                   FROM rig_palabras_familias pc,
+                        rig_familias_perfumes pf
+                   WHERE pc.id_fao = pf.id_fao
+                  ) pp,
+                  rig_palabras_claves pa
+             WHERE pp.id_pal = pa.id
+               AND pa.palabra IN('libertad','lucidez','sensualidad') -- ASPECTO / PREFERENCIA / CARACTER
+         ) THEN 1
+         ELSE 0
+        END) AS "Criterio Aspecto",
+    (CASE
+         WHEN p.id = ANY(
+             SELECT pp.id_perf--, pa.palabra
+             FROM (SELECT *
+                   FROM rig_palabras_familias pc,
+                        rig_familias_perfumes pf
+                   WHERE pc.id_fao = pf.id_fao
+                  ) pp,
+                  rig_palabras_claves pa
+             WHERE pp.id_pal = pa.id
+               AND pa.palabra IN('verano','placer') -- ASPECTO / PREFERENCIA / CARACTER
+         ) THEN 1
+         ELSE 0
+        END) AS "Criterio Caracter",
+    (CASE
+         WHEN p.id = ANY(
+             SELECT p.id
+             FROM rig_perfumes p,
+                  rig_intensidades i
+             WHERE p.id = i.id_perf
+               AND i.tipo = 'EdT' -- TIPO
+         ) THEN 1
+         ELSE 0
+        END) AS "Criterio Intensidad",
+    (CASE
+         WHEN p.id = ANY(
+             SELECT fp.id_perf, f.nombre
+             FROM  rig_familias_perfumes fp,
+                   rig_familias_olfativas f
+             WHERE fp.id_fao = f.id
+               AND f.nombre IN('Chipre') --FAMILIAS
+         ) THEN 1
+         ELSE 0
+        END) AS "Criterio Familias",
+    (CASE
+         WHEN p.id = ANY(
+             SELECT DISTINCT esenp.id_perf
+             FROM
+                 (SELECT es.id_esenp as id_esenp_fam
+                  FROM (SELECT pf.id_fao
+                        FROM rig_palabras_claves pc,
+                             rig_palabras_familias pf
+                        WHERE pc.id = pf.id_pal
+                          AND pc.palabra IN ('chocolate','cafe') --ESENCIAS
+                       ) fam,
+                       rig_esencias es
+                  WHERE fam.id_fao = es.id_fao
+                 ) f,
+                 (SELECT n.id_perf, id_esenp as id_esenp_per
+                  FROM rig_notas n
+                  WHERE n.tipo = 'FONDO'
+                  UNION
+                  SELECT m.id_perf, m.id_esenp
+                  FROM rig_monoliticos m
+                 ) esenp
+             WHERE f.id_esenp_fam = esenp.id_esenp_per
+         ) THEN 1
+         ELSE 0
+        END) AS "Criterio Esencias",
+    p.nombre
+FROM rig_perfumes p
+ORDER BY "Criterio Genero" DESC,
+         "Criterio Edad" DESC,
+         "Criterio Preferencia de uso" DESC,
+         "Criterio Aspecto" DESC,
+         "Criterio Caracter" DESC,
+         "Criterio Intensidad" DESC,
+         "Criterio Familias" DESC,
+         "Criterio Esencias" DESC
 
 
 --UN PERFUME QUE TENGA POR LO MENOS

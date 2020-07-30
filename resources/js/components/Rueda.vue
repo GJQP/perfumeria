@@ -22,10 +22,11 @@
                 </h2>
                 <h1> {{this.cb(prizeName.split(' ').pop() - 1)}}</h1>
                 <div class="perfumes">
+                    <!--
                     <div>
                         <h4 class="mgt-1 blocktext"><u>Nombre del Perfume</u></h4>
                     </div>
-                    <!--<div>
+                    <div>
                         <div>
                             <h5 class="blocktext">Distribuido por:</h5>
                             <h5 class="blocktext">Creado por:</h5>
@@ -196,9 +197,9 @@
     .vue-winwheel h1 {
         color: #b32656;
         font-family: 'Avenir', Helvetica, Arial, sans-serif;
-        font-size: 36px;
+        font-size: 24px;
         line-height: 90px;
-        letter-spacing: 4px;
+        letter-spacing: 0px;
         margin: 0;
     }
     .vue-winwheel h2 {

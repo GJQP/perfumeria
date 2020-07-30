@@ -2497,12 +2497,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
-//
-//
-//
-//
-//
-//
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "Recomendador",
   data: function data() {
@@ -2539,73 +2533,97 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       }],
       caracteres: [{
         texto: 'Clasico',
-        value: "'Clasico'"
+        value: "'clasico'"
       }, {
         texto: 'Informal',
-        value: "'Informal'"
+        value: "'informal'"
       }, {
         texto: 'Moderno',
-        value: "'Moderno'"
+        value: "'moderno'"
       }, {
         texto: 'Natural',
-        value: "'Natural'"
+        value: "'natural'"
       }, {
         texto: 'Seductor',
-        value: "'Seductor'"
+        value: "'seductor'"
       }],
       aromas: [{
-        texto: 'Verde',
-        value: "'Verde'"
+        text: "Frutal",
+        value: "'frutal'"
       }, {
-        texto: 'Cítrico',
-        value: "'Citrico'"
+        text: "Floral",
+        value: "'floral'"
       }, {
-        texto: 'Flores',
-        value: "'Flores'"
+        text: "Verde",
+        value: "'verde'"
       }, {
-        texto: 'Frutas',
-        value: "'Frutas'"
+        text: "Herbal",
+        value: "'herbal'"
       }, {
-        texto: 'Aromáticos',
-        value: "'Aromáticos'"
+        text: "Cítrico",
+        value: "'citrico'"
       }, {
-        texto: 'Helechos',
-        value: "'Helechos'"
+        text: "Herbal",
+        value: "'herbal'"
       }, {
-        texto: 'Chipre',
-        value: "'Chipre'"
+        text: "Café",
+        value: "'cafe'"
       }, {
-        texto: 'Maderas',
-        value: "'Maderas'"
+        text: "Chocolate",
+        value: "'chocolate'"
       }, {
-        texto: 'Orientales',
-        value: "'Orientales'"
+        text: "Vainilla",
+        value: "'vainilla'"
       }, {
-        texto: 'Otros',
-        value: "'Otros'"
+        text: "Especias",
+        value: "'especias'"
+      }, {
+        text: "Tabaco",
+        value: "'tabaco'"
       }],
       usos: [{
         texto: 'Diario',
-        value: "'Diario'"
+        value: "diario"
       }, {
         texto: 'Trabajo',
-        value: "'Trabajo'"
+        value: "trabajo"
       }, {
         texto: 'Ocasion Especial',
-        value: "'Ocasion Especial'"
+        value: "ocasion especial"
       }],
       aspectos: [{
         texto: 'Libertad',
-        value: "'Libertad'"
+        value: "'libertad'"
       }, {
         texto: 'Independiente',
-        value: "'Independiente'"
+        value: "'indepencia'"
       }, {
         texto: 'Creatividad',
-        value: "'Creatividad'"
+        value: "'creatividad'"
       }, {
         texto: 'Diversion',
-        value: "'Diversion'"
+        value: "'diversion'"
+      }, {
+        texto: 'Deshinibida',
+        value: "'deshinibida'"
+      }, {
+        texto: 'Tranquilidad',
+        value: "'tranquilidad'"
+      }, {
+        texto: 'Sensualidad',
+        value: "'sensualidad'"
+      }, {
+        texto: 'Alegría',
+        value: "'alegría'"
+      }, {
+        texto: 'Lucidez',
+        value: "'lucidez'"
+      }, {
+        texto: 'Calidez',
+        value: "'calidez'"
+      }, {
+        texto: 'Optimismo',
+        value: "'optimismo'"
       }],
       familias: [{
         texto: 'Verde',
@@ -2652,20 +2670,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       aspectoSelected: [],
       perfumes: [],
       segmentos: [],
-
-      /*
-        [
-        "Acqua di Giò de Giorgio Armani",
-        "Boss Bottled de Hugo Boss",
-        "Romance de Ralph Lauren",
-        "Joseph Abboud de Joseph Abboud",
-        "Pistachio Brûlée de Urban Outfitters",
-        "Paris, She Met Him In Secret de Fictions Perfume",
-        "Exotic Musk",
-        "Let you Love Me de Blumarine",
-        "Gris Charnel de BDK Parfums",
-      ],
-       */
       filtro: 1
     };
   },
@@ -2704,14 +2708,16 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         datos['intensidad'] = this.intensidad;
       }
 
-      if (this.preferencia) {
+      if (this.caracterSelected.length > 0) {
         this.filtro = 5;
-        datos['preferencia'] = this.preferencia;
+        datos['caracteres'] = this.caracterSelected.map(function (item) {
+          return item.value;
+        }).toString();
       }
 
-      if (this.caracterSelected.length > 0) {
+      if (this.familiaSelected.length > 0) {
         this.filtro = 6;
-        datos['caracteres'] = this.caracterSelected.map(function (item) {
+        datos['familia'] = this.familiaSelected.map(function (item) {
           return item.value;
         }).toString();
       }
@@ -2723,16 +2729,14 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         }).toString();
       }
 
-      if (this.aspectoSelected.length > 0) {
+      if (this.preferencia) {
         this.filtro = 8;
-        datos['aspecto'] = this.aspectoSelected.map(function (item) {
-          return item.value;
-        }).toString();
+        datos['preferencia'] = this.preferencia;
       }
 
-      if (this.familiaSelected.length > 0) {
+      if (this.aspectoSelected.length > 0) {
         this.filtro = 9;
-        datos['familia'] = this.familiaSelected.map(function (item) {
+        datos['aspecto'] = this.aspectoSelected.map(function (item) {
           return item.value;
         }).toString();
       }
@@ -2744,8 +2748,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
           var data = _ref.data;
           console.log("RESULTADOS", data);
           _this.perfumes = data;
-          _this.segmentos = _this.generarSegementos(data);
-          debugger;
+          _this.segmentos = _this.generarSegementos(data); //debugger;
         });
       }
     },
@@ -2806,6 +2809,7 @@ function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { va
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
+//
 //
 //
 //
@@ -7461,7 +7465,7 @@ exports = module.exports = __webpack_require__(/*! ../../../node_modules/css-loa
 
 
 // module
-exports.push([module.i, "\n.vue-winwheel[data-v-3c9b60b8] {\n    text-align: center;\n    background-image: url('/static/img/obstacle-run/bg-spinner-mobile.svg');\n    background-size: cover;\n    background-position: center bottom;\n    background-repeat: no-repeat;\n}\n.vue-winwheel h1[data-v-3c9b60b8] {\n    color: #b32656;\n    font-family: 'Avenir', Helvetica, Arial, sans-serif;\n    font-size: 36px;\n    line-height: 90px;\n    letter-spacing: 4px;\n    margin: 0;\n}\n.vue-winwheel h2[data-v-3c9b60b8] {\n    margin: 0;\n}\n.vue-winwheel #modalSpinwheel.custom-modal .content-wrapper .content[data-v-3c9b60b8] {\n    width: calc(100vw - 30px);\n    padding-top: 52px;\n}\n.vue-winwheel #modalSpinwheel.custom-modal .content-wrapper .content h2[data-v-3c9b60b8] {\n    text-transform: uppercase;\n    color: #b32656;\n    margin-bottom: 16px;\n    margin-top: 0;\n    font-family: 'Avenir', Helvetica, Arial, sans-serif;\n    font-size: 18px;\n    letter-spacing: 1.1px;\n    margin: 0;\n}\n.vue-winwheel #modalSpinwheel.custom-modal .content-wrapper .content p[data-v-3c9b60b8] {\n    font-family: 'Avenir', Helvetica, Arial, sans-serif;\n    font-size: 14px;\n    color: black;\n    text-align: center;\n    line-height: 25px;\n}\n.vue-winwheel #modalSpinwheel.custom-modal .content-wrapper .content p strong[data-v-3c9b60b8] {\n    font-family: 'Avenir', Helvetica, Arial, sans-serif;\n}\n.vue-winwheel #modalSpinwheel.custom-modal .content-wrapper .content .modal-dismiss[data-v-3c9b60b8] {\n    top: 12px;\n    right: 12px;\n}\n.vue-winwheel #modalSpinwheel.custom-modal .content-wrapper .content .modal-dismiss i.icon_close[data-v-3c9b60b8] {\n    font-size: 30px;\n    color: #da2a52;\n}\n.vue-winwheel canvas#canvas[data-v-3c9b60b8] {\n    position: relative;\n}\n.vue-winwheel .canvas-wrapper[data-v-3c9b60b8] {\n    position: relative;\n}\n.vue-winwheel .canvas-wrapper[data-v-3c9b60b8]:after {\n    content: '';\n    display: block;\n    width: 42px;\n    background: #c4376f;\n    height: 42px;\n    position: absolute;\n    left: calc(50% - 25px);\n    margin: auto;\n    border-radius: 100%;\n    top: calc(50% - 29px);\n    border: 5px solid white;\n    box-sizing: content-box;\n}\n.vue-winwheel .canvas-wrapper[data-v-3c9b60b8]:before {\n    content: '';\n    display: block;\n    width: 310px;\n    background: #0f0f0f;\n    height: 310px;\n    position: absolute;\n    left: 0;\n    right: 0;\n    margin: 0 auto;\n    border-radius: 100%;\n    top: 0;\n}\n.vue-winwheel .wheel-wrapper[data-v-3c9b60b8] {\n    position: relative;\n}\n.vue-winwheel .wheel-wrapper[data-v-3c9b60b8]:before {\n    content: '';\n    width: 62px;\n    height: 47px;\n    position: absolute;\n    top: -10px;\n    left: calc(50% - 31px);\n    right: 0;\n    display: block;\n    z-index: 99999;\n    background-image: url(" + escape(__webpack_require__(/*! vue-winwheel/spinner-marker.svg */ "./node_modules/vue-winwheel/spinner-marker.svg")) + ");\n    background-repeat: no-repeat;\n    background-size: contain;\n    background-position: center;\n}\n.vue-winwheel .wheel-wrapper .button-wrapper[data-v-3c9b60b8] {\n    margin: 0 auto;\n    display: flex;\n    flex-direction: column;\n    align-items: center;\n    justify-content: center;\n    width: 231px;\n    height: 118px;\n}\n.vue-winwheel .wheel-wrapper .btn.btn-play[data-v-3c9b60b8] {\n    padding: 0 58px !important;\n    background: #c4376f;\n    height: 40px;\n    line-height: 40px;\n    color: white;\n    font-weight: bold;\n    text-decoration: none;\n    border-radius: 2px;\n    font-family: 'Avenir', Helvetica, Arial, sans-serif;\n    letter-spacing: 2px;\n}\n", ""]);
+exports.push([module.i, "\n.vue-winwheel[data-v-3c9b60b8] {\n    text-align: center;\n    background-image: url('/static/img/obstacle-run/bg-spinner-mobile.svg');\n    background-size: cover;\n    background-position: center bottom;\n    background-repeat: no-repeat;\n}\n.vue-winwheel h1[data-v-3c9b60b8] {\n    color: #b32656;\n    font-family: 'Avenir', Helvetica, Arial, sans-serif;\n    font-size: 24px;\n    line-height: 90px;\n    letter-spacing: 0px;\n    margin: 0;\n}\n.vue-winwheel h2[data-v-3c9b60b8] {\n    margin: 0;\n}\n.vue-winwheel #modalSpinwheel.custom-modal .content-wrapper .content[data-v-3c9b60b8] {\n    width: calc(100vw - 30px);\n    padding-top: 52px;\n}\n.vue-winwheel #modalSpinwheel.custom-modal .content-wrapper .content h2[data-v-3c9b60b8] {\n    text-transform: uppercase;\n    color: #b32656;\n    margin-bottom: 16px;\n    margin-top: 0;\n    font-family: 'Avenir', Helvetica, Arial, sans-serif;\n    font-size: 18px;\n    letter-spacing: 1.1px;\n    margin: 0;\n}\n.vue-winwheel #modalSpinwheel.custom-modal .content-wrapper .content p[data-v-3c9b60b8] {\n    font-family: 'Avenir', Helvetica, Arial, sans-serif;\n    font-size: 14px;\n    color: black;\n    text-align: center;\n    line-height: 25px;\n}\n.vue-winwheel #modalSpinwheel.custom-modal .content-wrapper .content p strong[data-v-3c9b60b8] {\n    font-family: 'Avenir', Helvetica, Arial, sans-serif;\n}\n.vue-winwheel #modalSpinwheel.custom-modal .content-wrapper .content .modal-dismiss[data-v-3c9b60b8] {\n    top: 12px;\n    right: 12px;\n}\n.vue-winwheel #modalSpinwheel.custom-modal .content-wrapper .content .modal-dismiss i.icon_close[data-v-3c9b60b8] {\n    font-size: 30px;\n    color: #da2a52;\n}\n.vue-winwheel canvas#canvas[data-v-3c9b60b8] {\n    position: relative;\n}\n.vue-winwheel .canvas-wrapper[data-v-3c9b60b8] {\n    position: relative;\n}\n.vue-winwheel .canvas-wrapper[data-v-3c9b60b8]:after {\n    content: '';\n    display: block;\n    width: 42px;\n    background: #c4376f;\n    height: 42px;\n    position: absolute;\n    left: calc(50% - 25px);\n    margin: auto;\n    border-radius: 100%;\n    top: calc(50% - 29px);\n    border: 5px solid white;\n    box-sizing: content-box;\n}\n.vue-winwheel .canvas-wrapper[data-v-3c9b60b8]:before {\n    content: '';\n    display: block;\n    width: 310px;\n    background: #0f0f0f;\n    height: 310px;\n    position: absolute;\n    left: 0;\n    right: 0;\n    margin: 0 auto;\n    border-radius: 100%;\n    top: 0;\n}\n.vue-winwheel .wheel-wrapper[data-v-3c9b60b8] {\n    position: relative;\n}\n.vue-winwheel .wheel-wrapper[data-v-3c9b60b8]:before {\n    content: '';\n    width: 62px;\n    height: 47px;\n    position: absolute;\n    top: -10px;\n    left: calc(50% - 31px);\n    right: 0;\n    display: block;\n    z-index: 99999;\n    background-image: url(" + escape(__webpack_require__(/*! vue-winwheel/spinner-marker.svg */ "./node_modules/vue-winwheel/spinner-marker.svg")) + ");\n    background-repeat: no-repeat;\n    background-size: contain;\n    background-position: center;\n}\n.vue-winwheel .wheel-wrapper .button-wrapper[data-v-3c9b60b8] {\n    margin: 0 auto;\n    display: flex;\n    flex-direction: column;\n    align-items: center;\n    justify-content: center;\n    width: 231px;\n    height: 118px;\n}\n.vue-winwheel .wheel-wrapper .btn.btn-play[data-v-3c9b60b8] {\n    padding: 0 58px !important;\n    background: #c4376f;\n    height: 40px;\n    line-height: 40px;\n    color: white;\n    font-weight: bold;\n    text-decoration: none;\n    border-radius: 2px;\n    font-family: 'Avenir', Helvetica, Arial, sans-serif;\n    letter-spacing: 2px;\n}\n", ""]);
 
 // exports
 
@@ -48759,7 +48763,7 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", { staticClass: "container mgt-2 mgrb-1" }, [
-    _vm.filtro < 8
+    _vm.filtro < 9
       ? _c("div", [
           _c("div", { staticClass: "stage tarjeta muli pdb-2" }, [
             _vm._m(0),
@@ -48767,7 +48771,7 @@ var render = function() {
             _c("div", { staticClass: "mgtp-1 pdb-1" }, [
               _c("div", { staticClass: "row" }, [
                 _vm.filtro === 1
-                  ? _c("div", { staticClass: "offset-1 col-md-2" }, [
+                  ? _c("div", { staticClass: "offset-1 col-md-3" }, [
                       _c("label", { staticClass: "pdtp-1 mgr-1" }, [
                         _vm._v("Género:")
                       ]),
@@ -48829,7 +48833,7 @@ var render = function() {
                   : _vm._e(),
                 _vm._v(" "),
                 _vm.filtro === 2
-                  ? _c("div", { staticClass: "offset-1 col-md-2" }, [
+                  ? _c("div", { staticClass: "offset-1 col-md-3" }, [
                       _c("label", { staticClass: "pdtp-1 mgr-1" }, [
                         _vm._v("Edad:")
                       ]),
@@ -48891,7 +48895,7 @@ var render = function() {
                   : _vm._e(),
                 _vm._v(" "),
                 _vm.filtro === 3
-                  ? _c("div", { staticClass: "offset-1 col-md-2" }, [
+                  ? _c("div", { staticClass: "offset-1 col-md-3" }, [
                       _c("label", { staticClass: "pdtp-1 mgr-1" }, [
                         _vm._v("Intensidad:")
                       ]),
@@ -48953,8 +48957,8 @@ var render = function() {
                     ])
                   : _vm._e(),
                 _vm._v(" "),
-                _vm.filtro === 4
-                  ? _c("div", { staticClass: "offset-1 col-md-2" }, [
+                _vm.filtro === 7
+                  ? _c("div", { staticClass: "offset-1 col-md-3" }, [
                       _c("label", { staticClass: "pdtp-1 mgr-1" }, [
                         _vm._v("Preferencia de Uso:")
                       ]),
@@ -49000,7 +49004,7 @@ var render = function() {
                           _vm._l(_vm.usos, function(uso) {
                             return _c(
                               "option",
-                              { domProps: { value: uso.texto } },
+                              { domProps: { value: uso.value } },
                               [_vm._v(_vm._s(uso.texto))]
                             )
                           })
@@ -49012,10 +49016,10 @@ var render = function() {
               ]),
               _vm._v(" "),
               _c("div", { staticClass: "row mgt-1" }, [
-                _vm.filtro === 5
+                _vm.filtro === 4
                   ? _c(
                       "div",
-                      { staticClass: "offset-1 col-md-2" },
+                      { staticClass: "offset-1 col-md-3" },
                       [
                         _c(
                           "label",
@@ -49116,10 +49120,10 @@ var render = function() {
                     )
                   : _vm._e(),
                 _vm._v(" "),
-                _vm.filtro === 6
+                _vm.filtro === 8
                   ? _c(
                       "div",
-                      { staticClass: "offset-1 col-md-2" },
+                      { staticClass: "offset-1 col-md-3" },
                       [
                         _c(
                           "label",
@@ -49220,10 +49224,10 @@ var render = function() {
                     )
                   : _vm._e(),
                 _vm._v(" "),
-                _vm.filtro === 7
+                _vm.filtro === 5
                   ? _c(
                       "div",
-                      { staticClass: "offset-1 col-md-2" },
+                      { staticClass: "offset-1 col-md-3" },
                       [
                         _c(
                           "label",
@@ -49324,10 +49328,10 @@ var render = function() {
                     )
                   : _vm._e(),
                 _vm._v(" "),
-                _vm.filtro === 8
+                _vm.filtro === 6
                   ? _c(
                       "div",
-                      { staticClass: "offset-1 col-md-2" },
+                      { staticClass: "offset-1 col-md-3" },
                       [
                         _c(
                           "label",
@@ -49429,7 +49433,7 @@ var render = function() {
                   : _vm._e()
               ]),
               _vm._v(" "),
-              _vm.filtro < 8
+              _vm.filtro < 9
                 ? _c(
                     "div",
                     {
@@ -49524,26 +49528,10 @@ var render = function() {
                               ])
                             : _vm._e(),
                           _vm._v(" "),
-                          _vm.perfumes[0].Preferencia !== undefined
-                            ? _c("th", [
-                                _vm._v(
-                                  "\n                                Preferencia de uso\n                            "
-                                )
-                              ])
-                            : _vm._e(),
-                          _vm._v(" "),
                           _vm.perfumes[0].Caracter !== undefined
                             ? _c("th", [
                                 _vm._v(
                                   "\n                                Caracter\n                            "
-                                )
-                              ])
-                            : _vm._e(),
-                          _vm._v(" "),
-                          _vm.perfumes[0].Aspecto !== undefined
-                            ? _c("th", [
-                                _vm._v(
-                                  "\n                                Personalidad\n                            "
                                 )
                               ])
                             : _vm._e(),
@@ -49560,6 +49548,22 @@ var render = function() {
                             ? _c("th", [
                                 _vm._v(
                                   "\n                                Aroma\n                            "
+                                )
+                              ])
+                            : _vm._e(),
+                          _vm._v(" "),
+                          _vm.perfumes[0].Preferencia !== undefined
+                            ? _c("th", [
+                                _vm._v(
+                                  "\n                                Preferencia de uso\n                            "
+                                )
+                              ])
+                            : _vm._e(),
+                          _vm._v(" "),
+                          _vm.perfumes[0].Aspecto !== undefined
+                            ? _c("th", [
+                                _vm._v(
+                                  "\n                                Personalidad\n                            "
                                 )
                               ])
                             : _vm._e()
@@ -49598,25 +49602,9 @@ var render = function() {
                                 ])
                               : _vm._e(),
                             _vm._v(" "),
-                            perfume.Preferencia !== undefined
-                              ? _c("td", [
-                                  perfume.Preferencia
-                                    ? _c("span", { staticClass: "mi mi-check" })
-                                    : _c("span", { staticClass: "mi mi-close" })
-                                ])
-                              : _vm._e(),
-                            _vm._v(" "),
                             perfume.Caracter !== undefined
                               ? _c("td", [
                                   perfume.Caracter
-                                    ? _c("span", { staticClass: "mi mi-check" })
-                                    : _c("span", { staticClass: "mi mi-close" })
-                                ])
-                              : _vm._e(),
-                            _vm._v(" "),
-                            perfume.Aspecto !== undefined
-                              ? _c("td", [
-                                  perfume.Aspecto
                                     ? _c("span", { staticClass: "mi mi-check" })
                                     : _c("span", { staticClass: "mi mi-close" })
                                 ])
@@ -49633,6 +49621,22 @@ var render = function() {
                             perfume.Esencia !== undefined
                               ? _c("td", [
                                   perfume.Esencia
+                                    ? _c("span", { staticClass: "mi mi-check" })
+                                    : _c("span", { staticClass: "mi mi-close" })
+                                ])
+                              : _vm._e(),
+                            _vm._v(" "),
+                            perfume.Preferencia !== undefined
+                              ? _c("td", [
+                                  perfume.Preferencia
+                                    ? _c("span", { staticClass: "mi mi-check" })
+                                    : _c("span", { staticClass: "mi mi-close" })
+                                ])
+                              : _vm._e(),
+                            _vm._v(" "),
+                            perfume.Aspecto !== undefined
+                              ? _c("td", [
+                                  perfume.Aspecto
                                     ? _c("span", { staticClass: "mi mi-check" })
                                     : _c("span", { staticClass: "mi mi-close" })
                                 ])
@@ -49761,7 +49765,7 @@ var render = function() {
                 )
               ]),
               _vm._v(" "),
-              _vm._m(1)
+              _c("div", { staticClass: "perfumes" })
             ])
           ]
         )
@@ -49788,18 +49792,6 @@ var staticRenderFns = [
         )
       ]
     )
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "perfumes" }, [
-      _c("div", [
-        _c("h4", { staticClass: "mgt-1 blocktext" }, [
-          _c("u", [_vm._v("Nombre del Perfume")])
-        ])
-      ])
-    ])
   }
 ]
 render._withStripped = true
