@@ -238,7 +238,7 @@ class Compras extends Controller
             DB::update('
             UPDATE rig_pedidos
             SET estatus = ?,
-                total = ?,
+                total = ?
             WHERE id = ?
             ', [
                 'RECHAZADO',
@@ -246,6 +246,8 @@ class Compras extends Controller
                 $request->id_ped
             ]);
         }
+
+        return response()->json('success');
 
 
     }
