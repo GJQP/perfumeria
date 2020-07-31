@@ -445,8 +445,8 @@ class Contratos extends Controller
 
         // Obtengo las variables
         $variables = "SELECT rec.id_var, rec.fcha_reg, rec.tipo_eval, rec.peso, var.nombre FROM rig_evaluaciones_criterios rec INNER JOIN rig_variables var ON rec.id_var = var.id WHERE rec.id_prod=$id_prod AND rec.fcha_fin IS NULL AND rec.tipo_eval = 'RENOVACION'";
-        $variables = DB::select("$variables");
-
+        $variables = DB::select($variables);
+        //dd($variables);
         if(empty($variables))
             return redirect()->route('contratos.index')->with('error', 'El productor no tiene fórmulas de renovación');
 
